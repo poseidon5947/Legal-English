@@ -387,7 +387,13 @@ export async function replaceTerms(actorId: string, terms: Term[]) {
   }
   data.terms = [...byId.values()].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
   save(data);
-  return { ok: true as const, terms: data.terms, missing };
+  return { ok: true as const, terms: data.terms, missing, inserted: undefined as number | undefined, updated: undefined as number | undefined, importRunId: undefined as string | undefined };
+}
+
+export async function rollbackImportRun(actorId: string, _runId: string) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  return { ok: false as const, message: "Import rollback needs Supabase (production mode) — alpha review has no import run history." };
 }
 
 export async function metrics() {

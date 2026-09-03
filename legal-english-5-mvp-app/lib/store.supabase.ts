@@ -516,8 +516,29 @@ export async function replaceTerms(actorId: string, terms: Term[]) {
   if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
   const supabase = await getSupabaseServerClient();
   const current = await listTerms(true);
-  const incomingIds = new Set(terms.map((term) => term.id));
+  const touchedIds = terms.map((term) => term.id);
+  const incomingIds = new Set(touchedIds);
   const missing = current.filter((term) => !incomingIds.has(term.id)).map((term) => term.id);
+
+  // Snapshot the exact pre-import DB rows for every touched TermID before
+  // writing anything, so rollback_import_run() can restore them later —
+  // MCD Delivery Mapping §7's "reconciliar los IDs y counts" evidence.
+  const [{ data: beforeTerms }, { data: beforeQuizItems }] = await Promise.all([
+    supabase.from("terms").select("*").in("id", touchedIds),
+    supabase.from("quiz_items").select("*").in("term_id", touchedIds),
+  ]);
+  const { data: run, error: runError } = await supabase
+    .from("import_runs")
+    .insert({
+      actor_id: actorId,
+      touched_term_ids: touchedIds,
+      before_terms: beforeTerms ?? [],
+      before_quiz_items: beforeQuizItems ?? [],
+      missing_term_ids: missing,
+    })
+    .select("id")
+    .single();
+  if (runError || !run) return { ok: false as const, message: runError?.message || "Could not record the import run." };
 
   // A single RPC call: both tables commit together or neither does. See
   // 002_import_and_audio.sql's import_terms_batch — this replaces a
@@ -532,7 +553,18 @@ export async function replaceTerms(actorId: string, terms: Term[]) {
 
   const inserted = (data ?? []).filter((row: { action: string }) => row.action === "insert").length;
   const updated = (data ?? []).filter((row: { action: string }) => row.action === "update").length;
-  return { ok: true as const, terms: await listTerms(true), missing, inserted, updated };
+  await supabase.from("import_runs").update({ inserted_count: inserted, updated_count: updated }).eq("id", run.id);
+
+  return { ok: true as const, terms: await listTerms(true), missing, inserted, updated, importRunId: run.id as string };
+}
+
+export async function rollbackImportRun(actorId: string, runId: string) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const supabase = await getSupabaseServerClient();
+  const { data, error } = await supabase.rpc("rollback_import_run", { run_id: runId });
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, terms: await listTerms(true), result: data as { restoredTerms: number; deletedTerms: number } };
 }
 
 export async function metrics() {

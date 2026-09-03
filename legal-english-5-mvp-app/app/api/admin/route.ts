@@ -28,5 +28,6 @@ export async function POST(request: Request) {
   if (body.action === "archive") return json(await store.setArchived(user.id, body.termId, body.archived));
   if (body.action === "grant") return json(await store.grantAccess(user.id, body.userId));
   if (body.action === "commit-import") return json(await store.replaceTerms(user.id, body.terms));
+  if (body.action === "rollback-import") return json(await store.rollbackImportRun(user.id, body.importRunId));
   return json({ ok: false, message: "Unknown admin action." }, 400);
 }

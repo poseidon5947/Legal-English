@@ -3,7 +3,17 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term } from "@/lib/types";
 
-type Result = { ok: boolean; message?: string; code?: string; correct?: boolean; needsConfirmation?: boolean };
+type Result = {
+  ok: boolean;
+  message?: string;
+  code?: string;
+  correct?: boolean;
+  needsConfirmation?: boolean;
+  inserted?: number;
+  updated?: number;
+  missing?: string[];
+  importRunId?: string;
+};
 type Ctx = {
   ready: boolean;
   session: SessionPayload | null;
@@ -30,6 +40,7 @@ type Ctx = {
   grantAccess: (id: string) => Promise<void>;
   previewImport: (file: File) => Promise<{ ok: boolean; preview?: ImportPreview; message?: string }>;
   commitImport: (terms: Term[]) => Promise<Result>;
+  rollbackImport: (importRunId: string) => Promise<Result>;
   resetDemo: () => Promise<void>;
   updateProfile: (name: string) => Promise<Result>;
   changePassword: (currentPassword: string, nextPassword: string) => Promise<Result>;
@@ -188,6 +199,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     },
     async commitImport(nextTerms) {
       const data = await post("/api/admin", { action: "commit-import", terms: nextTerms });
+      if (data.terms) setTerms(data.terms);
+      return data;
+    },
+    async rollbackImport(importRunId) {
+      const data = await post("/api/admin", { action: "rollback-import", importRunId });
       if (data.terms) setTerms(data.terms);
       return data;
     },

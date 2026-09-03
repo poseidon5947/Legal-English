@@ -54,6 +54,8 @@ export interface Store {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   replaceTerms(actorId: string, terms: Term[]): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rollbackImportRun(actorId: string, runId: string): Promise<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metrics(): Promise<any>;
   resetStore(): Promise<unknown>;
 }

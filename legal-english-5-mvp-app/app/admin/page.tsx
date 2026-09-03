@@ -31,8 +31,9 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 }
 
 export default function AdminPage() {
-  const { session, terms, users, saveTerm, setPublished, setArchived, grantAccess, previewImport, commitImport, resetDemo, uploadAudio } = useApp();
+  const { session, terms, users, saveTerm, setPublished, setArchived, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio } = useApp();
   const [audioBusy, setAudioBusy] = useState<"us" | "uk" | null>(null);
+  const [lastRun, setLastRun] = useState<{ importRunId: string; inserted?: number; updated?: number; missing?: string[]; rolledBack?: boolean } | null>(null);
   const [tab, setTab] = useState<"overview" | "terms" | "users" | "import">("overview");
   const [editing, setEditing] = useState<Term | null>(null);
   const [message, setMessage] = useState("");
@@ -233,11 +234,36 @@ export default function AdminPage() {
                   onClick={() => {
                     void commitImport(preview.terms).then((result) => {
                       setMessage(result.ok ? "Import committed. Terms stay unpublished. Missing IDs were kept." : result.message || "Import failed.");
-                      if (result.ok) setPreview(null);
+                      if (result.ok) {
+                        setPreview(null);
+                        setLastRun(result.importRunId ? { importRunId: result.importRunId, inserted: result.inserted, updated: result.updated, missing: result.missing } : null);
+                      }
                     });
                   }}
                 >
                   Confirm import
+                </button>
+              )}
+            </div>
+          )}
+          {lastRun && (
+            <div className="preview">
+              <p>
+                Last commit: {lastRun.inserted ?? 0} inserted · {lastRun.updated ?? 0} updated
+                {lastRun.missing?.length ? ` · ${lastRun.missing.length} existing TermID(s) kept, not touched` : ""}
+                {lastRun.rolledBack ? " · rolled back" : ""}
+              </p>
+              {!lastRun.rolledBack && (
+                <button
+                  className="danger"
+                  onClick={() => {
+                    void rollbackImport(lastRun.importRunId).then((result) => {
+                      setMessage(result.ok ? "Import rolled back to its pre-commit state." : result.message || "Rollback failed.");
+                      if (result.ok) setLastRun({ ...lastRun, rolledBack: true });
+                    });
+                  }}
+                >
+                  Undo this import
                 </button>
               )}
             </div>
