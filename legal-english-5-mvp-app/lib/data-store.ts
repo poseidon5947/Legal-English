@@ -22,7 +22,8 @@ export interface Store {
   register(
     name: string,
     email: string,
-    password: string
+    password: string,
+    privacyAccepted: boolean
   ): Promise<{ ok: true; user: PublicUser; code?: string; sessionEstablished: boolean } | { ok: false; message: string }>;
   verifyEmail(email: string, code: string): Promise<{ ok: boolean; message?: string }>;
   requestReset(email: string): Promise<{ ok: true }>;
@@ -32,6 +33,8 @@ export interface Store {
   updateProfile(userId: string, name: string): Promise<any>;
   changeOwnPassword(userId: string, currentPassword: string, nextPassword: string): Promise<{ ok: boolean; message?: string }>;
   deleteAccount(userId: string): Promise<{ ok: boolean; message?: string }>;
+  deactivateAccount(userId: string): Promise<{ ok: boolean; message?: string }>;
+  reactivateAccount(userId: string): Promise<{ ok: boolean; message?: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reportIssue(userId: string, summary: string, detail: string): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,11 +55,15 @@ export interface Store {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setArchived(actorId: string, termId: string, archived: boolean): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deleteTerm(actorId: string, termId: string): Promise<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   replaceTerms(actorId: string, terms: Term[]): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rollbackImportRun(actorId: string, runId: string): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metrics(): Promise<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  exportSnapshot(actorId: string): Promise<any>;
   resetStore(): Promise<unknown>;
 }
 

@@ -40,9 +40,10 @@ function VerifyBanner() {
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const { ready, session, signOut, entitlement } = useApp();
+  const { ready, session, signOut, entitlement, reactivateAccount } = useApp();
   const { locale, t } = useLocale();
   const [globalSearch, setGlobalSearch] = useState("");
+  const [reactivateMessage, setReactivateMessage] = useState("");
   const router = useRouter();
   const path = usePathname();
   useEffect(() => {
@@ -56,7 +57,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
     );
   }
-  const locked = !entitlement.allowed && session.user.role !== "admin" && path.startsWith("/terms/");
+  const disabled = Boolean(session.user.disabledAt);
+  const locked = !disabled && !entitlement.allowed && session.user.role !== "admin" && path.startsWith("/terms/");
   const links: ReadonlyArray<readonly [string, string, IconName]> = [
     ["/terms", t("navTerms"), "book"],
     ["/progress", t("navProgress"), "trend"],
@@ -147,10 +149,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </Link>
         </header>
-        {!session.user.emailVerified && (
+        {!disabled && !session.user.emailVerified && (
           <VerifyBanner />
         )}
-        {locked ? (
+        {disabled ? (
+          <div className="blocked-panel">
+            <span>{t("accessPaused")}</span>
+            <h1>{t("accountDeactivatedTitle")}</h1>
+            <p>{t("accountDeactivatedBody")}</p>
+            <button
+              className="primary inline"
+              onClick={() => {
+                void reactivateAccount().then((result) => setReactivateMessage(result.ok ? "" : result.message || t("couldNotContinue")));
+              }}
+            >
+              {t("reactivateAction")}
+            </button>
+            {reactivateMessage && <p className="muted">{reactivateMessage}</p>}
+          </div>
+        ) : locked ? (
           <div className="blocked-panel">
             <span>{t("accessPaused")}</span>
             <h1>{t("accessInactive")}</h1>

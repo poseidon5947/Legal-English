@@ -24,7 +24,7 @@ type Ctx = {
   inbox: Mail[];
   entitlement: Entitlement;
   signIn: (email: string, password: string) => Promise<Result>;
-  signUp: (name: string, email: string, password: string) => Promise<Result>;
+  signUp: (name: string, email: string, password: string, privacyAccepted: boolean) => Promise<Result>;
   signOut: () => Promise<void>;
   verify: (email: string, code: string) => Promise<Result>;
   forgot: (email: string) => Promise<Result>;
@@ -37,6 +37,7 @@ type Ctx = {
   uploadAudio: (termId: string, jurisdiction: "us" | "uk", file: File) => Promise<Result>;
   setPublished: (id: string, published: boolean) => Promise<Result>;
   setArchived: (id: string, archived: boolean) => Promise<Result>;
+  deleteTerm: (id: string) => Promise<Result>;
   grantAccess: (id: string) => Promise<void>;
   previewImport: (file: File) => Promise<{ ok: boolean; preview?: ImportPreview; message?: string }>;
   commitImport: (terms: Term[]) => Promise<Result>;
@@ -45,6 +46,8 @@ type Ctx = {
   updateProfile: (name: string) => Promise<Result>;
   changePassword: (currentPassword: string, nextPassword: string) => Promise<Result>;
   deleteAccount: () => Promise<Result>;
+  deactivateAccount: () => Promise<Result>;
+  reactivateAccount: () => Promise<Result>;
   reportIssue: (summary: string, detail: string) => Promise<Result>;
 };
 
@@ -125,8 +128,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       else if (data.ok) await hydrate();
       return data;
     },
-    async signUp(name, email, password) {
-      const data = await post("/api/auth", { action: "signup", name, email, password });
+    async signUp(name, email, password, privacyAccepted) {
+      const data = await post("/api/auth", { action: "signup", name, email, password, privacyAccepted });
       if (data.ok && data.session) applyBootstrap(data);
       else if (data.ok) await hydrate();
       return data;
@@ -187,6 +190,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (data.terms) setTerms(data.terms);
       return data;
     },
+    async deleteTerm(id) {
+      const data = await post("/api/admin", { action: "delete-term", termId: id });
+      if (data.terms) setTerms(data.terms);
+      return data;
+    },
     async grantAccess(id) {
       const data = await post("/api/admin", { action: "grant", userId: id });
       if (data.users) setUsers(data.users);
@@ -228,6 +236,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setUsers([]);
         setInbox([]);
       }
+      return data;
+    },
+    async deactivateAccount() {
+      const data = await post("/api/auth", { action: "deactivate-account" });
+      if (data.ok) applyBootstrap(data);
+      return data;
+    },
+    async reactivateAccount() {
+      const data = await post("/api/auth", { action: "reactivate-account" });
+      if (data.ok) applyBootstrap(data);
       return data;
     },
     async reportIssue(summary, detail) {

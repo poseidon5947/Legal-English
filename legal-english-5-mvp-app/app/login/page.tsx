@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("pilar@mpclaw.studio");
   const [password, setPassword] = useState("Pilar#Alpha26");
   const [code, setCode] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   useEffect(() => {
@@ -50,8 +51,12 @@ export default function LoginPage() {
       else window.location.assign("/terms");
       return;
     }
+    if (mode === "signup" && !privacyAccepted) {
+      setError(t("privacyRequired"));
+      return;
+    }
     try {
-      const result = mode === "signup" ? await signUp(name, email, password) : await signIn(email, password);
+      const result = mode === "signup" ? await signUp(name, email, password, privacyAccepted) : await signIn(email, password);
       if (!result.ok) setError(result.message || t("couldNotContinue"));
       else if (result.needsConfirmation) {
         setNotice(t("confirmNotice"));
@@ -113,6 +118,18 @@ export default function LoginPage() {
                 {t("resetCode")}
                 <input value={code} onChange={(e) => setCode(e.target.value)} required placeholder={t("sixDigits")} />
               </label>
+            )}
+            {mode === "signup" && (
+              <div className="privacy-consent">
+                <details>
+                  <summary>{t("privacyNoticeToggle")}</summary>
+                  <p>{t("privacyNoticeBody")}</p>
+                </details>
+                <label className="check">
+                  <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} />
+                  {t("privacyConsentLabel")}
+                </label>
+              </div>
             )}
             {error && (
               <p className="error" role="alert">

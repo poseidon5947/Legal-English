@@ -26,6 +26,7 @@ export async function POST(request: Request) {
   if (body.action === "save-term") return json(await store.saveTerm(user.id, body.term));
   if (body.action === "publish") return json(await store.setPublished(user.id, body.termId, body.published));
   if (body.action === "archive") return json(await store.setArchived(user.id, body.termId, body.archived));
+  if (body.action === "delete-term") return json(await store.deleteTerm(user.id, body.termId));
   if (body.action === "grant") return json(await store.grantAccess(user.id, body.userId));
   if (body.action === "commit-import") return json(await store.replaceTerms(user.id, body.terms));
   if (body.action === "rollback-import") return json(await store.rollbackImportRun(user.id, body.importRunId));

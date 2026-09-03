@@ -31,7 +31,7 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 }
 
 export default function AdminPage() {
-  const { session, terms, users, saveTerm, setPublished, setArchived, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio } = useApp();
+  const { session, terms, users, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio } = useApp();
   const [audioBusy, setAudioBusy] = useState<"us" | "uk" | null>(null);
   const [lastRun, setLastRun] = useState<{ importRunId: string; inserted?: number; updated?: number; missing?: string[]; rolledBack?: boolean } | null>(null);
   const [tab, setTab] = useState<"overview" | "terms" | "users" | "import">("overview");
@@ -293,20 +293,55 @@ export default function AdminPage() {
                   {term.published ? "Published" : "Draft"}
                 </button>
                 <button onClick={() => setEditing(term)}>Edit</button>
-                <button className="danger" onClick={() => void setArchived(term.id, true)}>
-                  Archive
-                </button>
+                {term.archived ? (
+                  <button onClick={() => void setArchived(term.id, false)}>Restore</button>
+                ) : (
+                  <button className="danger" onClick={() => void setArchived(term.id, true)}>
+                    Archive
+                  </button>
+                )}
+                {!term.published && (
+                  <button
+                    className="danger"
+                    onClick={() => {
+                      if (!window.confirm(`Permanently delete ${term.id}? This cannot be undone.`)) return;
+                      void deleteTerm(term.id).then((result) => {
+                        if (!result.ok) setMessage(result.message || "Delete failed.");
+                        else setMessage(`${term.id} deleted.`);
+                      });
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
           ))}
         </div>
       )}
       {tab === "overview" && (
-        <p className="tiny muted">
-          <button className="text-button" onClick={() => void resetDemo()}>
-            Reset alpha data
-          </button>
-        </p>
+        <>
+          <section className="import-panel">
+            <h2>Backup &amp; recovery</h2>
+            <p>
+              Export downloads terms, quizzes, users, subscriptions and progress as JSON — everything except audio files, which live in Storage and are
+              covered by the daily database backup instead. Nothing is deleted or changed by exporting.
+            </p>
+            <a className="primary inline" href="/api/admin/export">
+              Export data (JSON)
+            </a>
+            <p className="muted tiny">
+              What&apos;s recovered and by whom: this export restores content/users/progress into a new environment by hand. Point-in-time database
+              recovery (up to 24h RPO) is a Supabase Pro feature, requested from Supabase support, not from this panel — it does not restore Vercel,
+              Mercado Pago or DNS configuration.
+            </p>
+          </section>
+          <p className="tiny muted">
+            <button className="text-button" onClick={() => void resetDemo()}>
+              Reset alpha data
+            </button>
+          </p>
+        </>
       )}
       {editing && (
         <div className="modal-backdrop">

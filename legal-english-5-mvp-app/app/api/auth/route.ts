@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     return json({ ok: true, ...(await store.bootstrap(result.user.id)) }, 200, request, result.user.id);
   }
   if (action === "signup") {
-    const result = await store.register(body.name, body.email, body.password);
+    const result = await store.register(body.name, body.email, body.password, Boolean(body.privacyAccepted));
     if (!result.ok) return json(result, 400, request);
     // sessionEstablished is false whenever Supabase requires email
     // confirmation before a session exists (the normal production
@@ -71,6 +71,20 @@ export async function POST(request: Request) {
     const result = await store.deleteAccount(user.id);
     if (!result.ok) return json(result, 400, request);
     return json({ ok: true }, 200, request, null);
+  }
+  if (action === "deactivate-account") {
+    const user = await requireUser();
+    if (!user) return json({ ok: false, message: "Sign in required." }, 401, request);
+    const result = await store.deactivateAccount(user.id);
+    if (!result.ok) return json(result, 400, request);
+    return json({ ok: true, ...(await store.bootstrap(user.id)) }, 200, request);
+  }
+  if (action === "reactivate-account") {
+    const user = await requireUser();
+    if (!user) return json({ ok: false, message: "Sign in required." }, 401, request);
+    const result = await store.reactivateAccount(user.id);
+    if (!result.ok) return json(result, 400, request);
+    return json({ ok: true, ...(await store.bootstrap(user.id)) }, 200, request);
   }
   if (action === "report-issue") {
     const user = await requireUser();

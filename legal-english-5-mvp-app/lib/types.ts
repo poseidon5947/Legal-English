@@ -96,6 +96,8 @@ export type User = {
   emailVerified: boolean;
   createdAt: string;
   subscription: Subscription;
+  disabledAt: string | null;
+  privacyAcceptedAt: string | null;
 };
 
 export type Progress = {

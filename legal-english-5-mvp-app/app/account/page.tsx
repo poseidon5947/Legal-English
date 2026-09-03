@@ -8,7 +8,7 @@ import { useLocale } from "@/components/locale-provider";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { session, updateProfile, changePassword, deleteAccount } = useApp();
+  const { session, updateProfile, changePassword, deleteAccount, deactivateAccount } = useApp();
   const { t } = useLocale();
   const user = session?.user;
   const [name, setName] = useState(user?.name || "");
@@ -43,6 +43,12 @@ export default function ProfilePage() {
       setNextPassword("");
       setConfirmPassword("");
     } else setError(result.message || t("couldNotContinue"));
+  }
+
+  async function onDeactivate() {
+    setError("");
+    const result = await deactivateAccount();
+    if (!result.ok) setError(result.message || t("couldNotContinue"));
   }
 
   async function onDelete(event: FormEvent) {
@@ -117,6 +123,13 @@ export default function ProfilePage() {
               {t("updatePassword")}
             </button>
           </form>
+        </section>
+        <section className="account-card">
+          <h2>{t("deactivateTitle")}</h2>
+          <p>{t("deactivateLead")}</p>
+          <button className="danger" onClick={() => void onDeactivate()}>
+            {t("deactivateAction")}
+          </button>
         </section>
         <section className="account-card">
           <h2>{t("deleteTitle")}</h2>

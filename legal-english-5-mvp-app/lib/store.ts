@@ -32,7 +32,14 @@ function publicUser(user: User): PublicUser {
   return rest;
 }
 
-function makeUser(partial: Omit<User, "passwordHash" | "createdAt" | "subscription" | "emailVerified"> & { password: string; subscription?: Subscription; emailVerified?: boolean }): User {
+function makeUser(
+  partial: Omit<User, "passwordHash" | "createdAt" | "subscription" | "emailVerified" | "disabledAt" | "privacyAcceptedAt"> & {
+    password: string;
+    subscription?: Subscription;
+    emailVerified?: boolean;
+    privacyAccepted?: boolean;
+  }
+): User {
   return {
     id: partial.id,
     name: partial.name,
@@ -42,6 +49,8 @@ function makeUser(partial: Omit<User, "passwordHash" | "createdAt" | "subscripti
     emailVerified: partial.emailVerified ?? true,
     createdAt: new Date().toISOString(),
     subscription: partial.subscription ?? trial(),
+    disabledAt: null,
+    privacyAcceptedAt: partial.privacyAccepted ? new Date().toISOString() : null,
   };
 }
 
@@ -133,7 +142,10 @@ export async function authenticate(email: string, password: string) {
   return { ok: true as const, user: publicUser(user) };
 }
 
-export async function register(name: string, email: string, password: string) {
+export async function register(name: string, email: string, password: string, privacyAccepted: boolean) {
+  if (!privacyAccepted) {
+    return { ok: false as const, message: "You must accept the data processing notice to continue." };
+  }
   const data = load();
   if (data.users.some((user) => user.email.toLowerCase() === email.trim().toLowerCase())) {
     return { ok: false as const, message: "An account already uses this email." };
@@ -146,6 +158,7 @@ export async function register(name: string, email: string, password: string) {
     role: "learner",
     password,
     emailVerified: false,
+    privacyAccepted: true,
   });
   data.users.push(user);
   mail(data, user.email, "Verify your Legal English 5 account", `Your verification code is ${code}. The seven-day trial has already started.`, code);
@@ -223,6 +236,24 @@ export async function deleteAccount(userId: string) {
   return { ok: true as const };
 }
 
+export async function deactivateAccount(userId: string) {
+  const data = load();
+  const user = data.users.find((item) => item.id === userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  user.disabledAt = new Date().toISOString();
+  save(data);
+  return { ok: true as const };
+}
+
+export async function reactivateAccount(userId: string) {
+  const data = load();
+  const user = data.users.find((item) => item.id === userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  user.disabledAt = null;
+  save(data);
+  return { ok: true as const };
+}
+
 export async function reportIssue(userId: string, summary: string, detail: string) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
@@ -261,6 +292,7 @@ export async function openTerm(userId: string, termId: string) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
   if (!user) return { ok: false as const, message: "Sign in required." };
+  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
   if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
   const existing = data.progress.find((item) => item.userId === userId && item.termId === termId);
   if (!existing) {
@@ -288,6 +320,7 @@ export async function submitQuiz(userId: string, termId: string, option: string)
   const user = data.users.find((item) => item.id === userId);
   const term = data.terms.find((item) => item.id === termId);
   if (!user || !term?.quiz) return { ok: false as const, message: "Quiz unavailable." };
+  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
   if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
   const correct = term.quiz.correctOption === option || term.quiz.options[term.quiz.correctOption.charCodeAt(0) - 65] === option;
   const current = data.progress.find((item) => item.userId === userId && item.termId === termId);
@@ -371,6 +404,18 @@ export async function setArchived(actorId: string, termId: string, archived: boo
   return { ok: true as const, terms: data.terms };
 }
 
+export async function deleteTerm(actorId: string, termId: string) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const term = data.terms.find((item) => item.id === termId);
+  if (!term) return { ok: false as const, message: "Term not found." };
+  if (term.published) return { ok: false as const, message: "Archive the term before deleting it." };
+  data.terms = data.terms.filter((item) => item.id !== termId);
+  data.progress = data.progress.filter((item) => item.termId !== termId);
+  save(data);
+  return { ok: true as const, terms: data.terms };
+}
+
 export async function replaceTerms(actorId: string, terms: Term[]) {
   const data = load();
   if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
@@ -405,5 +450,20 @@ export async function metrics() {
     quizzes: data.terms.filter((term) => term.quiz).length,
     learners: data.users.filter((user) => user.role === "learner").length,
     activeAccess: data.users.filter((user) => entitlementFor(user.subscription).allowed).length,
+  };
+}
+
+export async function exportSnapshot(actorId: string) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  return {
+    ok: true as const,
+    snapshot: {
+      exportedAt: new Date().toISOString(),
+      note: "Alpha export: snapshot of the local JSON store. Production mode exports the live database instead.",
+      terms: data.terms,
+      users: data.users.map(publicUser),
+      progress: data.progress,
+    },
   };
 }

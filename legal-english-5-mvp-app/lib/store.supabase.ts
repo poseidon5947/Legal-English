@@ -184,6 +184,8 @@ export async function getUser(id: string): Promise<PublicUser | null> {
     emailVerified,
     createdAt: String(profile.created_at ?? new Date().toISOString()),
     subscription: rowToSubscription(sub),
+    disabledAt: (profile.disabled_at as string | null) ?? null,
+    privacyAcceptedAt: (profile.privacy_accepted_at as string | null) ?? null,
   };
 }
 
@@ -205,6 +207,8 @@ async function listUsers(): Promise<PublicUser[]> {
     emailVerified: confirmedById.get(String(profile.id)) ?? false,
     createdAt: String(profile.created_at ?? new Date().toISOString()),
     subscription: rowToSubscription(subById.get(String(profile.id))),
+    disabledAt: (profile.disabled_at as string | null) ?? null,
+    privacyAcceptedAt: (profile.privacy_accepted_at as string | null) ?? null,
   }));
 }
 
@@ -225,12 +229,21 @@ export async function authenticate(email: string, password: string) {
   return { ok: true as const, user };
 }
 
-export async function register(name: string, email: string, password: string) {
+export async function register(name: string, email: string, password: string, privacyAccepted: boolean) {
+  if (!privacyAccepted) {
+    return { ok: false as const, message: "You must accept the data processing notice to continue." };
+  }
   const supabase = await getSupabaseServerClient();
   const { data, error } = await supabase.auth.signUp({
     email: email.trim().toLowerCase(),
     password,
-    options: { data: { full_name: name.trim() } },
+    // handle_new_auth_user() (003_account_and_backup.sql) reads
+    // privacy_accepted back out of this metadata to stamp
+    // privacy_accepted_at, and refuses the signup row entirely if it's
+    // missing — the app-level check above is the one a user actually
+    // sees; that trigger check is a backstop against calling Supabase
+    // Auth directly and skipping this function.
+    options: { data: { full_name: name.trim(), privacy_accepted: true } },
   });
   if (error || !data.user) return { ok: false as const, message: mapAuthError(error?.message) };
   const user = await getUser(data.user.id);
@@ -298,6 +311,20 @@ export async function deleteAccount(userId: string) {
     if (!count) return { ok: false as const, message: "The last Owner account cannot be deleted." };
   }
   const { error } = await admin.auth.admin.deleteUser(userId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const };
+}
+
+export async function deactivateAccount(userId: string) {
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.from("users").update({ disabled_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("id", userId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const };
+}
+
+export async function reactivateAccount(userId: string) {
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.from("users").update({ disabled_at: null, updated_at: new Date().toISOString() }).eq("id", userId);
   if (error) return { ok: false as const, message: error.message };
   return { ok: true as const };
 }
@@ -384,6 +411,7 @@ export async function bootstrap(userId: string | null) {
 export async function openTerm(userId: string, termId: string) {
   const user = await getUser(userId);
   if (!user) return { ok: false as const, message: "Sign in required." };
+  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
   if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
   const supabase = await getSupabaseServerClient();
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
@@ -411,6 +439,7 @@ export async function toggleFavourite(userId: string, termId: string) {
 export async function submitQuiz(userId: string, termId: string, option: string) {
   const user = await getUser(userId);
   if (!user) return { ok: false as const, message: "Quiz unavailable." };
+  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
   if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
   const supabase = await getSupabaseServerClient();
   const { data: termRow } = await supabase.from("terms").select("*, quiz_items(*)").eq("id", termId).maybeSingle();
@@ -511,6 +540,20 @@ export async function setArchived(actorId: string, termId: string, archived: boo
   return { ok: true as const, terms: await listTerms(true) };
 }
 
+export async function deleteTerm(actorId: string, termId: string) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const supabase = await getSupabaseServerClient();
+  const { data: row } = await supabase.from("terms").select("published").eq("id", termId).maybeSingle();
+  if (!row) return { ok: false as const, message: "Term not found." };
+  if (row.published) return { ok: false as const, message: "Archive the term before deleting it." };
+  // quiz_items and user_term_progress cascade via FK; the "admins delete
+  // terms" RLS policy also re-checks not published as a backstop.
+  const { error } = await supabase.from("terms").delete().eq("id", termId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, terms: await listTerms(true) };
+}
+
 export async function replaceTerms(actorId: string, terms: Term[]) {
   const actor = await getUser(actorId);
   if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
@@ -585,6 +628,37 @@ export async function metrics() {
     quizzes: quizzes ?? 0,
     learners: learners ?? 0,
     activeAccess,
+  };
+}
+
+/**
+ * Panel export (RFP §4/§6: "respaldo, exportación... demostrados"). Covers
+ * everything the Propuesta committed to — terms, quizzes, users, progress,
+ * entitlement state. Does not include Storage binaries (audio files): those
+ * are covered separately by Supabase's own daily backup, not this export.
+ */
+export async function exportSnapshot(actorId: string) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const supabase = await getSupabaseServerClient();
+  const [{ data: terms }, { data: quizItems }, { data: users }, { data: subscriptions }, { data: progress }] = await Promise.all([
+    supabase.from("terms").select("*"),
+    supabase.from("quiz_items").select("*"),
+    supabase.from("users").select("id, email, full_name, role, disabled_at, created_at"),
+    supabase.from("subscriptions").select("*"),
+    supabase.from("user_term_progress").select("*"),
+  ]);
+  return {
+    ok: true as const,
+    snapshot: {
+      exportedAt: new Date().toISOString(),
+      note: "Audio files in Supabase Storage are not included here — they're covered by Supabase's own daily backup, not this export.",
+      terms: terms ?? [],
+      quizItems: quizItems ?? [],
+      users: users ?? [],
+      subscriptions: subscriptions ?? [],
+      progress: progress ?? [],
+    },
   };
 }
 

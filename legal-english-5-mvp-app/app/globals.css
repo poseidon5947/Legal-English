@@ -1166,6 +1166,13 @@ blockquote {
 .check { display: flex; align-items: center; gap: 8px; }
 .check input { width: auto; }
 
+.privacy-consent { display: grid; gap: 10px; margin: -4px 0 4px; }
+.privacy-consent details { font-size: 0.85rem; }
+.privacy-consent summary { cursor: pointer; color: var(--purple); font-weight: 600; list-style: none; }
+.privacy-consent summary::-webkit-details-marker { display: none; }
+.privacy-consent details p { margin: 8px 0 0; color: var(--muted); line-height: 1.55; }
+.privacy-consent .check { font-size: 0.86rem; color: var(--ink-soft); }
+
 .review { max-width: 1180px; margin: 0 auto; padding: 32px 20px 80px; }
 .account-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
 .account-grid article { padding: 16px; display: grid; gap: 7px; }
