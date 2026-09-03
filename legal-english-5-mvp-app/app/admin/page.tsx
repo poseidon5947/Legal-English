@@ -31,7 +31,8 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 }
 
 export default function AdminPage() {
-  const { session, terms, users, saveTerm, setPublished, setArchived, grantAccess, previewImport, commitImport, resetDemo } = useApp();
+  const { session, terms, users, saveTerm, setPublished, setArchived, grantAccess, previewImport, commitImport, resetDemo, uploadAudio } = useApp();
+  const [audioBusy, setAudioBusy] = useState<"us" | "uk" | null>(null);
   const [tab, setTab] = useState<"overview" | "terms" | "users" | "import">("overview");
   const [editing, setEditing] = useState<Term | null>(null);
   const [message, setMessage] = useState("");
@@ -58,6 +59,17 @@ export default function AdminPage() {
     const result = await saveTerm(editing);
     setMessage(result.ok ? "Term saved." : result.message || "Could not save.");
     if (result.ok) setEditing(null);
+  }
+
+  async function onUploadAudio(jurisdiction: "us" | "uk", file: File) {
+    if (!editing?.id) {
+      setMessage("Save the term once, so it has a TermID, before uploading audio.");
+      return;
+    }
+    setAudioBusy(jurisdiction);
+    const result = await uploadAudio(editing.id, jurisdiction, file);
+    setAudioBusy(null);
+    setMessage(result.ok ? `Audio${jurisdiction.toUpperCase()} uploaded.` : result.message || "Audio upload failed.");
   }
 
   return (
@@ -323,10 +335,30 @@ export default function AdminPage() {
               <label>
                 AudioUS path
                 <input value={editing.audioUsPath} onChange={(e) => setEditing({ ...editing, audioUsPath: e.target.value })} placeholder="Required to publish" />
+                <input
+                  type="file"
+                  accept="audio/*"
+                  disabled={audioBusy === "us"}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (file) void onUploadAudio("us", file);
+                  }}
+                />
               </label>
               <label>
                 AudioUK path
                 <input value={editing.audioUkPath} onChange={(e) => setEditing({ ...editing, audioUkPath: e.target.value })} placeholder={editing.id === "EMP-009" ? "Required for EMP-009" : "Optional unless applicable"} />
+                <input
+                  type="file"
+                  accept="audio/*"
+                  disabled={audioBusy === "uk"}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (file) void onUploadAudio("uk", file);
+                  }}
+                />
               </label>
               <label className="full">
                 Use It With

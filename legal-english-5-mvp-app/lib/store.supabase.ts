@@ -312,12 +312,42 @@ export async function reportIssue(userId: string, summary: string, detail: strin
   return { ok: true as const, inbox: [] as Mail[] };
 }
 
+export const AUDIO_BUCKET = "term-audio";
+const AUDIO_URL_TTL_SECONDS = 60 * 30;
+
+function isStoragePath(value: string) {
+  return Boolean(value) && !/^https?:\/\//.test(value);
+}
+
+/**
+ * Turns stored audio object paths into short-lived signed URLs. Runs after
+ * the caller's RLS-scoped term query already decided which terms they may
+ * see — signing does not grant new access, it fulfils access already
+ * granted. A term whose audio path is already a full URL (an admin who
+ * typed one directly instead of uploading) passes through unchanged.
+ */
+async function withSignedAudio(terms: Term[]): Promise<Term[]> {
+  const paths = Array.from(
+    new Set(terms.flatMap((term) => [term.audioUsPath, term.audioUkPath]).filter(isStoragePath))
+  );
+  if (!paths.length) return terms;
+  const admin = getSupabaseServiceRoleClient();
+  const { data } = await admin.storage.from(AUDIO_BUCKET).createSignedUrls(paths, AUDIO_URL_TTL_SECONDS);
+  const signedByPath = new Map((data ?? []).map((entry) => [entry.path, entry.signedUrl]));
+  return terms.map((term) => ({
+    ...term,
+    audioUsPath: isStoragePath(term.audioUsPath) ? signedByPath.get(term.audioUsPath) || "" : term.audioUsPath,
+    audioUkPath: isStoragePath(term.audioUkPath) ? signedByPath.get(term.audioUkPath) || "" : term.audioUkPath,
+  }));
+}
+
 async function listTerms(includeUnpublished: boolean): Promise<Term[]> {
   const supabase = await getSupabaseServerClient();
   let query = supabase.from("terms").select("*, quiz_items(*)");
   if (!includeUnpublished) query = query.eq("published", true).is("archived_at", null);
   const { data } = await query;
-  return (data ?? []).map((row) => rowToTerm(row as TermRow)).sort((a, b) => a.displayOrder - b.displayOrder);
+  const terms = (data ?? []).map((row) => rowToTerm(row as TermRow)).sort((a, b) => a.displayOrder - b.displayOrder);
+  return withSignedAudio(terms);
 }
 
 function rowToProgress(row: Record<string, unknown>): Progress {
@@ -427,12 +457,24 @@ export async function saveTerm(actorId: string, term: Term) {
   const actor = await getUser(actorId);
   if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
   const id = term.id || `TERM-${Date.now()}`;
-  if (term.published) {
-    const blockers = publicationBlockers({ ...term, id });
+  const supabase = await getSupabaseServerClient();
+  // Audio paths are owned by /api/admin/audio (see AUDIO_BUCKET above), not
+  // this general-purpose editor. The term object the client is holding may
+  // have a signed, expiring URL sitting in audioUsPath/audioUkPath (that's
+  // what listTerms() hands the browser for playback) — persisting it here
+  // would silently replace the stable storage path with a link that stops
+  // working in 30 minutes. For an existing term, always keep whatever is
+  // already in the database for those two columns; a brand new term has
+  // nothing to clobber yet, so the incoming value (usually empty) is fine.
+  const { data: existingRow } = await supabase.from("terms").select("audio_us_path, audio_uk_path").eq("id", id).maybeSingle();
+  const audioUsPath = existingRow ? String(existingRow.audio_us_path ?? "") : term.audioUsPath;
+  const audioUkPath = existingRow ? String(existingRow.audio_uk_path ?? "") : term.audioUkPath;
+  const toSave = { ...term, id, audioUsPath, audioUkPath };
+  if (toSave.published) {
+    const blockers = publicationBlockers(toSave);
     if (blockers.length) return { ok: false as const, message: blockers[0] };
   }
-  const supabase = await getSupabaseServerClient();
-  const { error: termError } = await supabase.from("terms").upsert(termToRow({ ...term, id }));
+  const { error: termError } = await supabase.from("terms").upsert(termToRow(toSave));
   if (termError) return { ok: false as const, message: termError.message };
   if (term.quiz) {
     const { error: quizError } = await supabase.from("quiz_items").upsert(quizToRow(term.quiz, id));
@@ -472,25 +514,25 @@ export async function setArchived(actorId: string, termId: string, archived: boo
 export async function replaceTerms(actorId: string, terms: Term[]) {
   const actor = await getUser(actorId);
   if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
-  // TODO Hito B: wrap this loop in a Postgres RPC (plpgsql function) so the
-  // batch commits atomically or rolls back as one unit, per MCD Delivery
-  // Mapping §6.1/§7 (idempotent reimport + rollback evidence, C-04). This
-  // loop is upsert-by-id (safe, no duplication) but not yet all-or-nothing.
   const supabase = await getSupabaseServerClient();
   const current = await listTerms(true);
-  const currentById = new Map(current.map((term) => [term.id, term]));
   const incomingIds = new Set(terms.map((term) => term.id));
   const missing = current.filter((term) => !incomingIds.has(term.id)).map((term) => term.id);
-  for (const incoming of terms) {
-    const existingPublished = currentById.get(incoming.id)?.published ?? false;
-    const { error: termError } = await supabase.from("terms").upsert(termToRow({ ...incoming, published: existingPublished }));
-    if (termError) return { ok: false as const, message: `${incoming.id}: ${termError.message}` };
-    if (incoming.quiz) {
-      const { error: quizError } = await supabase.from("quiz_items").upsert(quizToRow(incoming.quiz, incoming.id));
-      if (quizError) return { ok: false as const, message: `${incoming.id}: ${quizError.message}` };
-    }
-  }
-  return { ok: true as const, terms: await listTerms(true), missing };
+
+  // A single RPC call: both tables commit together or neither does. See
+  // 002_import_and_audio.sql's import_terms_batch — this replaces a
+  // per-row upsert loop that could previously leave a batch half-applied.
+  const termsPayload = terms.map((term) => termToRow(term));
+  const quizPayload = terms.filter((term) => term.quiz).map((term) => quizToRow(term.quiz!, term.id));
+  const { data, error } = await supabase.rpc("import_terms_batch", {
+    terms_payload: termsPayload,
+    quiz_payload: quizPayload,
+  });
+  if (error) return { ok: false as const, message: error.message };
+
+  const inserted = (data ?? []).filter((row: { action: string }) => row.action === "insert").length;
+  const updated = (data ?? []).filter((row: { action: string }) => row.action === "update").length;
+  return { ok: true as const, terms: await listTerms(true), missing, inserted, updated };
 }
 
 export async function metrics() {

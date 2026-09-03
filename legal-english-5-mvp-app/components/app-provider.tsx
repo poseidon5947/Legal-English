@@ -24,6 +24,7 @@ type Ctx = {
   submitQuiz: (id: string, option: string) => Promise<Result>;
   applyBilling: (event: "success" | "failure" | "cancel" | "expire_trial" | "reset", plan?: Plan) => Promise<void>;
   saveTerm: (term: Term) => Promise<Result>;
+  uploadAudio: (termId: string, jurisdiction: "us" | "uk", file: File) => Promise<Result>;
   setPublished: (id: string, published: boolean) => Promise<Result>;
   setArchived: (id: string, archived: boolean) => Promise<Result>;
   grantAccess: (id: string) => Promise<void>;
@@ -153,6 +154,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     },
     async saveTerm(term) {
       const data = await post("/api/admin", { action: "save-term", term });
+      if (data.terms) setTerms(data.terms);
+      return data;
+    },
+    async uploadAudio(termId, jurisdiction, file) {
+      const form = new FormData();
+      form.append("termId", termId);
+      form.append("jurisdiction", jurisdiction);
+      form.append("file", file);
+      const data = await fetch("/api/admin/audio", { method: "POST", body: form, credentials: "include" }).then((r) => r.json());
       if (data.terms) setTerms(data.terms);
       return data;
     },
