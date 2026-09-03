@@ -42,6 +42,18 @@ export default function BillingPage() {
                 <dt>{t("providerRef")}</dt>
                 <dd>{subscription.providerReference || "—"}</dd>
               </div>
+              {subscription.currentPeriodEnd && (
+                <div>
+                  <dt>{t("periodEnd")}</dt>
+                  <dd>{new Date(subscription.currentPeriodEnd).toLocaleString()}</dd>
+                </div>
+              )}
+              {subscription.status === "past_due" && subscription.graceUntil && (
+                <div>
+                  <dt>{t("graceEnd")}</dt>
+                  <dd>{new Date(subscription.graceUntil).toLocaleString()}</dd>
+                </div>
+              )}
             </dl>
           )}
         </div>
@@ -53,7 +65,7 @@ export default function BillingPage() {
             <span>{t("monthly")}</span>
             <strong>{t("priceNote")}</strong>
             <p>{t("monthlyBody")}</p>
-            <button className="primary" onClick={() => void applyBilling("success", "monthly")}>
+            <button className="primary" onClick={() => void applyBilling("payment_approved", "monthly")}>
               {t("subscribeMonth")}
             </button>
           </article>
@@ -64,7 +76,7 @@ export default function BillingPage() {
             <span>{t("annual")}</span>
             <strong>{t("priceNote")}</strong>
             <p>{t("annualBody")}</p>
-            <button className="primary" onClick={() => void applyBilling("success", "annual")}>
+            <button className="primary" onClick={() => void applyBilling("payment_approved", "annual")}>
               {t("subscribeYear")}
             </button>
           </article>
@@ -73,9 +85,11 @@ export default function BillingPage() {
       <div className="simulator">
         <h3>{t("sandboxTitle")}</h3>
         <p className="muted">{t("sandboxLead")}</p>
-        <button onClick={() => void applyBilling("failure")}>{t("paymentFailed")}</button>
-        <button onClick={() => void applyBilling("cancel")}>{t("cancellation")}</button>
-        <button onClick={() => void applyBilling("expire_trial")}>{t("expireTrial")}</button>
+        <button onClick={() => void applyBilling("payment_rejected")}>{t("paymentRejected")}</button>
+        <button onClick={() => void applyBilling("retries_exhausted")}>{t("paymentFailed")}</button>
+        <button onClick={() => void applyBilling("cancelled")}>{t("cancellation")}</button>
+        <button onClick={() => void applyBilling("period_ended")}>{t("periodEnded")}</button>
+        <button onClick={() => void applyBilling("trial_expired")}>{t("expireTrial")}</button>
         <button onClick={() => void applyBilling("reset")}>{t("resetTrial")}</button>
       </div>
     </AppShell>

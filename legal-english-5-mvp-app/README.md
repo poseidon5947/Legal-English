@@ -9,8 +9,9 @@ Production-path alpha for MPC LAW STUDIO. It is not the ChatGPT Sites prototype 
 - 30 LC-001 terms from Master Content Database v1.3.81 (10 Corporate Law, 10 Contracts, 10 Employment Law). All Approved, all with a quiz, all unpublished until AudioUS is uploaded.
 - Progress states New / Learning / Mastered, isolated per Learner.
 - Seven-day trial with persisted dates. Refresh does not restore access.
-- Mercado Pago monthly and annual sandbox events write the same entitlement record production webhooks will update.
-- Owner console: publish gate, Excel import preview, users and exceptional access.
+- Mercado Pago monthly and annual sandbox events run through the same state machine the production webhook uses (`lib/billing-state.ts`): `active` → `past_due` (charge rejected, 5-day grace, access kept) → `payment_failed` (retries exhausted) ; `cancelled` keeps access until the paid period ends; stale or duplicate events are ignored.
+- Owner console: publish gate, Excel import preview + commit + rollback, bulk audio upload by filename, users and exceptional access, JSON export.
+- Audio: files named `{TermID}_US.mp3` / `{TermID}_UK.mp3` (also m4a, wav, ogg) are associated by name; anything else is rejected and listed. Alpha stores them under `data/audio/` and serves them only through `/api/media/...` after session + publication + entitlement checks. Production uses the private `term-audio` bucket with signed URLs.
 
 ## Review accounts
 
@@ -42,8 +43,9 @@ Supabase Auth, real Postgres, real RLS. Alpha mode keeps working unchanged
 regardless of which mode is currently set elsewhere.
 
 1. Create the Supabase project (the Owner's account, per the Propuesta §9).
-2. Run `supabase/migrations/001_initial_schema.sql` against it — Supabase
-   SQL Editor or `supabase db push`, either is fine pre-launch.
+2. Run `supabase/migrations/001_initial_schema.sql` through
+   `004_billing_states.sql`, in order — Supabase SQL Editor or
+   `supabase db push`, either is fine pre-launch.
 3. Dashboard → Authentication → Emails → SMTP Settings: point it at Resend.
    All verification/recovery mail then sends through Resend without any app
    code change.
@@ -60,14 +62,39 @@ regardless of which mode is currently set elsewhere.
 8. Seed content: `POST /api/admin` with the MCD Excel file (multipart) does
    preflight + commit through the existing importer, same as alpha mode.
 
-Known gaps in this pass, tracked for Hito B/C rather than silently glossed
-over:
-- `replaceTerms` (bulk import commit) upserts row-by-row; it is not yet
-  wrapped in a single Postgres transaction, so it is not truly atomic /
-  rollback-safe per the MCD Delivery Mapping's §6–7 evidence requirements.
-- Audio upload to Supabase Storage is not built (`lib/media.ts` is still
-  the stock-photo placeholder layer).
-- `applyBilling` deliberately refuses every call in production mode — there
-  is no authenticated write policy on `public.subscriptions` by design.
-  Hito C replaces it with a Mercado Pago webhook handler using the
-  service-role client after verifying the webhook signature.
+## Mercado Pago (Hito C)
+
+`applyBilling` refuses every call in production mode on purpose — there is
+no authenticated write policy on `public.subscriptions`. The only writer is
+`app/api/webhooks/mercadopago/route.ts`, which:
+
+1. verifies the `x-signature` HMAC (manifest `id:{data.id};request-id:{x-request-id};ts:{ts};`, 10-minute replay window);
+2. records the notification id in `public.billing_events` (a redelivery is answered 200 and skipped);
+3. fetches the resource from Mercado Pago — the body is a pointer, not the truth;
+4. maps it (`lib/mercadopago.ts`): `subscription_preapproval` authorized/paused/cancelled, `subscription_authorized_payment` processed/recycling/cancelled;
+5. reduces with `applyBillingEvent` and persists with the service role.
+
+Set `PAYMENT_PROVIDER=mercadopago`, `MERCADOPAGO_ACCESS_TOKEN`,
+`MERCADOPAGO_WEBHOOK_SECRET`, `MERCADOPAGO_PLAN_MONTHLY_ID`,
+`MERCADOPAGO_PLAN_ANNUAL_ID`, and register
+`https://<domain>/api/webhooks/mercadopago` for the "Plans and
+Subscriptions" events in the Owner's Mercado Pago application. The checkout
+that creates the preapproval must set `external_reference` to the learner's
+user id so the first notification can be matched before
+`provider_reference` is on file.
+
+Still open for Hito C: the checkout/preapproval creation itself (needs the
+Owner's Mercado Pago account and plan prices), and the periodic
+reconciliation job against `/preapproval/search` that the Propuesta
+describes as a backstop for missed webhooks.
+
+## Tests
+
+```bash
+npm test          # node --test tests/*.test.mjs
+npm run typecheck
+```
+
+`tests/billing-state.test.mjs` imports the real TypeScript modules (Node 22
+type stripping), so the payment state machine, the webhook signature check,
+the resource mapping and the audio filename convention are tested as shipped.

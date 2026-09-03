@@ -1,3 +1,4 @@
+import { freshTrial } from "./billing-state";
 import { entitlementFor } from "./entitlement";
 import { canPublish, publicationBlockers } from "./publication";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
@@ -13,15 +14,7 @@ function plusDays(date: Date, days: number) {
 }
 
 function trial(date = new Date()): Subscription {
-  return {
-    status: "trialing",
-    trialStartedAt: date.toISOString(),
-    trialEndsAt: plusDays(date, 7),
-    accessUntil: null,
-    provider: "mercadopago",
-    plan: null,
-    providerReference: null,
-  };
+  return freshTrial(date);
 }
 
 function mapAuthError(message: string | undefined) {
@@ -150,7 +143,7 @@ function termToRow(term: Term) {
   };
 }
 
-function rowToSubscription(row: Record<string, unknown> | null | undefined): Subscription {
+export function rowToSubscription(row: Record<string, unknown> | null | undefined): Subscription {
   if (!row) return trial();
   return {
     status: (row.status as Subscription["status"]) ?? "trialing",
@@ -160,6 +153,27 @@ function rowToSubscription(row: Record<string, unknown> | null | undefined): Sub
     provider: (row.provider as Subscription["provider"]) ?? "mercadopago",
     plan: (row.plan as Plan | null) ?? null,
     providerReference: (row.provider_reference as string | null) ?? null,
+    currentPeriodEnd: (row.current_period_end as string | null) ?? null,
+    graceUntil: (row.grace_until as string | null) ?? null,
+    lastPaymentId: (row.last_payment_id as string | null) ?? null,
+    lastEventAt: (row.last_event_at as string | null) ?? null,
+  };
+}
+
+export function subscriptionToRow(subscription: Subscription) {
+  return {
+    status: subscription.status,
+    plan: subscription.plan,
+    trial_started_at: subscription.trialStartedAt,
+    trial_ends_at: subscription.trialEndsAt,
+    access_until: subscription.accessUntil,
+    provider: subscription.provider,
+    provider_reference: subscription.providerReference,
+    current_period_end: subscription.currentPeriodEnd ?? null,
+    grace_until: subscription.graceUntil ?? null,
+    last_payment_id: subscription.lastPaymentId ?? null,
+    last_event_at: subscription.lastEventAt ?? null,
+    updated_at: new Date().toISOString(),
   };
 }
 

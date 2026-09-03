@@ -240,13 +240,13 @@ def build():
     sub = doc.add_paragraph()
     p_style(sub, after=12, before=0)
     shade_paragraph(sub, "16324F")
-    add_text(sub, "Preparado para MPC LAW STUDIO — Legal English Training  ·  Revisión del 2 de septiembre de 2026", size=10.5, color=RGBColor(0xD7, 0xE2, 0xEC))
+    add_text(sub, "Preparado para MPC LAW STUDIO — Legal English Training  ·  Revisión del 3 de septiembre de 2026", size=10.5, color=RGBColor(0xD7, 0xE2, 0xEC))
 
     meta = doc.add_table(rows=2, cols=3)
     meta_data = [
         ("SOLICITANTE", "Pilar Cruz · pilarcruz640@gmail.com"),
         ("MODALIDAD", "Proyecto por entregables e hitos verificables"),
-        ("VIGENCIA DE ESTA REVISIÓN", "15 días calendario desde el 2 de septiembre de 2026"),
+        ("VIGENCIA DE ESTA REVISIÓN", "15 días calendario desde el 3 de septiembre de 2026"),
     ]
     for i, (k, v) in enumerate(meta_data):
         c0 = meta.rows[0].cells[i]
@@ -694,9 +694,9 @@ def build():
                 "B",
                 "New = término no abierto. Learning = abierto o quiz intentado sin acierto. Mastered = quiz correcto. Si desea otra regla, se ajusta sin costo antes del Hito B.",
             ],
-            ["C", "EKB-DEC-22 prevalece sobre el snapshot anterior: el quiz admite tres o cuatro opciones. OptionD es nullable. El baseline v1.3.81 trae 18 quizzes de cuatro opciones y 12 de tres. CorrectOption debe apuntar a una opción poblada."],
+            ["C", "EKB-DEC-22 prevalece sobre el snapshot anterior: el quiz admite tres o cuatro opciones. OptionD es nullable. El baseline v1.3.81 trae 18 quizzes de cuatro opciones y 12 de tres. CorrectOption debe apuntar a una opción poblada. Acuso por escrito este punto (control C-02 del Delivery Mapping v1.0)."],
             ["D", "La interfaz de la aplicación permanece en inglés, como el prototipo. El panel y la documentación operativa para usted pueden incluir español."],
-            ["E", "Usted produce los audios (AudioUS/AudioUK). El MVP incluye, de forma obligatoria, el flujo de carga, almacenamiento en su Supabase Storage y reproducción en el Learner. Un Term puede quedar en borrador sin audio; el vacío no bloquea el borrador. Publicar sin audio es decisión editorial suya; el sistema no fabrica pistas."],
+            ["E", "Usted produce los audios (AudioUS/AudioUK). El MVP incluye, de forma obligatoria, el flujo de carga (individual y masiva), reemplazo, retiro, almacenamiento en su Supabase Storage privado y reproducción en el Learner mediante URL firmada. Un Term puede quedar en borrador sin audio; el vacío no bloquea el borrador. Conforme al Delivery Mapping, la publicación queda bloqueada mientras falte AudioUS (y AudioUK en EMP-009); el sistema no fabrica pistas. Convención de nombres propuesta (control C-01, pendiente de su aprobación antes del Hito B): {TermID}_US.mp3 y {TermID}_UK.mp3 (también m4a, wav, ogg), p. ej. CON-001_US.mp3, EMP-009_UK.mp3. La carga masiva asocia cada archivo por nombre; un nombre que no coincida con un TermID existente se rechaza y se lista, nunca se adivina."],
             ["F", "Un plan mensual y un plan anual, un solo precio cada uno, en COP. Cupones, prorrateo complejo o planes por cohorte no están incluidos."],
             ["G", "Mercado Pago es la única pasarela de suscripción del MVP. Bold puede seguir usándose por usted para cobros puntuales ajenos a este producto; no se integra."],
             ["H", "Capacitación: una sesión de 90 minutos en vivo, grabada. No incluye formación continua ni operación delegada."],
@@ -850,7 +850,7 @@ def build():
         ["Estado interno", "Qué ocurrió", "Acceso del Learner"],
         [
             ["active", "Pago acreditado o trial vigente", "Abierto"],
-            ["past_due", "Cobro rechazado; Mercado Pago aún reintenta (gracia de 3–5 días, alineada a los reintentos)", "Se mantiene. El usuario ve aviso de pago pendiente, no un bloqueo."],
+            ["past_due", "Cobro rechazado; Mercado Pago aún reintenta (gracia de 5 días desde el primer rechazo, alineada a los reintentos; rechazos repetidos del mismo ciclo no la extienden)", "Se mantiene. El usuario ve aviso de pago pendiente con la fecha de fin de gracia, no un bloqueo."],
             ["payment_failed", "Reintentos agotados o rechazo definitivo confirmado por API, no por un solo webhook", "Contenido protegido bloqueado hasta regularizar"],
             ["cancelled", "El usuario canceló", "Abierto hasta el fin del periodo ya pagado; luego bloqueo"],
             ["expired", "Venció trial o periodo pagado sin renovación", "Bloqueado"],
@@ -890,7 +890,7 @@ def build():
     add_text(sign2, "Implementación de producto · seguridad aplicada y cobro recurrente", size=10, color=MUTED)
     sign3 = doc.add_paragraph()
     p_style(sign3, after=10)
-    add_text(sign3, "Revisión del 2 de septiembre de 2026 · Vigencia: 15 días calendario desde esta fecha", size=10, color=MUTED)
+    add_text(sign3, "Revisión del 3 de septiembre de 2026 · Vigencia: 15 días calendario desde esta fecha", size=10, color=MUTED)
 
     para(
         doc,

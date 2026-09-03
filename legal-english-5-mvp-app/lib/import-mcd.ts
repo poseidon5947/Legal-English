@@ -53,17 +53,37 @@ function documentControl(book: XLSX.WorkBook) {
     const row = rows.find((item) => text(item[0]).toLowerCase() === label.toLowerCase());
     return row ? text(row[1]) : "";
   };
+  // The Version cell carries a governance note after the number
+  // ("v1.3.81 — working-version number alone does not prove authority");
+  // only the version token is stored as source_workbook_version.
+  const rawVersion = find("Version");
+  const versionToken = /v?\d+\.\d+\.\d+/i.exec(rawVersion)?.[0] ?? rawVersion;
   return {
-    version: find("Version"),
+    version: versionToken ? (versionToken.startsWith("v") ? versionToken : `v${versionToken}`) : "",
+    versionNote: rawVersion,
     status: find("Status"),
     workbook: find("Workbook identification"),
   };
 }
 
-function hashTerm(term: Pick<Term, "id" | "term" | "definition" | "spanishEquivalent" | "civilLawEquivalent" | "spanishSpeakerAlert" | "category" | "useItWith" | "inContext" | "quiz" | "usVariant" | "ukVariant">) {
+// Key-order independent serialization: the same editorial content must hash
+// the same whether it came from the importer, the seed file or the database.
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
+  if (value && typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    return `{${Object.keys(record)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${canonical(record[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value ?? null);
+}
+
+export function hashTerm(term: Pick<Term, "id" | "term" | "definition" | "spanishEquivalent" | "civilLawEquivalent" | "spanishSpeakerAlert" | "category" | "useItWith" | "inContext" | "quiz" | "usVariant" | "ukVariant">) {
   return createHash("sha256")
     .update(
-      JSON.stringify({
+      canonical({
         id: term.id,
         term: term.term,
         definition: term.definition,
@@ -372,8 +392,12 @@ export function previewWorkbook(buffer: Buffer, current: Term[]) {
     term.sourceContentHash = hashTerm(term);
 
     const previous = existing.get(id);
+    // Recompute the stored Term's hash with this same function instead of
+    // trusting the persisted value, so a seed produced by another tool
+    // (scripts/generate-mcd-seed.py) still reads as "no change" when the
+    // editorial content is identical.
     if (!previous) creates.push(id);
-    else if (previous.sourceContentHash === term.sourceContentHash) unchanged.push(id);
+    else if (previous.sourceContentHash === term.sourceContentHash || hashTerm(previous) === term.sourceContentHash) unchanged.push(id);
     else updates.push(id);
     terms.push(term);
   });

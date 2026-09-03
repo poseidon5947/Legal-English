@@ -85,6 +85,14 @@ export type Subscription = {
   provider: "mercadopago" | "alpha";
   plan: Plan | null;
   providerReference: string | null;
+  // End of the period already paid. Cancellation keeps access until here.
+  currentPeriodEnd?: string | null;
+  // past_due keeps access until here while Mercado Pago retries the charge.
+  graceUntil?: string | null;
+  // Reconciliation guards: a webhook for an older event or a payment id we
+  // already applied is ignored instead of overwriting a good state.
+  lastPaymentId?: string | null;
+  lastEventAt?: string | null;
 };
 
 export type User = {

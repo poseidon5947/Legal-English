@@ -29,6 +29,31 @@ export function entitlementFor(subscription: Subscription, date = new Date()): E
       detail: `Owner grant until ${new Date(subscription.accessUntil!).toLocaleDateString("en-GB")}.`,
     };
   }
+  // A rejected charge is not a block: Mercado Pago retries for several days
+  // and access continues through the grace window with a pending notice.
+  if (subscription.status === "past_due") {
+    const grace = subscription.graceUntil ? new Date(subscription.graceUntil) : null;
+    if (grace && grace > date) {
+      return {
+        allowed: true,
+        label: "Payment pending",
+        detail: `Your last charge was rejected and Mercado Pago is retrying it. Access continues until ${grace.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}; update your card to avoid interruption.`,
+      };
+    }
+    return {
+      allowed: false,
+      label: "Payment pending",
+      detail: "The retry window ended without an approved charge. Protected terms stay locked until a payment is confirmed.",
+    };
+  }
+  // Cancelling stops renewal; it does not claw back the period already paid.
+  if (subscription.status === "cancelled" && subscription.accessUntil && new Date(subscription.accessUntil) > date) {
+    return {
+      allowed: true,
+      label: "Subscription cancelled",
+      detail: `Renewal is off. Access continues until the end of the paid period on ${new Date(subscription.accessUntil).toLocaleDateString("en-GB")}.`,
+    };
+  }
   const labels: Record<string, string> = {
     payment_failed: "Payment failed",
     cancelled: "Subscription cancelled",
@@ -49,5 +74,3 @@ export function canReadProgress(actorId: string, actorRole: string, recordUserId
 export function canManageTerms(role: string) {
   return role === "admin";
 }
-
-export { canPublish } from "./publication";

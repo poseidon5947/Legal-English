@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
-import { ImportPreview, statusLabel, useApp } from "@/components/app-provider";
+import { AudioUploadResult, ImportPreview, statusLabel, useApp } from "@/components/app-provider";
 import { CATEGORIES, emptyQuiz, emptyTerm, type Term, type UseItWithItem } from "@/lib/types";
 
 function parseUseItWith(value: string, current: UseItWithItem[]): UseItWithItem[] {
@@ -31,8 +31,9 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 }
 
 export default function AdminPage() {
-  const { session, terms, users, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio } = useApp();
-  const [audioBusy, setAudioBusy] = useState<"us" | "uk" | null>(null);
+  const { session, terms, users, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio, uploadAudioBatch, removeAudio } = useApp();
+  const [audioBusy, setAudioBusy] = useState<"us" | "uk" | "batch" | null>(null);
+  const [audioResults, setAudioResults] = useState<AudioUploadResult[]>([]);
   const [lastRun, setLastRun] = useState<{ importRunId: string; inserted?: number; updated?: number; missing?: string[]; rolledBack?: boolean } | null>(null);
   const [tab, setTab] = useState<"overview" | "terms" | "users" | "import">("overview");
   const [editing, setEditing] = useState<Term | null>(null);
@@ -71,6 +72,23 @@ export default function AdminPage() {
     const result = await uploadAudio(editing.id, jurisdiction, file);
     setAudioBusy(null);
     setMessage(result.ok ? `Audio${jurisdiction.toUpperCase()} uploaded.` : result.message || "Audio upload failed.");
+    const fresh = (result as { terms?: Term[] }).terms?.find((term) => term.id === editing.id);
+    if (result.ok && fresh) setEditing({ ...editing, audioUsPath: fresh.audioUsPath, audioUkPath: fresh.audioUkPath });
+  }
+
+  async function onRemoveAudio(jurisdiction: "us" | "uk") {
+    if (!editing?.id) return;
+    const result = await removeAudio(editing.id, jurisdiction);
+    setMessage(result.ok ? `Audio${jurisdiction.toUpperCase()} removed. The publication gate applies again.` : result.message || "Could not remove audio.");
+    if (result.ok) setEditing({ ...editing, [jurisdiction === "us" ? "audioUsPath" : "audioUkPath"]: "" });
+  }
+
+  async function onUploadBatch(files: File[]) {
+    setAudioBusy("batch");
+    const result = await uploadAudioBatch(files);
+    setAudioBusy(null);
+    setAudioResults(result.results || []);
+    setMessage(result.message || (result.ok ? "Audio batch processed." : "Audio batch failed."));
   }
 
   return (
@@ -271,6 +289,39 @@ export default function AdminPage() {
         </section>
       )}
       {tab === "terms" && (
+        <section className="import-panel">
+          <h2>Bulk audio upload</h2>
+          <p>
+            Name each file <code>{"{TermID}_US.mp3"}</code> or <code>{"{TermID}_UK.mp3"}</code> (also m4a, wav, ogg) — for example <code>CON-001_US.mp3</code> or{" "}
+            <code>EMP-009_UK.mp3</code>. Files are associated by name; anything that does not match an existing TermID is rejected and listed below, never
+            guessed. Uploading the same name again replaces the previous recording.
+          </p>
+          <input
+            type="file"
+            accept="audio/*,.mp3,.m4a,.wav,.ogg"
+            multiple
+            disabled={audioBusy === "batch"}
+            onChange={(event) => {
+              const files = Array.from(event.target.files ?? []);
+              event.target.value = "";
+              if (files.length) void onUploadBatch(files);
+            }}
+          />
+          <p className="muted tiny">
+            AudioUS: {terms.filter((term) => term.audioUsPath).length}/{terms.length} · AudioUK (EMP-009): {terms.find((term) => term.id === "EMP-009")?.audioUkPath ? "present" : "pending"}
+          </p>
+          {audioResults.length > 0 && (
+            <ul className="errors">
+              {audioResults.map((item, index) => (
+                <li key={index}>
+                  [{item.status}] {item.file}: {item.message}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
+      {tab === "terms" && (
         <div className="admin-list">
           {visible.map((term) => (
             <div className="admin-row" key={term.id}>
@@ -406,6 +457,11 @@ export default function AdminPage() {
                     if (file) void onUploadAudio("us", file);
                   }}
                 />
+                {editing.audioUsPath && (
+                  <button type="button" className="text-button" onClick={() => void onRemoveAudio("us")}>
+                    Remove AudioUS
+                  </button>
+                )}
               </label>
               <label>
                 AudioUK path
@@ -420,6 +476,11 @@ export default function AdminPage() {
                     if (file) void onUploadAudio("uk", file);
                   }}
                 />
+                {editing.audioUkPath && (
+                  <button type="button" className="text-button" onClick={() => void onRemoveAudio("uk")}>
+                    Remove AudioUK
+                  </button>
+                )}
               </label>
               <label className="full">
                 Use It With

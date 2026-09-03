@@ -1,12 +1,27 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { cookies } from "next/headers";
 import { join } from "path";
+import { AUDIO_MIME, extensionOf, type AudioJurisdiction } from "./audio-naming";
+import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } from "./billing-state";
 import { ALPHA_SESSION_COOKIE, hashPassword, oneTimeCode, readSession, verifyPassword } from "./crypto";
 import { entitlementFor } from "./entitlement";
 import { canPublish, publicationBlockers } from "./publication";
 import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User } from "./types";
 
-type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; inbox: Mail[] };
+type ImportRun = {
+  id: string;
+  actorId: string;
+  createdAt: string;
+  touchedTermIds: string[];
+  beforeTerms: Term[];
+  missingTermIds: string[];
+  inserted: number;
+  updated: number;
+  status: "committed" | "rolled_back";
+  rolledBackAt: string | null;
+};
+
+type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; inbox: Mail[]; importRuns?: ImportRun[] };
 
 const DIR = join(process.cwd(), "data");
 const FILE = join(DIR, "alpha-store.json");
@@ -16,15 +31,7 @@ function plusDays(date: Date, days: number) {
 }
 
 function trial(date = new Date()): Subscription {
-  return {
-    status: "trialing",
-    trialStartedAt: date.toISOString(),
-    trialEndsAt: plusDays(date, 7),
-    accessUntil: null,
-    provider: "mercadopago",
-    plan: null,
-    providerReference: null,
-  };
+  return freshTrial(date);
 }
 
 function publicUser(user: User): PublicUser {
@@ -337,23 +344,24 @@ export async function submitQuiz(userId: string, termId: string, option: string)
   return { ok: true as const, correct, message: term.quiz.explanation, progress: data.progress.filter((item) => item.userId === userId) };
 }
 
-export async function applyBilling(userId: string, event: "success" | "failure" | "cancel" | "expire_trial" | "reset", plan?: Plan) {
+export async function applyBilling(userId: string, event: string, plan?: Plan) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
   if (!user) return { ok: false as const, message: "Sign in required." };
-  const now = new Date();
-  if (event === "reset") user.subscription = trial(now);
-  else if (event === "success") {
-    user.subscription = {
-      ...user.subscription,
-      status: "active",
-      plan: plan ?? user.subscription.plan ?? "monthly",
-      provider: "mercadopago",
-      providerReference: `mp_alpha_${Date.now()}`,
-    };
-  } else if (event === "failure") user.subscription.status = "payment_failed";
-  else if (event === "cancel") user.subscription.status = "cancelled";
-  else if (event === "expire_trial") user.subscription.status = "expired";
+  const type = normalizeEventType(event);
+  if (!type) return { ok: false as const, message: `Unknown billing event "${event}".` };
+  // The alpha simulator stands in for the Mercado Pago webhook: same reducer,
+  // same access outcome, only the event source differs.
+  const stamp = Date.now();
+  const billingEvent: BillingEvent =
+    type === "payment_approved"
+      ? { type, plan, paymentId: `mp_alpha_pay_${stamp}`, providerReference: user.subscription.providerReference ?? `mp_alpha_sub_${stamp}` }
+      : type === "payment_rejected" || type === "retries_exhausted"
+        ? { type, paymentId: `mp_alpha_pay_${stamp}` }
+        : { type };
+  const transition = applyBillingEvent(user.subscription, billingEvent);
+  if (!transition.applied) return { ok: false as const, message: transition.reason || "Event ignored." };
+  user.subscription = transition.subscription;
   save(data);
   return { ok: true as const, user: publicUser(user), entitlement: entitlementFor(user.subscription) };
 }
@@ -422,23 +430,129 @@ export async function replaceTerms(actorId: string, terms: Term[]) {
   const byId = new Map(data.terms.map((term) => [term.id, term]));
   const incomingIds = new Set(terms.map((term) => term.id));
   const missing = data.terms.filter((term) => !incomingIds.has(term.id)).map((term) => term.id);
+  // Snapshot every touched TermID before writing so the run can be undone
+  // exactly (Delivery Mapping §7: restore previous batch snapshot and show
+  // equivalent counts/IDs).
+  const touched = terms.map((term) => term.id);
+  const before = data.terms.filter((term) => incomingIds.has(term.id)).map((term) => structuredClone(term));
+  let inserted = 0;
+  let updated = 0;
   for (const incoming of terms) {
     const current = byId.get(incoming.id);
+    if (current) updated += 1;
+    else inserted += 1;
     byId.set(incoming.id, {
       ...current,
       ...incoming,
+      // App-owned fields survive a reimport: publication and uploaded audio.
       published: current?.published ?? false,
+      audioUsPath: current?.audioUsPath || incoming.audioUsPath || "",
+      audioUkPath: current?.audioUkPath || incoming.audioUkPath || "",
     });
   }
   data.terms = [...byId.values()].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  const run: ImportRun = {
+    id: `run-${Date.now()}`,
+    actorId,
+    createdAt: new Date().toISOString(),
+    touchedTermIds: touched,
+    beforeTerms: before,
+    missingTermIds: missing,
+    inserted,
+    updated,
+    status: "committed",
+    rolledBackAt: null,
+  };
+  data.importRuns = [run, ...(data.importRuns ?? [])].slice(0, 20);
   save(data);
-  return { ok: true as const, terms: data.terms, missing, inserted: undefined as number | undefined, updated: undefined as number | undefined, importRunId: undefined as string | undefined };
+  return { ok: true as const, terms: data.terms, missing, inserted, updated, importRunId: run.id };
 }
 
-export async function rollbackImportRun(actorId: string, _runId: string) {
+export async function rollbackImportRun(actorId: string, runId: string) {
   const data = load();
   if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
-  return { ok: false as const, message: "Import rollback needs Supabase (production mode) — alpha review has no import run history." };
+  const run = (data.importRuns ?? []).find((item) => item.id === runId);
+  if (!run) return { ok: false as const, message: `Import run ${runId} not found.` };
+  if (run.status === "rolled_back") return { ok: false as const, message: "This import was already rolled back." };
+  const restoredIds = new Set(run.beforeTerms.map((term) => term.id));
+  const touched = new Set(run.touchedTermIds);
+  // Terms the run created did not exist before it: remove them. Terms it
+  // updated: put the snapshot back. Everything else is untouched.
+  const kept = data.terms.filter((term) => !touched.has(term.id));
+  data.terms = [...kept, ...run.beforeTerms.map((term) => structuredClone(term))].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  const deletedIds = run.touchedTermIds.filter((id) => !restoredIds.has(id));
+  data.progress = data.progress.filter((item) => !deletedIds.includes(item.termId));
+  run.status = "rolled_back";
+  run.rolledBackAt = new Date().toISOString();
+  save(data);
+  return { ok: true as const, terms: data.terms, restoredTerms: run.beforeTerms.length, deletedTerms: deletedIds.length };
+}
+
+export async function listImportRuns(actorId: string) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  return {
+    ok: true as const,
+    runs: (data.importRuns ?? []).map(({ beforeTerms: _omit, ...run }) => ({ ...run, snapshotSize: _omit.length })),
+  };
+}
+
+// ---------------------------------------------------------------------
+// Alpha audio storage: files live under data/audio/{TermID}/{us|uk}.{ext}
+// and are served only through /api/media (session + entitlement checked).
+// Production swaps this for Supabase Storage with signed URLs; the path
+// convention and the Term fields are identical.
+// ---------------------------------------------------------------------
+const AUDIO_DIR = join(DIR, "audio");
+
+function audioFilesFor(termId: string, jurisdiction: AudioJurisdiction) {
+  const folder = join(AUDIO_DIR, termId);
+  if (!existsSync(folder)) return [];
+  return readdirSync(folder)
+    .filter((name) => name.startsWith(`${jurisdiction}.`))
+    .map((name) => join(folder, name));
+}
+
+export function audioFile(termId: string, jurisdiction: AudioJurisdiction) {
+  const [file] = audioFilesFor(termId, jurisdiction);
+  if (!file) return null;
+  const extension = extensionOf(file);
+  return { path: file, contentType: extension ? AUDIO_MIME[extension] : "application/octet-stream" };
+}
+
+export function mediaUrl(termId: string, jurisdiction: AudioJurisdiction) {
+  return `/api/media/${termId}/${jurisdiction}`;
+}
+
+export async function saveAudio(actorId: string, termId: string, jurisdiction: AudioJurisdiction, bytes: Buffer, extension: string) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const term = data.terms.find((item) => item.id === termId);
+  if (!term) return { ok: false as const, message: `TermID ${termId} does not exist; upload rejected.` };
+  const folder = join(AUDIO_DIR, termId);
+  mkdirSync(folder, { recursive: true });
+  for (const previous of audioFilesFor(termId, jurisdiction)) rmSync(previous, { force: true });
+  writeFileSync(join(folder, `${jurisdiction}.${extension}`), bytes);
+  const url = mediaUrl(termId, jurisdiction);
+  if (jurisdiction === "us") term.audioUsPath = url;
+  else term.audioUkPath = url;
+  save(data);
+  return { ok: true as const, terms: data.terms, path: url };
+}
+
+export async function removeAudio(actorId: string, termId: string, jurisdiction: AudioJurisdiction) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const term = data.terms.find((item) => item.id === termId);
+  if (!term) return { ok: false as const, message: "Term not found." };
+  for (const previous of audioFilesFor(termId, jurisdiction)) rmSync(previous, { force: true });
+  if (jurisdiction === "us") term.audioUsPath = "";
+  else term.audioUkPath = "";
+  // Losing the asset re-applies the publication gate; a published Term
+  // without AudioUS goes back to draft instead of playing silence.
+  if (term.published && !canPublish(term)) term.published = false;
+  save(data);
+  return { ok: true as const, terms: data.terms };
 }
 
 export async function metrics() {

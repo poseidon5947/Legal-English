@@ -111,13 +111,13 @@
 <section class="cover">
   <p class="kicker">Propuesta técnica y económica · Alcance cerrado</p>
   <h1>Implementación del MVP funcional<br>Legal English 5</h1>
-  <p>Preparado para MPC LAW STUDIO — Legal English Training · Revisión del 2 de septiembre de 2026</p>
+  <p>Preparado para MPC LAW STUDIO — Legal English Training · Revisión del 3 de septiembre de 2026</p>
 </section>
 
 <div class="meta">
   <div><b>Solicitante</b> Pilar Cruz · pilarcruz640@gmail.com</div>
   <div><b>Modalidad</b> Proyecto por entregables e hitos verificables</div>
-  <div><b>Vigencia de esta revisión</b> 15 días calendario desde el 2 de septiembre de 2026</div>
+  <div><b>Vigencia de esta revisión</b> 15 días calendario desde el 3 de septiembre de 2026</div>
 </div>
 
 <div class="box avoid-break">
@@ -342,9 +342,9 @@
   <tr><th>ID</th><th>Supuesto</th></tr>
   <tr><td>A</td><td>La carga inicial usa exclusivamente MCD v1.3.81 y la colección LC-001 (30 Terms Approved: 10 Corporate Law, 10 Contracts, 10 Employment Law). Approved no es Published: la importación entra a staging. El snapshot anterior (v1.3.37, 30 Corporate, 12 Future, 6 quizzes) queda sustituido.</td></tr>
   <tr><td>B</td><td>New = término no abierto. Learning = abierto o quiz intentado sin acierto. Mastered = quiz correcto. Si desea otra regla, se ajusta sin costo antes del Hito B.</td></tr>
-  <tr><td>C</td><td>EKB-DEC-22 prevalece sobre el snapshot anterior: el quiz admite tres o cuatro opciones. OptionD es nullable. El baseline v1.3.81 trae 18 quizzes de cuatro opciones y 12 de tres. CorrectOption debe apuntar a una opción poblada.</td></tr>
+  <tr><td>C</td><td>EKB-DEC-22 prevalece sobre el snapshot anterior: el quiz admite tres o cuatro opciones. OptionD es nullable. El baseline v1.3.81 trae 18 quizzes de cuatro opciones y 12 de tres. CorrectOption debe apuntar a una opción poblada. <b>Acuso por escrito este punto (control C-02 del Delivery Mapping v1.0).</b></td></tr>
   <tr><td>D</td><td>La interfaz de la aplicación permanece en inglés, como el prototipo. El panel y la documentación operativa para usted pueden incluir español.</td></tr>
-  <tr><td>E</td><td>Usted produce los audios (AudioUS/AudioUK). El MVP incluye, de forma <b>obligatoria</b>, el flujo de carga, almacenamiento en su Supabase Storage y reproducción en el Learner. Un Term puede quedar en borrador sin audio; el vacío no bloquea el borrador. Publicar sin audio es decisión editorial suya; el sistema no fabrica pistas.</td></tr>
+  <tr><td>E</td><td>Usted produce los audios (AudioUS/AudioUK). El MVP incluye, de forma <b>obligatoria</b>, el flujo de carga (individual y masiva), reemplazo, retiro, almacenamiento en su Supabase Storage privado y reproducción en el Learner mediante URL firmada. Un Term puede quedar en borrador sin audio; el vacío no bloquea el borrador. Conforme al Delivery Mapping, la publicación queda bloqueada mientras falte AudioUS (y AudioUK en EMP-009); el sistema no fabrica pistas. <b>Convención de nombres propuesta (control C-01, pendiente de su aprobación antes del Hito B):</b> <code>{TermID}_US.mp3</code> y <code>{TermID}_UK.mp3</code> (también m4a, wav, ogg), p. ej. <code>CON-001_US.mp3</code>, <code>EMP-009_UK.mp3</code>. La carga masiva asocia cada archivo por nombre; un nombre que no coincida con un TermID existente se rechaza y se lista, nunca se adivina.</td></tr>
   <tr><td>F</td><td>Un plan mensual y un plan anual, un solo precio cada uno, en COP. Cupones, prorrateo complejo o planes por cohorte no están incluidos.</td></tr>
   <tr><td>G</td><td>Mercado Pago es la única pasarela de suscripción del MVP. Bold puede seguir usándose por usted para cobros puntuales ajenos a este producto; no se integra.</td></tr>
   <tr><td>H</td><td>Capacitación: una sesión de 90 minutos en vivo, grabada. No incluye formación continua ni operación delegada.</td></tr>
@@ -415,7 +415,7 @@
 <table>
   <tr><th>Estado interno</th><th>Qué ocurrió</th><th>Acceso del Learner</th></tr>
   <tr><td><code>active</code></td><td>Pago acreditado o trial vigente</td><td>Abierto</td></tr>
-  <tr><td><code>past_due</code></td><td>Cobro rechazado; Mercado Pago aún reintenta (gracia de 3–5 días, alineada a los reintentos)</td><td>Se mantiene. El usuario ve aviso de pago pendiente, no un bloqueo.</td></tr>
+  <tr><td><code>past_due</code></td><td>Cobro rechazado; Mercado Pago aún reintenta (gracia de 5 días desde el primer rechazo, alineada a los reintentos; rechazos repetidos del mismo ciclo no la extienden)</td><td>Se mantiene. El usuario ve aviso de pago pendiente con la fecha de fin de gracia, no un bloqueo.</td></tr>
   <tr><td><code>payment_failed</code></td><td>Reintentos agotados o rechazo definitivo confirmado por API, no por un solo webhook</td><td>Contenido protegido bloqueado hasta regularizar</td></tr>
   <tr><td><code>cancelled</code></td><td>El usuario canceló</td><td>Abierto hasta el fin del periodo ya pagado; luego bloqueo</td></tr>
   <tr><td><code>expired</code></td><td>Venció trial o periodo pagado sin renovación</td><td>Bloqueado</td></tr>
@@ -438,7 +438,7 @@
 <div class="sign">
   <p class="signoff" style="margin:0"><b>Carlos Andrés Angola Berrio</b><br>
   Implementación de producto · seguridad aplicada y cobro recurrente<br>
-  Revisión del 2 de septiembre de 2026 · Vigencia: 15 días calendario desde esta fecha</p>
+  Revisión del 3 de septiembre de 2026 · Vigencia: 15 días calendario desde esta fecha</p>
 </div>
 
 <p class="footer-note">Documento único solicitado por la propietaria. Las cifras de comisión de Mercado Pago son referenciales (2026) y las confirma su cuenta de vendedor. Los costos de Vercel, Supabase y Resend se pagan en USD al proveedor correspondiente y pueden variar por tipo de cambio y plan.</p>

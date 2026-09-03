@@ -1,7 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import type { BillingEventType } from "@/lib/billing-state";
 import type { Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term } from "@/lib/types";
+
+export type AudioUploadResult = { file: string; termId?: string; jurisdiction?: "us" | "uk"; status: "stored" | "rejected"; message: string };
 
 type Result = {
   ok: boolean;
@@ -32,9 +35,11 @@ type Ctx = {
   openTerm: (id: string) => Promise<void>;
   toggleFavourite: (id: string) => Promise<void>;
   submitQuiz: (id: string, option: string) => Promise<Result>;
-  applyBilling: (event: "success" | "failure" | "cancel" | "expire_trial" | "reset", plan?: Plan) => Promise<void>;
+  applyBilling: (event: BillingEventType, plan?: Plan) => Promise<Result>;
   saveTerm: (term: Term) => Promise<Result>;
   uploadAudio: (termId: string, jurisdiction: "us" | "uk", file: File) => Promise<Result>;
+  uploadAudioBatch: (files: File[]) => Promise<Result & { results?: AudioUploadResult[] }>;
+  removeAudio: (termId: string, jurisdiction: "us" | "uk") => Promise<Result>;
   setPublished: (id: string, published: boolean) => Promise<Result>;
   setArchived: (id: string, archived: boolean) => Promise<Result>;
   deleteTerm: (id: string) => Promise<Result>;
@@ -165,6 +170,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     async applyBilling(event, plan) {
       const data = await post("/api/billing", { event, plan });
       if (data.ok) await hydrate();
+      return data;
+    },
+    async uploadAudioBatch(files) {
+      const form = new FormData();
+      for (const file of files) form.append("files", file);
+      const data = await fetch("/api/admin/audio", { method: "POST", body: form, credentials: "include" }).then((r) => r.json());
+      if (data.terms) setTerms(data.terms);
+      return data;
+    },
+    async removeAudio(termId, jurisdiction) {
+      const data = await fetch("/api/admin/audio", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ termId, jurisdiction }),
+      }).then((r) => r.json());
+      if (data.terms) setTerms(data.terms);
+      return data;
     },
     async saveTerm(term) {
       const data = await post("/api/admin", { action: "save-term", term });
