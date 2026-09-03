@@ -1,0 +1,519 @@
+import { entitlementFor } from "./entitlement";
+import { canPublish, publicationBlockers } from "./publication";
+import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
+import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, Subscription, Term, UseItWithItem } from "./types";
+
+// Production data layer: Supabase Auth for identity, Postgres + RLS for
+// everything else. Every exported function here has the exact name/shape as
+// its counterpart in ./store.ts (the alpha/local-JSON implementation) so
+// lib/data-store.ts can switch between them without touching call sites.
+
+function plusDays(date: Date, days: number) {
+  return new Date(date.getTime() + days * 86400000).toISOString();
+}
+
+function trial(date = new Date()): Subscription {
+  return {
+    status: "trialing",
+    trialStartedAt: date.toISOString(),
+    trialEndsAt: plusDays(date, 7),
+    accessUntil: null,
+    provider: "mercadopago",
+    plan: null,
+    providerReference: null,
+  };
+}
+
+function mapAuthError(message: string | undefined) {
+  const text = message || "";
+  if (/invalid login credentials/i.test(text)) return "Email or password is incorrect.";
+  if (/already registered|user already exists/i.test(text)) return "An account already uses this email.";
+  if (/email not confirmed/i.test(text)) return "Verify your email before signing in.";
+  if (/token has expired|invalid otp|invalid token/i.test(text)) return "That code is not valid or has expired.";
+  if (/password should be at least/i.test(text)) return "Use at least 8 characters.";
+  return text || "That request could not be completed.";
+}
+
+type TermRow = Record<string, unknown> & { id: string; quiz_items?: QuizRow[] | QuizRow | null };
+type QuizRow = Record<string, unknown> & { id: string; term_id: string };
+
+function rowToQuiz(row: QuizRow | null | undefined): Quiz | null {
+  if (!row) return null;
+  const optionA = String(row.option_a ?? "");
+  const optionB = String(row.option_b ?? "");
+  const optionC = String(row.option_c ?? "");
+  const optionD = String(row.option_d ?? "");
+  return {
+    id: String(row.id),
+    question: String(row.prompt ?? ""),
+    options: [optionA, optionB, optionC, optionD].filter(Boolean),
+    optionA,
+    optionB,
+    optionC,
+    optionD,
+    correctOption: String(row.correct_option ?? "A"),
+    explanation: String(row.explanation ?? ""),
+    displayOrder: Number(row.display_order ?? 1),
+    mcdStatus: String(row.mcd_status ?? "Approved"),
+  };
+}
+
+function quizToRow(quiz: Quiz, termId: string) {
+  return {
+    id: quiz.id || `QUIZ-${termId}`,
+    term_id: termId,
+    prompt: quiz.question,
+    option_a: quiz.optionA,
+    option_b: quiz.optionB,
+    option_c: quiz.optionC,
+    option_d: quiz.optionD || null,
+    correct_option: quiz.correctOption,
+    explanation: quiz.explanation,
+    display_order: quiz.displayOrder,
+    mcd_status: quiz.mcdStatus,
+  };
+}
+
+function deriveJurisdiction(us: boolean, uk: boolean): Term["jurisdiction"] {
+  if (us && uk) return "US/UK";
+  return uk ? "UK" : "US";
+}
+
+function rowToTerm(row: TermRow): Term {
+  const metadata = (row.admin_metadata as Record<string, string>) ?? {};
+  const quizRow = Array.isArray(row.quiz_items) ? row.quiz_items[0] : row.quiz_items;
+  return {
+    id: String(row.id),
+    term: String(row.term ?? ""),
+    definition: String(row.definition ?? ""),
+    spanishEquivalent: String(row.spanish_equivalent ?? ""),
+    civilLawEquivalent: String(row.civil_law_equivalent ?? ""),
+    spanishSpeakerAlert: String(row.spanish_speaker_alert ?? ""),
+    category: String(row.category ?? ""),
+    topic: String(row.topic ?? ""),
+    displayOrder: Number(row.display_order ?? 0),
+    jurisdictionUS: Boolean(row.jurisdiction_us),
+    jurisdictionUK: Boolean(row.jurisdiction_uk),
+    jurisdiction: deriveJurisdiction(Boolean(row.jurisdiction_us), Boolean(row.jurisdiction_uk)),
+    audioUsPath: String(row.audio_us_path ?? ""),
+    audioUkPath: String(row.audio_uk_path ?? ""),
+    usVariant: (row.us_variant as JurisdictionVariant | null) ?? null,
+    ukVariant: (row.uk_variant as JurisdictionVariant | null) ?? null,
+    useItWith: (row.use_it_with as UseItWithItem[] | null) ?? [],
+    inContext: (row.in_context as InContextItem | null) ?? null,
+    quiz: rowToQuiz(quizRow ?? null),
+    mcdStatus: String(row.mcd_status ?? "Approved"),
+    published: Boolean(row.published),
+    archived: row.archived_at != null,
+    sourceEditorialVersion: String(row.source_editorial_version ?? ""),
+    sourceLastReviewedAt: String(row.source_last_reviewed_at ?? ""),
+    sourceWorkbookVersion: String(row.source_workbook_version ?? ""),
+    sourceContentHash: String(row.source_content_hash ?? ""),
+    partOfSpeech: String(metadata.partOfSpeech ?? ""),
+    comparativeLawNote: String(metadata.comparativeLawNote ?? ""),
+    pronunciation: String(metadata.pronunciation ?? ""),
+  };
+}
+
+function termToRow(term: Term) {
+  return {
+    id: term.id,
+    term: term.term,
+    definition: term.definition,
+    spanish_equivalent: term.spanishEquivalent,
+    civil_law_equivalent: term.civilLawEquivalent || null,
+    spanish_speaker_alert: term.spanishSpeakerAlert || null,
+    category: term.category,
+    topic: term.topic || null,
+    display_order: term.displayOrder,
+    jurisdiction_us: term.jurisdictionUS,
+    jurisdiction_uk: term.jurisdictionUK,
+    audio_us_path: term.audioUsPath || null,
+    audio_uk_path: term.audioUkPath || null,
+    us_variant: term.usVariant,
+    uk_variant: term.ukVariant,
+    use_it_with: term.useItWith ?? [],
+    in_context: term.inContext,
+    mcd_status: term.mcdStatus || "Approved",
+    published: term.published,
+    archived_at: term.archived ? new Date().toISOString() : null,
+    source_editorial_version: term.sourceEditorialVersion || null,
+    source_last_reviewed_at: term.sourceLastReviewedAt || null,
+    source_workbook_version: term.sourceWorkbookVersion || null,
+    source_content_hash: term.sourceContentHash || null,
+    admin_metadata: {
+      partOfSpeech: term.partOfSpeech || "",
+      comparativeLawNote: term.comparativeLawNote || "",
+      pronunciation: term.pronunciation || "",
+    },
+    updated_at: new Date().toISOString(),
+  };
+}
+
+function rowToSubscription(row: Record<string, unknown> | null | undefined): Subscription {
+  if (!row) return trial();
+  return {
+    status: (row.status as Subscription["status"]) ?? "trialing",
+    trialStartedAt: String(row.trial_started_at ?? new Date().toISOString()),
+    trialEndsAt: String(row.trial_ends_at ?? plusDays(new Date(), 7)),
+    accessUntil: (row.access_until as string | null) ?? null,
+    provider: (row.provider as Subscription["provider"]) ?? "mercadopago",
+    plan: (row.plan as Plan | null) ?? null,
+    providerReference: (row.provider_reference as string | null) ?? null,
+  };
+}
+
+async function lookupEmailVerified(userId: string): Promise<boolean> {
+  const admin = getSupabaseServiceRoleClient();
+  const { data, error } = await admin.auth.admin.getUserById(userId);
+  if (error || !data.user) return false;
+  return Boolean(data.user.email_confirmed_at);
+}
+
+export async function getUser(id: string): Promise<PublicUser | null> {
+  const supabase = await getSupabaseServerClient();
+  const { data: profile } = await supabase.from("users").select("*").eq("id", id).maybeSingle();
+  if (!profile) return null;
+  const { data: sub } = await supabase.from("subscriptions").select("*").eq("user_id", id).maybeSingle();
+  const emailVerified = await lookupEmailVerified(id);
+  return {
+    id: String(profile.id),
+    name: String(profile.full_name ?? ""),
+    email: String(profile.email ?? ""),
+    role: (profile.role as PublicUser["role"]) ?? "learner",
+    emailVerified,
+    createdAt: String(profile.created_at ?? new Date().toISOString()),
+    subscription: rowToSubscription(sub),
+  };
+}
+
+async function listUsers(): Promise<PublicUser[]> {
+  const supabase = await getSupabaseServerClient();
+  const [{ data: profiles }, { data: subs }] = await Promise.all([
+    supabase.from("users").select("*"),
+    supabase.from("subscriptions").select("*"),
+  ]);
+  const admin = getSupabaseServiceRoleClient();
+  const { data: authList } = await admin.auth.admin.listUsers({ perPage: 200 });
+  const confirmedById = new Map((authList?.users ?? []).map((u) => [u.id, Boolean(u.email_confirmed_at)]));
+  const subById = new Map((subs ?? []).map((row) => [String(row.user_id), row]));
+  return (profiles ?? []).map((profile) => ({
+    id: String(profile.id),
+    name: String(profile.full_name ?? ""),
+    email: String(profile.email ?? ""),
+    role: (profile.role as PublicUser["role"]) ?? "learner",
+    emailVerified: confirmedById.get(String(profile.id)) ?? false,
+    createdAt: String(profile.created_at ?? new Date().toISOString()),
+    subscription: rowToSubscription(subById.get(String(profile.id))),
+  }));
+}
+
+export async function currentUserId(): Promise<string | null> {
+  const supabase = await getSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user?.id ?? null;
+}
+
+export async function authenticate(email: string, password: string) {
+  const supabase = await getSupabaseServerClient();
+  const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+  if (error || !data.user) return { ok: false as const, message: mapAuthError(error?.message) };
+  const user = await getUser(data.user.id);
+  if (!user) return { ok: false as const, message: "Account profile is missing." };
+  return { ok: true as const, user };
+}
+
+export async function register(name: string, email: string, password: string) {
+  const supabase = await getSupabaseServerClient();
+  const { data, error } = await supabase.auth.signUp({
+    email: email.trim().toLowerCase(),
+    password,
+    options: { data: { full_name: name.trim() } },
+  });
+  if (error || !data.user) return { ok: false as const, message: mapAuthError(error?.message) };
+  const user = await getUser(data.user.id);
+  if (!user) return { ok: false as const, message: "Account was created but the profile row is missing. Check the on_auth_user_created trigger." };
+  return { ok: true as const, user, code: undefined as string | undefined };
+}
+
+export async function verifyEmail(email: string, code: string) {
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: "signup" });
+  if (error) return { ok: false as const, message: mapAuthError(error.message) };
+  return { ok: true as const };
+}
+
+export async function requestReset(email: string) {
+  const supabase = await getSupabaseServerClient();
+  await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase());
+  return { ok: true as const };
+}
+
+export async function resetPassword(email: string, code: string, password: string) {
+  const supabase = await getSupabaseServerClient();
+  const { error: otpError } = await supabase.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: "recovery" });
+  if (otpError) return { ok: false as const, message: mapAuthError(otpError.message) };
+  const { error: updateError } = await supabase.auth.updateUser({ password });
+  if (updateError) return { ok: false as const, message: mapAuthError(updateError.message) };
+  return { ok: true as const };
+}
+
+export async function inboxFor(_email: string): Promise<Mail[]> {
+  // Real mail goes out through Supabase Auth's configured SMTP (Resend).
+  // There is nothing to show in-app in production mode.
+  return [];
+}
+
+export async function updateProfile(userId: string, name: string) {
+  const next = name.trim();
+  if (next.length < 2) return { ok: false as const, message: "Enter your full name." };
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.from("users").update({ full_name: next, updated_at: new Date().toISOString() }).eq("id", userId);
+  if (error) return { ok: false as const, message: error.message };
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  return { ok: true as const, user, entitlement: entitlementFor(user.subscription) };
+}
+
+export async function changeOwnPassword(userId: string, currentPassword: string, nextPassword: string) {
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  if (nextPassword.trim().length < 8) return { ok: false as const, message: "Use at least 8 characters." };
+  const supabase = await getSupabaseServerClient();
+  const { error: verifyError } = await supabase.auth.signInWithPassword({ email: user.email, password: currentPassword });
+  if (verifyError) return { ok: false as const, message: "Current password is incorrect." };
+  const { error } = await supabase.auth.updateUser({ password: nextPassword });
+  if (error) return { ok: false as const, message: mapAuthError(error.message) };
+  return { ok: true as const };
+}
+
+export async function deleteAccount(userId: string) {
+  const admin = getSupabaseServiceRoleClient();
+  const { data: target } = await admin.from("users").select("role").eq("id", userId).maybeSingle();
+  if (!target) return { ok: false as const, message: "Sign in required." };
+  if (target.role === "admin") {
+    const { count } = await admin.from("users").select("id", { count: "exact", head: true }).eq("role", "admin").neq("id", userId);
+    if (!count) return { ok: false as const, message: "The last Owner account cannot be deleted." };
+  }
+  const { error } = await admin.auth.admin.deleteUser(userId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const };
+}
+
+export async function reportIssue(userId: string, summary: string, detail: string) {
+  const title = summary.trim();
+  const body = detail.trim();
+  if (title.length < 3 || body.length < 8) return { ok: false as const, message: "Add a short title and the steps to reproduce." };
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.from("support_tickets").insert({ reporter_id: userId, summary: title, detail: body });
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, inbox: [] as Mail[] };
+}
+
+async function listTerms(includeUnpublished: boolean): Promise<Term[]> {
+  const supabase = await getSupabaseServerClient();
+  let query = supabase.from("terms").select("*, quiz_items(*)");
+  if (!includeUnpublished) query = query.eq("published", true).is("archived_at", null);
+  const { data } = await query;
+  return (data ?? []).map((row) => rowToTerm(row as TermRow)).sort((a, b) => a.displayOrder - b.displayOrder);
+}
+
+function rowToProgress(row: Record<string, unknown>): Progress {
+  return {
+    userId: String(row.user_id),
+    termId: String(row.term_id),
+    favourite: Boolean(row.favourite),
+    state: (row.state as Progress["state"]) ?? "new",
+    attempts: Number(row.attempts ?? 0),
+    updatedAt: String(row.updated_at ?? new Date().toISOString()),
+  };
+}
+
+export async function bootstrap(userId: string | null) {
+  if (!userId) return { session: null, terms: [], progress: [], users: [], inbox: [], entitlement: entitlementFor(trial()) };
+  const user = await getUser(userId);
+  if (!user) return { session: null, terms: [], progress: [], users: [], inbox: [], entitlement: entitlementFor(trial()) };
+  const isAdmin = user.role === "admin";
+  const supabase = await getSupabaseServerClient();
+  const terms = await listTerms(isAdmin);
+  let progressQuery = supabase.from("user_term_progress").select("*");
+  if (!isAdmin) progressQuery = progressQuery.eq("user_id", userId);
+  const { data: progressRows } = await progressQuery;
+  return {
+    session: { user, subscription: user.subscription },
+    terms,
+    progress: (progressRows ?? []).map(rowToProgress),
+    users: isAdmin ? await listUsers() : [],
+    inbox: [] as Mail[],
+    entitlement: entitlementFor(user.subscription),
+  };
+}
+
+export async function openTerm(userId: string, termId: string) {
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
+  const supabase = await getSupabaseServerClient();
+  const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
+  if (!existing) {
+    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state: "learning", attempts: 0 });
+  } else if (existing.state === "new") {
+    await supabase.from("user_term_progress").update({ state: "learning", updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
+  }
+  const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
+  return { ok: true as const, progress: (rows ?? []).map(rowToProgress) };
+}
+
+export async function toggleFavourite(userId: string, termId: string) {
+  const supabase = await getSupabaseServerClient();
+  const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
+  if (existing) {
+    await supabase.from("user_term_progress").update({ favourite: !existing.favourite, updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
+  } else {
+    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: true, state: "learning", attempts: 0 });
+  }
+  const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
+  return (rows ?? []).map(rowToProgress);
+}
+
+export async function submitQuiz(userId: string, termId: string, option: string) {
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Quiz unavailable." };
+  if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
+  const supabase = await getSupabaseServerClient();
+  const { data: termRow } = await supabase.from("terms").select("*, quiz_items(*)").eq("id", termId).maybeSingle();
+  const term = termRow ? rowToTerm(termRow as TermRow) : null;
+  if (!term?.quiz) return { ok: false as const, message: "Quiz unavailable." };
+  const correct = term.quiz.correctOption === option || term.quiz.options[term.quiz.correctOption.charCodeAt(0) - 65] === option;
+  const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
+  const attempts = Number(existing?.attempts ?? 0) + 1;
+  const state = correct ? "mastered" : "learning";
+  if (existing) {
+    await supabase.from("user_term_progress").update({ state, attempts, updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
+  } else {
+    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state, attempts });
+  }
+  const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
+  return { ok: true as const, correct, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress) };
+}
+
+export async function applyBilling(_userId: string, _event: string, _plan?: Plan) {
+  // Deliberately not implemented against the client's own session: no
+  // authenticated write policy exists on public.subscriptions (see
+  // 001_initial_schema.sql), so a learner-triggered state change is not
+  // just unimplemented, it is architecturally refused. Hito C's Mercado
+  // Pago webhook handler is the only intended caller of a subscription
+  // write, and it must use the service-role client after verifying the
+  // webhook signature — never this function reached from an authenticated
+  // request.
+  return { ok: false as const, message: "Billing state changes must come from the Mercado Pago webhook, not the client." };
+}
+
+export async function grantAccess(actorId: string, targetId: string) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const admin = getSupabaseServiceRoleClient();
+  const { error } = await admin
+    .from("subscriptions")
+    .update({ status: "exceptional_access", access_until: plusDays(new Date(), 30), updated_at: new Date().toISOString() })
+    .eq("user_id", targetId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, users: await listUsers() };
+}
+
+export async function saveTerm(actorId: string, term: Term) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const id = term.id || `TERM-${Date.now()}`;
+  if (term.published) {
+    const blockers = publicationBlockers({ ...term, id });
+    if (blockers.length) return { ok: false as const, message: blockers[0] };
+  }
+  const supabase = await getSupabaseServerClient();
+  const { error: termError } = await supabase.from("terms").upsert(termToRow({ ...term, id }));
+  if (termError) return { ok: false as const, message: termError.message };
+  if (term.quiz) {
+    const { error: quizError } = await supabase.from("quiz_items").upsert(quizToRow(term.quiz, id));
+    if (quizError) return { ok: false as const, message: quizError.message };
+  }
+  return { ok: true as const, terms: await listTerms(true) };
+}
+
+export async function setPublished(actorId: string, termId: string, published: boolean) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const supabase = await getSupabaseServerClient();
+  const { data: row } = await supabase.from("terms").select("*, quiz_items(*)").eq("id", termId).maybeSingle();
+  if (!row) return { ok: false as const, message: "Term not found." };
+  const term = rowToTerm(row as TermRow);
+  if (published && !canPublish(term)) return { ok: false as const, message: publicationBlockers(term)[0] };
+  const { error } = await supabase
+    .from("terms")
+    .update({ published, archived_at: published ? null : row.archived_at, updated_at: new Date().toISOString() })
+    .eq("id", termId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, terms: await listTerms(true) };
+}
+
+export async function setArchived(actorId: string, termId: string, archived: boolean) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase
+    .from("terms")
+    .update({ archived_at: archived ? new Date().toISOString() : null, published: archived ? false : undefined, updated_at: new Date().toISOString() })
+    .eq("id", termId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, terms: await listTerms(true) };
+}
+
+export async function replaceTerms(actorId: string, terms: Term[]) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  // TODO Hito B: wrap this loop in a Postgres RPC (plpgsql function) so the
+  // batch commits atomically or rolls back as one unit, per MCD Delivery
+  // Mapping §6.1/§7 (idempotent reimport + rollback evidence, C-04). This
+  // loop is upsert-by-id (safe, no duplication) but not yet all-or-nothing.
+  const supabase = await getSupabaseServerClient();
+  const current = await listTerms(true);
+  const currentById = new Map(current.map((term) => [term.id, term]));
+  const incomingIds = new Set(terms.map((term) => term.id));
+  const missing = current.filter((term) => !incomingIds.has(term.id)).map((term) => term.id);
+  for (const incoming of terms) {
+    const existingPublished = currentById.get(incoming.id)?.published ?? false;
+    const { error: termError } = await supabase.from("terms").upsert(termToRow({ ...incoming, published: existingPublished }));
+    if (termError) return { ok: false as const, message: `${incoming.id}: ${termError.message}` };
+    if (incoming.quiz) {
+      const { error: quizError } = await supabase.from("quiz_items").upsert(quizToRow(incoming.quiz, incoming.id));
+      if (quizError) return { ok: false as const, message: `${incoming.id}: ${quizError.message}` };
+    }
+  }
+  return { ok: true as const, terms: await listTerms(true), missing };
+}
+
+export async function metrics() {
+  const supabase = await getSupabaseServerClient();
+  const [{ count: terms }, { count: published }, { count: quizzes }, { count: learners }, { data: activeSubs }] = await Promise.all([
+    supabase.from("terms").select("id", { count: "exact", head: true }),
+    supabase.from("terms").select("id", { count: "exact", head: true }).eq("published", true).is("archived_at", null),
+    supabase.from("quiz_items").select("id", { count: "exact", head: true }),
+    supabase.from("users").select("id", { count: "exact", head: true }).eq("role", "learner"),
+    supabase.from("subscriptions").select("status, trial_ends_at, access_until"),
+  ]);
+  const now = new Date();
+  const activeAccess = (activeSubs ?? []).filter((row) => entitlementFor(rowToSubscription(row), now).allowed).length;
+  return {
+    terms: terms ?? 0,
+    published: published ?? 0,
+    drafts: (terms ?? 0) - (published ?? 0),
+    quizzes: quizzes ?? 0,
+    learners: learners ?? 0,
+    activeAccess,
+  };
+}
+
+export async function resetStore() {
+  throw new Error("resetStore is an alpha-only convenience. Production data resets go through Supabase, not the app.");
+}

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Propuesta MVP Legal English 5 — MPC LAW STUDIO</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 18mm 16mm; }
+  :root {
+    --ink: #1a2332;
+    --muted: #5c6b7a;
+    --line: #d5dce3;
+    --navy: #16324f;
+    --navy-2: #1e4a6e;
+    --gold: #9a7b3c;
+    --paper: #f6f3ec;
+    --ok: #1f6b4a;
+    --ok-bg: #e7f4ee;
+    --no: #6b7280;
+    --no-bg: #eef0f2;
+    --ask: #8a5a12;
+    --ask-bg: #f8efd8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Liberation Serif", "Times New Roman", Times, serif;
+    color: var(--ink);
+    font-size: 10.4pt;
+    line-height: 1.38;
+  }
+  h1, h2, h3, h4, .sans, .pill, .meta, table, .cover-kicker, .signoff {
+    font-family: "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  h1 { font-size: 18pt; letter-spacing: -0.02em; margin: 0 0 4px; color: var(--navy); }
+  h2 {
+    font-size: 12pt;
+    color: var(--navy);
+    margin: 16px 0 8px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid var(--navy);
+  }
+  h3 { font-size: 10.5pt; color: var(--navy-2); margin: 12px 0 6px; }
+  p { margin: 0 0 7px; }
+  ul { margin: 0 0 8px 18px; padding: 0; }
+  li { margin-bottom: 3px; }
+  .cover {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 20px 16px;
+    margin: 0 0 14px;
+  }
+  .cover .kicker {
+    font-family: "Liberation Sans", Arial, sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #d4c191;
+    margin: 0 0 6px;
+  }
+  .cover h1 { color: #fff; font-size: 20pt; line-height: 1.15; }
+  .cover p { margin: 0; color: #d7e2ec; font-size: 10.5pt; }
+  .meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 0 0 12px;
+    font-size: 8.6pt;
+    color: var(--muted);
+  }
+  .meta b { display: block; color: var(--navy); font-size: 8.2pt; text-transform: uppercase; letter-spacing: 0.06em; }
+  .box {
+    background: var(--paper);
+    border: 1px solid #e4ddd0;
+    padding: 9px 11px;
+    margin: 0 0 10px;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .price {
+    border: 1.5px solid var(--navy);
+    padding: 10px 12px;
+  }
+  .price .total { font-size: 16pt; color: var(--navy); font-weight: 700; margin: 0; }
+  .price small { color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 8.7pt; margin: 0 0 10px; }
+  th, td { border: 1px solid var(--line); padding: 4.5px 6px; vertical-align: top; text-align: left; }
+  th { background: var(--navy); color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f7f9fb; }
+  .pill {
+    display: inline-block;
+    font-size: 7.4pt;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .in { background: var(--ok-bg); color: var(--ok); }
+  .out { background: var(--no-bg); color: var(--no); }
+  .ask { background: var(--ask-bg); color: var(--ask); }
+  .note { font-size: 9.3pt; color: var(--muted); }
+  .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+  .page-break { break-before: page; page-break-before: always; }
+  .footer-note { font-size: 8.3pt; color: var(--muted); margin-top: 8px; }
+  .sign { margin-top: 18px; }
+  .sign b { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <p class="kicker">Propuesta técnica y económica · Alcance cerrado</p>
+  <h1>Implementación del MVP funcional<br>Legal English 5</h1>
+  <p>Preparado para MPC LAW STUDIO — Legal English Training · Revisión del 2 de septiembre de 2026</p>
+</section>
+
+<div class="meta">
+  <div><b>Solicitante</b> Pilar Cruz · pilarcruz640@gmail.com</div>
+  <div><b>Modalidad</b> Proyecto por entregables e hitos verificables</div>
+  <div><b>Vigencia de esta revisión</b> 15 días calendario desde el 2 de septiembre de 2026</div>
+</div>
+
+<div class="box avoid-break">
+  <p style="margin:0 0 6px"><b>Contratista.</b> Nombre completo e identificación se consignan aquí y se repiten en el contrato. El RUT se anexa a la firma.</p>
+  <table style="margin:0">
+    <tr><th>Campo</th><th>Dato</th></tr>
+    <tr><td>Nombre completo</td><td>Carlos Andrés Angola Berrio</td></tr>
+    <tr><td>Identificación</td><td>C.C. 1.118.201.113 expedida en Villanueva, Casanare</td></tr>
+    <tr><td>Calidad tributaria</td><td><b>No responsable de IVA.</b> Esta oferta no adiciona IVA. Total a pagar: COP $9.750.000.</td></tr>
+    <tr><td>Disponibilidad</td><td>Confirmada. Kickoff el día hábil siguiente a la aceptación escrita. Plan intensivo de 15 días hábiles.</td></tr>
+  </table>
+</div>
+
+<h2>1. Resumen ejecutivo</h2>
+<p>Esta propuesta convierte el prototipo de referencia en un MVP de producción, independiente de ChatGPT, apto para usuarios reales y para validar el modelo de suscripción. Conserva la identidad visual y los flujos ya demostrados (Learn, Progress, Admin). Reemplaza autenticación, datos, pagos y seguridad simulados por una implementación administrada, con controles en el servidor y en la base de datos.</p>
+
+<div class="box">
+  <p style="margin:0"><b>Decisión de pasarela.</b> Integro <b>Mercado Pago Suscripciones</b>, a nombre de la propietaria como persona natural. Habrá un plan mensual y un plan anual. Activación, renovación, <b>reintento / pendiente</b>, cancelación, pago fallido y vencimiento actualizarán el derecho de acceso de forma real. Un webhook aislado no bloquea a quien ya pagó. Bold no se usa como motor de recurrencia.</p>
+</div>
+
+<div class="grid2 avoid-break">
+  <div>
+    <h3 style="margin-top:0">Qué recibe</h3>
+    <ul>
+      <li>Aplicación web 100&nbsp;% responsive, desplegada en su dominio.</li>
+      <li>Cuentas propias: correo, contraseña, verificación, recuperación, perfil y baja.</li>
+      <li>Roles Owner/Admin y Learner, invisibles e inaccesibles para el usuario ordinario, incluso por URL.</li>
+      <li>Biblioteca, buscador y filtros por Contracts, Corporate Law y Employment Law.</li>
+      <li>Quizzes y progreso individual New / Learning / Mastered.</li>
+      <li>Importación masiva desde Excel, alineada al MCD, operable por usted.</li>
+      <li>Carga y almacenamiento de audio (usted produce el archivo; el panel lo guarda en su Storage).</li>
+      <li>Trial real de 7 días y suscripción Mercado Pago con entitlement seguro.</li>
+      <li>Panel no-code, exportación, respaldo, documentación, capacitación y garantía.</li>
+    </ul>
+  </div>
+  <div>
+    <h3 style="margin-top:0">Stack y por qué puede operarlo usted</h3>
+    <p><b>Next.js + TypeScript</b> · <b>PostgreSQL con RLS (Supabase)</b> · autenticación de Supabase con su marca · <b>Mercado Pago Suscripciones</b> · Resend · Vercel · repositorio GitHub a su nombre.</p>
+    <p>Usted opera contenido, usuarios, acceso y exportaciones desde el panel o desde Excel. No escribe SQL, webhooks ni reglas de seguridad. Los secretos viven en cada servicio, no en el código. Ninguna cuenta de producción queda a nombre del proveedor.</p>
+  </div>
+</div>
+
+<div class="grid2 avoid-break">
+  <div class="price">
+    <p class="sans" style="margin:0 0 4px; font-size:8.4pt; letter-spacing:.08em; text-transform:uppercase; color:var(--gold)">Honorarios del proyecto</p>
+    <p class="total">COP $9.750.000</p>
+    <p style="margin:4px 0 0"><small>El contratista <b>no es responsable de IVA</b>. No se factura IVA.<br>
+    Total a pagar: <b>COP $9.750.000</b>. Si esa calidad cambiara antes de la firma, se avisará por escrito.</small></p>
+  </div>
+  <div class="price">
+    <p class="sans" style="margin:0 0 4px; font-size:8.4pt; letter-spacing:.08em; text-transform:uppercase; color:var(--gold)">Tiempo estimado</p>
+    <p class="total">3 semanas</p>
+    <p style="margin:4px 0 0"><small>Plan intensivo de 15 días hábiles: Hitos A y B en las semanas 1–2; cobro, QA, acceptance y cierre en la semana 3.<br>
+    El reloj se pausa si faltan cuentas, MCD o habilitación de Mercado Pago.</small></p>
+  </div>
+</div>
+
+<h3>Composición del precio (transparente)</h3>
+<table>
+  <tr><th>Línea</th><th>Qué cubre</th><th>COP</th></tr>
+  <tr><td>Núcleo del MVP</td><td>Cuentas, roles, experiencia Learner, panel, trial, despliegue, QA, documentación, capacitación y garantía de 45 días</td><td>6.450.000</td></tr>
+  <tr><td>MCD e importador</td><td>Esquema trazable, categorías canónicas, CivilLawEquivalent, importación Excel con validación por fila, plantilla, carga inicial y flujo de audio</td><td>1.850.000</td></tr>
+  <tr><td>Mercado Pago y entitlement</td><td>Planes mensual y anual, webhooks con reconciliación, estados reales de acceso, ambiente de pruebas y de producción</td><td>1.450.000</td></tr>
+  <tr><td><b>Honorarios (suma)</b></td><td>6.450.000 + 1.850.000 + 1.450.000</td><td><b>9.750.000</b></td></tr>
+</table>
+
+<h3>Plan de pagos por hitos (sin anticipo desproporcionado)</h3>
+<table>
+  <tr><th>Hito</th><th>Demostración para liberar el pago</th><th>%</th><th>COP</th></tr>
+  <tr><td>Contrato y kickoff</td><td>Firma + sesión en la que usted crea las cuentas a su nombre</td><td>20&nbsp;%</td><td>1.950.000</td></tr>
+  <tr><td>A · Cuentas y seguridad</td><td>Registro, verificación, recuperación y RLS: un Learner no accede a Admin ni al progreso ajeno</td><td>25&nbsp;%</td><td>2.437.500</td></tr>
+  <tr><td>B · Contenido y aprendizaje</td><td>Importador MCD; <b>Contracts, Corporate Law y Employment Law como categorías canónicas</b> (SQL, panel, filtros e importador); quiz; progreso entre dos Learners; carga de audio</td><td>25&nbsp;%</td><td>2.437.500</td></tr>
+  <tr><td>C · Cobro y acceso</td><td>Trial de 7 días; pago, reintento, pendiente, fallo, cancelación y vencimiento con efecto real; un webhook aislado no bloquea a quien ya pagó</td><td>20&nbsp;%</td><td>1.950.000</td></tr>
+  <tr><td>Cierre</td><td>Acceptance test escrito (la demostración no es aceptación), docs, capacitación y entrega de accesos</td><td>10&nbsp;%</td><td>975.000</td></tr>
+  <tr><td><b>Suma de hitos</b></td><td>1.950.000 + 2.437.500 + 2.437.500 + 1.950.000 + 975.000</td><td>100&nbsp;%</td><td><b>9.750.000</b></td></tr>
+</table>
+<p class="note">Los porcentajes se aplican sobre los honorarios. El IVA, si aplica, se factura en la misma proporción. El saldo final se paga después del acceptance test, la documentación, la capacitación y la entrega de accesos, conforme al numeral 9 de su solicitud.</p>
+
+<h3>Costos de terceros (usted los paga a cada proveedor; no forman parte de los honorarios)</h3>
+<table>
+  <tr><th>Servicio</th><th>Uso</th><th>Estimación</th></tr>
+  <tr><td>Dominio</td><td>Su marca, a su nombre</td><td>COP 60.000–180.000 / año</td></tr>
+  <tr><td>Vercel</td><td>Alojamiento de la aplicación</td><td>USD 0–20 / mes (Hobby o Pro)</td></tr>
+  <tr><td>Supabase Pro</td><td>Base de datos, auth, respaldos diarios</td><td>USD 25 / mes aprox.</td></tr>
+  <tr><td>Resend</td><td>Correo de verificación y recuperación</td><td>USD 0–20 / mes</td></tr>
+  <tr><td>Mercado Pago</td><td>Comisión por cada cobro (referencia 2026)</td><td>3,29&nbsp;% + COP 800 (inmediato) o 2,79&nbsp;% + COP 800 (14 días), más IVA sobre la comisión. Verificar tarifa vigente en su cuenta.</td></tr>
+</table>
+
+<p><b>Garantía (45 días desde el acta de aceptación):</b> cubre <b>todos</b> los defectos respecto del alcance contratado, no solo los críticos. “Responder” no es “corregir”. Ver tabla de severidad en el numeral 8. Cambios de alcance se cotizan aparte.</p>
+<p><b>Cómo se reporta una falla:</b> el Owner envía un correo a la dirección de garantía del contratista (la misma del contrato) o abre un ticket en el panel Admin → “Reportar incidencia”, con pasos, resultado esperado, captura y severidad propuesta. El contratista acusa recibo en el plazo de respuesta y asigna la severidad.</p>
+<p><b>Soporte opcional posterior:</b> COP 950.000 / mes, 8 horas, con los mismos plazos de respuesta/diagnóstico/solución. No es obligatorio para operar el panel.</p>
+
+<div class="page-break"></div>
+<h2>2. Respuesta punto por punto a la Solicitud de Cotización</h2>
+<p class="note">Marcas: <span class="pill in">Incluido</span> <span class="pill out">No incluido</span> <span class="pill ask">Requiere aclaración</span>. Donde había ambigüedad, queda resuelta con un supuesto explícito para que el precio sea cerrado.</p>
+
+<h3>Numeral 1 — Descripción del proyecto</h3>
+<table>
+  <tr><th>Requisito</th><th></th><th>Respuesta</th></tr>
+  <tr><td>MVP web funcional, seguro y administrable, independiente de ChatGPT</td><td><span class="pill in">Incluido</span></td><td>Aplicación de producción propia. El prototipo es referencia visual y funcional, no arquitectura vigente.</td></tr>
+  <tr><td>Conservar identidad visual y flujos útiles del prototipo</td><td><span class="pill in">Incluido</span></td><td>Se preservan Learn, Progress, Subscription y Admin. Se reemplazan auth, datos en navegador y pagos ficticios.</td></tr>
+  <tr><td>Lanzamiento de 30 Terms: 10 Contracts, 10 Corporate Law, 10 Employment Law</td><td><span class="pill in">Incluido</span></td><td>Carga inicial = LC-001 de MCD v1.3.81: 10/10/10 Approved, 30 quizzes (18 de 4 opciones, 12 de 3). Approved no es Published. Ver supuesto A.</td></tr>
+</table>
+
+<h3>Numeral 2 — Restricción arquitectónica del MCD</h3>
+<table>
+  <tr><th>Requisito</th><th></th><th>Respuesta</th></tr>
+  <tr><td>MCD como fuente canónica; no modificar, aplanar ni declarar obsoleta su arquitectura de 19 entidades</td><td><span class="pill in">Incluido</span></td><td>El MCD no se altera. La aplicación usa el Delivery Model: Users, Terms, QuizItems, UserTermProgress y la capa de suscripción/entitlement.</td></tr>
+  <tr><td>Transformación MCD → Delivery Model trazable y validable</td><td><span class="pill in">Incluido</span></td><td>Entrego mapa de campos, reglas de publicación e importador que conserva TermID y relaciones. Learning Collections, Achievements y XP no entran al MVP (numeral 7).</td></tr>
+</table>
+
+<h3>Numeral 3 — Alcance funcional mínimo</h3>
+<table>
+  <tr><th>N.º</th><th>Área</th><th></th><th>Respuesta</th></tr>
+  <tr><td>1</td><td>Cuentas externas</td><td><span class="pill in">Incluido</span></td><td>Registro e inicio de sesión con correo y contraseña, con su marca. Sin ChatGPT ni otro producto cerrado para autenticar.</td></tr>
+  <tr><td>2</td><td>Ciclo de cuenta</td><td><span class="pill in">Incluido</span></td><td>Verificación de correo, recuperación y cambio de contraseña, cierre de sesión, actualización de perfil, desactivación y eliminación de cuenta (habeas data).</td></tr>
+  <tr><td>3</td><td>Roles y permisos</td><td><span class="pill in">Incluido</span></td><td>Owner/Admin y Learner. Admin no es visible ni resoluble para un Learner, incluida la URL directa.</td></tr>
+  <tr><td>4</td><td>Aislamiento de datos</td><td><span class="pill in">Incluido</span></td><td>RLS en PostgreSQL: cada usuario solo lee y escribe su progreso. El contenido canónico no es escribible por Learners. Ocultar botones no se considera control de seguridad.</td></tr>
+  <tr><td>5</td><td>Contenido</td><td><span class="pill in">Incluido</span></td><td>Cada Term admite definición, pronunciación, categoría canónica, Spanish Equivalent, Civil Law Equivalent condicional, Spanish-Speaker Alert condicional, Use It With, In Context, quiz y <b>carga de AudioUS/AudioUK</b> (usted produce el archivo; el sistema lo almacena). Vacío condicional ≠ error.</td></tr>
+  <tr><td>6</td><td>Navegación</td><td><span class="pill in">Incluido</span></td><td>Buscador y filtros por las tres categorías <b>canónicas</b> Contracts, Corporate Law y Employment Law (mismo identificador en SQL, panel, importador y Learner). Una categoría distinta se rechaza. Responsive computador y teléfono, sin desbordamiento horizontal ni controles cortados.</td></tr>
+  <tr><td>7</td><td>Progreso</td><td><span class="pill in">Incluido</span></td><td>New, Learning y Mastered persistentes por usuario. Supuesto B.</td></tr>
+  <tr><td>8</td><td>Administración</td><td><span class="pill in">Incluido</span></td><td>Crear, editar, previsualizar, publicar, retirar y eliminar Terms; administrar QuizItems; <b>cargar AudioUS/AudioUK</b> a su Storage; consultar usuarios y estados de acceso; importar Excel; exportar.</td></tr>
+  <tr><td>9</td><td>Prueba gratuita</td><td><span class="pill in">Incluido</span></td><td>7 días reales al crear la cuenta, con fechas persistidas. Actualizar el navegador no reinicia el trial.</td></tr>
+  <tr><td>10</td><td>Suscripción</td><td><span class="pill in">Incluido</span></td><td>Plan mensual y plan anual en Mercado Pago. Sin suscripción activa tras el trial, el contenido protegido se bloquea.</td></tr>
+  <tr><td>11</td><td>Entitlement</td><td><span class="pill in">Incluido</span></td><td>Activación, renovación, <b>pendiente de reintento</b>, cancelación, pago fallido y vencimiento. El acceso no se corta por un webhook aislado si el cobro ya está acreditado. El panel puede otorgar acceso excepcional con fecha de cierre.</td></tr>
+  <tr><td>12</td><td>Operabilidad</td><td><span class="pill in">Incluido</span></td><td>Contenido, usuarios, acceso, suscripciones, exportación y recuperación se hacen desde interfaces. Usted no escribe código, SQL, reglas RLS, webhooks ni funciones backend.</td></tr>
+</table>
+
+<h3>Importación masiva desde Excel (alcance confirmado por usted)</h3>
+<table>
+  <tr><th>Regla</th><th></th><th>Respuesta</th></tr>
+  <tr><td>Hojas Terms, UseItWithItems, InContextItems, QuizItems y fuentes asociadas</td><td><span class="pill in">Incluido</span></td><td>También Categories y Topics, necesarios para las tres categorías del numeral 6.</td></tr>
+  <tr><td>Validar encabezados, obligatorios e identificadores; errores por fila antes de confirmar</td><td><span class="pill in">Incluido</span></td><td>La carga no se confirma si hay errores. Se listan fila, hoja y motivo.</td></tr>
+  <tr><td>Conservar relaciones por TermID; crear y actualizar sin duplicar</td><td><span class="pill in">Incluido</span></td><td>Alta y actualización por identificador canónico. No se duplican Terms ni ítems relacionados.</td></tr>
+  <tr><td>Campos condicionales vacíos aceptados; plantilla descargable compatible con el MCD</td><td><span class="pill in">Incluido</span></td><td>SpanishSpeakerAlert o CivilLawEquivalent vacíos no bloquean el borrador.</td></tr>
+  <tr><td>Términos incompletos como borrador; no publicar si falta quiz obligatorio</td><td><span class="pill in">Incluido</span></td><td>Hoy 6 de 30 Approved tienen quiz. El resto puede importarse y no publicarse hasta que usted complete la editorial.</td></tr>
+  <tr><td>Redacción editorial de Terms y quizzes</td><td><span class="pill out">No incluido</span></td><td>Usted entrega el MCD y hace el trabajo editorial, como acordamos.</td></tr>
+</table>
+
+<h3>Numeral 4 — Seguridad, privacidad y continuidad</h3>
+<table>
+  <tr><th>Requisito</th><th></th><th>Respuesta</th></tr>
+  <tr><td>Controles en servidor o base de datos; no solo interfaz</td><td><span class="pill in">Incluido</span></td><td>RLS, roles en servidor y mutaciones de suscripción solo con service role.</td></tr>
+  <tr><td>Bloqueo de rutas admin y de datos ajenos</td><td><span class="pill in">Incluido</span></td><td>Probado con dos Learners y un Owner/Admin, más intento de URL directa.</td></tr>
+  <tr><td>Secretos fuera del código y de la interfaz</td><td><span class="pill in">Incluido</span></td><td>Variables de entorno en Vercel/Supabase/Mercado Pago, a su nombre.</td></tr>
+  <tr><td>Respaldo, exportación y recuperación documentados</td><td><span class="pill in">Incluido</span></td><td>Se documenta qué recupera cada mecanismo y su RPO. Restaurar un export de prueba no se presenta como restauración completa del sistema. Ver sección 6.</td></tr>
+  <tr><td>Datos personales y normativa colombiana</td><td><span class="pill in">Incluido</span></td><td>Consentimiento en el registro, aviso de tratamiento (Ley 1581 de 2012 y Decreto 1377 de 2013), eliminación de cuenta. La revisión jurídica final del texto del aviso es suya. No incluyo concepto de abogado externo.</td></tr>
+  <tr><td>Pentest certificado por un tercero</td><td><span class="pill out">No incluido</span></td><td>Entrego reporte propio de pruebas de seguridad y de aceptación. Una auditoría externa se cotiza aparte si la desea.</td></tr>
+</table>
+
+<div class="page-break"></div>
+<h3>Numeral 5 — Entregables</h3>
+<table>
+  <tr><th>Entregable</th><th></th><th>Respuesta</th></tr>
+  <tr><td>Arquitectura breve y mapa MCD → Delivery Model</td><td><span class="pill in">Incluido</span></td><td>Documento de 4–8 páginas + matriz de campos.</td></tr>
+  <tr><td>MVP desplegado en dominio y cuentas de la propietaria</td><td><span class="pill in">Incluido</span></td><td>Sesión inicial de 1–2 h: usted crea dominio, Vercel, Supabase, Resend, Mercado Pago y GitHub; yo recibo acceso delegado, revocable al cierre.</td></tr>
+  <tr><td>Autenticación externa, base de datos, roles e aislamiento</td><td><span class="pill in">Incluido</span></td><td></td></tr>
+  <tr><td>Panel completo, trial, pasarela y entitlement en prueba y producción</td><td><span class="pill in">Incluido</span></td><td>Mercado Pago.</td></tr>
+  <tr><td>Migración inicial de 30 Terms y validación de integridad</td><td><span class="pill in">Incluido</span></td><td>Se carga el MCD entregado. Integridad = identificadores, relaciones y reglas de publicación, no autoría del texto.</td></tr>
+  <tr><td>QA funcional, responsive, seguridad y recuperación</td><td><span class="pill in">Incluido</span></td><td>Plan + resultados escritos.</td></tr>
+  <tr><td>Documentación operativa y capacitación</td><td><span class="pill in">Incluido</span></td><td>Manual breve + sesión en vivo de 90 minutos, grabada.</td></tr>
+  <tr><td>Código, configuraciones y propiedad de cuentas</td><td><span class="pill in">Incluido</span></td><td>Repositorio a su nombre. Ninguna cuenta de producción a nombre del proveedor.</td></tr>
+  <tr><td>Periodo de garantía</td><td><span class="pill in">Incluido</span></td><td>45 días para <b>todos</b> los defectos del alcance, con plazos por severidad.</td></tr>
+</table>
+
+<h3>Numeral 6 — Criterios mínimos de aceptación</h3>
+<table>
+  <tr><th>Criterio</th><th></th><th>Cómo se demuestra</th></tr>
+  <tr><td>La demostración de un hito no es aceptación automática</td><td><span class="pill in">Incluido</span></td><td>Cada hito se demuestra; usted tiene 5 días hábiles para firmar el acta o listar defectos por escrito. Sin acta no se entiende aceptado. El 10&nbsp;% de cierre exige acta de acceptance, no solo la sesión de demo.</td></tr>
+  <tr><td>Registro, verificación, login y recuperación</td><td><span class="pill in">Incluido</span></td><td>Cuenta nueva real, no demo.</td></tr>
+  <tr><td>Learner no ve ni abre Admin, ni por URL</td><td><span class="pill in">Incluido</span></td><td>Prueba diferencial Owner vs Learner.</td></tr>
+  <tr><td>Dos usuarios, progresos independientes</td><td><span class="pill in">Incluido</span></td><td>Dos cuentas Learner sobre el mismo Term.</td></tr>
+  <tr><td>Usted crea, edita, publica y retira un Term y su quiz sin apoyo técnico</td><td><span class="pill in">Incluido</span></td><td>Se demuestra en la capacitación.</td></tr>
+  <tr><td>Trial persistente; refresh no lo reinicia</td><td><span class="pill in">Incluido</span></td><td>Fechas en base de datos.</td></tr>
+  <tr><td>Al vencer el trial, bloqueo salvo suscripción activa</td><td><span class="pill in">Incluido</span></td><td></td></tr>
+  <tr><td>Cancelación y pago fallido con el resultado de acceso documentado</td><td><span class="pill in">Incluido</span></td><td>Cancelación: acceso hasta el fin del periodo ya pagado. Pago fallido: ver estados de cobro (reintento / pendiente / fallido). Un evento suelto no bloquea a quien ya pagó.</td></tr>
+  <tr><td>Tres categorías canónicas en Hito B</td><td><span class="pill in">Incluido</span></td><td>Se crea un Term de prueba en Contracts, Corporate Law y Employment Law; el filtro las distingue; el importador rechaza cualquier otro valor.</td></tr>
+  <tr><td>Carga y reproducción de audio</td><td><span class="pill in">Incluido</span></td><td>Usted produce el archivo; el panel lo sube a su Storage y el Learner lo reproduce.</td></tr>
+  <tr><td>Teléfono y computador, sin desborde ni controles cortados</td><td><span class="pill in">Incluido</span></td><td></td></tr>
+  <tr><td>Exportación y recuperación demostradas</td><td><span class="pill in">Incluido</span></td><td>Se restaura un export en un entorno de prueba y se entrega la lista de qué volvió y qué no (RPO del respaldo diario ≤ 24 h; PITR no incluido).</td></tr>
+</table>
+
+<h3>Numeral 7 — Fuera del alcance inicial</h3>
+<table>
+  <tr><th>Ítem</th><th></th><th>Respuesta</th></tr>
+  <tr><td>Apps nativas iOS/Android; chatbot o IA; pronunciación automática; redacción jurídica automática; traducción automática; investigación jurídica</td><td><span class="pill out">No incluido</span></td><td>Confirmado.</td></tr>
+  <tr><td>Gamificación, achievements, XP, spaced repetition, Learning Collections</td><td><span class="pill out">No incluido</span></td><td>Existen hojas en el MCD; se preservan en el archivo canónico y no se implementan en el Delivery Model del MVP.</td></tr>
+  <tr><td>Creación editorial de los 30 Terms</td><td><span class="pill out">No incluido</span></td><td>Usted suministra o aprueba el contenido.</td></tr>
+  <tr><td>Conservar el prototipo de ChatGPT Sites como producto de producción</td><td><span class="pill out">No incluido</span></td><td>Coincide con su Registro de Hallazgos: VALIDACIÓN PARCIAL — no aceptado como MVP comercial.</td></tr>
+</table>
+
+<h3>Hallazgos del acceptance test del prototipo (25 de agosto de 2026)</h3>
+<table>
+  <tr><th>Hallazgo</th><th></th><th>Tratamiento en esta propuesta</th></tr>
+  <tr><td>AT-S03 Autenticación externa inexistente</td><td><span class="pill in">Incluido</span></td><td>Cierra el bloqueo 3.1.</td></tr>
+  <tr><td>AT-S10 / S11 / S12 Trial, pagos, entitlement FAIL (G7)</td><td><span class="pill in">Incluido</span></td><td>Cierra el bloqueo 3.2 con Mercado Pago.</td></tr>
+  <tr><td>3.3 Seguridad no auditada en backend</td><td><span class="pill in">Incluido</span></td><td>RLS + pruebas diferenciales + reporte. No es pentest de tercero.</td></tr>
+  <tr><td>Flujos PASS (admin, progreso, aislamiento observado, responsive)</td><td><span class="pill in">Incluido</span></td><td>Se preservan y se vuelven a probar sobre la implementación externa, como pide el numeral 6 del registro.</td></tr>
+</table>
+
+<div class="page-break"></div>
+<h2>3. Cronograma (3 semanas calendario)</h2>
+<p><b>Disponibilidad confirmada.</b> Kickoff el día hábil siguiente a su aceptación escrita de esta revisión y a la sesión de creación de cuentas. Plan intensivo de 15 días hábiles de dedicación continua. Si una dependencia suya no está lista, esos días no corren contra el plazo.</p>
+<table>
+  <tr><th>Semana</th><th>Fase</th><th>Entregable verificable</th></tr>
+  <tr><td>0 (día 1, 1–2 h)</td><td>Kickoff y titularidad</td><td>Usted crea, con su correo institucional, dominio, Vercel, Supabase, Resend, Mercado Pago y GitHub. Permisos delegados. Ninguna cuenta a nombre del proveedor. En esa misma sesión se fijan los precios mensual y anual.</td></tr>
+  <tr><td>1</td><td>Cimientos y cuentas</td><td>Arquitectura y mapa MCD → Delivery Model. Esquema SQL con Category, CivilLawEquivalent, RLS y capa de entitlement. Registro, verificación, recuperación, perfil, baja y roles en sus cuentas. <b>Hito A</b> demostrable al cierre de la semana.</td></tr>
+  <tr><td>2</td><td>Contenido, aprendizaje y panel</td><td>Importador Excel, plantilla, validación por fila y carga del MCD. <b>Contracts, Corporate Law y Employment Law como categorías canónicas</b> (SQL, panel, filtros e importador; se rechaza cualquier otro valor). Flujo de carga y almacenamiento de audio. Biblioteca, quiz, progreso New/Learning/Mastered y aislamiento entre dos Learners. Panel editorial, usuarios, acceso excepcional y exportación. <b>Hito B</b> (la demostración no es aceptación; ver numeral 6).</td></tr>
+  <tr><td>3</td><td>Cobro, calidad y cierre</td><td>Trial de 7 días. Mercado Pago mensual y anual (pruebas y producción). Webhooks con reconciliación: reintento, pendiente, fallo, cancelación y vencimiento. QA funcional, responsive, seguridad y recuperación (lista de qué se restaura y qué no). Acta de acceptance escrita, capacitación de 90 minutos, entrega de accesos y revocación de los míos. <b>Hito C + cierre</b>. La garantía inicia al firmar el acta, no al ver la demo.</td></tr>
+</table>
+
+<h3>Dependencias que pausan el reloj (no son demora del proveedor)</h3>
+<ul>
+  <li>Creación y aprobación de las cuentas técnicas a su nombre el día 1, en especial la habilitación de Mercado Pago persona natural.</li>
+  <li>Entrega del MCD con los Terms que desee publicar, a más tardar al inicio de la semana 2. El desarrollo no espera a que existan 30 quizzes; la <b>publicación</b> sí.</li>
+  <li>Definir el precio en COP del plan mensual y del plan anual en el kickoff, a más tardar el primer día de la semana 3.</li>
+  <li>Disponibilidad suya para kickoff, una revisión al cierre de cada semana, pruebas de cobro y la sesión de capacitación.</li>
+</ul>
+
+<h2>4. Supuestos que cierran el precio</h2>
+<table>
+  <tr><th>ID</th><th>Supuesto</th></tr>
+  <tr><td>A</td><td>La carga inicial usa exclusivamente MCD v1.3.81 y la colección LC-001 (30 Terms Approved: 10 Corporate Law, 10 Contracts, 10 Employment Law). Approved no es Published: la importación entra a staging. El snapshot anterior (v1.3.37, 30 Corporate, 12 Future, 6 quizzes) queda sustituido.</td></tr>
+  <tr><td>B</td><td>New = término no abierto. Learning = abierto o quiz intentado sin acierto. Mastered = quiz correcto. Si desea otra regla, se ajusta sin costo antes del Hito B.</td></tr>
+  <tr><td>C</td><td>EKB-DEC-22 prevalece sobre el snapshot anterior: el quiz admite tres o cuatro opciones. OptionD es nullable. El baseline v1.3.81 trae 18 quizzes de cuatro opciones y 12 de tres. CorrectOption debe apuntar a una opción poblada.</td></tr>
+  <tr><td>D</td><td>La interfaz de la aplicación permanece en inglés, como el prototipo. El panel y la documentación operativa para usted pueden incluir español.</td></tr>
+  <tr><td>E</td><td>Usted produce los audios (AudioUS/AudioUK). El MVP incluye, de forma <b>obligatoria</b>, el flujo de carga, almacenamiento en su Supabase Storage y reproducción en el Learner. Un Term puede quedar en borrador sin audio; el vacío no bloquea el borrador. Publicar sin audio es decisión editorial suya; el sistema no fabrica pistas.</td></tr>
+  <tr><td>F</td><td>Un plan mensual y un plan anual, un solo precio cada uno, en COP. Cupones, prorrateo complejo o planes por cohorte no están incluidos.</td></tr>
+  <tr><td>G</td><td>Mercado Pago es la única pasarela de suscripción del MVP. Bold puede seguir usándose por usted para cobros puntuales ajenos a este producto; no se integra.</td></tr>
+  <tr><td>H</td><td>Capacitación: una sesión de 90 minutos en vivo, grabada. No incluye formación continua ni operación delegada.</td></tr>
+</table>
+
+<h2>5. Prototipo: conservación, refactorización y reemplazo</h2>
+<p>El ZIP se trató como referencia, no como especificación vigente. La Solicitud de Cotización y el Registro de Hallazgos prevalecen.</p>
+<table>
+  <tr><th>Decisión</th><th>Componente</th><th>Motivo</th></tr>
+  <tr><td>Conservar (punto de partida)</td><td>Identidad visual, flujos Learn / Progress / Admin, idea de entitlement, migración SQL con RLS</td><td>Ya demostraron valor en el prototipo y en las pruebas PASS.</td></tr>
+  <tr><td>Refactorizar</td><td>Modelo de Term y de quiz</td><td>Faltan Category, CivilLawEquivalent, In Context relacional, Use It With como entidades y quiz de 4 opciones. El progreso debe ser New / Learning / Mastered, no solo “quiz completed”.</td></tr>
+  <tr><td>Reemplazar</td><td>Auth de ChatGPT, datos en el navegador, simulador de pagos, panel sin importador</td><td>Impiden la aceptación comercial (AT-S03, AT-S10, AT-S11, AT-S12).</td></tr>
+</table>
+<p>No cobro una línea aparte de “reescribir todo desde cero”. El reemplazo necesario ya está dentro de las tres líneas de honorarios. Conservar el prototipo como backend de producción <b>no</b> se cotiza porque no es viable.</p>
+
+<h2>6. Seguridad, respaldo, despliegue y migración</h2>
+<ul>
+  <li><b>Seguridad:</b> RLS por tabla, admin por rol en servidor, suscripciones inmutables desde el cliente, secretos en el panel de cada servicio, HTTPS, verificación de correo, pruebas de IDOR entre dos Learners.</li>
+  <li><b>Despliegue:</b> Vercel + Supabase, ambos a su nombre. Ambiente de prueba y producción separados.</li>
+  <li><b>Migración:</b> importador contra el MCD. Primera carga la ejecuto yo; las siguientes las ejecuta usted.</li>
+  <li><b>Audio:</b> el Owner carga AudioUS/AudioUK desde el panel; el archivo queda en su bucket de Supabase Storage y el Learner lo reproduce. Usted produce el archivo; yo no grabo pistas.</li>
+</ul>
+
+<h3>Qué se respalda, qué se recupera y qué no</h3>
+<p>Restaurar un export de prueba <b>no</b> equivale a restaurar el sistema completo. En la entrega se demuestra cada mecanismo y se entrega por escrito la lista de qué volvió y qué no.</p>
+<table>
+  <tr><th>Mecanismo</th><th>Qué recupera</th><th>Qué no recupera</th><th>RPO / límite</th></tr>
+  <tr><td>Exportación del panel</td><td>Terms, quizzes, usuarios, progreso, estados de entitlement y metadatos de audio</td><td>Objetos binarios de Storage (se respaldan aparte), variables de entorno de Vercel, tablero de Mercado Pago, plantillas de Resend, DNS</td><td>Punto en el que usted exportó</td></tr>
+  <tr><td>Respaldo diario de Supabase (plan Pro)</td><td>Base de datos (cuentas, contenido, progreso, entitlement) y, según el plan, objetos de Storage del proyecto</td><td>Configuración fuera de Supabase (Vercel, Mercado Pago, Resend, dominio)</td><td><b>Hasta 24 horas</b> de información pueden perderse. Es el aviso estándar de respaldos diarios.</td></tr>
+  <tr><td>Recuperación punto a punto (PITR)</td><td>Cualquier instante dentro de la ventana contratada</td><td>—</td><td><b>No incluido.</b> Es un add-on de Supabase; si lo desea, se activa en su cuenta y se cotiza la operación aparte.</td></tr>
+</table>
+<p class="note">La demostración de cierre restaura un export en un entorno de prueba y, si el plan Pro lo permite, se documenta cómo solicitar un restore del respaldo diario al soporte de Supabase. No se afirma que eso reconstruya Vercel, Mercado Pago ni el DNS.</p>
+
+<div class="page-break"></div>
+<h2>7. Propiedad intelectual, titularidad y portabilidad</h2>
+<ul>
+  <li>El código del MVP, la configuración y la documentación se ceden a MPC LAW STUDIO / la propietaria al pago del cierre.</li>
+  <li>El MCD y el contenido editorial son y siguen siendo de la propietaria.</li>
+  <li>Dominio, repositorio, base de datos, autenticación, correo, alojamiento y Mercado Pago quedan a su nombre desde el día 0. El proveedor no crea cuentas de producción a su propio nombre ni retiene control exclusivo.</li>
+  <li>Al cierre se revocan los accesos del proveedor. Usted puede cambiar de hosting, de repositorio o de desarrollador sin licencia cautiva.</li>
+  <li>Librerías de terceros conservan su licencia original (MIT y equivalentes de uso habitual).</li>
+</ul>
+
+<h2>8. Condiciones de contratación</h2>
+<ul>
+  <li>Contrato de alcance cerrado con estos entregables, criterios de aceptación y precio.</li>
+  <li>Pagos contra hitos <b>aceptados por escrito</b>. Demostrar un hito no es aceptarlo. Usted tiene 5 días hábiles desde la demo para firmar el acta o listar defectos. El 10&nbsp;% final se paga después del acta de acceptance, la documentación, la capacitación y la entrega de accesos.</li>
+  <li>Cambios de alcance (nuevo rol, nueva pasarela, IA, gamificación, más planes de cobro, apps nativas) requieren cotización y aprobación escrita antes de ejecutarse.</li>
+  <li>No hay dependencia obligatoria del proveedor para operar el producto después de la capacitación.</li>
+</ul>
+
+<h3>Aceptación: una demostración no es aceptación</h3>
+<p>Cada hito se demuestra en sesión. La aceptación <b>solo</b> ocurre con acta escrita (correo o documento firmado). Una demostración, sola o acompañada de silencio, no equivale a aceptación. Usted dispone de 5 días hábiles para firmar el acta o listar defectos por escrito. El pago del hito se libera al acta, no a la demo. El 10&nbsp;% de cierre exige acta expresa de acceptance.</p>
+
+<h3>Garantía — todos los defectos del alcance, por severidad</h3>
+<p>45 días calendario desde el acta de aceptación. Cubre <b>todos</b> los defectos respecto del alcance contratado. No cubre cambios de alcance ni fallas de terceros (Mercado Pago, Supabase, Vercel, Resend) ajenas al código entregado. “Responder” es acusar recibo y clasificar; “diagnosticar” es identificar causa; “solucionar” es corregir o entregar un workaround operativo.</p>
+<table>
+  <tr><th>Severidad</th><th>Ejemplos</th><th>Respuesta</th><th>Diagnóstico</th><th>Solución objetivo</th></tr>
+  <tr><td>Crítica</td><td>Sin acceso general, cobro que bloquea a quien ya pagó, fuga o pérdida de datos</td><td>4 horas hábiles</td><td>1 día hábil</td><td>2 días hábiles o workaround que restablezca el servicio</td></tr>
+  <tr><td>Alta</td><td>Importador inutilizable, quiz o audio que no persiste, filtro de categoría roto</td><td>1 día hábil</td><td>2 días hábiles</td><td>5 días hábiles</td></tr>
+  <tr><td>Media</td><td>Error no bloqueante de panel, texto o layout en un flujo secundario</td><td>2 días hábiles</td><td>3 días hábiles</td><td>10 días hábiles</td></tr>
+  <tr><td>Baja</td><td>Mejora cosmética, copy, ajuste menor de UI dentro del alcance</td><td>3 días hábiles</td><td>5 días hábiles</td><td>15 días hábiles o el siguiente drop acordado</td></tr>
+</table>
+<p><b>Cómo comunica una falla el usuario (Owner):</b> (1) correo a la dirección de garantía del contrato, o (2) Admin → “Reportar incidencia”, con pasos, resultado esperado, captura y severidad propuesta. El Learner no abre tickets; reporta al Owner. El contratista acusa recibo en el plazo de <i>Respuesta</i> y confirma o reclasifica la severidad.</p>
+
+<h3>Estados de cobro y acceso (Mercado Pago)</h3>
+<p>Mercado Pago reintenta un cobro fallido de suscripción según su propia política (varios intentos a lo largo de varios días). El sistema no suspende al primer webhook de rechazo. Un evento aislado o fuera de orden no bloquea a quien ya tiene un pago acreditado: se concilia por identificador de pago + marca de tiempo, se ignoran eventos viejos y se sincroniza periódicamente contra la API de Mercado Pago.</p>
+<table>
+  <tr><th>Estado interno</th><th>Qué ocurrió</th><th>Acceso del Learner</th></tr>
+  <tr><td><code>active</code></td><td>Pago acreditado o trial vigente</td><td>Abierto</td></tr>
+  <tr><td><code>past_due</code></td><td>Cobro rechazado; Mercado Pago aún reintenta (gracia de 3–5 días, alineada a los reintentos)</td><td>Se mantiene. El usuario ve aviso de pago pendiente, no un bloqueo.</td></tr>
+  <tr><td><code>payment_failed</code></td><td>Reintentos agotados o rechazo definitivo confirmado por API, no por un solo webhook</td><td>Contenido protegido bloqueado hasta regularizar</td></tr>
+  <tr><td><code>cancelled</code></td><td>El usuario canceló</td><td>Abierto hasta el fin del periodo ya pagado; luego bloqueo</td></tr>
+  <tr><td><code>expired</code></td><td>Venció trial o periodo pagado sin renovación</td><td>Bloqueado</td></tr>
+</table>
+
+<h2>9. Qué necesito de usted para empezar</h2>
+<ol>
+  <li>Aceptación escrita de esta propuesta o contrato equivalente.</li>
+  <li>Sesión de 1–2 horas para crear las cuentas a su nombre.</li>
+  <li>El MCD vigente (v1.3.81 / LC-001). Cualquier versión posterior se valida contra el mismo mapping antes de reemplazar la carga.</li>
+  <li>Precio en COP del plan mensual y del plan anual.</li>
+  <li>Logo, color de marca y dominio deseado, si ya los tiene; si no, los definimos en el kickoff.</li>
+</ol>
+
+<div class="box avoid-break">
+  <p style="margin:0 0 6px"><b>Cierre.</b> Esta propuesta responde a la Solicitud de Cotización del 24 de agosto de 2026 y al Registro de Hallazgos del 25 de agosto de 2026. No ofrece una demostración visual. No incluye pagos ficticios ni seguridad solo de interfaz. El entregable es un MVP operable por usted, con Mercado Pago, en tres semanas.</p>
+  <p style="margin:0">Quedo atento para agendar el kickoff.</p>
+</div>
+
+<div class="sign">
+  <p class="signoff" style="margin:0"><b>Carlos Andrés Angola Berrio</b><br>
+  Implementación de producto · seguridad aplicada y cobro recurrente<br>
+  Revisión del 2 de septiembre de 2026 · Vigencia: 15 días calendario desde esta fecha</p>
+</div>
+
+<p class="footer-note">Documento único solicitado por la propietaria. Las cifras de comisión de Mercado Pago son referenciales (2026) y las confirma su cuenta de vendedor. Los costos de Vercel, Supabase y Resend se pagan en USD al proveedor correspondiente y pueden variar por tipo de cambio y plan.</p>
+
+</body>
+</html>

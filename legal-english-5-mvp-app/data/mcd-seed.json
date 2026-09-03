@@ -1,0 +1,2273 @@
+{
+  "source": {
+    "workbook": "Master_Content_Database_v1.3.81_Reconciled_2026-09-01.xlsx",
+    "version": "v1.3.81",
+    "collection": "LC-001",
+    "status": "OPERATIONAL MASTER CANDIDATE — NOT YET DESIGNATED CURRENT",
+    "importedAt": "2026-09-03"
+  },
+  "categories": [
+    {
+      "id": "CAT-CORP",
+      "name": "Corporate Law"
+    },
+    {
+      "id": "CAT-CONT",
+      "name": "Contracts"
+    },
+    {
+      "id": "CAT-EMP",
+      "name": "Employment Law"
+    }
+  ],
+  "counts": {
+    "terms": 30,
+    "corporateLaw": 10,
+    "contracts": 10,
+    "employmentLaw": 10,
+    "useItWith": 117,
+    "inContext": 30,
+    "quizzes": 30,
+    "quizzesThreeOptions": 12,
+    "quizzesFourOptions": 18,
+    "variants": 8,
+    "published": 0,
+    "audioUs": 0,
+    "audioUk": 0
+  },
+  "terms": [
+    {
+      "id": "CORP-005",
+      "term": "incorporate / incorporation",
+      "definition": "To legally form a company; incorporation is the process of forming it.",
+      "spanishEquivalent": "constituir una sociedad / constitución de una sociedad",
+      "civilLawEquivalent": "constituir una sociedad / constitución de una sociedad",
+      "spanishSpeakerAlert": "Do not translate incorporate as incorporar.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 1,
+      "jurisdictionUS": true,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-002",
+          "expression": "incorporated in Delaware",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-061",
+          "expression": "incorporate a company",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-062",
+          "expression": "state of incorporation",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-005-01",
+        "exampleText": "They incorporated the company in Delaware.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-005-01",
+        "question": "What does incorporation mean?",
+        "options": [
+          "The legal formation of a company.",
+          "A change to a company’s address.",
+          "A company meeting.",
+          "A payment by a company."
+        ],
+        "optionA": "The legal formation of a company.",
+        "optionB": "A change to a company’s address.",
+        "optionC": "A company meeting.",
+        "optionD": "A payment by a company.",
+        "correctOption": "A",
+        "explanation": "Incorporation is the process of legally forming a company.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.61",
+      "sourceLastReviewedAt": "2026-08-29",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "bbb84aa0f95801f84e58de63e96486d9670d6e1daba827f3a368a722cdfef839",
+      "partOfSpeech": "verb / noun",
+      "comparativeLawNote": "Direct terminological equivalent: constituir una sociedad / constitución de una sociedad.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-001",
+      "term": "articles of incorporation",
+      "definition": "The articles of incorporation are filed with the state as part of legally forming the corporation.",
+      "spanishEquivalent": "documento de constitución",
+      "civilLawEquivalent": "documento de constitución",
+      "spanishSpeakerAlert": "",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 2,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": {
+        "id": "TJV-CORP-001-US",
+        "variantTerm": "articles of incorporation / certificate of incorporation",
+        "definition": "A formation document filed with the state when a corporation is legally formed.",
+        "displayOrder": 1
+      },
+      "ukVariant": {
+        "id": "TJV-CORP-001-UK",
+        "variantTerm": "memorandum of association",
+        "definition": "A document connected with legally forming a UK company. It is treated here as a functional counterpart, not as legally identical to the U.S. document.",
+        "displayOrder": 2
+      },
+      "useItWith": [
+        {
+          "id": "UIW-CORP-026",
+          "expression": "file the articles of incorporation",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-063",
+          "expression": "a copy of the articles of incorporation",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-064",
+          "expression": "articles of incorporation filed with the state",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-001-01",
+        "exampleText": "The company filed its articles of incorporation with the state.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-001-01",
+        "question": "What are articles of incorporation?",
+        "options": [
+          "A document filed with the state when a corporation is legally formed.",
+          "A record of company payments.",
+          "A list of employee names.",
+          "A schedule for meetings."
+        ],
+        "optionA": "A document filed with the state when a corporation is legally formed.",
+        "optionB": "A record of company payments.",
+        "optionC": "A list of employee names.",
+        "optionD": "A schedule for meetings.",
+        "correctOption": "A",
+        "explanation": "Articles of incorporation are filed with the state as part of legally forming a corporation.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.61",
+      "sourceLastReviewedAt": "2026-08-29",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "1ba65f199dc314335f1d2ec7b0e1874222c5e39f43dfe169699cf00b010ec3c9",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Functional equivalent: documento de constitución. The U.S. and U.K. documents serve similar formation purposes but are not legally identical.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-012",
+      "term": "shareholder / stockholder",
+      "definition": "A person or organization that owns part of a corporation.",
+      "spanishEquivalent": "accionista",
+      "civilLawEquivalent": "accionista",
+      "spanishSpeakerAlert": "",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 3,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-036",
+          "expression": "shareholder approval",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-037",
+          "expression": "stockholder vote",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-065",
+          "expression": "shareholder rights",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-012-01",
+        "exampleText": "Each shareholder owns part of the corporation.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-012-01",
+        "question": "Who is a shareholder?",
+        "options": [
+          "A person or organization that owns part of a corporation.",
+          "A person who works for the state.",
+          "A company’s customer.",
+          "A person who attends a meeting."
+        ],
+        "optionA": "A person or organization that owns part of a corporation.",
+        "optionB": "A person who works for the state.",
+        "optionC": "A company’s customer.",
+        "optionD": "A person who attends a meeting.",
+        "correctOption": "A",
+        "explanation": "A shareholder owns part of a corporation.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.61",
+      "sourceLastReviewedAt": "2026-08-29",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "98835a1ae271b91410dee3736f7c98c52fae5de27c04b9750c7a943ffe13f069",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Direct terminological equivalent: accionista. Shareholder and stockholder generally name the same owner; stockholder is especially common in U.S. usage.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-002",
+      "term": "board of directors",
+      "definition": "The group that directs a corporation and is elected by its shareholders.",
+      "spanishEquivalent": "junta directiva",
+      "civilLawEquivalent": "junta directiva",
+      "spanishSpeakerAlert": "Serve on the board means be a member of the board. Do not translate it literally as servir al consejo; in this context, it means ser miembro de la junta directiva.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 4,
+      "jurisdictionUS": true,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-027",
+          "expression": "member of the board of directors",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-028",
+          "expression": "board of directors meeting",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-066",
+          "expression": "serve on the board of directors",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-002-01",
+        "exampleText": "The shareholders elected the board of directors.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-002-01",
+        "question": "What is a board of directors?",
+        "options": [
+          "The group that directs a corporation.",
+          "A company’s address.",
+          "A payment made by a company.",
+          "A document filed with the state."
+        ],
+        "optionA": "The group that directs a corporation.",
+        "optionB": "A company’s address.",
+        "optionC": "A payment made by a company.",
+        "optionD": "A document filed with the state.",
+        "correctOption": "A",
+        "explanation": "The board of directors is the group that directs a corporation.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.61",
+      "sourceLastReviewedAt": "2026-08-29",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "a45f5beedc1c25aefba6eaf1f7f7ebb96bf2f1d318c15bac45a1b6cb69fdba35",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "Direct terminological equivalent: junta directiva.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-003",
+      "term": "bylaws",
+      "definition": "The internal rules governing the management and operation of a corporation.",
+      "spanishEquivalent": "estatutos sociales",
+      "civilLawEquivalent": "estatutos sociales",
+      "spanishSpeakerAlert": "Do not translate bylaws as leyes. In adopt the bylaws, adopt means formally approve and put into effect.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 5,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": {
+        "id": "TJV-CORP-003-US",
+        "variantTerm": "bylaws",
+        "definition": "The internal rules governing the management and operation of a corporation.",
+        "displayOrder": 1
+      },
+      "ukVariant": {
+        "id": "TJV-CORP-003-UK",
+        "variantTerm": "articles of association",
+        "definition": "The internal rules governing the management and operation of a UK company.",
+        "displayOrder": 2
+      },
+      "useItWith": [
+        {
+          "id": "UIW-CORP-029",
+          "expression": "adopt the bylaws",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-030",
+          "expression": "follow the bylaws",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-067",
+          "expression": "under the bylaws",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-003-01",
+        "exampleText": "The company follows the rules in its bylaws.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-003-01",
+        "question": "What are bylaws?",
+        "options": [
+          "A corporation’s internal rules.",
+          "A record of company payments.",
+          "A list of employee names.",
+          "A schedule for meetings."
+        ],
+        "optionA": "A corporation’s internal rules.",
+        "optionB": "A record of company payments.",
+        "optionC": "A list of employee names.",
+        "optionD": "A schedule for meetings.",
+        "correctOption": "A",
+        "explanation": "Bylaws are the internal rules that govern a corporation.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.61",
+      "sourceLastReviewedAt": "2026-08-29",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "b49e4ec326af712abcab8384ee7bab7ef9c0990358f56db7635fbca226cba4a3",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Direct terminological equivalent: estatutos sociales.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-007",
+      "term": "officer",
+      "definition": "A person appointed by a corporation’s board of directors to manage its day-to-day operations.",
+      "spanishEquivalent": "administrador",
+      "civilLawEquivalent": "administrador",
+      "spanishSpeakerAlert": "In corporate context, officer does not mean oficial.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 6,
+      "jurisdictionUS": true,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-034",
+          "expression": "corporate officer",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-035",
+          "expression": "appoint an officer",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-068",
+          "expression": "remove an officer",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-007-01",
+        "exampleText": "The board appointed a new officer.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-007-01",
+        "question": "What does a corporate officer do?",
+        "options": [
+          "Helps manage the company’s daily operations.",
+          "Files every company document.",
+          "Owns every part of the company.",
+          "Sets the company’s address."
+        ],
+        "optionA": "Helps manage the company’s daily operations.",
+        "optionB": "Files every company document.",
+        "optionC": "Owns every part of the company.",
+        "optionD": "Sets the company’s address.",
+        "correctOption": "A",
+        "explanation": "A corporate officer helps manage the company’s daily operations.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.76",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "1b40c2d263ad4f5f21db9e76bf22958ae8294cab685494f441fbe9ee8d25f31d",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Functional equivalent: administrador. In Colombia, administrador may include more people than U.S. officer.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-010",
+      "term": "resolution",
+      "definition": "A formal decision or action adopted by a corporation’s board of directors or shareholders.",
+      "spanishEquivalent": "decisión del órgano social",
+      "civilLawEquivalent": "decisión del órgano social",
+      "spanishSpeakerAlert": "Do not automatically translate corporate resolution as resolución. In Colombian corporate law, decisión del órgano social may be the appropriate functional equivalent, depending on context.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 7,
+      "jurisdictionUS": true,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-005",
+          "expression": "board resolution",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-006",
+          "expression": "written resolution",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-007",
+          "expression": "adopt a resolution",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-010-01",
+        "exampleText": "The board adopted a resolution.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-010-01",
+        "question": "What is a corporate resolution?",
+        "options": [
+          "A formal decision adopted by the board or shareholders.",
+          "A person who manages daily operations.",
+          "A document used to form a corporation.",
+          "A part owned by a shareholder."
+        ],
+        "optionA": "A formal decision adopted by the board or shareholders.",
+        "optionB": "A person who manages daily operations.",
+        "optionC": "A document used to form a corporation.",
+        "optionD": "A part owned by a shareholder.",
+        "correctOption": "A",
+        "explanation": "A corporate resolution is a formal decision adopted by the board or shareholders.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.38",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "597cb3f8998586a97ecde5305c9c37cb684730d8c359865e8064cb0eebba38da",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Functional equivalent. Board resolution may be rendered as decisión de la junta directiva; shareholder resolution as decisión de la asamblea de accionistas.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-011",
+      "term": "share issuance",
+      "definition": "The process by which a company provides shares to a person or organization, usually in exchange for money or other value.",
+      "spanishEquivalent": "emisión de acciones",
+      "civilLawEquivalent": "emisión de acciones",
+      "spanishSpeakerAlert": "Issuance is what the company does when it creates and offers shares; it is not the buyer’s act.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 8,
+      "jurisdictionUS": true,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-008",
+          "expression": "share issuance",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-009",
+          "expression": "approve a share issuance",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-010",
+          "expression": "new share issuance",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-011-01",
+        "exampleText": "The board approved the share issuance.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-011-01",
+        "question": "What is share issuance?",
+        "options": [
+          "The process by which a company provides shares to a person or organization.",
+          "A decision to elect the board.",
+          "A document used to form the company.",
+          "A meeting of company officers."
+        ],
+        "optionA": "The process by which a company provides shares to a person or organization.",
+        "optionB": "A decision to elect the board.",
+        "optionC": "A document used to form the company.",
+        "optionD": "A meeting of company officers.",
+        "correctOption": "A",
+        "explanation": "Share issuance is the process by which a company provides shares to a person or organization, usually in exchange for money or other value.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.70",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "e0e1eddee69d5049de96a16a630dacf396b14007443e70946cecfe095817bb2e",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "Direct terminological equivalent: emisión de acciones.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-018",
+      "term": "common stock / ordinary shares",
+      "definition": "Shares that generally allow their owners to vote and receive part of the company’s profits.",
+      "spanishEquivalent": "acciones ordinarias",
+      "civilLawEquivalent": "acciones ordinarias",
+      "spanishSpeakerAlert": "Do not translate common stock literally as acciones comunes. In Colombian corporate law, acciones ordinarias is the relevant functional equivalent.",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 9,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": {
+        "id": "TJV-CORP-018-US",
+        "variantTerm": "common stock",
+        "definition": "Shares that generally allow their owners to vote and receive part of the company’s profits.",
+        "displayOrder": 1
+      },
+      "ukVariant": {
+        "id": "TJV-CORP-018-UK",
+        "variantTerm": "ordinary shares",
+        "definition": "Shares that generally allow their owners to vote and receive part of the company’s profits.",
+        "displayOrder": 2
+      },
+      "useItWith": [
+        {
+          "id": "UIW-CORP-059",
+          "expression": "shares of common stock",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-060",
+          "expression": "holders of common stock",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-069",
+          "expression": "issue ordinary shares",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-018-01",
+        "exampleText": "Common stock generally allows shareholders to vote on company decisions.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-018-01",
+        "question": "Which statement about common stock is correct?",
+        "options": [
+          "It generally allows its owners to vote.",
+          "It is a company meeting.",
+          "It is a company address.",
+          "It is the board of directors."
+        ],
+        "optionA": "It generally allows its owners to vote.",
+        "optionB": "It is a company meeting.",
+        "optionC": "It is a company address.",
+        "optionD": "It is the board of directors.",
+        "correctOption": "A",
+        "explanation": "Common stock generally allows its owners to vote.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.61",
+      "sourceLastReviewedAt": "2026-08-29",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "cb090bf13da7ac851e0f9c5d2f3f6c1c40e1e457ddb9f68fc98b54f9f44df340",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "Functional equivalent: acciones ordinarias. US: common stock. UK: ordinary shares. The exact rights may differ by company and applicable law.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CORP-006",
+      "term": "merger",
+      "definition": "A process in which two companies combine and one of them continues to exist.",
+      "spanishEquivalent": "fusión por absorción",
+      "civilLawEquivalent": "fusión por absorción",
+      "spanishSpeakerAlert": "",
+      "category": "Corporate Law",
+      "topic": "Corporate Law",
+      "displayOrder": 10,
+      "jurisdictionUS": true,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CORP-031",
+          "expression": "planned merger",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CORP-032",
+          "expression": "approve a merger",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CORP-033",
+          "expression": "complete a merger",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CORP-006-01",
+        "exampleText": "The two companies completed the merger last year.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CORP-006-01",
+        "question": "What happens in a merger?",
+        "options": [
+          "Two companies combine.",
+          "A company changes its name.",
+          "A company holds a meeting.",
+          "A company changes its address."
+        ],
+        "optionA": "Two companies combine.",
+        "optionB": "A company changes its name.",
+        "optionC": "A company holds a meeting.",
+        "optionD": "A company changes its address.",
+        "correctOption": "A",
+        "explanation": "In a merger, two companies combine and one continues to exist.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.38",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "8a7eb6674085969d798f966644f56f8dc8af12b16cd4174ecd176d696ccf487d",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Functional equivalent: fusión por absorción. In this type of combination, one company continues and the other does not.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-001",
+      "term": "agreement",
+      "definition": "A shared understanding between two or more people or organizations about what they will do.",
+      "spanishEquivalent": "acuerdo; convenio, según el contexto",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Do not say “celebrate an agreement.” Use “enter into an agreement” or “sign an agreement.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 11,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-001-01",
+          "expression": "enter into an agreement",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-001-02",
+          "expression": "sign an agreement",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-001-03",
+          "expression": "written agreement",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-001-01",
+        "exampleText": "The two companies entered into an agreement to share the cost of the project.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-001-01",
+        "question": "What happened in this sentence? The two companies entered into an agreement to share the cost of the project.",
+        "options": [
+          "They formally agreed to share the cost.",
+          "One company agreed to pay the entire cost.",
+          "They stopped discussing the project.",
+          "They cancelled the project."
+        ],
+        "optionA": "They formally agreed to share the cost.",
+        "optionB": "One company agreed to pay the entire cost.",
+        "optionC": "They stopped discussing the project.",
+        "optionD": "They cancelled the project.",
+        "correctOption": "A",
+        "explanation": "“Entered into an agreement” means that the companies formally agreed to do something.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.40",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "c4703ec837f60a845661ea77c171c67d1afba753b9a138751c80fc54476e22b0",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-002",
+      "term": "party",
+      "definition": "A person or organization that enters into an agreement.",
+      "spanishEquivalent": "parte",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "In legal English, “party” means “parte,” not “fiesta.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 12,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-002-01",
+          "expression": "party to the agreement",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-002-02",
+          "expression": "each party",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-002-03",
+          "expression": "both parties",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-002-04",
+          "expression": "the other party",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-002-01",
+        "exampleText": "Each party signed the agreement.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-002-01",
+        "question": "Which sentence uses “party” correctly?",
+        "options": [
+          "Each party to the agreement signed it.",
+          "Each party of the agreement signed it.",
+          "Each party the agreement signed it.",
+          "Each part to the agreement signed it."
+        ],
+        "optionA": "Each party to the agreement signed it.",
+        "optionB": "Each party of the agreement signed it.",
+        "optionC": "Each party the agreement signed it.",
+        "optionD": "Each part to the agreement signed it.",
+        "correctOption": "A",
+        "explanation": "A person or organization that enters into an agreement is a “party to the agreement.” Use “to,” not “of.”",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.41",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "b5e952d05f71e8d2c63b73f3806e55cad171544bf57824334d052f48f8cd1bca",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-003",
+      "term": "contract",
+      "definition": "An agreement that the law recognizes and requires the parties to follow.",
+      "spanishEquivalent": "contrato",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Do not say “celebrate a contract.” Use “enter into a contract.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 13,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-003-01",
+          "expression": "enter into a contract",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-003-02",
+          "expression": "sign a contract",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-003-03",
+          "expression": "written contract",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-003-04",
+          "expression": "contract between the parties",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-003-01",
+        "exampleText": "The parties entered into a contract to provide monthly services.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-003-01",
+        "question": "Which expression is correct?",
+        "options": [
+          "celebrate a contract",
+          "enter into a contract",
+          "celebrate into a contract"
+        ],
+        "optionA": "celebrate a contract",
+        "optionB": "enter into a contract",
+        "optionC": "celebrate into a contract",
+        "optionD": "",
+        "correctOption": "B",
+        "explanation": "Use “enter into a contract,” not “celebrate a contract.”",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.42",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "5478ae4201d93071291f739e916d381de495f59853d5653552e1d160048a5b10",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-004",
+      "term": "binding",
+      "definition": "If an agreement is binding, the law requires the parties to follow it.",
+      "spanishEquivalent": "vinculante",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Use “binding on the parties,” not “binding for the parties.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 14,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-004-01",
+          "expression": "legally binding",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-004-02",
+          "expression": "binding agreement",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-004-03",
+          "expression": "binding contract",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-004-04",
+          "expression": "binding on both parties",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-004-01",
+        "exampleText": "The contract is binding on both parties.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-004-01",
+        "question": "Which sentence means that the law requires both parties to follow the contract?",
+        "options": [
+          "The contract is binding on both parties.",
+          "The parties signed a written contract.",
+          "The parties discussed the contract."
+        ],
+        "optionA": "The contract is binding on both parties.",
+        "optionB": "The parties signed a written contract.",
+        "optionC": "The parties discussed the contract.",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "If a contract is “binding,” the law requires the parties to follow it.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.43",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "ac4f71d154244d21da36f0f6a276b4ff8f83ab27981c59088156008f298381ee",
+      "partOfSpeech": "adjective",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-005",
+      "term": "consideration",
+      "definition": "Something that a party gives or promises in exchange for something from the other party.",
+      "spanishEquivalent": "contraprestación",
+      "civilLawEquivalent": "No existe un equivalente funcional exacto en el derecho civil colombiano. Consideration es un requisito característico de los contratos bajo el common law.",
+      "spanishSpeakerAlert": "In contract law, “consideration” does not mean “consideración.” It generally means “contraprestación.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 15,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-005-01",
+          "expression": "in consideration of",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-005-02",
+          "expression": "sufficient consideration",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-005-03",
+          "expression": "lack of consideration",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-005-04",
+          "expression": "consideration for the agreement",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-005-01",
+        "exampleText": "One company paid $1,000 in consideration for the services provided by the other company.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-005-01",
+        "question": "Company A paid $1,000, and Company B provided services in return. What is the “consideration”?",
+        "options": [
+          "Only the written contract",
+          "The $1,000 and the services exchanged",
+          "The names of the two companies",
+          "The date of the agreement"
+        ],
+        "optionA": "Only the written contract",
+        "optionB": "The $1,000 and the services exchanged",
+        "optionC": "The names of the two companies",
+        "optionD": "The date of the agreement",
+        "correctOption": "B",
+        "explanation": "“Consideration” is what the parties give or promise in exchange for what they receive.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.44",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "ecbcac0152ea34d45407dea75043d99c28eee8c52679b62f74b1dbbd541e4c1f",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-006",
+      "term": "obligation",
+      "definition": "Something that a party is required to do under a contract.",
+      "spanishEquivalent": "obligación",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Do not say “comply an obligation.” If you use “comply,” it requires “with.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 16,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-006-01",
+          "expression": "contractual obligation",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-006-02",
+          "expression": "fulfill an obligation",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-006-03",
+          "expression": "fulfil an obligation",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-006-01",
+        "exampleText": "The contract requires each party to fulfill its obligations.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-006-01",
+        "question": "Complete the sentence: Each party must _____ its obligations under the contract.",
+        "options": [
+          "fulfill",
+          "comply",
+          "fulfill with",
+          "obey to"
+        ],
+        "optionA": "fulfill",
+        "optionB": "comply",
+        "optionC": "fulfill with",
+        "optionD": "obey to",
+        "correctOption": "A",
+        "explanation": "Use “fulfill an obligation” in US English. The UK spelling is “fulfil an obligation.” Do not use “comply” without “with.”",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.52",
+      "sourceLastReviewedAt": "2026-08-27",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "0ad07a52c41defee6d396b5cd9f8feb327e59575e169433b97f37aac78e10e56",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-007",
+      "term": "provision",
+      "definition": "A rule, requirement, or other statement contained in a contract.",
+      "spanishEquivalent": "disposición contractual",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "In contracts, “provision” does not mean “provisión.” It usually means “disposición contractual.” Do not translate “disposición contractual” as “contractual disposition”; use “contract provision.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 17,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-007-03",
+          "expression": "include a provision",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-007-04",
+          "expression": "under this provision",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-007-05",
+          "expression": "specific provision",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-007-02",
+          "expression": "provision of the contract",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-007-01",
+        "exampleText": "The contract includes a provision about monthly payments.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-007-01",
+        "question": "What does “provision” mean in this sentence? The contract includes a provision about monthly payments.",
+        "options": [
+          "A rule or statement contained in the contract",
+          "A supply of office materials",
+          "A payment made before signing",
+          "A discussion between the parties"
+        ],
+        "optionA": "A rule or statement contained in the contract",
+        "optionB": "A supply of office materials",
+        "optionC": "A payment made before signing",
+        "optionD": "A discussion between the parties",
+        "correctOption": "A",
+        "explanation": "In a contract, a “provision” is a rule, requirement, or other statement contained in the document.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.74",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "a4f96449455f688b22c6d4ff05393a39bfc06e38e235c1dc00cd62e304c9fa86",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-008",
+      "term": "clause",
+      "definition": "A provision in a contract.",
+      "spanishEquivalent": "cláusula",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Do not automatically translate “cláusula contractual” as “contractual clause.” In many contexts, “contract clause” or simply “clause” is more natural.",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 18,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-008-01",
+          "expression": "contract clause",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-008-02",
+          "expression": "specific clause",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-008-03",
+          "expression": "include a clause",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-008-04",
+          "expression": "under this clause",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-CON-008-05",
+          "expression": "clause in the contract",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-008-01",
+        "exampleText": "The parties included a clause about monthly payments.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-008-01",
+        "question": "Which expression is natural in legal English?",
+        "options": [
+          "a contract clause",
+          "a contractual disposition",
+          "a clause of monthly payments",
+          "a clause about to monthly payments"
+        ],
+        "optionA": "a contract clause",
+        "optionB": "a contractual disposition",
+        "optionC": "a clause of monthly payments",
+        "optionD": "a clause about to monthly payments",
+        "correctOption": "A",
+        "explanation": "A provision contained in a contract may be called a “contract clause” or simply a “clause.”",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.71",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "41e88d0e56bf2d5ee5817d590c5bf247b5588578337cd01dbad753ec29c76d00",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "“Clause” and “provision” are often used interchangeably. However, “provision” is the broader and more neutral term when referring to a rule or requirement contained in a contract.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-009",
+      "term": "assignment",
+      "definition": "The transfer of a right or benefit under a contract from one party to another person.",
+      "spanishEquivalent": "cesión",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "In contracts, “assignment” does not mean “asignación” or “tarea.” It usually means “cesión.” Do not translate “cesión” as “cession”; use “assignment.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 19,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-009-01",
+          "expression": "assignment of rights",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-009-02",
+          "expression": "permit assignment",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-009-03",
+          "expression": "prohibit assignment",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-009-04",
+          "expression": "consent to assignment",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-CON-009-05",
+          "expression": "non-assignment clause",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-009-01",
+        "exampleText": "The contract permits a party to assign its payment rights to another company.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-009-01",
+        "question": "What does “assignment” mean in this sentence? The contract permits the assignment of payment rights.",
+        "options": [
+          "The transfer of the payment rights to another person",
+          "The calculation of the monthly payment",
+          "A task that one party must complete",
+          "A clause requiring immediate payment"
+        ],
+        "optionA": "The transfer of the payment rights to another person",
+        "optionB": "The calculation of the monthly payment",
+        "optionC": "A task that one party must complete",
+        "optionD": "A clause requiring immediate payment",
+        "correctOption": "A",
+        "explanation": "In contracts, an “assignment” is the transfer of a right or benefit from one person to another.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.49",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "a6025441a3a1cc301ebff23f085a7f140e1c13e9ce48aedc4a3af40beb7cef5d",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "Use “assignment of rights” when referring only to rights. “Assignment of the contract” may also involve obligations, depending on the wording and the applicable law.",
+      "pronunciation": ""
+    },
+    {
+      "id": "CON-010",
+      "term": "breach",
+      "definition": "As a verb, to fail to do what a contract requires. As a noun, a failure to do what a contract requires.",
+      "spanishEquivalent": "incumplir; incumplimiento",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "As a verb, “breach” takes a direct object: use “breach the contract,” not “breach with the contract.” As a noun, use “breach of contract.”",
+      "category": "Contracts",
+      "topic": "Contract Fundamentals",
+      "displayOrder": 20,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-CON-010-01",
+          "expression": "breach the contract",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-CON-010-02",
+          "expression": "breach an obligation",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-CON-010-03",
+          "expression": "breach a provision",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-CON-010-04",
+          "expression": "breach of contract",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-CON-010-05",
+          "expression": "material breach",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-CON-010-01",
+        "exampleText": "A party breaches the contract if it does not make the required monthly payment.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-CON-010-01",
+        "question": "Which sentence uses “breach” correctly as a verb?",
+        "options": [
+          "The party breaches the contract.",
+          "The party breaches with the contract.",
+          "The party makes the contract breach.",
+          "The party breaches of contract."
+        ],
+        "optionA": "The party breaches the contract.",
+        "optionB": "The party breaches with the contract.",
+        "optionC": "The party makes the contract breach.",
+        "optionD": "The party breaches of contract.",
+        "correctOption": "A",
+        "explanation": "As a verb, “breach” is followed directly by its object: “breach the contract.” As a noun, use “breach of contract.”",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.50",
+      "sourceLastReviewedAt": "2026-08-26",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "eb0800cd5ac5237a8124d0fe91534c0feb631deb21f4cc0dcc7b2af71a29cb67",
+      "partOfSpeech": "verb; noun",
+      "comparativeLawNote": "A “material breach” is a breach of contract that is serious enough to undermine the entire agreement.",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-001",
+      "term": "employer",
+      "definition": "A person or organization that hires people to work for them.",
+      "spanishEquivalent": "empleador",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Use “employer” when referring to the person or organization that hires people. Do not automatically use “company”: an employer may also be a person.",
+      "category": "Employment Law",
+      "topic": "Employment Relationship",
+      "displayOrder": 21,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-001-01",
+          "expression": "current employer",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-001-02",
+          "expression": "former employer",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-001-03",
+          "expression": "prospective employer",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-001-04",
+          "expression": "employer obligations",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-001-01",
+        "exampleText": "The employer provides training and safety equipment.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-001-01",
+        "question": "Who is the employer in this situation? A business hires ten people to work in its new office.",
+        "options": [
+          "The business",
+          "The ten people",
+          "The customers"
+        ],
+        "optionA": "The business",
+        "optionB": "The ten people",
+        "optionC": "The customers",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "The business is the “employer” because it hires people to work for it.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.54",
+      "sourceLastReviewedAt": "2026-08-27",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "f4a4d6ed97bc5c519e2d572a2f7ca6c6186b0d3558da3cbdbc44347e862fab7c",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-002",
+      "term": "employee",
+      "definition": "A person who works for an employer.",
+      "spanishEquivalent": "empleado; trabajador, según el contexto",
+      "civilLawEquivalent": "",
+      "spanishSpeakerAlert": "Do not confuse “employee” with “employer.” The employee works for the employer.",
+      "category": "Employment Law",
+      "topic": "Employment Relationship",
+      "displayOrder": 22,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-002-01",
+          "expression": "hire an employee",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-002-02",
+          "expression": "current employee",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-002-03",
+          "expression": "former employee",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-002-04",
+          "expression": "full-time employee",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-002-05",
+          "expression": "part-time employee",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-002-01",
+        "exampleText": "The employer hired Ana as a full-time employee.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-002-01",
+        "question": "Who is the employee in this situation? A restaurant hires Ana to work in its kitchen.",
+        "options": [
+          "Ana",
+          "The restaurant",
+          "A customer"
+        ],
+        "optionA": "Ana",
+        "optionB": "The restaurant",
+        "optionC": "A customer",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "Ana is the “employee” because Ana works for the restaurant (the “employer”).",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.78",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "13469f2e82a25dc32abf6d5af710d36435c1b3783ca8f9054edc0fd4cdb8850d",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-003",
+      "term": "employment agreement",
+      "definition": "An agreement between an employer and an employee about the work the employee will do and the conditions that apply.",
+      "spanishEquivalent": "contrato de trabajo; contrato laboral",
+      "civilLawEquivalent": "En Colombia, el equivalente funcional es “contrato de trabajo”. La legislación colombiana reconoce contratos de trabajo verbales y escritos; por tanto, “employment agreement” no debe entenderse automáticamente como un documento escrito.",
+      "spanishSpeakerAlert": "Do not automatically translate “contrato de trabajo” as “labor contract.” For an individual employment relationship, use “employment agreement” or “employment contract” in US English; “contract of employment” is common in UK English. “Labor contract” may refer to a collective bargaining agreement.",
+      "category": "Employment Law",
+      "topic": "Employment Relationship",
+      "displayOrder": 23,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": {
+        "id": "TJV-EMP-003-UK",
+        "variantTerm": "contract of employment",
+        "definition": "The UK term for an agreement under which an employee works for an employer; it may be express or implied and oral or written.",
+        "displayOrder": 1
+      },
+      "useItWith": [
+        {
+          "id": "UIW-EMP-003-01",
+          "expression": "enter into an employment agreement",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-003-02",
+          "expression": "sign an employment agreement",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-003-03",
+          "expression": "written employment agreement",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-003-04",
+          "expression": "terms of the employment agreement",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-003-05",
+          "expression": "under the employment agreement",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-003-01",
+        "exampleText": "The employment agreement covers the employee’s duties, working hours, and pay.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-003-01",
+        "question": "Which option describes an employment agreement?",
+        "options": [
+          "An agreement between an employer and an employee about the work",
+          "A customer’s order",
+          "Notes from a company meeting"
+        ],
+        "optionA": "An agreement between an employer and an employee about the work",
+        "optionB": "A customer’s order",
+        "optionC": "Notes from a company meeting",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "An “employment agreement” concerns the work relationship between an employer and an employee.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.67",
+      "sourceLastReviewedAt": "2026-08-30",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "a0b163ab97a6645038c9df75148672e837675084295094c80587185a4e8a04b9",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-004",
+      "term": "independent contractor",
+      "definition": "A person or business that performs work for another person or organization but operates independently rather than as an employee.",
+      "spanishEquivalent": "contratista independiente",
+      "civilLawEquivalent": "En Colombia, “contratista independiente” es el equivalente funcional. Sin embargo, si existen los elementos legales de una relación laboral, el nombre utilizado en el acuerdo no determina la clasificación.",
+      "spanishSpeakerAlert": "Do not use “independent contractor” and “employee” interchangeably. The legal classification depends on the facts and the applicable law, not only on the title of the agreement.",
+      "category": "Employment Law",
+      "topic": "Employment Relationship",
+      "displayOrder": 24,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-004-01",
+          "expression": "hire an independent contractor",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-004-02",
+          "expression": "work as an independent contractor",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-004-03",
+          "expression": "independent contractor agreement",
+          "displayOrder": 3
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-004-01",
+        "exampleText": "Luis works as an independent contractor for several companies.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-004-01",
+        "question": "Which term best describes Luis? Luis works independently on projects for several companies.",
+        "options": [
+          "An independent contractor",
+          "An employer",
+          "An employee"
+        ],
+        "optionA": "An independent contractor",
+        "optionB": "An employer",
+        "optionC": "An employee",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "Luis operates independently and completes projects for several companies, so “independent contractor” is the best answer.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.80",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "d3d8479414daffd346e6d663e48358315da4dbf21273582b243a7e191183db97",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-005",
+      "term": "wages",
+      "definition": "Money that an employer pays an employee for work.",
+      "spanishEquivalent": "salario; remuneración",
+      "civilLawEquivalent": "En Colombia, “salario” es el equivalente funcional principal. Sin embargo, no todo pago recibido por un employee constituye salario; debe analizarse si remunera directamente el trabajo.",
+      "spanishSpeakerAlert": "“Wages” normally takes a plural verb: use “wages are,” not “wages is.”",
+      "category": "Employment Law",
+      "topic": "Compensation",
+      "displayOrder": 25,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-005-01",
+          "expression": "pay wages",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-005-02",
+          "expression": "earn wages",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-005-03",
+          "expression": "receive wages",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-005-04",
+          "expression": "unpaid wages",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-005-05",
+          "expression": "total wages",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-005-01",
+        "exampleText": "The employer pays wages every Friday.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-005-01",
+        "question": "Which expression is natural?",
+        "options": [
+          "pay wages",
+          "make wages",
+          "do wages"
+        ],
+        "optionA": "pay wages",
+        "optionB": "make wages",
+        "optionC": "do wages",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "Use “pay wages” when an employer gives an employee money for work.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.58",
+      "sourceLastReviewedAt": "2026-08-27",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "8224abd8916fccd87f049b4b9f396bbefb3e5fb217e7b4874016c3df5d189c24",
+      "partOfSpeech": "plural noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-006",
+      "term": "minimum wage",
+      "definition": "The lowest wage rate that the law requires an employer to pay certain employees.",
+      "spanishEquivalent": "salario mínimo",
+      "civilLawEquivalent": "En Colombia, el equivalente funcional es “salario mínimo legal mensual vigente” —SMLMV—. En Estados Unidos, el “minimum wage” suele expresarse por hora y puede ser federal, estatal o local.",
+      "spanishSpeakerAlert": "Use “minimum wage,” not “minimum salary” or “minimal wage.” Although “wages” is normally plural when referring to earnings, “wage” is singular in the fixed expression “minimum wage.”",
+      "category": "Employment Law",
+      "topic": "Compensation",
+      "displayOrder": 26,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-006-01",
+          "expression": "federal minimum wage",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-006-02",
+          "expression": "state minimum wage",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-006-03",
+          "expression": "local minimum wage",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-006-04",
+          "expression": "applicable minimum wage",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-006-05",
+          "expression": "pay the minimum wage",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-006-01",
+        "exampleText": "The employer must pay the applicable minimum wage.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-006-01",
+        "question": "Which expression is correct for “salario mínimo”?",
+        "options": [
+          "minimum wage",
+          "minimum salary",
+          "minimal wage"
+        ],
+        "optionA": "minimum wage",
+        "optionB": "minimum salary",
+        "optionC": "minimal wage",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "“Minimum wage” is the fixed expression for the lowest wage rate required by law. Use singular “wage,” not “wages,” in this expression.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.59",
+      "sourceLastReviewedAt": "2026-08-27",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "e6558f2c2e97c9b5aa96d99daa5718e5076444e07adb5ec47c43d76b7f159f5a",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-007",
+      "term": "overtime",
+      "definition": "Time that an employee works beyond regular working hours.",
+      "spanishEquivalent": "horas extras",
+      "civilLawEquivalent": "In Colombia, “horas extras” means work beyond the ordinary working day or the maximum working hours established by law. In the United States, federal law generally calculates overtime by the workweek, but not every employee qualifies for overtime pay.",
+      "spanishSpeakerAlert": "Do not use “overtimes” or “make overtime.” “Overtime” is uncountable; use “work overtime.”",
+      "category": "Employment Law",
+      "topic": "Compensation",
+      "displayOrder": 27,
+      "jurisdictionUS": false,
+      "jurisdictionUK": false,
+      "jurisdiction": "US",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-007-01",
+          "expression": "work overtime",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-007-02",
+          "expression": "overtime hours",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-007-03",
+          "expression": "overtime pay",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-007-04",
+          "expression": "overtime rate",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-007-05",
+          "expression": "pay overtime",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-007-01",
+        "exampleText": "The employee worked overtime and received overtime pay.",
+        "jurisdiction": "",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-007-01",
+        "question": "Which sentence is correct?",
+        "options": [
+          "The employee worked overtime.",
+          "The employee made overtime.",
+          "The employee worked overtimes."
+        ],
+        "optionA": "The employee worked overtime.",
+        "optionB": "The employee made overtime.",
+        "optionC": "The employee worked overtimes.",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "“Overtime” is uncountable. Use “work overtime,” not “make overtime” or “work overtimes.”",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.60",
+      "sourceLastReviewedAt": "2026-08-27",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "4956213d86d24e259a30c3d52c5daf24d549052f478f501713e0ac30fb0d5407",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-008",
+      "term": "discrimination",
+      "definition": "Unfavorable treatment of an applicant or employee because of a personal characteristic protected by applicable law.",
+      "spanishEquivalent": "discriminación laboral",
+      "civilLawEquivalent": "discriminación laboral",
+      "spanishSpeakerAlert": "Discrimination does not mean every difference in treatment. In employment law, it generally refers to unfavorable treatment because of a characteristic protected by applicable law.",
+      "category": "Employment Law",
+      "topic": "Workplace Protections",
+      "displayOrder": 28,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-008-01",
+          "expression": "prohibit discrimination",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-008-02",
+          "expression": "experience discrimination",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-008-03",
+          "expression": "discrimination against an employee",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-008-04",
+          "expression": "discrimination based on race",
+          "displayOrder": 4
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-008-01",
+        "exampleText": "The employee alleged discrimination after learning that the employer paid them lower wages because of their race.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-008-01",
+        "question": "Which situation may constitute workplace discrimination?",
+        "options": [
+          "An employee works overtime.",
+          "An employer pays an employee lower wages because of their race.",
+          "An employee requests higher wages."
+        ],
+        "optionA": "An employee works overtime.",
+        "optionB": "An employer pays an employee lower wages because of their race.",
+        "optionC": "An employee requests higher wages.",
+        "optionD": "",
+        "correctOption": "B",
+        "explanation": "Paying an employee lower wages because of a characteristic protected by applicable law may constitute workplace discrimination.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.60",
+      "sourceLastReviewedAt": "2026-08-28",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "8a01e5b32bdd38547734a0b58d160bfbcef70aa1dd2a29ed016796acb099c8ba",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "U.S. and Colombian law both prohibit specified forms of workplace discrimination, but the protected characteristics, legal tests, procedures, and remedies are not necessarily identical.",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-009",
+      "term": "workplace harassment",
+      "definition": "Unwanted behavior toward a person at work that causes mental or emotional suffering, such as repeated unwanted contact without a reasonable purpose, insults, threats, touching, or offensive language.",
+      "spanishEquivalent": "acoso laboral",
+      "civilLawEquivalent": "acoso laboral",
+      "spanishSpeakerAlert": "Translate acoso laboral as workplace harassment, not labor harassment. An unpleasant comment or workplace disagreement does not automatically meet the legal threshold for harassment.",
+      "category": "Employment Law",
+      "topic": "Workplace Protections",
+      "displayOrder": 29,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": null,
+      "useItWith": [
+        {
+          "id": "UIW-EMP-009-01",
+          "expression": "report workplace harassment",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-009-02",
+          "expression": "experience workplace harassment",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-009-03",
+          "expression": "workplace harassment complaint",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-009-04",
+          "expression": "workplace harassment policy",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-009-05",
+          "expression": "investigate workplace harassment",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-009-01",
+        "exampleText": "The employee reported workplace harassment after a supervisor repeatedly made humiliating comments about them.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-009-01",
+        "question": "Which situation may constitute workplace harassment?",
+        "options": [
+          "A supervisor gives an employee neutral performance feedback.",
+          "A supervisor repeatedly humiliates an employee at work.",
+          "An employee requests time off."
+        ],
+        "optionA": "A supervisor gives an employee neutral performance feedback.",
+        "optionB": "A supervisor repeatedly humiliates an employee at work.",
+        "optionC": "An employee requests time off.",
+        "optionD": "",
+        "correctOption": "B",
+        "explanation": "Repeated humiliating conduct may constitute workplace harassment. Neutral performance feedback does not automatically constitute harassment.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.72",
+      "sourceLastReviewedAt": "2026-09-01",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "89b903413c5969eb68fd7f4c90bf55748b1625177f7c8522e18ec126846d1165",
+      "partOfSpeech": "noun phrase",
+      "comparativeLawNote": "Under U.S. federal discrimination law, unlawful harassment generally must be connected to a legally protected characteristic and meet the applicable severity or frequency threshold. Colombia’s acoso laboral under Ley 1010 de 2006 covers persistent and demonstrable workplace conduct under its own statutory requirements. The concepts are functionally related but not legally identical.",
+      "pronunciation": ""
+    },
+    {
+      "id": "EMP-010",
+      "term": "retaliation",
+      "definition": "Unfavorable action taken against an applicant or employee because they reported discrimination or workplace harassment, participated in an investigation, or exercised another legally protected workplace right.",
+      "spanishEquivalent": "represalia",
+      "civilLawEquivalent": "represalia laboral",
+      "spanishSpeakerAlert": "Translate retaliation as represalia, not retaliación. The verb pattern is retaliate against someone, not retaliate to someone.",
+      "category": "Employment Law",
+      "topic": "Workplace Protections",
+      "displayOrder": 30,
+      "jurisdictionUS": true,
+      "jurisdictionUK": true,
+      "jurisdiction": "US/UK",
+      "audioUsPath": "",
+      "audioUkPath": "",
+      "usVariant": null,
+      "ukVariant": {
+        "id": "TJV-EMP-010-UK",
+        "variantTerm": "victimisation",
+        "definition": "Unfavorable treatment of a person because they performed a protected act, such as making or supporting a discrimination complaint.",
+        "displayOrder": 1
+      },
+      "useItWith": [
+        {
+          "id": "UIW-EMP-010-01",
+          "expression": "workplace retaliation",
+          "displayOrder": 1
+        },
+        {
+          "id": "UIW-EMP-010-02",
+          "expression": "retaliation against an employee",
+          "displayOrder": 2
+        },
+        {
+          "id": "UIW-EMP-010-03",
+          "expression": "retaliation claim",
+          "displayOrder": 3
+        },
+        {
+          "id": "UIW-EMP-010-04",
+          "expression": "protection from retaliation",
+          "displayOrder": 4
+        },
+        {
+          "id": "UIW-EMP-010-05",
+          "expression": "report retaliation",
+          "displayOrder": 5
+        }
+      ],
+      "inContext": {
+        "id": "CTX-EMP-010-01",
+        "exampleText": "The employee claimed retaliation after the employer reduced their hours because they had reported workplace harassment.",
+        "jurisdiction": "US",
+        "displayOrder": 1
+      },
+      "quiz": {
+        "id": "QUIZ-EMP-010-01",
+        "question": "Which situation may constitute retaliation?",
+        "options": [
+          "An employer reduces an employee’s hours because they reported workplace harassment.",
+          "An employee requests a different schedule.",
+          "A supervisor provides neutral performance feedback."
+        ],
+        "optionA": "An employer reduces an employee’s hours because they reported workplace harassment.",
+        "optionB": "An employee requests a different schedule.",
+        "optionC": "A supervisor provides neutral performance feedback.",
+        "optionD": "",
+        "correctOption": "A",
+        "explanation": "Taking unfavorable action against an employee because they reported workplace harassment may constitute retaliation.",
+        "displayOrder": 1,
+        "mcdStatus": "Approved"
+      },
+      "mcdStatus": "Approved",
+      "published": false,
+      "archived": false,
+      "sourceEditorialVersion": "1.3.60",
+      "sourceLastReviewedAt": "2026-08-28",
+      "sourceWorkbookVersion": "v1.3.81",
+      "sourceContentHash": "6898a7096171a3cc13af0b8c3e2014c7f796bcee76c962e851c826d7c6de3d52",
+      "partOfSpeech": "noun",
+      "comparativeLawNote": "U.S. employment law commonly uses retaliation. Under the UK Equality Act 2010, the corresponding statutory concept is generally called victimisation. Colombian law provides protection against reprisals in specific employment contexts, including workplace-harassment complaints. These protections are functionally related but not legally identical.",
+      "pronunciation": ""
+    }
+  ]
+}
