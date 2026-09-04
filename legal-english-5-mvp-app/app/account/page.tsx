@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { Icon } from "@/components/ui-icons";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -76,6 +77,16 @@ export default function ProfilePage() {
       {error && <p className="notice">{error}</p>}
       <div className="account-stack">
         <section className="account-card">
+          <div className="settings-card-head profile-head">
+            <Icon name="user" />
+            <div>
+              <h2>{user.name}</h2>
+              <p>{user.email}</p>
+            </div>
+            <span className={`status ${user.emailVerified ? "active" : "blocked"}`}>
+              {user.emailVerified ? t("profileVerifiedYes") : t("profileVerifiedNo")}
+            </span>
+          </div>
           <dl className="account-meta">
             <div>
               <dt>{t("profileEmail")}</dt>
@@ -105,7 +116,13 @@ export default function ProfilePage() {
           </form>
         </section>
         <section className="account-card">
-          <h2>{t("passwordTitle")}</h2>
+          <div className="settings-card-head">
+            <Icon name="lock" />
+            <div>
+              <h2>{t("passwordTitle")}</h2>
+              <p>Keep your sign-in credentials current and private.</p>
+            </div>
+          </div>
           <form onSubmit={(event) => void onChangePassword(event)}>
             <label>
               {t("passwordCurrent")}

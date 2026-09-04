@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: "Legal English 5 · Alpha",
   description: "Production-path alpha for MPC LAW STUDIO: MCD content, server entitlement and Mercado Pago access.",
   icons: {
-    icon: "/brand/icon.svg",
-    apple: "/brand/icon.svg",
+    icon: "/home-assets/icons/le5-shield.png",
+    apple: "/home-assets/icons/le5-shield.png",
   },
 };
 
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="preconnect" href="https://videos.pexels.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body>
         <LocaleProvider>

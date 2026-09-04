@@ -3,6 +3,7 @@
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
+import { Icon } from "@/components/ui-icons";
 
 export default function AboutPage() {
   const { t } = useLocale();
@@ -16,12 +17,21 @@ export default function AboutPage() {
     <main className="landing">
       <LandingHeader />
       <section className="landing-section">
-        <div className="landing-section-heading">
-          <span className="eyebrow">{t("aboutEyebrow")}</span>
-          <h2>{t("aboutTitle")}</h2>
-          <p>{t("aboutLead")}</p>
+        <div className="about-showcase">
+          <div>
+            <span className="eyebrow">{t("aboutEyebrow")}</span>
+            <h2>{t("aboutTitle")}</h2>
+            <p>{t("aboutLead")}</p>
+            <p>{t("aboutBody2")}</p>
+          </div>
+          <figure>
+            <Icon name="scales" />
+            <figcaption>
+              <strong>Legal English 5</strong>
+              <span>One source of truth for terms, quizzes, audio, and progress.</span>
+            </figcaption>
+          </figure>
         </div>
-        <p className="about-body">{t("aboutBody2")}</p>
       </section>
       <section className="landing-section" id="how-it-works">
         <div className="landing-section-heading">
@@ -32,6 +42,9 @@ export default function AboutPage() {
         <div className="step-grid">
           {steps.map((step, index) => (
             <article className="media-card" key={step.title}>
+              <span className="step-icon">
+                <Icon name={index === 0 ? "mail" : index === 1 ? "book" : index === 2 ? "target" : "card"} />
+              </span>
               <b>{index + 1}</b>
               <h3>{step.title}</h3>
               <p>{step.body}</p>

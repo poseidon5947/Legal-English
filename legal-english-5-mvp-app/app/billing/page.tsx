@@ -4,7 +4,7 @@ import { AppShell } from "@/components/app-shell";
 import { statusLabel, useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
 import { entitlementLabel } from "@/lib/i18n";
-import { IMAGES } from "@/lib/media";
+import { Icon, IconName } from "@/components/ui-icons";
 
 export default function BillingPage() {
   const { entitlement, applyBilling, session } = useApp();
@@ -19,8 +19,8 @@ export default function BillingPage() {
           <p>{t("billingLead")}</p>
         </div>
       </div>
-      <div className="billing-card">
-        <div>
+      <div className="billing-card account-billing-grid">
+        <section className="billing-subscription-card">
           <span className={`status ${entitlement.allowed ? "active" : "blocked"}`}>{entitlementLabel(locale, entitlement.label)}</span>
           <h2>{subscription ? statusLabel(subscription.status) : t("noSession")}</h2>
           <p>{entitlement.detail}</p>
@@ -56,31 +56,56 @@ export default function BillingPage() {
               )}
             </dl>
           )}
-        </div>
-        <div className="plans">
-          <article className="media-card">
-            <div className="card-media">
-              <img src={IMAGES.planMonth} alt="" />
+          <button className="ghost" onClick={() => void applyBilling("payment_approved", "monthly")}>
+            {t("subscribeMonth")}
+          </button>
+        </section>
+        <section className="billing-panel-card">
+          <h2>Payment Method</h2>
+          <div className="payment-row">
+            <Icon name="card" />
+            <div>
+              <strong>Visa ending in 4242</strong>
+              <span>Expires 04/27</span>
             </div>
-            <span>{t("monthly")}</span>
-            <strong>{t("priceNote")}</strong>
-            <p>{t("monthlyBody")}</p>
-            <button className="primary" onClick={() => void applyBilling("payment_approved", "monthly")}>
-              {t("subscribeMonth")}
-            </button>
-          </article>
-          <article className="media-card">
-            <div className="card-media">
-              <img src={IMAGES.planYear} alt="" />
+            <button>Update</button>
+          </div>
+        </section>
+        <section className="billing-panel-card">
+          <h2>Billing History</h2>
+          {["May 20, 2025", "Apr 20, 2025", "Mar 20, 2025"].map((date) => (
+            <div className="billing-history-row" key={date}>
+              <span>{date}</span>
+              <b>Monthly Plan</b>
+              <strong>$9.99</strong>
             </div>
-            <span>{t("annual")}</span>
-            <strong>{t("priceNote")}</strong>
-            <p>{t("annualBody")}</p>
+          ))}
+        </section>
+        <section className="billing-panel-card">
+          <h2>Your Access</h2>
+          {[
+            ["book", "Terms Library", "Full Access"],
+            ["help", "Quizzes", "Unlimited"],
+            ["trend", "Progress Tracking", "Full Access"],
+            ["users", "Priority Support", "Included"],
+          ].map(([icon, label, value]) => (
+            <div className="access-row" key={label}>
+              <Icon name={icon as IconName} />
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
+        </section>
+        <section className="billing-panel-card manage-card">
+          <h2>Manage Subscription</h2>
+          <p>Need a break? You can cancel anytime. You’ll keep access until the end of your billing period.</p>
+          <div>
+            <button onClick={() => void applyBilling("cancelled")}>{t("cancellation")}</button>
             <button className="primary" onClick={() => void applyBilling("payment_approved", "annual")}>
               {t("subscribeYear")}
             </button>
-          </article>
-        </div>
+          </div>
+        </section>
       </div>
       <div className="simulator">
         <h3>{t("sandboxTitle")}</h3>

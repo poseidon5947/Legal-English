@@ -6,41 +6,24 @@ export type IconName =
   | "card"
   | "chevron"
   | "clipboard"
+  | "courthouse"
+  | "flame"
+  | "headset"
   | "help"
   | "home"
+  | "lock"
+  | "mail"
   | "search"
   | "settings"
+  | "scales"
   | "shield"
+  | "speaker"
   | "target"
   | "trend"
   | "user"
+  | "users"
   | "globe";
 
-const paths: Record<IconName, string[]> = {
-  award: ["M12 15.5 8.6 18l.9-4-3.1-2.7 4.1-.4L12 7l1.5 3.9 4.1.4-3.1 2.7.9 4L12 15.5Z", "M7 21l2-4M17 21l-2-4"],
-  bell: ["M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z", "M13.7 21a2 2 0 0 1-3.4 0"],
-  book: ["M4 19.5A2.5 2.5 0 0 1 6.5 17H20", "M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15Z", "M8 7h8M8 11h6"],
-  bookmark: ["M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-6-3.5L6 22V4Z"],
-  card: ["M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z", "M2 10h20"],
-  chevron: ["m9 18 6-6-6-6"],
-  clipboard: ["M9 4h6v4H9V4Z", "M8 6H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2", "M8 13h8M8 17h5"],
-  help: ["M9.1 9a3 3 0 1 1 5.8 1c-.6 1.8-2.9 1.7-2.9 4", "M12 18h.01", "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"],
-  home: ["M3 11 12 3l9 8", "M5 10v10h14V10", "M9 20v-6h6v6"],
-  search: ["M21 21l-4.3-4.3", "M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"],
-  settings: ["M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z", "M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 3.4-.2-.1a1.7 1.7 0 0 0-1.9.1 7.5 7.5 0 0 1-1.4.8 1.7 1.7 0 0 0-1.1 1.6V23H9v-.2a1.7 1.7 0 0 0-1.1-1.6 7.5 7.5 0 0 1-1.4-.8 1.7 1.7 0 0 0-1.9-.1l-.2.1-2-3.4.1-.1A1.7 1.7 0 0 0 2.8 15a7.8 7.8 0 0 1 0-1.6 1.7 1.7 0 0 0-.3-1.9l-.1-.1 2-3.4.2.1a1.7 1.7 0 0 0 1.9-.1 7.5 7.5 0 0 1 1.4-.8A1.7 1.7 0 0 0 9 5.6V5h4v.6a1.7 1.7 0 0 0 1.1 1.6 7.5 7.5 0 0 1 1.4.8 1.7 1.7 0 0 0 1.9.1l.2-.1 2 3.4-.1.1a1.7 1.7 0 0 0-.3 1.9 7.8 7.8 0 0 1 .2 1.6Z"],
-  shield: ["M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z", "m9 12 2 2 4-5"],
-  target: ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z", "M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z", "M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"],
-  trend: ["M3 17l6-6 4 4 8-8", "M15 7h6v6"],
-  user: ["M20 21a8 8 0 0 0-16 0", "M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"],
-  globe: ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z", "M2 12h20", "M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"],
-};
-
 export function Icon({ name, className = "" }: { name: IconName; className?: string }) {
-  return (
-    <svg className={`icon ${className}`.trim()} viewBox="0 0 24 24" aria-hidden="true">
-      {paths[name].map((d) => (
-        <path key={d} d={d} />
-      ))}
-    </svg>
-  );
+  return <img className={`icon ${className}`.trim()} src={`/generated/icons/${name}.png`} alt="" aria-hidden="true" />;
 }

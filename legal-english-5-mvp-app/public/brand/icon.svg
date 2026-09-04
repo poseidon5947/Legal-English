@@ -1,10 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <path d="M32 10v40" stroke="#D8A852" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M20 18h24" stroke="#D8A852" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M18 18 10 34h16L18 18Z" stroke="#D8A852" stroke-width="2.6" stroke-linejoin="round"/>
-  <path d="M46 18 38 34h16L46 18Z" stroke="#D8A852" stroke-width="2.6" stroke-linejoin="round"/>
-  <path d="M9 36h18c-1.7 4.3-5.1 6.5-9 6.5S10.7 40.3 9 36Z" fill="#D8A852"/>
-  <path d="M37 36h18c-1.7 4.3-5.1 6.5-9 6.5S38.7 40.3 37 36Z" fill="#D8A852"/>
-  <path d="M24 52h16" stroke="#D8A852" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M29 45h6" stroke="#8B5CF6" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M32 5 53 13v18c0 13.2-8.1 23.5-21 28C19.1 54.5 11 44.2 11 31V13L32 5Z" fill="#071B49"/>
+  <path d="M32 8.8 49.6 15.5V31c0 10.9-6.5 19.4-17.6 23.6C20.9 50.4 14.4 41.9 14.4 31V15.5L32 8.8Z" stroke="#C89534" stroke-width="2.3"/>
+  <text x="32" y="38" text-anchor="middle" fill="#C89534" font-family="Poppins, Arial, sans-serif" font-size="19" font-weight="800" letter-spacing=".6">LE5</text>
 </svg>

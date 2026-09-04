@@ -150,8 +150,8 @@ export default function AdminPage() {
               <h2>Users growth</h2>
               <p>Alpha account activity by review session.</p>
               <svg viewBox="0 0 260 150" className="chart-svg funnel" aria-label="Users growth chart">
-                <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24 L232 132 L18 132Z" fill="#F4EDFF" />
-                <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24" fill="none" stroke="#7C3AED" strokeWidth="4" strokeLinecap="round" />
+                <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24 L232 132 L18 132Z" fill="#E0F1EB" />
+                <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24" fill="none" stroke="#006B5B" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </section>
             <section className="chart-card">
@@ -168,7 +168,7 @@ export default function AdminPage() {
                         <b>{width}%</b>
                       </div>
                       <div className="bar-track">
-                        <i style={{ width: `${width}%`, background: item === "Contracts" ? "#7C3AED" : item === "Corporate Law" ? "#3B82F6" : "#32C998" }} />
+                        <i style={{ width: `${width}%`, background: item === "Contracts" ? "#006B5B" : item === "Corporate Law" ? "#D8A852" : "#1F6A8A" }} />
                       </div>
                     </div>
                   );

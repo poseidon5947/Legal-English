@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { Icon } from "@/components/ui-icons";
 
 export default function HelpPage() {
   const { inbox, reportIssue, session } = useApp();
@@ -41,25 +42,54 @@ export default function HelpPage() {
       {message && <p className="notice">{message}</p>}
       {error && <p className="notice">{error}</p>}
       <div className="account-stack">
+        <section className="account-card help-hero-card">
+          <div>
+            <span className="eyebrow">{t("helpEyebrow")}</span>
+            <h2>{t("helpTitle")}</h2>
+            <p>{t("helpLead")}</p>
+          </div>
+          <Icon name="headset" />
+        </section>
         <section className="account-card">
-          <h2>{t("helpLearn")}</h2>
-          <p>{t("helpLearnBody")}</p>
+          <div className="settings-card-head">
+            <Icon name="book" />
+            <div>
+              <h2>{t("helpLearn")}</h2>
+              <p>{t("helpLearnBody")}</p>
+            </div>
+          </div>
           <Link href="/terms">{t("navTerms")}</Link>
         </section>
         <section className="account-card">
-          <h2>{t("helpAccess")}</h2>
-          <p>{t("helpAccessBody")}</p>
+          <div className="settings-card-head">
+            <Icon name="card" />
+            <div>
+              <h2>{t("helpAccess")}</h2>
+              <p>{t("helpAccessBody")}</p>
+            </div>
+          </div>
           <Link href="/billing">{t("navBilling")}</Link>
         </section>
         {session?.user.role === "admin" && (
           <section className="account-card">
-            <h2>{t("helpOwner")}</h2>
-            <p>{t("helpOwnerBody")}</p>
+            <div className="settings-card-head">
+              <Icon name="shield" />
+              <div>
+                <h2>{t("helpOwner")}</h2>
+                <p>{t("helpOwnerBody")}</p>
+              </div>
+            </div>
             <Link href="/admin">{t("navAdmin")}</Link>
           </section>
         )}
         <section className="account-card">
-          <h2>{t("helpReportTitle")}</h2>
+          <div className="settings-card-head">
+            <Icon name="help" />
+            <div>
+              <h2>{t("helpReportTitle")}</h2>
+              <p>{t("helpLead")}</p>
+            </div>
+          </div>
           <form onSubmit={(event) => void onSubmit(event)}>
             <label>
               {t("helpReportSummary")}
