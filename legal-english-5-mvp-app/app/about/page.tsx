@@ -24,12 +24,22 @@ export default function AboutPage() {
             <p>{t("aboutLead")}</p>
             <p>{t("aboutBody2")}</p>
           </div>
-          <figure>
-            <Icon name="scales" />
+          <figure className="about-photo-card">
+            <img src="/home-assets/photos/about-library.jpg" alt="" />
             <figcaption>
               <strong>Legal English 5</strong>
               <span>{t("aboutCardBody")}</span>
             </figcaption>
+          </figure>
+        </div>
+        <div className="about-photo-strip">
+          <figure>
+            <img src="/home-assets/photos/about-desk.jpg" alt="" loading="lazy" />
+            <figcaption>{t("aboutPhotoDesk")}</figcaption>
+          </figure>
+          <figure>
+            <img src="/home-assets/photos/about-gavel.jpg" alt="" loading="lazy" />
+            <figcaption>{t("aboutPhotoGavel")}</figcaption>
           </figure>
         </div>
       </section>

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { HeroImageFlow } from "@/components/hero-image-flow";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
+import { ScrollEffects } from "@/components/scroll-effects";
 import { useLocale } from "@/components/locale-provider";
-import { landingCopy } from "@/lib/landing-copy";
+import { landingCopy, PLAN_PRICES } from "@/lib/landing-copy";
 
 type HomeIconName =
   | "arrow-right"
@@ -53,8 +54,11 @@ const workflowIcons: readonly HomeIconName[] = ["workflow-book", "workflow-chat"
 const featureIcons: readonly HomeIconName[] = ["feature-search", "feature-mobile", "feature-progress", "feature-timer"];
 const benefitIcons: readonly HomeIconName[] = ["flame-stopwatch", "shield-badge", "growth-chart", "credit-card"];
 const statIcons: readonly HomeIconName[] = ["contract-clipboard-stat", "legal-scales-stat", "shield-badge-stat", "user-avatar-stat"];
-const quotePhotos = ["/home-assets/people/carlos-mendez.png", "/home-assets/people/ana-rodriguez.png"];
-const homePrices = ["$0", "$12", "$99"];
+const quotePhotos = ["/home-assets/photos/portrait-carlos.jpg", "/home-assets/photos/portrait-ana.jpg"];
+// Photography: Unsplash, see public/home-assets/photos/CREDITS.txt
+const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
+const lifePhotos = ["/home-assets/photos/mosaic-documents.jpg", "/home-assets/photos/mosaic-portrait.jpg", "/home-assets/photos/mosaic-library.jpg"];
+const homePrices = PLAN_PRICES;
 
 export default function Home() {
   const { locale } = useLocale();
@@ -62,6 +66,7 @@ export default function Home() {
   return (
     <main className="landing home-reference">
       <LandingHeader />
+      <ScrollEffects />
       <section className="home-ref-hero">
         <div className="home-ref-copy">
           <h1>
@@ -94,30 +99,35 @@ export default function Home() {
       </section>
 
       <section className="home-ref-categories">
-        <div className="home-ref-heading">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.categories.eyebrow}</span>
           <h2>{c.categories.title}</h2>
           <p>{c.categories.lead}</p>
         </div>
-        <div className="home-ref-category-grid">
+        <div className="home-ref-category-grid" data-reveal="stagger">
           {c.categories.items.map(([title, body], index) => (
             <Link href={`/terms?category=${encodeURIComponent(categoryRoutes[index])}`} key={title}>
-              <span>
-                <HomeIcon name={categoryIcons[index]} />
-              </span>
-              <strong>{title}</strong>
-              <small>{body}</small>
-              <b>{c.categories.explore}</b>
+              <img className="home-ref-category-photo" src={categoryPhotos[index]} alt="" loading="lazy" />
+              <div className="home-ref-category-body">
+                <span>
+                  <HomeIcon name={categoryIcons[index]} />
+                </span>
+                <strong>{title}</strong>
+                <small>{body}</small>
+                <b>{c.categories.explore}</b>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
       <section className="home-ref-learn" id="how-it-works">
-        <div className="home-ref-heading">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.learn.eyebrow}</span>
           <h2>{c.learn.title}</h2>
           <p>{c.learn.lead}</p>
         </div>
-        <div className="home-ref-lesson">
+        <div className="home-ref-lesson" data-reveal>
           <aside>
             {c.learn.tabs.map((label, index) => (
               <button className={index === 0 ? "active" : ""} key={label}>
@@ -163,11 +173,19 @@ export default function Home() {
       </section>
 
       <section className="home-ref-workflow">
-        <div className="home-ref-heading">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.workflow.eyebrow}</span>
           <h2>{c.workflow.title}</h2>
           <p>{c.workflow.lead}</p>
         </div>
-        <div>
+        <figure className="home-ref-workflow-photo" data-reveal="left">
+          <img src="/home-assets/photos/workflow-study.jpg" alt="" loading="lazy" />
+          <figcaption>
+            <span>{c.workflow.photoTag}</span>
+            <strong>{c.workflow.photoCaption}</strong>
+          </figcaption>
+        </figure>
+        <div data-reveal="stagger">
           {c.workflow.steps.map(([title, body], index) => (
             <article key={title}>
               <b>{index + 1}</b>
@@ -182,10 +200,11 @@ export default function Home() {
       </section>
 
       <section className="home-ref-features">
-        <div className="home-ref-heading">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.features.eyebrow}</span>
           <h2>{c.features.title}</h2>
         </div>
-        <div>
+        <div data-reveal="stagger">
           {c.features.items.map(([title, body], index) => (
             <article key={title}>
               <HomeIcon name={featureIcons[index]} />
@@ -206,9 +225,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="home-ref-life">
+        <div className="home-ref-life-copy" data-reveal="left">
+          <span className="eyebrow">{c.life.eyebrow}</span>
+          <h2>{c.life.title}</h2>
+          <p>{c.life.lead}</p>
+        </div>
+        <div className="home-ref-life-mosaic" data-reveal="stagger">
+          {lifePhotos.map((src, index) => (
+            <figure key={src}>
+              <img src={src} alt="" loading="lazy" />
+              <figcaption>{c.life.photos[index]}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
       <section className="home-ref-proof">
-        <h2>{c.proof.title}</h2>
-        <div className="home-ref-proof-grid">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.proof.eyebrow}</span>
+          <h2>{c.proof.title}</h2>
+        </div>
+        <div className="home-ref-proof-grid" data-reveal="stagger">
           {c.proof.quotes.map(([quote, name, role], index) => (
             <article className="home-ref-quote" key={name}>
               <img src={quotePhotos[index]} alt="" aria-hidden="true" />
@@ -220,7 +258,7 @@ export default function Home() {
           {c.proof.stats.map(([value, label], index) => (
             <article className="home-ref-stat" key={label}>
               <HomeIcon name={statIcons[index]} />
-              <strong>{value}</strong>
+              <strong data-count={value}>{value}</strong>
               <small>{label}</small>
             </article>
           ))}
@@ -228,11 +266,12 @@ export default function Home() {
       </section>
 
       <section className="home-ref-pricing" id="pricing">
-        <div className="home-ref-heading">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.pricing.eyebrow}</span>
           <h2>{c.pricing.title}</h2>
           <p>{c.pricing.lead}</p>
         </div>
-        <div>
+        <div data-reveal="stagger">
           {c.pricing.plans.map((plan, index) => (
             <article className={index === 2 ? "best" : ""} key={plan.name}>
               {index === 2 && <img className="best-value-badge" src="/home-assets/badges/best-value.png" alt={c.pricing.bestValue} />}
@@ -240,6 +279,7 @@ export default function Home() {
               <strong>
                 {homePrices[index]}
                 {index === 2 && <small>{c.pricing.perYear}</small>}
+                {index === 1 && <small>{c.pricing.perMonth}</small>}
               </strong>
               <ul>
                 {plan.features.slice(0, 3).map((feature) => (
@@ -258,7 +298,7 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="home-ref-cta">
+      <section className="home-ref-cta" data-reveal>
         <span>
           <HomeIcon name="legal-scales" />
         </span>

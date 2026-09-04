@@ -18165,3 +18165,1429 @@ h3,
     justify-self: center;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Editorial photography (Unsplash, see public/home-assets/photos)     */
+/* ------------------------------------------------------------------ */
+
+/* Landing · category cards with a photo header */
+.home-ref-category-grid a {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-ref-category-grid a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(7, 27, 73, 0.1);
+}
+
+.home-ref-category-photo {
+  display: block;
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.home-ref-category-grid a:hover .home-ref-category-photo {
+  transform: scale(1.04);
+}
+
+.home-ref-category-body {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 5px 20px;
+  padding: 19px 22px 18px;
+}
+
+.home-ref-category-body span {
+  margin-top: -44px;
+  border: 3px solid #ffffff;
+  box-shadow: 0 6px 14px rgba(7, 27, 73, 0.12);
+}
+
+/* Landing · How it works: photo column + 2×2 steps */
+.home-ref-workflow {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: 0 44px;
+  align-items: center;
+}
+
+.home-ref-workflow .home-ref-heading {
+  grid-column: 1 / -1;
+}
+
+.home-ref-workflow-photo {
+  position: relative;
+  margin: 29px 0 0;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 4 / 4.6;
+  background: #0f1f3d;
+}
+
+.home-ref-workflow-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-ref-workflow-photo figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 6px;
+  padding: 26px 22px 22px;
+  background: linear-gradient(180deg, rgba(10, 24, 54, 0) 0%, rgba(10, 24, 54, 0.88) 60%);
+  color: #ffffff;
+}
+
+.home-ref-workflow-photo figcaption span {
+  color: var(--gold, #d4a72c);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-ref-workflow-photo figcaption strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.home-ref-workflow > div:last-child {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px 30px;
+}
+
+.home-ref-workflow article:not(:last-child):after {
+  display: none;
+}
+
+/* Landing · "Made for real practice" mosaic */
+.home-ref-life {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 40px;
+  align-items: center;
+  max-width: var(--home-max);
+  margin: 42px auto 0;
+  padding: 0 18px;
+}
+
+.home-ref-life-copy .eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #0a4a91;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-ref-life-copy h2 {
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.home-ref-life-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.home-ref-life-mosaic {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-rows: 200px 200px;
+  gap: 14px;
+}
+
+.home-ref-life-mosaic figure {
+  position: relative;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0f1f3d;
+}
+
+.home-ref-life-mosaic figure:nth-child(2) {
+  grid-row: 1 / span 2;
+}
+
+.home-ref-life-mosaic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.home-ref-life-mosaic figure:hover img {
+  transform: scale(1.04);
+}
+
+.home-ref-life-mosaic figcaption {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Landing · testimonial portraits, slightly larger now that they are real photos */
+.home-ref-quote img {
+  width: 56px;
+  height: 56px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(7, 27, 73, 0.14);
+}
+
+/* Landing · CTA band over the courthouse photo */
+.home-ref-cta {
+  position: relative;
+  min-height: 118px;
+  padding: 22px 32px;
+  background: linear-gradient(90deg, rgba(10, 24, 54, 0.96) 0%, rgba(10, 24, 54, 0.82) 55%, rgba(10, 24, 54, 0.6) 100%), url("/home-assets/photos/cta-courthouse.jpg") center / cover no-repeat;
+}
+
+/* About · photo card + strip */
+.about-showcase figure.about-photo-card {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: #0f1f3d;
+}
+
+.about-photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+}
+
+.about-photo-card figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 6px;
+  padding: 30px 22px 22px;
+  background: linear-gradient(180deg, rgba(10, 24, 54, 0) 0%, rgba(10, 24, 54, 0.9) 60%);
+  color: #ffffff;
+  text-align: left;
+}
+
+.about-photo-card figcaption strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.3rem;
+}
+
+.about-showcase .about-photo-card figcaption span {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.about-photo-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1080px;
+  margin: 26px auto 0;
+}
+
+.about-photo-strip figure {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.about-photo-strip img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.about-photo-strip figcaption {
+  padding: 14px 18px 16px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* Pricing · full-bleed photo band above the FAQ */
+.pricing-photo-band {
+  position: relative;
+  display: grid;
+  align-items: center;
+  max-width: 1080px;
+  min-height: 280px;
+  margin: 8px auto 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0f1f3d;
+}
+
+.pricing-photo-band img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+.pricing-photo-band > div {
+  position: relative;
+  max-width: 560px;
+  padding: 40px 42px;
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(10, 24, 54, 0.92) 0%, rgba(10, 24, 54, 0.7) 75%, rgba(10, 24, 54, 0) 100%);
+}
+
+.pricing-photo-band .eyebrow {
+  color: var(--gold, #d4a72c);
+}
+
+.pricing-photo-band h2 {
+  margin: 8px 0 12px;
+  color: #ffffff;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.pricing-photo-band p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+/* Learner · Categories page cards with a photo header */
+.terms-category-progress .terms-category-link.with-photo {
+  grid-template-columns: 56px 1fr;
+  grid-template-areas: "photo photo" "icon text";
+  align-items: start;
+  padding: 0 0 18px;
+  overflow: hidden;
+}
+
+.terms-category-link.with-photo .terms-category-photo {
+  grid-area: photo;
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.terms-category-link.with-photo .terms-category-icon-shell {
+  grid-area: icon;
+  margin: -26px 0 0 18px;
+  border: 3px solid #ffffff;
+  box-shadow: 0 6px 14px rgba(7, 27, 73, 0.12);
+}
+
+.terms-category-link.with-photo > div:last-child {
+  grid-area: text;
+  padding: 12px 18px 0 0;
+}
+
+@media (max-width: 960px) {
+  .home-ref-workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ref-workflow-photo {
+    aspect-ratio: 16 / 9;
+  }
+
+  .home-ref-life {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ref-life-mosaic {
+    grid-template-rows: 160px 160px;
+  }
+
+  .about-photo-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-photo-band > div {
+    max-width: none;
+    background: rgba(10, 24, 54, 0.8);
+  }
+}
+
+/* Landing footer on tablets/phones: the 5-column grid collapses instead of
+   pushing the Legal/Contact columns past the viewport. */
+@media (max-width: 960px) {
+  .home-reference .landing-footer .footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
+  }
+
+  .home-reference .landing-footer .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-reference .landing-footer .footer-top {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ref-category-grid,
+  .home-ref-life-mosaic {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ref-life-mosaic {
+    grid-template-rows: none;
+    grid-auto-rows: 170px;
+  }
+
+  .home-ref-life-mosaic figure:nth-child(2) {
+    grid-row: auto;
+  }
+}
+
+/* ================================================================== */
+/* Public site · design refinement layer                               */
+/* Consistent section rhythm, typographic scale, surfaces and motion.  */
+/* Scoped to .home-reference so the learner workspace is untouched.    */
+/* ================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.home-reference ::selection {
+  background: rgba(212, 167, 44, 0.32);
+  color: var(--navy);
+}
+
+.home-reference :focus-visible {
+  outline: 2px solid #0a4a91;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Sticky, translucent header */
+.home-reference .landing-nav,
+.home-reference .landing-nav.landing-nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  /* Earlier breakpoints pinned the bar to 48px, so the 65px-tall links spilled out of it.
+     Let the bar size itself from its content instead. */
+  height: auto;
+  min-height: 72px;
+  padding: 0 clamp(18px, 4vw, 54px);
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(7, 27, 73, 0.07);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  backdrop-filter: saturate(160%) blur(12px);
+}
+
+.home-reference .landing-nav-links {
+  flex-wrap: nowrap;
+  gap: clamp(14px, 1.9vw, 27px);
+}
+
+.home-reference .landing-nav-links a:not(.primary) {
+  padding-top: 25px;
+  padding-bottom: 24px;
+  white-space: nowrap;
+}
+
+.home-reference .landing-nav-links .primary,
+.home-reference .landing-nav-links > a[href="/login"]:not(.primary) {
+  white-space: nowrap;
+}
+
+@media (max-width: 1180px) {
+  .home-reference .landing-nav-links {
+    font-size: 0.8rem;
+  }
+
+  .home-reference .landing-nav-links .primary {
+    padding: 11px 14px;
+  }
+
+  .home-reference .landing-nav-links > a[href="/login"]:not(.primary) {
+    padding: 9px 12px;
+  }
+}
+
+/* Buttons and links: one motion language */
+.home-reference a.primary,
+.home-reference a.ghost,
+.home-reference button.primary,
+.home-reference .landing-nav a {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.home-reference a.primary:hover,
+.home-reference button.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(7, 27, 73, 0.18);
+}
+
+.home-reference a.ghost:hover {
+  border-color: var(--navy);
+  background: #f6f8fc;
+}
+
+/* Hero: more air, larger display type, quiet dot-grid texture */
+.home-ref-hero {
+  min-height: 0;
+  gap: 48px;
+  padding: 64px 18px 60px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.7) 60%, rgba(255, 255, 255, 0)),
+    radial-gradient(rgba(7, 27, 73, 0.1) 1px, transparent 1.2px) 0 0 / 22px 22px;
+}
+
+.home-ref-copy h1 {
+  margin-bottom: 18px;
+  font-size: clamp(2.5rem, 3.6vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+
+.home-ref-copy > p {
+  max-width: 500px;
+  font-size: 1.04rem;
+  line-height: 1.7;
+}
+
+.home-ref-actions {
+  margin-top: 30px;
+}
+
+.home-ref-actions a {
+  min-height: 48px;
+  padding: 13px 26px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.home-ref-benefits {
+  margin-top: 40px;
+}
+
+.home-ref-product .hero-flow {
+  border-radius: 16px;
+  box-shadow: 0 30px 60px rgba(7, 27, 73, 0.22), 0 0 0 1px rgba(7, 27, 73, 0.06);
+}
+
+/* Section rhythm */
+.home-ref-categories,
+.home-ref-learn,
+.home-ref-workflow,
+.home-ref-features,
+.home-ref-life,
+.home-ref-proof,
+.home-ref-pricing {
+  padding-top: 72px;
+  padding-bottom: 0;
+}
+
+.home-ref-features {
+  margin-top: 56px;
+  padding: 36px 32px 34px;
+  border-radius: 12px;
+}
+
+.home-ref-life {
+  margin-top: 0;
+}
+
+/* Full-bleed tinted bands behind two sections (section keeps its max-width) */
+.home-ref-learn,
+.home-ref-proof {
+  padding-bottom: 72px;
+  background: #f6f8fc;
+  box-shadow: 0 0 0 100vmax #f6f8fc;
+  clip-path: inset(0 -100vmax);
+}
+
+.home-ref-learn {
+  margin-top: 72px;
+}
+
+.home-ref-proof {
+  margin-top: 72px;
+}
+
+.home-ref-workflow {
+  padding-top: 64px;
+}
+
+/* Headings: eyebrow + serif title + measured lead */
+.home-ref-heading {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.home-ref-heading .eyebrow {
+  color: #b8860b;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home-ref-heading h2,
+.home-ref-proof .home-ref-heading h2,
+.home-ref-workflow .home-ref-heading h2,
+.home-ref-features .home-ref-heading h2,
+.home-ref-categories .home-ref-heading h2 {
+  margin: 0;
+  padding: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.9rem, 2.6vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+}
+
+.home-ref-heading p,
+.home-ref-workflow .home-ref-heading p,
+.home-ref-categories .home-ref-heading p {
+  max-width: 560px;
+  margin: 0;
+  font-size: 0.94rem;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.home-ref-category-grid,
+.home-ref-workflow > div:last-child,
+.home-ref-lesson,
+.home-ref-proof-grid,
+.home-ref-pricing > div:last-of-type {
+  margin-top: 36px;
+}
+
+.home-ref-workflow-photo {
+  margin-top: 36px;
+}
+
+/* Category cards */
+.home-ref-category-grid {
+  gap: 26px;
+}
+
+.home-ref-category-grid a {
+  border-radius: 12px;
+}
+
+.home-ref-category-photo {
+  height: 190px;
+}
+
+.home-ref-category-body {
+  padding: 20px 24px 22px;
+}
+
+.home-ref-category-body strong {
+  font-size: 1.04rem;
+}
+
+.home-ref-category-body small {
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.home-ref-category-body b {
+  margin-top: 6px;
+  font-size: 0.76rem;
+}
+
+/* Lesson demo */
+.home-ref-lesson {
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(7, 27, 73, 0.07);
+}
+
+/* Workflow steps */
+.home-ref-workflow article strong {
+  font-size: 1rem;
+}
+
+.home-ref-workflow article small {
+  max-width: 250px;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+/* Features strip */
+.home-ref-features > div:last-child {
+  margin-top: 28px;
+}
+
+.home-ref-features article {
+  grid-template-columns: 58px 1fr;
+  gap: 4px 16px;
+  padding: 6px 22px;
+}
+
+.home-ref-features .icon {
+  width: 52px;
+  height: 52px;
+  padding: 11px;
+}
+
+.home-ref-features article strong {
+  font-size: 0.92rem;
+}
+
+.home-ref-features article small {
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+/* Proof: two testimonials, then a row of four figures */
+.home-ref-proof-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.home-ref-quote {
+  position: relative;
+  grid-column: span 2;
+  grid-template-columns: 64px 1fr;
+  gap: 4px 20px;
+  min-height: 0;
+  padding: 28px 30px 26px 28px;
+  border-radius: 12px;
+}
+
+.home-ref-quote:before {
+  content: "\201C";
+  position: absolute;
+  top: 6px;
+  right: 24px;
+  color: rgba(212, 167, 44, 0.45);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 5rem;
+  line-height: 1;
+}
+
+.home-ref-quote img {
+  width: 64px;
+  height: 64px;
+}
+
+.home-ref-quote p {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.home-ref-quote strong {
+  margin-top: 12px;
+  font-size: 0.8rem;
+}
+
+.home-ref-quote small {
+  font-size: 0.74rem;
+}
+
+.home-ref-stat {
+  min-height: 0;
+  gap: 6px;
+  padding: 24px 12px 22px;
+  border-radius: 12px;
+}
+
+.home-ref-stat strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.3rem;
+}
+
+.home-ref-stat small {
+  font-size: 0.76rem;
+}
+
+/* Pricing cards */
+.home-ref-pricing article {
+  padding: 30px 28px 28px;
+  border-radius: 12px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.home-ref-pricing article:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px rgba(7, 27, 73, 0.1);
+}
+
+.home-ref-pricing h3 {
+  font-size: 1.05rem;
+}
+
+.home-ref-pricing article strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.7rem;
+  letter-spacing: -0.01em;
+}
+
+.home-ref-pricing article strong small {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0;
+}
+
+.home-ref-pricing li {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.home-ref-pricing article a {
+  min-height: 46px;
+  border-radius: 6px;
+  font-size: 0.86rem;
+}
+
+.home-ref-secure {
+  margin-top: 26px;
+  font-size: 0.78rem;
+}
+
+/* Closing CTA and footer */
+.home-ref-cta {
+  margin-top: 72px;
+  padding: 30px 36px;
+  border-radius: 12px;
+}
+
+.home-ref-cta h2 {
+  font-size: 1.5rem;
+}
+
+.home-reference .landing-footer {
+  margin-top: 64px;
+  padding-top: 56px;
+}
+
+/* Secondary pages inherit the same rhythm */
+.home-reference .landing-section {
+  padding-top: 64px;
+  padding-bottom: 8px;
+}
+
+.home-reference .landing-section-heading h2 {
+  font-size: clamp(1.9rem, 2.6vw, 2.4rem);
+}
+
+.pricing-photo-band {
+  margin-top: 64px;
+  border-radius: 12px;
+}
+
+@media (max-width: 960px) {
+  .home-ref-hero {
+    padding: 44px 18px 40px;
+  }
+
+  .home-ref-categories,
+  .home-ref-learn,
+  .home-ref-workflow,
+  .home-ref-features,
+  .home-ref-life,
+  .home-ref-proof,
+  .home-ref-pricing,
+  .home-ref-cta,
+  .home-reference .landing-section {
+    padding-top: 52px;
+    margin-top: 0;
+  }
+
+  .home-ref-learn,
+  .home-ref-proof {
+    margin-top: 52px;
+  }
+
+  .home-ref-proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .home-ref-quote {
+    grid-column: span 2;
+  }
+
+  .home-ref-copy h1 {
+    font-size: 2.3rem;
+  }
+}
+
+/* Pricing cards: wider grid, equal heights, restrained emphasis on the best plan */
+.home-ref-pricing > div:last-of-type {
+  align-items: stretch;
+  gap: 24px;
+  max-width: 960px;
+}
+
+.home-ref-pricing article {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 0;
+  border-width: 1px;
+}
+
+.home-ref-pricing article:first-child {
+  border-color: #e2e8f3;
+}
+
+.home-ref-pricing article.best {
+  min-height: 0;
+  padding-top: 30px;
+  border: 1px solid var(--navy);
+  box-shadow: 0 18px 40px rgba(7, 27, 73, 0.12);
+}
+
+.home-ref-pricing article ul {
+  margin: 14px 0 22px;
+}
+
+.home-ref-pricing article a {
+  align-self: end;
+}
+
+@media (max-width: 960px) {
+  /* Below the one-row breakpoint the links wrap onto a second line; keep the bar
+     in the flow (not pinned) and let it grow to fit both rows. */
+  .home-reference .landing-nav,
+  .home-reference .landing-nav.landing-nav {
+    position: static;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 12px 18px 10px;
+    background: #ffffff;
+  }
+
+  .home-reference .landing-nav-links {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px 16px;
+  }
+
+  .home-reference .landing-nav-links .home-lang {
+    margin-left: auto;
+  }
+
+  .home-reference .landing-nav-links a:not(.primary) {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .home-reference .landing-nav-links a:not(.primary):after {
+    bottom: 4px;
+  }
+}
+
+@media (max-width: 560px) {
+  .home-ref-benefits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 12px;
+    margin-top: 28px;
+  }
+
+  .home-ref-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-ref-actions a {
+    justify-content: center;
+  }
+}
+
+/* ================================================================== */
+/* Home page · scroll effects (driven by components/scroll-effects.tsx) */
+/* ================================================================== */
+
+/* Hero: one-off entrance, pure CSS so it never depends on hydration */
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.home-ref-copy h1,
+.home-ref-copy > p,
+.home-ref-actions,
+.home-ref-benefits,
+.home-ref-product {
+  animation: home-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.home-ref-copy > p {
+  animation-delay: 0.1s;
+}
+
+.home-ref-actions {
+  animation-delay: 0.2s;
+}
+
+.home-ref-benefits {
+  animation-delay: 0.3s;
+}
+
+.home-ref-product {
+  animation-delay: 0.15s;
+  will-change: transform;
+}
+
+/* Header: shadow appears once the page has scrolled */
+.home-reference .landing-nav {
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.home-reference .landing-nav.is-scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 24px rgba(7, 27, 73, 0.08);
+}
+
+/* Reveal on scroll: hidden only after the script has attached */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-ready [data-reveal="left"] {
+  transform: translate3d(-32px, 0, 0);
+}
+
+.reveal-ready [data-reveal].in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered grids: the container shows at once, children follow in sequence.
+   Keyframes with backwards fill are used (not transitions) so the delays do not
+   slow down hover effects on the cards afterwards. */
+.reveal-ready [data-reveal="stagger"] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.reveal-ready [data-reveal="stagger"] > * {
+  opacity: 0;
+}
+
+.reveal-ready [data-reveal="stagger"].in-view > * {
+  opacity: 1;
+  animation: home-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.reveal-ready [data-reveal="stagger"].in-view > :nth-child(2) { animation-delay: 0.09s; }
+.reveal-ready [data-reveal="stagger"].in-view > :nth-child(3) { animation-delay: 0.18s; }
+.reveal-ready [data-reveal="stagger"].in-view > :nth-child(4) { animation-delay: 0.27s; }
+.reveal-ready [data-reveal="stagger"].in-view > :nth-child(5) { animation-delay: 0.36s; }
+.reveal-ready [data-reveal="stagger"].in-view > :nth-child(6) { animation-delay: 0.45s; }
+.reveal-ready [data-reveal="stagger"].in-view > :nth-child(n + 7) { animation-delay: 0.54s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-ref-copy h1,
+  .home-ref-copy > p,
+  .home-ref-actions,
+  .home-ref-benefits,
+  .home-ref-product {
+    animation: none;
+  }
+
+  .reveal-ready [data-reveal],
+  .reveal-ready [data-reveal="stagger"] > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ================================================================== */
+/* Home page · page-wide dot grid (matches the hero photo backdrop)    */
+/* ================================================================== */
+
+.home-reference {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Fixed to the viewport so the grid stays still while content scrolls over it,
+   drifting very slowly for a hint of life. Painted above the page background
+   but beneath every section (negative z-index inside the isolated context). */
+.home-reference::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(7, 27, 73, 0.13) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 70% at 50% 45%, #000 40%, rgba(0, 0, 0, 0.35) 100%);
+  mask-image: radial-gradient(ellipse 85% 70% at 50% 45%, #000 40%, rgba(0, 0, 0, 0.35) 100%);
+  animation: home-dots-drift 40s linear infinite;
+}
+
+@keyframes home-dots-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 22px 22px;
+  }
+}
+
+/* Hero keeps only a soft white pool behind the copy for legibility */
+.home-ref-hero {
+  background: radial-gradient(ellipse 60% 80% at 22% 45%, #ffffff 0, rgba(255, 255, 255, 0.85) 45%, rgba(255, 255, 255, 0) 75%);
+}
+
+/* Tinted bands turn translucent so the grid reads faintly through them */
+.home-ref-learn,
+.home-ref-proof {
+  background: rgba(246, 248, 252, 0.82);
+  box-shadow: 0 0 0 100vmax rgba(246, 248, 252, 0.82);
+}
+
+/* Solid surfaces stay crisp on top of the texture */
+.home-ref-lesson,
+.home-ref-features,
+.home-ref-quote,
+.home-ref-stat,
+.home-ref-pricing article,
+.home-ref-category-grid a {
+  background-color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-reference::before {
+    animation: none;
+  }
+}
+
+/* ================================================================== */
+/* Learner workspace · design refinement layer                         */
+/* Shared surfaces, headings, motion and states for every signed-in    */
+/* page (library, term, quizzes, progress, account, billing, admin).   */
+/* ================================================================== */
+
+.learner-shell {
+  --ws-border: #e3e9f3;
+  --ws-radius: 12px;
+  --ws-shadow: 0 1px 2px rgba(7, 27, 73, 0.03), 0 10px 28px rgba(7, 27, 73, 0.05);
+  --ws-shadow-hover: 0 2px 4px rgba(7, 27, 73, 0.04), 0 18px 40px rgba(7, 27, 73, 0.1);
+  --ws-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.learner-shell ::selection {
+  background: rgba(212, 167, 44, 0.32);
+  color: var(--terms-navy, #09235a);
+}
+
+.learner-shell :focus-visible {
+  outline: 2px solid #0a4a91;
+  outline-offset: 2px;
+}
+
+/* Content canvas: soft top wash and the same quiet dot grid as the public site */
+.learner-shell .terms-reference-content {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(9, 35, 90, 0.045), rgba(9, 35, 90, 0) 240px),
+    radial-gradient(rgba(7, 27, 73, 0.075) 1px, transparent 1.25px) 0 0 / 22px 22px,
+    #f7f9fc;
+}
+
+/* Sidebar */
+.learner-shell .terms-reference-sidebar {
+  background: linear-gradient(180deg, #ffffff, #fbfcfe);
+}
+
+.learner-shell .terms-reference-brand {
+  padding-bottom: 18px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.learner-shell .terms-reference-nav a {
+  border-radius: 10px;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.learner-shell .terms-reference-nav a:hover:not(.active) {
+  background: #f3f6fb;
+  color: #102b62;
+}
+
+.learner-shell .terms-reference-nav a.active {
+  background: linear-gradient(90deg, #eaf0fa, #f4f7fc);
+}
+
+/* Topbar pins with the sidebar, search gets a proper focus state */
+.learner-shell .terms-reference-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: saturate(160%) blur(10px);
+  backdrop-filter: saturate(160%) blur(10px);
+}
+
+.learner-shell .terms-reference-search {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.learner-shell .terms-reference-search:focus-within {
+  border-color: #244f92;
+  box-shadow: 0 0 0 3px rgba(36, 79, 146, 0.14);
+}
+
+/* Page headings: one serif scale everywhere, eyebrow in gold */
+.learner-shell .terms-reference-heading h1,
+.learner-shell .quiz-ref-heading h1,
+.learner-shell .progress-ref-heading h1,
+.learner-shell .account-ref-heading h1,
+.learner-shell .page-heading h1 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.15rem;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.005em;
+  color: #0b234f;
+}
+
+.learner-shell .page-heading .eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #b8860b;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.learner-shell .page-heading p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Cards: one radius, one border, one shadow */
+.learner-shell .terms-card,
+.learner-shell .terms-category-section,
+.learner-shell .terms-empty,
+.learner-shell .quiz-snapshot-card,
+.learner-shell .quiz-overall-card,
+.learner-shell .quiz-practice-card,
+.learner-shell .quiz-ref-stat-grid > *,
+.learner-shell .progress-panel,
+.learner-shell .progress-ref-stats > *,
+.learner-shell .account-ref-panel,
+.learner-shell .account-ref-settings-card,
+.learner-shell .account-card,
+.learner-shell .consideration-info-card,
+.learner-shell .billing-panel-card,
+.learner-shell .billing-subscription-card,
+.learner-shell .import-panel,
+.learner-shell .chart-card,
+.learner-shell .admin-list,
+.learner-shell .stat {
+  border-radius: var(--ws-radius);
+  box-shadow: var(--ws-shadow);
+}
+
+.learner-shell .terms-card,
+.learner-shell .quiz-practice-card,
+.learner-shell .terms-category-section,
+.learner-shell .consideration-info-card {
+  transition: transform 0.22s var(--ws-ease), box-shadow 0.22s var(--ws-ease), border-color 0.22s ease;
+}
+
+.learner-shell .terms-card:hover,
+.learner-shell .quiz-practice-card:hover,
+.learner-shell .terms-category-section:hover {
+  transform: translateY(-3px);
+  border-color: #d6deec;
+  box-shadow: var(--ws-shadow-hover);
+}
+
+.learner-shell .consideration-info-card:hover {
+  border-color: #d6deec;
+  box-shadow: var(--ws-shadow-hover);
+}
+
+/* Empty states read as intentional, not broken */
+.learner-shell .terms-empty {
+  border: 1px dashed #cbd5e6;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+}
+
+/* Buttons: consistent motion; links styled as buttons keep white text
+   (.terms-reference-page a { color: inherit } used to win over .primary) */
+.learner-shell .primary,
+.learner-shell .ghost,
+.learner-shell button {
+  transition: transform 0.18s var(--ws-ease), box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.terms-reference-page a.primary,
+.terms-reference-page a.primary:hover {
+  color: #ffffff;
+}
+
+.learner-shell .primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(7, 27, 73, 0.18);
+}
+
+.learner-shell .primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Tables: quieter header, breathing room, row hover */
+.learner-shell table th {
+  color: #6d7890;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.learner-shell table td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.learner-shell table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.learner-shell table tbody tr:hover {
+  background: #f6f8fc;
+}
+
+/* Admin: replace the four-colour top rules with the shared card treatment */
+.learner-shell .stat {
+  border-top-width: 1px;
+  border-top-color: var(--ws-border);
+}
+
+/* Trial / access card in the sidebar */
+.learner-shell .terms-trial-card {
+  border-radius: var(--ws-radius);
+  box-shadow: var(--ws-shadow);
+}
+
+/* Gentle entrance for page content on navigation */
+@keyframes ws-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.learner-shell .terms-reference-content > * {
+  animation: ws-fade-up 0.45s var(--ws-ease) backwards;
+}
+
+.learner-shell .terms-reference-content > :nth-child(2) { animation-delay: 0.05s; }
+.learner-shell .terms-reference-content > :nth-child(3) { animation-delay: 0.1s; }
+.learner-shell .terms-reference-content > :nth-child(n + 4) { animation-delay: 0.15s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .learner-shell .terms-reference-content > *,
+  .learner-shell .terms-card,
+  .learner-shell .quiz-practice-card,
+  .learner-shell .terms-category-section,
+  .learner-shell .primary {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .learner-shell .terms-reference-topbar {
+    position: static;
+    background: #ffffff;
+  }
+}
+
+/* ================================================================== */
+/* Public secondary pages (pricing, about, legal): shared polish        */
+/* ================================================================== */
+
+.home-reference .landing-section-heading .eyebrow {
+  color: #b8860b;
+  letter-spacing: 0.14em;
+}
+
+.home-reference .plans article,
+.home-reference .landing-grid article {
+  border-radius: 12px;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease;
+}
+
+.home-reference .plans article:hover,
+.home-reference .landing-grid article:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(7, 27, 73, 0.1);
+}
+
+/* Billing grid: the subscription card spans two rows, so "Your access" and
+   "Manage" share the third row instead of leaving an empty cell. */
+@media (min-width: 961px) {
+  .learner-shell .account-billing-grid {
+    align-items: stretch;
+  }
+
+  .learner-shell .billing-panel-card.manage-card {
+    grid-column: 2;
+  }
+}

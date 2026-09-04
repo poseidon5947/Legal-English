@@ -1,6 +1,9 @@
 import type { Locale } from "@/lib/i18n";
 
 /** Copy for the public landing pages (home, header, footer, pricing cards). */
+/** Display prices shared by the home cards and /pricing until the Owner sets COP prices (Propuesta, kickoff). */
+export const PLAN_PRICES = ["$0", "$9.99", "$79.99"] as const;
+
 export type LandingCopy = {
   nav: { home: string; library: string; how: string; pricing: string; about: string; signIn: string; trial: string };
   hero: {
@@ -12,8 +15,9 @@ export type LandingCopy = {
     benefits: readonly [string, string, string, string];
     slides: ReadonlyArray<{ caption: string; tag: string }>;
   };
-  categories: { title: string; lead: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
+  categories: { eyebrow: string; title: string; lead: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
   learn: {
+    eyebrow: string;
     title: string;
     lead: string;
     tabs: readonly [string, string, string, string, string, string];
@@ -28,10 +32,12 @@ export type LandingCopy = {
     check: string;
     viewFull: string;
   };
-  workflow: { title: string; lead: string; steps: ReadonlyArray<readonly [string, string]> };
-  features: { title: string; items: ReadonlyArray<readonly [string, string]>; statusNew: string; statusLearning: string; statusMastered: string; statusPrefix: string; statusOr: string };
-  proof: { title: string; quotes: ReadonlyArray<readonly [string, string, string]>; stats: ReadonlyArray<readonly [string, string]> };
+  workflow: { eyebrow: string; title: string; lead: string; photoCaption: string; photoTag: string; steps: ReadonlyArray<readonly [string, string]> };
+  life: { eyebrow: string; title: string; lead: string; photos: readonly [string, string, string] };
+  features: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]>; statusNew: string; statusLearning: string; statusMastered: string; statusPrefix: string; statusOr: string };
+  proof: { eyebrow: string; title: string; quotes: ReadonlyArray<readonly [string, string, string]>; stats: ReadonlyArray<readonly [string, string]> };
   pricing: {
+    eyebrow: string;
     title: string;
     lead: string;
     perYear: string;
@@ -78,6 +84,7 @@ const en: LandingCopy = {
     ],
   },
   categories: {
+    eyebrow: "Curriculum",
     title: "Explore Our Launch Categories",
     lead: "Focused learning paths designed for real legal practice.",
     explore: "Explore Terms →",
@@ -88,6 +95,7 @@ const en: LandingCopy = {
     ],
   },
   learn: {
+    eyebrow: "Inside a lesson",
     title: "See How You’ll Learn",
     lead: "Every term includes clear definitions, real-world context, and smart practice.",
     tabs: ["Definition", "Spanish Equivalent", "Civil Law Equivalent", "Spanish-Speaker Alert", "Use It With", "In Context"],
@@ -104,8 +112,11 @@ const en: LandingCopy = {
     viewFull: "View full quiz →",
   },
   workflow: {
+    eyebrow: "Method",
     title: "How It Works",
     lead: "Learn smarter in four simple steps.",
+    photoCaption: "Five minutes between classes or before a hearing is enough for one term.",
+    photoTag: "Study anywhere",
     steps: [
       ["Discover Terms", "Browse or search key legal terms by category or topic."],
       ["Study in Context", "Review clear explanations, equivalents, and real-world examples."],
@@ -114,6 +125,7 @@ const en: LandingCopy = {
     ],
   },
   features: {
+    eyebrow: "Platform",
     title: "Everything You Need to Succeed",
     items: [
       ["Smart Search & Filters", "Find terms quickly by keyword, category, or practice area."],
@@ -127,7 +139,14 @@ const en: LandingCopy = {
     statusOr: "or",
     statusMastered: "Mastered",
   },
+  life: {
+    eyebrow: "Made for real practice",
+    title: "The vocabulary you meet in real files, not in textbooks",
+    lead: "Every term comes from documents lawyers actually draft, negotiate and litigate: share purchase agreements, board minutes, employment contracts. You learn the word the way you will use it.",
+    photos: ["Reading a closing checklist", "Corporate counsel before a board meeting", "Case law in the firm library"],
+  },
   proof: {
+    eyebrow: "Trusted by professionals",
     title: "Trusted by Legal Professionals",
     quotes: [
       [
@@ -145,6 +164,7 @@ const en: LandingCopy = {
     ],
   },
   pricing: {
+    eyebrow: "Plans",
     title: "Simple, Transparent Pricing",
     lead: "Full access to all terms, quizzes, and features.",
     perYear: "/year",
@@ -213,6 +233,7 @@ const es: LandingCopy = {
     ],
   },
   categories: {
+    eyebrow: "Plan de estudio",
     title: "Explora las categorías de lanzamiento",
     lead: "Rutas de aprendizaje enfocadas en la práctica jurídica real.",
     explore: "Explorar términos →",
@@ -223,6 +244,7 @@ const es: LandingCopy = {
     ],
   },
   learn: {
+    eyebrow: "Dentro de una lección",
     title: "Así aprenderás",
     lead: "Cada término incluye definiciones claras, contexto real y práctica inteligente.",
     tabs: ["Definición", "Equivalente en español", "Equivalente en derecho civil", "Alerta para hispanohablantes", "Se usa con", "En contexto"],
@@ -239,8 +261,11 @@ const es: LandingCopy = {
     viewFull: "Ver el quiz completo →",
   },
   workflow: {
+    eyebrow: "Método",
     title: "Cómo funciona",
     lead: "Aprende mejor en cuatro pasos sencillos.",
+    photoCaption: "Cinco minutos entre clases o antes de una audiencia bastan para un término.",
+    photoTag: "Estudia donde estés",
     steps: [
       ["Descubre términos", "Explora o busca términos jurídicos clave por categoría o tema."],
       ["Estudia en contexto", "Revisa explicaciones claras, equivalentes y ejemplos reales."],
@@ -249,6 +274,7 @@ const es: LandingCopy = {
     ],
   },
   features: {
+    eyebrow: "Plataforma",
     title: "Todo lo que necesitas para avanzar",
     items: [
       ["Búsqueda y filtros inteligentes", "Encuentra términos rápidamente por palabra clave, categoría o área de práctica."],
@@ -262,7 +288,14 @@ const es: LandingCopy = {
     statusOr: "o",
     statusMastered: "Dominado",
   },
+  life: {
+    eyebrow: "Hecho para la práctica real",
+    title: "El vocabulario que aparece en expedientes reales, no en manuales",
+    lead: "Cada término viene de documentos que los abogados redactan, negocian y litigan: contratos de compraventa de acciones, actas de junta, contratos laborales. Aprendes la palabra como la vas a usar.",
+    photos: ["Revisando un checklist de cierre", "Abogada corporativa antes de una junta", "Jurisprudencia en la biblioteca del despacho"],
+  },
   proof: {
+    eyebrow: "Confianza profesional",
     title: "Con la confianza de profesionales del derecho",
     quotes: [
       [
@@ -280,6 +313,7 @@ const es: LandingCopy = {
     ],
   },
   pricing: {
+    eyebrow: "Planes",
     title: "Precios simples y transparentes",
     lead: "Acceso completo a todos los términos, quizzes y funciones.",
     perYear: "/año",

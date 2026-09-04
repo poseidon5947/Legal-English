@@ -11,6 +11,11 @@ import { categoryStats, stateOf, studyTerms } from "@/lib/learner-stats";
 import { CATEGORY_THEME, TermCard } from "@/components/terms-library";
 
 const ICON: Record<string, string> = { Contracts: "category-contract", "Corporate Law": "category-corporate", "Employment Law": "category-employment" };
+const CATEGORY_PHOTO: Record<string, string> = {
+  Contracts: "/home-assets/photos/category-contracts.jpg",
+  "Corporate Law": "/home-assets/photos/category-corporate.jpg",
+  "Employment Law": "/home-assets/photos/category-employment.jpg",
+};
 
 /** The three canonical MCD categories with live counts and mastery, linking into the filtered library. */
 export function CategoriesWorkspace() {
@@ -31,7 +36,8 @@ export function CategoriesWorkspace() {
         </div>
         <section className="terms-category-progress large" aria-label={L("categoriesTitle")}>
           {stats.map((item) => (
-            <Link className={`${CATEGORY_THEME[item.category]} terms-category-link`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
+            <Link className={`${CATEGORY_THEME[item.category]} terms-category-link with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
+              <img className="terms-category-photo" src={CATEGORY_PHOTO[item.category]} alt="" loading="lazy" />
               <div className="terms-category-icon-shell">
                 <img className="terms-library-icon" src={`/terms-library-assets/icons/${ICON[item.category]}.png`} alt="" aria-hidden="true" />
               </div>

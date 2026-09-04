@@ -4,10 +4,10 @@ import Link from "next/link";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
-import { landingCopy } from "@/lib/landing-copy";
+import { landingCopy, PLAN_PRICES } from "@/lib/landing-copy";
 import { Icon } from "@/components/ui-icons";
 
-const prices = ["$0", "$9.99", "$79.99"];
+const prices = PLAN_PRICES;
 
 export default function PricingPage() {
   const { t, locale } = useLocale();
@@ -71,6 +71,14 @@ export default function PricingPage() {
           <Link className="primary" href="/login">
             {t("pricingCta")}
           </Link>
+        </div>
+      </section>
+      <section className="pricing-photo-band" aria-label={t("pricingBandTitle")}>
+        <img src="/home-assets/photos/pricing-lecture.jpg" alt="" loading="lazy" />
+        <div>
+          <span className="eyebrow">{t("pricingBandEyebrow")}</span>
+          <h2>{t("pricingBandTitle")}</h2>
+          <p>{t("pricingBandBody")}</p>
         </div>
       </section>
       <section className="landing-section" id="faq">
