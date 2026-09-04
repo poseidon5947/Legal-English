@@ -325,6 +325,55 @@ const en = {
   helpReportSend: "Send to Owner",
   helpReportSent: "Report sent. A copy is in your Alpha Inbox.",
   helpInbox: "Recent messages",
+  settingsEmailTitle: "Email Verification",
+  settingsEmailBody: "Your email is verified and secured.",
+  settingsVerified: "Verified",
+  settingsChangeEmail: "Ask support to change your email",
+  settingsPasswordTitle: "Password",
+  settingsPasswordBody: "Your password is strong and secure.",
+  settingsStrong: "Strong",
+  settingsChangePassword: "Change Password",
+  settingsPrivacyTitle: "Privacy & Data Protection",
+  settingsPrivacyBody: "Control how your data is used and shared.",
+  settingsVisibility: "Profile visibility",
+  settingsVisibilityLimited: "Limited",
+  settingsVisibilityTeam: "Support team",
+  settingsDataUsage: "Data usage",
+  settingsDataSharing: "Data sharing",
+  settingsNotifyBody: "Choose how you want to stay updated.",
+  settingsEmailNotifications: "Email notifications",
+  billingPaymentMethod: "Payment Method",
+  billingCardEnding: "Managed by Mercado Pago",
+  billingExpires: "Card details never touch this app; Mercado Pago stores them.",
+  billingNoMethod: "No payment method yet",
+  billingNoMethodBody: "You are on the free trial. Subscribing opens Mercado Pago Checkout.",
+  billingUpdate: "Open Mercado Pago",
+  billingHistory: "Billing History",
+  billingNoHistory: "No billing events yet for this account.",
+  billingMonthlyPlan: "Monthly Plan",
+  billingAnnualPlan: "Annual Plan",
+  billingBlocked: "Blocked",
+  billingSource: "Source",
+  billingSimulator: "Sandbox",
+  billingWebhook: "Webhook",
+  historyPaymentApproved: "Payment approved",
+  historyPaymentRejected: "Charge rejected (retrying)",
+  historyRetriesExhausted: "Retries exhausted",
+  historyCancelled: "Cancelled by user",
+  historyPeriodEnded: "Paid period ended",
+  historyTrialExpired: "Trial expired",
+  historyReset: "Trial reset",
+  billingYourAccess: "Your Access",
+  billingTermsLibrary: "Terms Library",
+  billingQuizzes: "Quizzes",
+  billingProgress: "Progress Tracking",
+  billingSupport: "Priority Support",
+  billingFullAccess: "Full Access",
+  billingUnlimited: "Unlimited",
+  billingIncluded: "Included",
+  billingManage: "Manage Subscription",
+  billingManageBody: "Need a break? You can cancel anytime. You’ll keep access until the end of your billing period.",
+  aboutCardBody: "One source of truth for terms, quizzes, audio, and progress.",
 };
 
 const es: Record<keyof typeof en, string> = {
@@ -650,6 +699,55 @@ const es: Record<keyof typeof en, string> = {
   helpReportSend: "Enviar al titular",
   helpReportSent: "Reporte enviado. Queda una copia en tu bandeja Alpha.",
   helpInbox: "Mensajes recientes",
+  settingsEmailTitle: "Verificación de correo",
+  settingsEmailBody: "Tu correo está verificado y protegido.",
+  settingsVerified: "Verificado",
+  settingsChangeEmail: "Pedir a soporte el cambio de correo",
+  settingsPasswordTitle: "Contraseña",
+  settingsPasswordBody: "Tu contraseña es segura.",
+  settingsStrong: "Segura",
+  settingsChangePassword: "Cambiar contraseña",
+  settingsPrivacyTitle: "Privacidad y protección de datos",
+  settingsPrivacyBody: "Controla cómo se usan y comparten tus datos.",
+  settingsVisibility: "Visibilidad del perfil",
+  settingsVisibilityLimited: "Limitada",
+  settingsVisibilityTeam: "Equipo de soporte",
+  settingsDataUsage: "Uso de datos",
+  settingsDataSharing: "Compartir datos",
+  settingsNotifyBody: "Elige cómo quieres mantenerte al día.",
+  settingsEmailNotifications: "Notificaciones por correo",
+  billingPaymentMethod: "Método de pago",
+  billingCardEnding: "Gestionado por Mercado Pago",
+  billingExpires: "Los datos de la tarjeta nunca pasan por esta app; los guarda Mercado Pago.",
+  billingNoMethod: "Aún sin medio de pago",
+  billingNoMethodBody: "Estás en la prueba gratuita. Al suscribirte se abre el Checkout de Mercado Pago.",
+  billingUpdate: "Abrir Mercado Pago",
+  billingHistory: "Historial de pagos",
+  billingNoHistory: "Todavía no hay eventos de cobro en esta cuenta.",
+  billingMonthlyPlan: "Plan mensual",
+  billingAnnualPlan: "Plan anual",
+  billingBlocked: "Bloqueado",
+  billingSource: "Origen",
+  billingSimulator: "Sandbox",
+  billingWebhook: "Webhook",
+  historyPaymentApproved: "Pago acreditado",
+  historyPaymentRejected: "Cobro rechazado (reintentando)",
+  historyRetriesExhausted: "Reintentos agotados",
+  historyCancelled: "Cancelado por el usuario",
+  historyPeriodEnded: "Periodo pagado finalizado",
+  historyTrialExpired: "Prueba vencida",
+  historyReset: "Prueba reiniciada",
+  billingYourAccess: "Tu acceso",
+  billingTermsLibrary: "Biblioteca de términos",
+  billingQuizzes: "Quizzes",
+  billingProgress: "Seguimiento del progreso",
+  billingSupport: "Soporte prioritario",
+  billingFullAccess: "Acceso completo",
+  billingUnlimited: "Ilimitado",
+  billingIncluded: "Incluido",
+  billingManage: "Gestionar suscripción",
+  billingManageBody: "¿Necesitas una pausa? Puedes cancelar cuando quieras. Mantendrás el acceso hasta el fin del periodo facturado.",
+  aboutCardBody: "Una sola fuente de verdad para términos, quizzes, audio y progreso.",
 };
 
 export const messages = { en, es };
@@ -692,4 +790,46 @@ export function entitlementLabel(locale: Locale, label: string) {
     "Sign in required": "entitlementSignIn",
   };
   return map[label] ? translate(locale, map[label]) : label;
+}
+
+/** The server writes entitlement.detail in English; map the known sentences for the Spanish UI. */
+export function entitlementDetail(locale: Locale, detail: string) {
+  if (locale !== "es") return detail;
+  const rules: Array<[RegExp, (m: RegExpMatchArray) => string]> = [
+    [/^Your seven-day trial ends (.+)\.$/, (m) => `Tu prueba de siete días termina el ${m[1]}.`],
+    [/^Mercado Pago (\w+) plan is active\./, (m) => `El plan ${m[1] === "monthly" ? "mensual" : m[1] === "annual" ? "anual" : m[1]} de Mercado Pago está activo. El acceso lo concede el servidor, no esta pantalla.`],
+    [/^Owner grant until (.+)\.$/, (m) => `Acceso concedido por la titular hasta el ${m[1]}.`],
+    [/^Your last charge was rejected .* until (.+); update your card/, (m) => `Tu último cobro fue rechazado y Mercado Pago lo está reintentando. El acceso continúa hasta el ${m[1]}; actualiza tu tarjeta para evitar interrupciones.`],
+    [/^The retry window ended/, () => "La ventana de reintentos terminó sin un cobro aprobado. Los términos protegidos siguen bloqueados hasta que se confirme un pago."],
+    [/^Renewal is off\. .* on (.+)\.$/, (m) => `La renovación está desactivada. El acceso continúa hasta el fin del periodo pagado, el ${m[1]}.`],
+    [/^Protected terms stay locked until Mercado Pago/, () => "Los términos protegidos siguen bloqueados hasta que Mercado Pago restablezca un acceso válido."],
+  ];
+  for (const [pattern, render] of rules) {
+    const match = detail.match(pattern);
+    if (match) return render(match);
+  }
+  return detail;
+}
+
+/** Human label for a subscription status in the active locale. */
+export function subscriptionStatusLabel(locale: Locale, status: string) {
+  const en: Record<string, string> = {
+    trialing: "Trial",
+    active: "Active",
+    past_due: "Payment pending",
+    payment_failed: "Payment failed",
+    cancelled: "Cancelled",
+    expired: "Expired",
+    exceptional_access: "Exceptional access",
+  };
+  const es: Record<string, string> = {
+    trialing: "Prueba",
+    active: "Activa",
+    past_due: "Pago pendiente",
+    payment_failed: "Pago fallido",
+    cancelled: "Cancelada",
+    expired: "Vencida",
+    exceptional_access: "Acceso excepcional",
+  };
+  return (locale === "es" ? es : en)[status] || status.replaceAll("_", " ");
 }

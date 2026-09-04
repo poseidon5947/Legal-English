@@ -1,5 +1,6 @@
-import { TermsLibraryReference } from "@/components/terms-library-reference";
+import { redirect } from "next/navigation";
 
+// The static library mock-up used to live here. The real, data-driven library is /terms.
 export default function SampleTermsPage() {
-  return <TermsLibraryReference />;
+  redirect("/terms");
 }

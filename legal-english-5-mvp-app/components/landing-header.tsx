@@ -3,37 +3,45 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/brand-mark";
-
-const LINKS: ReadonlyArray<readonly [string, string]> = [
-  ["/", "Home"],
-  ["/sample-terms", "Terms Library"],
-  ["/#how-it-works", "How It Works"],
-  ["/pricing", "Pricing"],
-  ["/about", "About"],
-];
+import { useLocale } from "@/components/locale-provider";
+import { landingCopy } from "@/lib/landing-copy";
 
 export function LandingHeader() {
   const path = usePathname();
+  const { locale, setLocale, t } = useLocale();
+  const nav = landingCopy[locale].nav;
+  const links: ReadonlyArray<readonly [string, string]> = [
+    ["/", nav.home],
+    ["/terms", nav.library],
+    ["/#how-it-works", nav.how],
+    ["/pricing", nav.pricing],
+    ["/about", nav.about],
+  ];
   return (
     <header className="landing-nav">
       <Link href="/">
         <BrandMark />
       </Link>
       <div className="landing-nav-links">
-        {LINKS.map(([href, label]) => (
+        {links.map(([href, label]) => (
           <Link key={href} href={href} className={(href === "/" ? path === href : path === href) ? "active" : ""}>
             {label}
           </Link>
         ))}
-        <span className="home-lang" aria-label="Language selector">
+        <button
+          type="button"
+          className="home-lang"
+          aria-label={t("langToggle")}
+          onClick={() => setLocale(locale === "en" ? "es" : "en")}
+        >
           <img src="/home-assets/icons/globe.png" alt="" aria-hidden="true" />
-          EN
+          <b className={locale === "en" ? "on" : ""}>EN</b>
           <i>/</i>
-          ES
-        </span>
-        <Link href="/login">Sign In</Link>
+          <b className={locale === "es" ? "on" : ""}>ES</b>
+        </button>
+        <Link href="/login">{nav.signIn}</Link>
         <Link className="primary inline" href="/login">
-          Start 7-Day Free Trial
+          {nav.trial}
         </Link>
       </div>
     </header>

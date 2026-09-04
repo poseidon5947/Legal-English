@@ -1,10 +1,7 @@
-import { ContractsQuizReference } from "@/components/contracts-quiz-reference";
-import { ForceQuizReference } from "@/components/force-quiz-reference";
+import { redirect } from "next/navigation";
 
+// The per-term quiz lives on the term page (Quick Quiz) and in the quiz runner.
 export default async function TermQuizPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  if (id !== "force-majeure") {
-    return <ContractsQuizReference />;
-  }
-  return <ForceQuizReference />;
+  redirect(`/quizzes?term=${encodeURIComponent(id)}`);
 }

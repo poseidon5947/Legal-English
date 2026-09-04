@@ -1,5 +1,5 @@
-import { AccountReference } from "@/components/account-reference";
+import { AccountWorkspace } from "@/components/account-workspace";
 
 export default function ProfilePage() {
-  return <AccountReference />;
+  return <AccountWorkspace />;
 }

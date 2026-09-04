@@ -2,7 +2,7 @@ import { freshTrial } from "./billing-state";
 import { entitlementFor } from "./entitlement";
 import { canPublish, publicationBlockers } from "./publication";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
-import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, Subscription, Term, UseItWithItem } from "./types";
+import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
 
 // Production data layer: Supabase Auth for identity, Postgres + RLS for
 // everything else. Every exported function here has the exact name/shape as
@@ -419,7 +419,35 @@ export async function bootstrap(userId: string | null) {
     users: isAdmin ? await listUsers() : [],
     inbox: [] as Mail[],
     entitlement: entitlementFor(user.subscription),
+    billingHistory: await billingHistoryFor(userId),
   };
+}
+
+/**
+ * The learner's own applied webhook events from the billing_events ledger
+ * (migration 004). Read with the service role because the ledger's RLS only
+ * exposes it to the Owner; the filter by user_id keeps it per-account.
+ */
+async function billingHistoryFor(userId: string): Promise<BillingRecord[]> {
+  const admin = getSupabaseServiceRoleClient();
+  const { data } = await admin
+    .from("billing_events")
+    .select("id, event_type, resource_id, received_at, payload")
+    .eq("user_id", userId)
+    .eq("applied", true)
+    .order("received_at", { ascending: false })
+    .limit(24);
+  const user = await getUser(userId);
+  return (data ?? []).map((row) => ({
+    id: String(row.id),
+    userId,
+    type: String(row.event_type ?? ""),
+    plan: row.event_type === "payment_approved" ? (user?.subscription.plan ?? null) : null,
+    paymentId: row.resource_id ? String(row.resource_id) : null,
+    status: user?.subscription.status ?? "expired",
+    at: String(row.received_at),
+    source: "webhook" as const,
+  }));
 }
 
 export async function openTerm(userId: string, termId: string) {

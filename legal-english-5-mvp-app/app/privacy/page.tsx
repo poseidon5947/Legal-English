@@ -8,7 +8,7 @@ import { PRIVACY_SECTIONS } from "@/lib/legal-content";
 export default function PrivacyPage() {
   const { locale, t } = useLocale();
   return (
-    <main className="landing">
+    <main className="landing home-reference">
       <LandingHeader />
       <section className="landing-section legal-page">
         <div className="landing-section-heading">

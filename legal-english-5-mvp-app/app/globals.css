@@ -38,8 +38,8 @@ button, a { transition: 0.2s ease; }
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; }
 h1, h2, h3, p { letter-spacing: 0; }
-h1, h2, h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; }
-strong, b { font-weight: 700; }
+h1, h2, h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; }
+strong, b { font-weight: 600; }
 .icon {
   width: 18px;
   height: 18px;
@@ -61,7 +61,7 @@ strong, b { font-weight: 700; }
   align-items: center;
   gap: 9px;
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 0.92;
   text-transform: uppercase;
 }
@@ -85,7 +85,7 @@ strong, b { font-weight: 700; }
 .brand-text b {
   color: #7c3aed;
   font-size: 1.24em;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 0;
 }
 
@@ -99,7 +99,7 @@ strong, b { font-weight: 700; }
   background: linear-gradient(135deg, var(--purple), var(--purple-dark));
   color: var(--accent-ink);
   padding: 11px 18px;
-  font-weight: 700;
+  font-weight: 600;
   box-shadow: 0 12px 24px rgba(124, 58, 237, 0.22);
 }
 .primary:hover {
@@ -121,7 +121,7 @@ strong, b { font-weight: 700; }
   border-radius: 7px;
   padding: 11px 16px;
   color: var(--ink-soft);
-  font-weight: 700;
+  font-weight: 600;
 }
 .ghost:hover { background: var(--purple-soft); border-color: #ddceff; color: var(--purple); transform: translateY(-1px); }
 .text-button {
@@ -207,7 +207,7 @@ textarea { min-height: 86px; resize: vertical; }
 }
 .landing-nav-links { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; font-weight: 500; color: var(--muted); }
 .landing-nav-links a:not(.primary):hover { color: var(--purple); }
-.landing-nav-links a.active:not(.primary) { color: var(--ink); font-weight: 700; }
+.landing-nav-links a.active:not(.primary) { color: var(--ink); font-weight: 600; }
 .landing-hero {
   margin: 0 clamp(16px, 4vw, 48px);
   min-height: 610px;
@@ -283,7 +283,7 @@ textarea { min-height: 86px; resize: vertical; }
 }
 .landing-grid article { padding: 20px; }
 .landing-grid .card-media { height: 158px; }
-.landing-grid span, .plans span, .account-grid span { color: var(--purple); font-weight: 700; font-size: 0.78rem; }
+.landing-grid span, .plans span, .account-grid span { color: var(--purple); font-weight: 600; font-size: 0.78rem; }
 .landing-grid h2, .plans strong { color: var(--ink); font-size: 1.35rem; margin: 8px 0; }
 .landing-grid p, .plans p { color: var(--muted); line-height: 1.55; }
 
@@ -303,7 +303,7 @@ textarea { min-height: 86px; resize: vertical; }
   border-radius: 999px;
   background: var(--purple-soft);
   color: var(--purple);
-  font-weight: 800;
+  font-weight: 600;
   font-size: 0.85rem;
   margin-bottom: 14px;
 }
@@ -312,13 +312,13 @@ textarea { min-height: 86px; resize: vertical; }
 
 .category-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .category-cards article { padding: 22px; }
-.category-cards span { color: var(--purple); font-weight: 700; font-size: 0.78rem; }
+.category-cards span { color: var(--purple); font-weight: 600; font-size: 0.78rem; }
 .category-cards h3 { color: var(--ink); font-size: 1.15rem; margin: 8px 0; }
 .category-cards p { color: var(--muted); line-height: 1.55; margin: 0; }
 
 .pricing-cta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
 .landing-more-link { text-align: center; padding: 4px 16px 8px; }
-.landing-more-link a { color: var(--purple); font-weight: 700; }
+.landing-more-link a { color: var(--purple); font-weight: 600; }
 .landing-more-link a:hover { color: var(--purple-dark); }
 .landing-cta-band { padding-bottom: 40px; }
 
@@ -376,7 +376,7 @@ textarea { min-height: 86px; resize: vertical; }
 .footer-brand p { color: rgba(255, 255, 255, 0.65); line-height: 1.6; font-size: 0.9rem; margin: 0; }
 .footer-nav { display: flex; gap: 56px; flex-wrap: wrap; }
 .footer-nav div { display: grid; gap: 10px; align-content: start; }
-.footer-nav span { color: #ffffff; font-weight: 700; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.07em; }
+.footer-nav span { color: #ffffff; font-weight: 600; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.07em; }
 .footer-nav a, .footer-nav button { color: rgba(255, 255, 255, 0.65); font-size: 0.9rem; background: none; border: 0; padding: 0; text-align: left; }
 .footer-nav a:hover, .footer-nav button:hover { color: #ffffff; }
 .footer-bottom { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 20px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.55); }
@@ -827,7 +827,7 @@ nav a:hover, nav a.active {
 .term-body { padding: 16px 18px 17px; display: flex; flex-direction: column; min-width: 0; }
 .term-card h2 { color: var(--ink); font-size: 1.2rem; line-height: 1.25; margin: 10px 0 3px; font-weight: 500; }
 .term-card p { line-height: 1.5; color: var(--ink-soft); margin: 0; }
-.term-card .translation { color: var(--purple); font-style: normal; font-weight: 650; margin: 0 0 7px; }
+.term-card .translation { color: var(--purple); font-style: normal; font-weight: 600; margin: 0 0 7px; }
 .term-excerpt {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -877,8 +877,8 @@ nav a:hover, nav a.active {
 
 .empty, .blocked-panel { padding: 64px 36px; text-align: center; }
 .empty h1, .empty h2, .blocked-panel h1 { color: var(--ink); margin-top: 6px; }
-.blocked-panel span { color: var(--red); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-.back-link { color: var(--muted); font-weight: 700; }
+.blocked-panel span { color: var(--red); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.back-link { color: var(--muted); font-weight: 600; }
 .back-link:hover { color: var(--purple); }
 
 .detail { max-width: 960px; margin: 18px auto 0; }
@@ -897,7 +897,7 @@ nav a:hover, nav a.active {
 }
 .detail-tools { display: flex; gap: 8px; align-items: center; }
 .detail-title h1 { color: var(--ink); font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.08; margin: 13px 0 5px; font-weight: 500; }
-.translation.large { color: var(--purple); font-size: 1.08rem; font-weight: 700; }
+.translation.large { color: var(--purple); font-size: 1.08rem; font-weight: 600; }
 .detail section {
   margin: 14px 0;
   border: 1px solid var(--line);
@@ -965,7 +965,7 @@ blockquote {
   margin-bottom: 12px;
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 .quiz-topline a { color: var(--purple); }
 .quiz-progress {
@@ -1172,7 +1172,7 @@ blockquote {
   background: #ffffff;
   color: var(--ink);
   padding: 10px 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .billing-history-row {
   grid-template-columns: 1fr 1fr auto;
@@ -1263,7 +1263,7 @@ blockquote {
   text-align: center;
   text-transform: uppercase;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 .pricing-plan-card h3 {
   margin: 8px 0;
@@ -1349,7 +1349,7 @@ blockquote {
 }
 .dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
 .dates dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: inherit; opacity: 0.62; }
-.dates dd { margin: 4px 0 0; font-weight: 600; word-break: break-word; }
+.dates dd { margin: 4px 0 0; font-weight: 500; word-break: break-word; }
 
 .tabs { display: flex; gap: 7px; margin-bottom: 16px; flex-wrap: wrap; }
 .admin-row > div { display: flex; align-items: center; gap: 10px; }
@@ -1527,7 +1527,7 @@ blockquote {
 .account-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
 .account-meta div { display: grid; gap: 4px; padding: 14px; border-radius: 8px; background: #fbfcff; border: 1px solid var(--line); }
 .account-meta dt { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.account-meta dd { margin: 0; color: var(--ink); font-weight: 600; }
+.account-meta dd { margin: 0; color: var(--ink); font-weight: 500; }
 .mark-list { display: grid; gap: 10px; }
 .mark-row {
   display: flex;
@@ -1820,7 +1820,7 @@ blockquote {
 .home-term-card span,
 .home-quiz-card span {
   color: var(--gold);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.78rem;
 }
 .home-term-card h2,
@@ -1950,7 +1950,7 @@ blockquote {
   background: var(--gold);
   color: var(--navy);
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
 }
 .pricing-preview strong { font-size: 2.1rem; }
@@ -2077,7 +2077,7 @@ blockquote {
   background: transparent;
   padding: 12px;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 600;
 }
 .auth-tabs button.active {
   color: var(--ink);
@@ -2094,7 +2094,7 @@ blockquote {
 .privacy-consent summary {
   cursor: pointer;
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 600;
 }
 .privacy-consent p {
   color: var(--muted);
@@ -2341,7 +2341,7 @@ nav a.active,
 }
 .account-card a:not(.primary):not(.ghost) {
   color: var(--green);
-  font-weight: 700;
+  font-weight: 600;
 }
 .account-card .danger,
 .admin-row .danger {
@@ -2549,7 +2549,7 @@ select:focus {
   color: #536176;
   border-radius: 8px;
   font-size: 0.82rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .app-shell nav a .icon,
@@ -2636,7 +2636,7 @@ select:focus {
   background: var(--navy);
   color: #ffffff;
   font-size: 0.74rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .aside-bottom strong {
@@ -2696,7 +2696,7 @@ select:focus {
   padding: 0 12px;
   color: var(--muted);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .top-help:hover,
@@ -2721,7 +2721,7 @@ select:focus {
   color: var(--ink);
   font-family: Poppins, Arial, sans-serif;
   font-size: clamp(1.55rem, 2.7vw, 2.2rem);
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.12;
 }
 
@@ -2797,7 +2797,7 @@ select:focus {
   color: var(--ink);
   font-family: Poppins, Arial, sans-serif;
   font-size: 1.55rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .stat strong:after,
@@ -2851,7 +2851,7 @@ select:focus {
 .continue-card h2 {
   color: #ffffff;
   font-family: Poppins, Arial, sans-serif;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .continue-card p {
@@ -2939,7 +2939,7 @@ select:focus {
 .term-card h2 {
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.98rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .translation.large,
@@ -2978,7 +2978,7 @@ select:focus {
 .account-card h2 {
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.98rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .score-ring {
@@ -3000,7 +3000,7 @@ select:focus {
 .detail-title h1 {
   font-family: Poppins, Arial, sans-serif;
   font-size: clamp(1.75rem, 3vw, 2.45rem);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .detail section {
@@ -3527,7 +3527,7 @@ select:focus {
   color: var(--ink);
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.9rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .rail-score {
@@ -3565,7 +3565,7 @@ select:focus {
 .rail-ring span {
   color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .rail-metric {
@@ -3610,7 +3610,7 @@ select:focus {
 .rail-term span {
   color: var(--ink);
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .rail-term small {
@@ -3630,7 +3630,7 @@ select:focus {
 .rail-upgrade a {
   color: var(--blue);
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .library-category-grid {
@@ -3958,7 +3958,7 @@ nav a.active,
   background: linear-gradient(135deg, var(--gold), #efc76f);
   color: var(--navy);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .content {
@@ -4017,7 +4017,7 @@ nav a.active,
   gap: 7px;
   color: var(--ink-soft);
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .top-help:hover {
@@ -4027,7 +4027,7 @@ nav a.active,
 .page-heading h1 {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(2.2rem, 4.2vw, 3.25rem);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .workspace-grid {
@@ -4093,7 +4093,7 @@ nav a.active,
 .rail-ring span {
   color: var(--muted);
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .rail-metric,
@@ -4120,7 +4120,7 @@ nav a.active,
 .rail-metric strong,
 .rail-term span {
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .rail-upgrade {
@@ -4135,7 +4135,7 @@ nav a.active,
 
 .rail-upgrade a {
   color: var(--blue);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .stat:before,
@@ -4407,7 +4407,7 @@ nav a.active,
   background: transparent;
   color: var(--muted);
   padding: 10px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .auth-tabs button.active {
@@ -4683,7 +4683,7 @@ nav a.active,
   gap: 27px;
   color: var(--navy);
   font-size: 0.86rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .home-reference .landing-nav-links a:not(.primary) {
@@ -4708,7 +4708,7 @@ nav a.active,
   color: var(--navy);
   font-size: 0.78rem;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-reference .landing-nav-links .home-lang img {
@@ -4719,7 +4719,7 @@ nav a.active,
 .home-reference .landing-nav-links .home-lang i {
   color: #98a4b8;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .home-reference .landing-nav-links .primary {
@@ -4757,7 +4757,7 @@ nav a.active,
   color: var(--navy);
   font-size: 3.05rem;
   line-height: 1.05;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .home-ref-copy p {
@@ -4780,7 +4780,7 @@ nav a.active,
   border-radius: 5px;
   padding: 12px 22px;
   font-size: 0.86rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-ref-actions .primary {
@@ -4807,7 +4807,7 @@ nav a.active,
   color: var(--ink-soft);
   text-align: center;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .home-ref-benefits .icon {
@@ -4852,7 +4852,7 @@ nav a.active,
   color: var(--navy);
   font-size: 1.52rem;
   line-height: 1.15;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .home-ref-categories .home-ref-heading h2 {
@@ -4861,7 +4861,7 @@ nav a.active,
 
 .home-ref-categories .home-ref-heading p {
   font-size: 0.84rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .home-ref-heading p {
@@ -4911,21 +4911,21 @@ nav a.active,
 .home-ref-category-grid strong {
   color: var(--navy);
   font-size: 0.94rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.15;
 }
 
 .home-ref-category-grid small {
   color: var(--muted);
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.42;
 }
 
 .home-ref-category-grid b {
   color: #0a4a91;
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-ref-learn {
@@ -4965,7 +4965,7 @@ nav a.active,
   padding: 8px 10px;
   text-align: left;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .home-ref-lesson aside button.active {
@@ -5093,7 +5093,7 @@ nav a.active,
   border-color: #a6e5d3;
   background: #e8f8f2;
   color: #08785d;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-ref-quiz label .icon {
@@ -5115,7 +5115,7 @@ nav a.active,
   color: var(--blue);
   text-align: center;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-ref-workflow {
@@ -5125,13 +5125,13 @@ nav a.active,
 .home-ref-workflow .home-ref-heading h2 {
   font-family: Poppins, Arial, sans-serif;
   font-size: 1.28rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-ref-workflow .home-ref-heading p {
   margin-top: 4px;
   font-size: 0.76rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .home-ref-workflow > div:last-child {
@@ -5178,7 +5178,7 @@ nav a.active,
   color: #ffffff;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.66rem;
-  font-weight: 800;
+  font-weight: 600;
   box-shadow: 0 4px 10px rgba(47, 94, 158, 0.2);
 }
 
@@ -5201,7 +5201,7 @@ nav a.active,
 .home-ref-workflow article strong {
   color: var(--navy);
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.15;
 }
 
@@ -5209,7 +5209,7 @@ nav a.active,
   max-width: 188px;
   color: var(--muted);
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.42;
 }
 
@@ -5226,7 +5226,7 @@ nav a.active,
   margin: 0;
   font-family: Poppins, Arial, sans-serif;
   font-size: 1.18rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.1;
 }
 
@@ -5273,14 +5273,14 @@ nav a.active,
 .home-ref-features strong {
   color: var(--navy);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.1;
 }
 
 .home-ref-features small {
   color: var(--muted);
   font-size: 0.64rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.42;
 }
 
@@ -5320,7 +5320,7 @@ nav a.active,
   padding-left: 17px;
   font-family: Poppins, Arial, sans-serif;
   font-size: 1.14rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
 }
 
@@ -5360,7 +5360,7 @@ nav a.active,
   margin: 0;
   color: #2d3b59;
   font-size: 0.67rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -5370,7 +5370,7 @@ nav a.active,
   padding-left: 23px;
   color: var(--navy);
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .home-ref-quote strong:before {
@@ -5386,7 +5386,7 @@ nav a.active,
 .home-ref-quote small {
   color: var(--muted);
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .home-ref-stat {
@@ -5412,14 +5412,14 @@ nav a.active,
   color: var(--navy);
   font-family: Poppins, Arial, sans-serif;
   font-size: 1.7rem;
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1;
 }
 
 .home-ref-stat small {
   color: #52617f;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.15;
 }
 
@@ -5480,7 +5480,7 @@ nav a.active,
   padding: 4px 17px 3px;
   font-size: 0.62rem;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   box-shadow: 0 2px 5px rgba(7, 27, 73, 0.18);
 }
@@ -5516,7 +5516,7 @@ nav a.active,
   color: #52617f;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.64rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .home-ref-pricing ul {
@@ -6933,7 +6933,7 @@ nav a.active,
   margin-bottom: 3px;
   color: #ffffff;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -7108,14 +7108,14 @@ nav a.active,
 .terms-reference-brand strong {
   color: #071f55;
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
 }
 
 .terms-reference-brand small {
   color: #8f9bb0;
   font-size: 0.48rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .terms-reference-nav {
@@ -7138,7 +7138,7 @@ nav a.active,
   color: #728097;
   font: inherit;
   font-size: 0.78rem;
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: 0;
   cursor: pointer;
 }
@@ -7204,7 +7204,7 @@ nav a.active,
   display: block;
   color: var(--terms-ink);
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .terms-trial-card p {
@@ -7222,7 +7222,7 @@ nav a.active,
   background: #08265d;
   color: #ffffff;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .terms-reference-workspace {
@@ -7333,14 +7333,14 @@ nav a.active,
 .terms-user-pill strong {
   color: var(--terms-ink);
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .terms-user-pill small {
   color: #8994a7;
   font-size: 0.64rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .terms-user-pill .terms-library-icon {
@@ -7366,7 +7366,7 @@ nav a.active,
   color: #0b234f;
   font-family: "Cormorant Garamond", serif;
   font-size: 2.15rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -7402,7 +7402,7 @@ nav a.active,
   color: #7c8798;
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
 }
 
@@ -7438,7 +7438,7 @@ nav a.active,
   color: var(--terms-ink);
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .terms-view-controls button.active {
@@ -7520,14 +7520,14 @@ nav a.active,
 .terms-category-progress strong {
   color: var(--terms-ink);
   font-size: 0.82rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .terms-category-progress span {
   margin-top: 4px;
   color: #8b95a5;
   font-size: 0.66rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .terms-progress-track {
@@ -7561,7 +7561,7 @@ nav a.active,
   margin-top: 5px;
   color: #7f8999;
   font-size: 0.62rem;
-  font-weight: 750;
+  font-weight: 500;
   text-align: right;
 }
 
@@ -7591,7 +7591,7 @@ nav a.active,
 
 .terms-card-topline span {
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .terms-card.contracts .terms-card-topline span {
@@ -7626,7 +7626,7 @@ nav a.active,
   margin: 15px 0 8px;
   color: var(--terms-ink);
   font-size: 0.96rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1.22;
 }
 
@@ -7649,7 +7649,7 @@ nav a.active,
   padding: 0 9px;
   border-radius: 999px;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .terms-status .terms-library-icon {
@@ -7699,7 +7699,7 @@ nav a.active,
   color: #637189;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .terms-pagination button.active {
@@ -7885,14 +7885,14 @@ nav a.active,
 .consideration-brand strong {
   color: #071f55;
   font-size: 0.92rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .consideration-brand small {
   color: #8f9aab;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.08em;
 }
 
@@ -7916,7 +7916,7 @@ nav a.active,
   color: #64728a;
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
   cursor: pointer;
 }
@@ -7981,7 +7981,7 @@ nav a.active,
 .consideration-trial-card strong {
   color: var(--consideration-ink);
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 600;
   vertical-align: middle;
 }
 
@@ -8000,7 +8000,7 @@ nav a.active,
   background: #08245a;
   color: #ffffff;
   font-size: 0.74rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-workspace {
@@ -8046,7 +8046,7 @@ nav a.active,
   color: var(--consideration-ink);
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .consideration-search input::placeholder {
@@ -8109,13 +8109,13 @@ nav a.active,
 .consideration-user-pill strong {
   color: var(--consideration-ink);
   font-size: 0.77rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-user-pill small {
   color: #7d889b;
   font-size: 0.58rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .consideration-user-pill .consideration-icon {
@@ -8137,7 +8137,7 @@ nav a.active,
   margin-bottom: 29px;
   color: #4b5a70;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .consideration-breadcrumb .consideration-icon {
@@ -8165,7 +8165,7 @@ nav a.active,
   color: #071f55;
   font-family: "Cormorant Garamond", serif;
   font-size: 2.72rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 0.95;
 }
 
@@ -8211,7 +8211,7 @@ nav a.active,
 .consideration-pronunciation span {
   color: #3b485b;
   font-size: 0.75rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .consideration-pronunciation strong {
@@ -8220,7 +8220,7 @@ nav a.active,
   background: #eef4fd;
   color: #25364f;
   font-size: 0.66rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-term-actions {
@@ -8240,7 +8240,7 @@ nav a.active,
   background: #edf4fe;
   color: #245ca6;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-category-chip .consideration-icon {
@@ -8256,7 +8256,7 @@ nav a.active,
 .consideration-status-select > span {
   color: #4c5b72;
   font-size: 0.58rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .consideration-status-select button {
@@ -8272,7 +8272,7 @@ nav a.active,
   color: #a66112;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-status-select i {
@@ -8344,14 +8344,14 @@ nav a.active,
   color: var(--consideration-ink);
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-info-card p {
   margin: 8px 0 0;
   color: #2f3d52;
   font-size: 0.73rem;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -8362,7 +8362,7 @@ nav a.active,
 
 .consideration-info-card.quote strong {
   color: var(--consideration-green);
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-info-card.quote span {
@@ -8375,7 +8375,7 @@ nav a.active,
   background: #eaf2ff;
   color: #2d65b2;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-info-heading {
@@ -8394,7 +8394,7 @@ nav a.active,
   background: #edf9f4;
   color: #2f8d6c;
   font-size: 0.55rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-info-card.purple .consideration-info-heading span {
@@ -8422,7 +8422,7 @@ nav a.active,
   color: #23344f;
   font: inherit;
   font-size: 0.71rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-bottom-actions a {
@@ -8465,7 +8465,7 @@ nav a.active,
   color: #28374e;
   font: inherit;
   font-size: 0.66rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-term-nav .consideration-icon {
@@ -8500,7 +8500,7 @@ nav a.active,
   color: var(--consideration-ink);
   font-family: "Poppins", sans-serif;
   font-size: 0.91rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-rail-heading .consideration-icon {
@@ -8516,14 +8516,14 @@ nav a.active,
   color: #245ca6;
   font: inherit;
   font-size: 0.56rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-quiz-card > p {
   margin: 15px 0 12px;
   color: #26364e;
   font-size: 0.72rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .consideration-options {
@@ -8563,7 +8563,7 @@ nav a.active,
 .consideration-options b {
   color: #3f4d62;
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.35;
 }
 
@@ -8584,7 +8584,7 @@ nav a.active,
   color: #ffffff;
   font: inherit;
   font-size: 0.7rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-quiz-card > a {
@@ -8593,7 +8593,7 @@ nav a.active,
   margin-top: 10px;
   color: #245ca6;
   font-size: 0.61rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-progress-card {
@@ -8637,7 +8637,7 @@ nav a.active,
 .consideration-ring strong {
   color: #145ad0;
   font-size: 1.28rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -8645,19 +8645,19 @@ nav a.active,
   margin-top: 4px;
   color: #496077;
   font-size: 0.5rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .consideration-progress-body p {
   margin: 0;
   color: #435269;
   font-size: 0.66rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.55;
 }
 
 .consideration-progress-body p strong {
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-progress-scale {
@@ -8668,7 +8668,7 @@ nav a.active,
   padding-top: 17px;
   color: #5f6c81;
   font-size: 0.52rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .consideration-progress-scale::before {
@@ -8721,7 +8721,7 @@ nav a.active,
   background: #f7f9fc;
   color: #536176;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-notes-card > div:last-child {
@@ -8744,19 +8744,19 @@ nav a.active,
   margin: 0;
   color: #405069;
   font-size: 0.6rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.45;
 }
 
 .consideration-notes-card strong {
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .consideration-notes-card div:last-child span {
   grid-column: 2;
   color: #8a7285;
   font-size: 0.55rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 @media (max-width: 1120px) {
@@ -8906,14 +8906,14 @@ nav a.active,
 .quiz-ref-brand strong {
   color: #071f55;
   font-size: 0.92rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .quiz-ref-brand small {
   color: #8f9aab;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.08em;
 }
 
@@ -8937,7 +8937,7 @@ nav a.active,
   color: #64728a;
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
   cursor: pointer;
 }
@@ -9002,7 +9002,7 @@ nav a.active,
 .quiz-ref-trial-card strong {
   color: var(--quiz-ink);
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 600;
   vertical-align: middle;
 }
 
@@ -9021,7 +9021,7 @@ nav a.active,
   background: var(--quiz-navy);
   color: #ffffff;
   font-size: 0.74rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-ref-workspace {
@@ -9067,7 +9067,7 @@ nav a.active,
   color: var(--quiz-ink);
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .quiz-ref-search input::placeholder {
@@ -9130,13 +9130,13 @@ nav a.active,
 .quiz-ref-user-pill strong {
   color: var(--quiz-ink);
   font-size: 0.77rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-ref-user-pill small {
   color: #7d889b;
   font-size: 0.58rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .quiz-ref-user-pill .quiz-ref-icon {
@@ -9166,7 +9166,7 @@ nav a.active,
   color: #071f55;
   font-family: "Cormorant Garamond", serif;
   font-size: 2.28rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 0.95;
 }
 
@@ -9190,7 +9190,7 @@ nav a.active,
   margin: 6px 0 0;
   color: #617086;
   font-size: 0.71rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .quiz-ref-stat-grid {
@@ -9246,14 +9246,14 @@ nav a.active,
   margin: 0 0 4px;
   color: #66758a;
   font-size: 0.58rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .quiz-ref-stat-grid strong {
   display: block;
   color: var(--quiz-ink);
   font-size: 1.25rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -9262,7 +9262,7 @@ nav a.active,
   margin-top: 7px;
   color: #3a9475;
   font-size: 0.56rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .quiz-ref-stat-grid .gold small {
@@ -9305,13 +9305,13 @@ nav a.active,
   background: #edf4ff;
   color: #2e68b5;
   font-size: 0.56rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-active-topline strong {
   color: #2f73df;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-active-card h2 {
@@ -9319,7 +9319,7 @@ nav a.active,
   color: var(--quiz-ink);
   font-family: "Cormorant Garamond", serif;
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .quiz-active-card > p {
@@ -9327,7 +9327,7 @@ nav a.active,
   margin: 0 0 9px;
   color: #13294d;
   font-size: 0.72rem;
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.48;
 }
 
@@ -9367,7 +9367,7 @@ nav a.active,
 .quiz-active-options b {
   color: #49576d;
   font-size: 0.61rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .quiz-active-options .quiz-ref-icon {
@@ -9386,7 +9386,7 @@ nav a.active,
   background: #effaf5;
   color: #358869;
   font-size: 0.59rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .quiz-correct-row .quiz-ref-icon {
@@ -9416,7 +9416,7 @@ nav a.active,
   color: #28364d;
   font: inherit;
   font-size: 0.62rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-active-actions button:last-child {
@@ -9445,7 +9445,7 @@ nav a.active,
   color: var(--quiz-ink);
   font-family: "Cormorant Garamond", serif;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .quiz-section-heading a {
@@ -9454,7 +9454,7 @@ nav a.active,
   gap: 6px;
   color: #2460ad;
   font-size: 0.55rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-section-heading .quiz-ref-icon {
@@ -9475,7 +9475,7 @@ nav a.active,
   border-bottom: 1px solid #edf1f6;
   color: #58677b;
   font-size: 0.53rem;
-  font-weight: 750;
+  font-weight: 500;
   text-align: left;
 }
 
@@ -9503,7 +9503,7 @@ nav a.active,
   padding: 0 6px;
   border-radius: 4px;
   font-size: 0.47rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-history-card .passed {
@@ -9529,7 +9529,7 @@ nav a.active,
   margin: 4px 0 12px;
   color: #6e7b8e;
   font-size: 0.62rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .quiz-practice-grid {
@@ -9577,7 +9577,7 @@ nav a.active,
   color: var(--quiz-ink);
   font-family: "Poppins", sans-serif;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-practice-grid small {
@@ -9590,7 +9590,7 @@ nav a.active,
   background: #fff4df;
   color: #bb7713;
   font-size: 0.42rem;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .quiz-practice-grid article.green small {
@@ -9602,7 +9602,7 @@ nav a.active,
   margin: 9px 0 6px;
   color: #405069;
   font-size: 0.58rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .quiz-practice-grid i {
@@ -9638,7 +9638,7 @@ nav a.active,
   color: #28364d;
   font: inherit;
   font-size: 0.56rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-practice-grid button .quiz-ref-icon {
@@ -9694,7 +9694,7 @@ nav a.active,
   display: block;
   color: #182b64;
   font-size: 1.63rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -9703,7 +9703,7 @@ nav a.active,
   margin-top: 5px;
   color: #4c5e76;
   font-size: 0.56rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .quiz-overall-card ul {
@@ -9721,7 +9721,7 @@ nav a.active,
   gap: 7px;
   color: #506078;
   font-size: 0.62rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .quiz-overall-card li i {
@@ -9743,7 +9743,7 @@ nav a.active,
   margin: 12px 0 0;
   color: #536177;
   font-size: 0.62rem;
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.45;
 }
 
@@ -9772,7 +9772,7 @@ nav a.active,
 .quiz-snapshot-card small {
   color: #2f73df;
   font-size: 0.52rem;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .quiz-snapshot-card span:nth-child(2) b,
@@ -9788,7 +9788,7 @@ nav a.active,
 .quiz-snapshot-card strong {
   color: #2363c8;
   font-size: 1.13rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-snapshot-card span:nth-child(2) strong {
@@ -9843,21 +9843,21 @@ nav a.active,
   display: block;
   color: var(--quiz-ink);
   font-size: 0.63rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-achievement-list p {
   margin: 3px 0 0;
   color: #68758a;
   font-size: 0.54rem;
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.35;
 }
 
 .quiz-achievement-list small {
   color: #6f7b90;
   font-size: 0.52rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .quiz-accuracy-list {
@@ -9889,7 +9889,7 @@ nav a.active,
   color: #38495f;
   font-size: 0.6rem;
   font-style: normal;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .quiz-accuracy-list i {
@@ -10062,14 +10062,14 @@ nav a.active,
 .force-brand strong {
   color: #071f55;
   font-size: 0.92rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .force-brand small {
   color: #8f9aab;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.08em;
 }
 
@@ -10093,7 +10093,7 @@ nav a.active,
   color: #64728a;
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
   cursor: pointer;
 }
@@ -10158,7 +10158,7 @@ nav a.active,
 .force-trial-card strong {
   color: var(--force-ink);
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 600;
   vertical-align: middle;
 }
 
@@ -10177,7 +10177,7 @@ nav a.active,
   background: var(--force-navy);
   color: #ffffff;
   font-size: 0.74rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-workspace {
@@ -10202,7 +10202,7 @@ nav a.active,
   gap: 9px;
   color: #2360ad;
   font-size: 0.78rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-back-link .force-icon {
@@ -10237,7 +10237,7 @@ nav a.active,
   color: var(--force-ink);
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .force-search input::placeholder {
@@ -10300,13 +10300,13 @@ nav a.active,
 .force-user-pill strong {
   color: var(--force-ink);
   font-size: 0.77rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-user-pill small {
   color: #7d889b;
   font-size: 0.58rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .force-user-pill .force-icon {
@@ -10326,7 +10326,7 @@ nav a.active,
   margin-bottom: 18px;
   color: #2360ad;
   font-size: 0.76rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .force-title-row {
@@ -10348,7 +10348,7 @@ nav a.active,
   color: #071f55;
   font-family: "Cormorant Garamond", serif;
   font-size: 2.7rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 0.95;
 }
 
@@ -10387,7 +10387,7 @@ nav a.active,
   border-radius: 6px;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-badges .mastered {
@@ -10430,7 +10430,7 @@ nav a.active,
   color: #394960;
   font: inherit;
   font-size: 0.7rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-term-nav button:last-child {
@@ -10469,7 +10469,7 @@ nav a.active,
   color: #5c6a7f;
   font: inherit;
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .force-tabs button.active {
@@ -10543,20 +10543,20 @@ nav a.active,
   color: var(--force-ink);
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-overview-row p {
   margin: 0;
   color: #1e2f48;
   font-size: 0.78rem;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.55;
 }
 
 .force-overview-row p.highlight {
   color: var(--force-green);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .force-overview-row p button {
@@ -10585,7 +10585,7 @@ nav a.active,
   background: #eaf2ff;
   color: #2360ad;
   font-size: 0.64rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-alert-copy {
@@ -10629,7 +10629,7 @@ nav a.active,
   color: var(--force-ink);
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-progress-body {
@@ -10669,7 +10669,7 @@ nav a.active,
 .force-ring strong {
   color: var(--force-ink);
   font-size: 1.45rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -10677,7 +10677,7 @@ nav a.active,
   margin-top: 4px;
   color: var(--force-green);
   font-size: 0.56rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-progress-card dl {
@@ -10692,7 +10692,7 @@ nav a.active,
   margin: 0;
   color: #435168;
   font-size: 0.66rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .force-progress-card dd {
@@ -10713,7 +10713,7 @@ nav a.active,
   color: #3b4a61;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-progress-card > button .force-icon {
@@ -10742,7 +10742,7 @@ nav a.active,
   margin: 18px 0 0;
   color: #2d3d54;
   font-size: 0.71rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.65;
 }
 
@@ -10763,7 +10763,7 @@ nav a.active,
   padding-left: 18px;
   color: #1d2d45;
   font-size: 0.7rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.55;
 }
 
@@ -10794,7 +10794,7 @@ nav a.active,
   background: #f5fffb;
   color: #238c6c;
   font-size: 0.62rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 @media (max-width: 1120px) {
@@ -10948,14 +10948,14 @@ nav a.active,
 .force-quiz-brand strong {
   color: #071f55;
   font-size: 0.92rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .force-quiz-brand small {
   color: #8f9aab;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.08em;
 }
 
@@ -10979,7 +10979,7 @@ nav a.active,
   color: #64728a;
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
   cursor: pointer;
 }
@@ -11044,7 +11044,7 @@ nav a.active,
 .force-quiz-trial-card strong {
   color: var(--force-quiz-ink);
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 600;
   vertical-align: middle;
 }
 
@@ -11063,7 +11063,7 @@ nav a.active,
   background: var(--force-quiz-navy);
   color: #ffffff;
   font-size: 0.74rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-workspace {
@@ -11088,7 +11088,7 @@ nav a.active,
   gap: 9px;
   color: #2360ad;
   font-size: 0.78rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-back-link .force-quiz-icon {
@@ -11123,7 +11123,7 @@ nav a.active,
   color: var(--force-quiz-ink);
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .force-quiz-search input::placeholder {
@@ -11166,7 +11166,7 @@ nav a.active,
   background: #d8483d;
   color: #ffffff;
   font-size: 0.42rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-user-pill {
@@ -11191,13 +11191,13 @@ nav a.active,
 .force-quiz-user-pill strong {
   color: var(--force-quiz-ink);
   font-size: 0.77rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-user-pill small {
   color: #7d889b;
   font-size: 0.58rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .force-quiz-user-pill .force-quiz-icon {
@@ -11225,7 +11225,7 @@ nav a.active,
   margin-bottom: 13px;
   color: #2360ad;
   font-size: 0.76rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .force-quiz-title-line {
@@ -11240,7 +11240,7 @@ nav a.active,
   color: #071f55;
   font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -11254,7 +11254,7 @@ nav a.active,
   background: #f4efff;
   color: #7651ba;
   font-size: 0.64rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-title-line .force-quiz-icon {
@@ -11266,7 +11266,7 @@ nav a.active,
   margin: 12px 0 0;
   color: #526176;
   font-size: 0.77rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .force-quiz-timer-card {
@@ -11287,14 +11287,14 @@ nav a.active,
 .force-quiz-timer-card strong {
   color: var(--force-quiz-ink);
   font-size: 1.03rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .force-quiz-timer-card span {
   color: #748095;
   font-size: 0.51rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .force-quiz-progress-strip {
@@ -11308,12 +11308,12 @@ nav a.active,
   margin-bottom: 13px;
   color: var(--force-quiz-ink);
   font-size: 0.78rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-progress-strip > div span {
   color: #59677d;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .force-quiz-progress-strip i,
@@ -11347,7 +11347,7 @@ nav a.active,
   color: var(--force-quiz-ink);
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-options {
@@ -11381,7 +11381,7 @@ nav a.active,
   border-radius: 50%;
   color: #657286;
   font-size: 0.73rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .force-quiz-options label.selected > span {
@@ -11392,13 +11392,13 @@ nav a.active,
 .force-quiz-options b {
   color: #182942;
   font-size: 0.77rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.55;
 }
 
 .force-quiz-options label.selected b {
   color: var(--force-quiz-ink);
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .force-quiz-options .force-quiz-icon {
@@ -11434,14 +11434,14 @@ nav a.active,
   display: block;
   color: var(--force-quiz-ink);
   font-size: 0.78rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-explanation p {
   margin: 12px 0 0;
   color: #425168;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.65;
 }
 
@@ -11468,7 +11468,7 @@ nav a.active,
   color: #29384e;
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-bottom-actions button:last-child {
@@ -11516,7 +11516,7 @@ nav a.active,
   color: var(--force-quiz-ink);
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-progress-body {
@@ -11556,7 +11556,7 @@ nav a.active,
 .force-quiz-ring strong {
   color: var(--force-quiz-ink);
   font-size: 1.45rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -11564,7 +11564,7 @@ nav a.active,
   margin-top: 4px;
   color: var(--force-quiz-green);
   font-size: 0.56rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-progress-card dl {
@@ -11579,7 +11579,7 @@ nav a.active,
   margin: 0;
   color: #435168;
   font-size: 0.66rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .force-quiz-progress-card dd {
@@ -11599,7 +11599,7 @@ nav a.active,
   background: #ffffff;
   color: #3b4a61;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-progress-card > a .force-quiz-icon {
@@ -11627,14 +11627,14 @@ nav a.active,
   background: #eaf8f2;
   color: #17845f;
   font-size: 0.63rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-status-card p {
   margin: 15px 0 12px;
   color: #304057;
   font-size: 0.68rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .force-quiz-status-card i b {
@@ -11650,7 +11650,7 @@ nav a.active,
   margin-top: 12px;
   color: #283a52;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .force-quiz-status-card button {
@@ -11667,7 +11667,7 @@ nav a.active,
   color: #3b4a61;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-status-card button .force-quiz-icon {
@@ -11701,13 +11701,13 @@ nav a.active,
 .force-quiz-overview-card span {
   color: #2c3d55;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .force-quiz-overview-card strong {
   color: #69778c;
   font-size: 0.62rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .force-quiz-overview-card article.correct strong {
@@ -11725,7 +11725,7 @@ nav a.active,
   margin: 17px 0 0;
   color: #5b687b;
   font-size: 0.62rem;
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -11745,7 +11745,7 @@ nav a.active,
   background: #ffffff;
   color: #2e3f57;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .force-quiz-help-card a .force-quiz-icon {
@@ -11906,7 +11906,7 @@ nav a.active,
 .progress-ref-brand strong {
   color: #071f55;
   font-size: 0.94rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: 0.01em;
 }
@@ -11914,7 +11914,7 @@ nav a.active,
 .progress-ref-brand small {
   color: #8e99aa;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.12em;
 }
 
@@ -11938,7 +11938,7 @@ nav a.active,
   color: #485774;
   font: inherit;
   font-size: 0.75rem;
-  font-weight: 650;
+  font-weight: 600;
   text-align: left;
 }
 
@@ -11948,7 +11948,7 @@ nav a.active,
   border-radius: 0 4px 4px 0;
   background: #edf4ff;
   color: #135ebc;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .progress-ref-nav a.active::before {
@@ -12015,7 +12015,7 @@ nav a.active,
   margin-top: 8px;
   color: #142851;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .progress-upgrade-card p {
@@ -12034,7 +12034,7 @@ nav a.active,
   background: #082966;
   color: #ffffff;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .progress-ref-workspace {
@@ -12074,7 +12074,7 @@ nav a.active,
   background: transparent;
   color: #1b2d50;
   font-size: 0.7rem;
-  font-weight: 550;
+  font-weight: 500;
   outline: none;
   box-shadow: none;
 }
@@ -12123,7 +12123,7 @@ nav a.active,
   background: #e51f36;
   color: #ffffff;
   font-size: 0.48rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -12150,14 +12150,14 @@ nav a.active,
 .progress-ref-user-pill strong {
   color: #14264a;
   font-size: 0.73rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .progress-ref-user-pill small {
   color: #7c8799;
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .progress-ref-user-pill .progress-ref-icon {
@@ -12195,7 +12195,7 @@ nav a.active,
   margin: 9px 0 0;
   color: #65748b;
   font-size: 0.78rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .progress-date-controls {
@@ -12218,7 +12218,7 @@ nav a.active,
   color: #42516b;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .progress-date-controls button:first-child {
@@ -12294,14 +12294,14 @@ nav a.active,
   margin: 0 0 4px;
   color: #59677c;
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.2;
 }
 
 .progress-ref-stats strong {
   color: #081e4b;
   font-size: 1.36rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1.1;
   white-space: nowrap;
 }
@@ -12310,7 +12310,7 @@ nav a.active,
   margin-top: 7px;
   color: #16a16d;
   font-size: 0.61rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .progress-panel {
@@ -12339,14 +12339,14 @@ nav a.active,
   color: #122650;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.83rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1.2;
 }
 
 .progress-section-top a {
   color: #1764c9;
   font-size: 0.66rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .progress-section-top button {
@@ -12366,7 +12366,7 @@ nav a.active,
   gap: 8px;
   color: #536179;
   font-size: 0.65rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .progress-chart-legend i {
@@ -12481,7 +12481,7 @@ nav a.active,
 .progress-category-list strong {
   color: #1d2f50;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .progress-category-list div {
@@ -12517,7 +12517,7 @@ nav a.active,
 .progress-category-list b {
   color: #4d5c73;
   font-size: 0.66rem;
-  font-weight: 750;
+  font-weight: 600;
   text-align: right;
 }
 
@@ -12560,20 +12560,20 @@ nav a.active,
   display: block;
   color: #071d48;
   font-size: 1.75rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .progress-streak-main strong small {
   font-size: 0.82rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .progress-streak-main p {
   margin: 9px 0 0;
   color: #4e5e75;
   font-size: 0.63rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .progress-week-row {
@@ -12592,7 +12592,7 @@ nav a.active,
 .progress-week-row b {
   color: #526176;
   font-size: 0.63rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .progress-week-row i {
@@ -12605,7 +12605,7 @@ nav a.active,
   color: #ffffff;
   font-size: 0.56rem;
   font-style: normal;
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -12619,7 +12619,7 @@ nav a.active,
   color: #344661;
   text-align: center;
   font-size: 0.66rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .progress-recent-card {
@@ -12677,7 +12677,7 @@ nav a.active,
   overflow: hidden;
   color: #1c2e50;
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.22;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -12687,7 +12687,7 @@ nav a.active,
   margin-top: 4px;
   color: #717f93;
   font-size: 0.56rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .progress-activity-list b {
@@ -12745,7 +12745,7 @@ nav a.active,
 .progress-achievement-list strong {
   color: #1c2e50;
   font-size: 0.66rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1.18;
 }
 
@@ -12753,7 +12753,7 @@ nav a.active,
   margin-top: 5px;
   color: #637188;
   font-size: 0.57rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .progress-achievement-list b {
@@ -12766,7 +12766,7 @@ nav a.active,
   background: #e6f7ef;
   color: #199568;
   font-size: 0.55rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .progress-achievement-list .orange b {
@@ -12934,14 +12934,14 @@ nav a.active,
 .contracts-quiz-brand strong {
   color: #071f55;
   font-size: 0.96rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .contracts-quiz-brand small {
   color: #8d98a9;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.12em;
 }
 
@@ -12964,7 +12964,7 @@ nav a.active,
   color: #465672;
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 650;
+  font-weight: 600;
   text-align: left;
 }
 
@@ -12974,7 +12974,7 @@ nav a.active,
   border-radius: 0 4px 4px 0;
   background: #edf4ff;
   color: #125ebc;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-quiz-nav a.active::before {
@@ -13041,7 +13041,7 @@ nav a.active,
   margin-top: 9px;
   color: #142851;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-quiz-upgrade p {
@@ -13060,7 +13060,7 @@ nav a.active,
   background: #082966;
   color: #ffffff;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .contracts-quiz-workspace {
@@ -13100,7 +13100,7 @@ nav a.active,
   background: transparent;
   color: #1b2d50;
   font-size: 0.7rem;
-  font-weight: 550;
+  font-weight: 500;
   outline: none;
   box-shadow: none;
 }
@@ -13149,7 +13149,7 @@ nav a.active,
   background: #e51f36;
   color: #ffffff;
   font-size: 0.48rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-quiz-user {
@@ -13175,14 +13175,14 @@ nav a.active,
 .contracts-quiz-user strong {
   color: #14264a;
   font-size: 0.73rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .contracts-quiz-user small {
   color: #7c8799;
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .contracts-quiz-user .contracts-quiz-icon {
@@ -13207,7 +13207,7 @@ nav a.active,
   gap: 8px;
   color: #1864c9;
   font-size: 0.73rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-quiz-back .contracts-quiz-icon {
@@ -13241,7 +13241,7 @@ nav a.active,
   color: #6f48bf;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.66rem;
-  font-weight: 850;
+  font-weight: 600;
   vertical-align: middle;
 }
 
@@ -13249,7 +13249,7 @@ nav a.active,
   margin: 11px 0 0;
   color: #607086;
   font-size: 0.78rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .contracts-quiz-timer {
@@ -13278,7 +13278,7 @@ nav a.active,
 .contracts-quiz-timer strong {
   color: #122650;
   font-size: 1.21rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -13286,7 +13286,7 @@ nav a.active,
   margin-top: 5px;
   color: #6e7a8d;
   font-size: 0.62rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .contracts-quiz-timer button {
@@ -13320,7 +13320,7 @@ nav a.active,
 .contracts-quiz-progress-line span {
   color: #263a5d;
   font-size: 0.76rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .contracts-quiz-progress-line span {
@@ -13359,7 +13359,7 @@ nav a.active,
   color: #132851;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.94rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1.4;
 }
 
@@ -13398,7 +13398,7 @@ nav a.active,
   border-radius: 50%;
   color: #6f7b90;
   font-size: 0.72rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .contracts-answer-list button.selected > span {
@@ -13409,7 +13409,7 @@ nav a.active,
 .contracts-answer-list strong {
   color: #233553;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .contracts-answer-list .contracts-quiz-icon {
@@ -13438,7 +13438,7 @@ nav a.active,
   display: block;
   color: #16845f;
   font-size: 0.79rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-correct-panel p {
@@ -13446,7 +13446,7 @@ nav a.active,
   margin: 8px 0 17px;
   color: #526176;
   font-size: 0.68rem;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.62;
 }
 
@@ -13456,7 +13456,7 @@ nav a.active,
   gap: 8px;
   color: #2265bc;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .contracts-correct-panel div a .contracts-quiz-icon {
@@ -13491,7 +13491,7 @@ nav a.active,
   border-radius: 6px;
   font: inherit;
   font-size: 0.73rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .contracts-quiz-actions button:first-child {
@@ -13534,7 +13534,7 @@ nav a.active,
   color: #122650;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.82rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-progress-card {
@@ -13579,7 +13579,7 @@ nav a.active,
 .contracts-progress-ring strong {
   color: #142850;
   font-size: 1.33rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -13587,7 +13587,7 @@ nav a.active,
   margin-top: 5px;
   color: #6b778c;
   font-size: 0.64rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .contracts-progress-card dl,
@@ -13611,7 +13611,7 @@ nav a.active,
 .contracts-overview-card dd {
   margin: 0;
   font-size: 0.67rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .contracts-progress-card dt,
@@ -13637,7 +13637,7 @@ nav a.active,
   background: #ffffff;
   color: #263650;
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .contracts-progress-card > a .contracts-quiz-icon {
@@ -13670,7 +13670,7 @@ nav a.active,
   color: #374860;
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .contracts-navigator-grid button.correct {
@@ -13709,7 +13709,7 @@ nav a.active,
   gap: 6px;
   color: #607086;
   font-size: 0.61rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .contracts-navigator-legend i {
@@ -13782,7 +13782,7 @@ nav a.active,
   margin: 8px 0 11px;
   color: #5e6b80;
   font-size: 0.62rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.42;
 }
 
@@ -13796,7 +13796,7 @@ nav a.active,
   background: #ffffff;
   color: #263650;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 @media (max-width: 1180px) {
@@ -13953,14 +13953,14 @@ nav a.active,
 .indemnity-brand strong {
   color: #071f55;
   font-size: 0.96rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .indemnity-brand small {
   color: #8d98a9;
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.12em;
 }
 
@@ -13983,7 +13983,7 @@ nav a.active,
   color: #465672;
   font: inherit;
   font-size: 0.74rem;
-  font-weight: 650;
+  font-weight: 600;
   text-align: left;
 }
 
@@ -13993,7 +13993,7 @@ nav a.active,
   border-radius: 0 4px 4px 0;
   background: #edf4ff;
   color: #125ebc;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-nav a.active::before {
@@ -14057,7 +14057,7 @@ nav a.active,
   margin-top: 9px;
   color: #142851;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-upgrade-card p {
@@ -14076,7 +14076,7 @@ nav a.active,
   background: #082966;
   color: #ffffff;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .indemnity-workspace {
@@ -14116,7 +14116,7 @@ nav a.active,
   background: transparent;
   color: #1b2d50;
   font-size: 0.7rem;
-  font-weight: 550;
+  font-weight: 500;
   outline: none;
   box-shadow: none;
 }
@@ -14165,7 +14165,7 @@ nav a.active,
   background: #e51f36;
   color: #ffffff;
   font-size: 0.48rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-user-pill {
@@ -14191,14 +14191,14 @@ nav a.active,
 .indemnity-user-pill strong {
   color: #14264a;
   font-size: 0.73rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .indemnity-user-pill small {
   color: #7c8799;
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .indemnity-user-pill .indemnity-icon {
@@ -14223,7 +14223,7 @@ nav a.active,
   gap: 8px;
   color: #1864c9;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-back-link .indemnity-icon {
@@ -14261,7 +14261,7 @@ nav a.active,
   padding: 0 9px;
   border-radius: 4px;
   font-size: 0.63rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .indemnity-badges .indemnity-icon {
@@ -14312,7 +14312,7 @@ nav a.active,
   margin: 15px 0 16px;
   color: #44536d;
   font-size: 0.77rem;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.62;
 }
 
@@ -14332,7 +14332,7 @@ nav a.active,
   color: #132851;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.83rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-example-section blockquote {
@@ -14358,7 +14358,7 @@ nav a.active,
   margin: 0;
   color: #31435f;
   font-size: 0.69rem;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -14381,7 +14381,7 @@ nav a.active,
   gap: 12px;
   color: #4a5a73;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .indemnity-key-section li .indemnity-icon {
@@ -14413,7 +14413,7 @@ nav a.active,
   background: #ffffff;
   color: #34445d;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .indemnity-related-section a .indemnity-icon {
@@ -14440,7 +14440,7 @@ nav a.active,
   margin: 9px 0 0;
   color: #6d798d;
   font-size: 0.68rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .indemnity-library-row button {
@@ -14456,7 +14456,7 @@ nav a.active,
   color: #1764c9;
   font: inherit;
   font-size: 0.7rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-library-row button .indemnity-icon {
@@ -14480,7 +14480,7 @@ nav a.active,
   height: 37px;
   border-radius: 6px;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .indemnity-bottom-nav a:first-child {
@@ -14523,7 +14523,7 @@ nav a.active,
   color: #122650;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.82rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-progress-card {
@@ -14568,7 +14568,7 @@ nav a.active,
 .indemnity-ring strong {
   color: #142850;
   font-size: 1.32rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -14576,7 +14576,7 @@ nav a.active,
   margin-top: 5px;
   color: #6b778c;
   font-size: 0.64rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .indemnity-progress-card dl {
@@ -14596,7 +14596,7 @@ nav a.active,
 .indemnity-progress-card dd {
   margin: 0;
   font-size: 0.67rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .indemnity-progress-card dt {
@@ -14620,7 +14620,7 @@ nav a.active,
   background: #ffffff;
   color: #263650;
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .indemnity-progress-card > a .indemnity-icon {
@@ -14650,7 +14650,7 @@ nav a.active,
   background: #dff7ed;
   color: #12936a;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-rail-heading a,
@@ -14660,7 +14660,7 @@ nav a.active,
   color: #1764c9;
   font: inherit;
   font-size: 0.65rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-mastery-steps {
@@ -14688,7 +14688,7 @@ nav a.active,
   background: #ffffff;
   color: #607086;
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .indemnity-mastery-steps .active b {
@@ -14699,7 +14699,7 @@ nav a.active,
 
 .indemnity-mastery-steps small {
   font-size: 0.52rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .indemnity-mastery-steps .active small {
@@ -14711,14 +14711,14 @@ nav a.active,
   margin-top: 12px;
   color: #263953;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .indemnity-mastery-card > p {
   margin: 6px 0 10px;
   color: #627087;
   font-size: 0.57rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.35;
 }
 
@@ -14736,7 +14736,7 @@ nav a.active,
   color: #263650;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .indemnity-mastery-card > button .indemnity-icon {
@@ -14792,7 +14792,7 @@ nav a.active,
 .indemnity-recent-list strong {
   color: #1d2f50;
   font-size: 0.63rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.2;
 }
 
@@ -14800,7 +14800,7 @@ nav a.active,
   margin-top: 3px;
   color: #738096;
   font-size: 0.55rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .indemnity-recent-list b {
@@ -14829,7 +14829,7 @@ nav a.active,
   margin: 8px 0 0;
   color: #5e6b80;
   font-size: 0.62rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.48;
 }
 
@@ -14987,14 +14987,14 @@ nav a.active,
 .account-ref-brand strong {
   color: #071f55;
   font-size: 0.94rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .account-ref-brand small {
   color: #8b95a7;
   font-size: 0.58rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.12em;
 }
 
@@ -15017,7 +15017,7 @@ nav a.active,
   color: #465672;
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 650;
+  font-weight: 600;
   text-align: left;
 }
 
@@ -15027,7 +15027,7 @@ nav a.active,
   border-radius: 0 4px 4px 0;
   background: #edf4ff;
   color: #1464ce;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-nav a.active::before {
@@ -15091,7 +15091,7 @@ nav a.active,
   margin-top: 9px;
   color: #142851;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-upgrade-card p {
@@ -15110,7 +15110,7 @@ nav a.active,
   background: #082966;
   color: #ffffff;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .account-ref-workspace {
@@ -15150,7 +15150,7 @@ nav a.active,
   background: transparent;
   color: #1b2d50;
   font-size: 0.68rem;
-  font-weight: 550;
+  font-weight: 500;
   outline: none;
   box-shadow: none;
 }
@@ -15184,7 +15184,7 @@ nav a.active,
   color: #182a4f;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .account-ref-header-tools > button .account-ref-icon,
@@ -15217,7 +15217,7 @@ nav a.active,
   background: #e51f36;
   color: #ffffff;
   font-size: 0.48rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-user-pill {
@@ -15243,14 +15243,14 @@ nav a.active,
 .account-ref-user-pill strong {
   color: #14264a;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
 .account-ref-user-pill small {
   color: #7c8799;
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .account-ref-user-pill .account-ref-icon {
@@ -15280,7 +15280,7 @@ nav a.active,
   margin: 10px 0 0;
   color: #4c5d77;
   font-size: 0.75rem;
-  font-weight: 550;
+  font-weight: 500;
 }
 
 .account-ref-tabs {
@@ -15291,7 +15291,8 @@ nav a.active,
   border-bottom: 1px solid #e8edf4;
 }
 
-.account-ref-tabs button {
+.account-ref-tabs button,
+.account-ref-tabs a {
   position: relative;
   height: 41px;
   padding: 0 2px;
@@ -15300,15 +15301,17 @@ nav a.active,
   color: #465672;
   font: inherit;
   font-size: 0.72rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
-.account-ref-tabs button.active {
+.account-ref-tabs button.active,
+.account-ref-tabs a.active {
   color: #1764d1;
-  font-weight: 850;
+  font-weight: 600;
 }
 
-.account-ref-tabs button.active::after {
+.account-ref-tabs button.active::after,
+.account-ref-tabs a.active::after {
   content: "";
   position: absolute;
   left: 0;
@@ -15348,7 +15351,7 @@ nav a.active,
   color: #122650;
   font-family: Poppins, Arial, sans-serif;
   font-size: 0.86rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-card-heading button {
@@ -15364,7 +15367,7 @@ nav a.active,
   color: #233552;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .account-ref-card-heading .account-ref-icon {
@@ -15424,7 +15427,7 @@ nav a.active,
   color: #152955;
   font-size: 1.05rem;
   line-height: 1;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-name-line span {
@@ -15436,14 +15439,14 @@ nav a.active,
   background: #efe6ff;
   color: #7048bd;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-profile-intro p {
   margin: 9px 0 0;
   color: #6a768c;
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .account-ref-profile-meta {
@@ -15459,7 +15462,7 @@ nav a.active,
   gap: 5px;
   color: #58677f;
   font-size: 0.64rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .account-ref-profile-meta .account-ref-icon {
@@ -15482,7 +15485,7 @@ nav a.active,
 .account-ref-form label > span {
   color: #31435f;
   font-size: 0.64rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .account-ref-form label > div {
@@ -15501,7 +15504,7 @@ nav a.active,
   color: #203450;
   font: inherit;
   font-size: 0.68rem;
-  font-weight: 550;
+  font-weight: 500;
   outline: none;
 }
 
@@ -15565,17 +15568,18 @@ nav a.active,
   display: block;
   color: #233650;
   font-size: 0.68rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-setting-row p {
   margin: 7px 0 0;
   color: #6a778d;
   font-size: 0.61rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-.account-ref-setting-row button {
+.account-ref-setting-row button,
+.account-ref-setting-row a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -15588,14 +15592,16 @@ nav a.active,
   color: #233650;
   font: inherit;
   font-size: 0.63rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
-.account-ref-setting-row button.danger {
+.account-ref-setting-row button.danger,
+.account-ref-setting-row a.danger {
   color: #e63d52;
 }
 
-.account-ref-setting-row button .account-ref-icon {
+.account-ref-setting-row button .account-ref-icon,
+.account-ref-setting-row a .account-ref-icon {
   width: 13px;
   height: 13px;
 }
@@ -15651,7 +15657,7 @@ nav a.active,
 .account-ref-ring strong {
   color: #142850;
   font-size: 1.32rem;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -15659,7 +15665,7 @@ nav a.active,
   margin-top: 5px;
   color: #6b778c;
   font-size: 0.64rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .account-ref-progress-card dl,
@@ -15683,7 +15689,7 @@ nav a.active,
 .account-ref-subscription-card dd {
   margin: 0;
   font-size: 0.66rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .account-ref-progress-card dt,
@@ -15709,7 +15715,7 @@ nav a.active,
   background: #ffffff;
   color: #263650;
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .account-ref-progress-card > a {
@@ -15749,13 +15755,13 @@ nav a.active,
   background: #dff7ed;
   color: #12936a;
   font-size: 0.58rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-rail-heading a {
   color: #1764c9;
   font-size: 0.65rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-plan-row {
@@ -15788,14 +15794,14 @@ nav a.active,
 .account-ref-plan-row strong {
   color: #1d2f50;
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .account-ref-plan-row small {
   margin-top: 4px;
   color: #6d798e;
   font-size: 0.63rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .account-ref-subscription-card dl {
@@ -15857,7 +15863,7 @@ nav a.active,
 .account-ref-activity-list strong {
   color: #1d2f50;
   font-size: 0.64rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.2;
 }
 
@@ -15865,7 +15871,7 @@ nav a.active,
   margin-top: 3px;
   color: #738096;
   font-size: 0.55rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .account-ref-activity-list > a > .account-ref-icon {
@@ -15962,7 +15968,8 @@ nav a.active,
     grid-template-columns: 1fr;
   }
 
-  .account-ref-setting-row button {
+  .account-ref-setting-row button,
+  .account-ref-setting-row a {
     width: 100%;
   }
 }
@@ -16078,7 +16085,7 @@ nav a.active,
 .auth-reference-brand strong {
   color: #ffffff;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: 0.035em;
 }
@@ -16086,7 +16093,7 @@ nav a.active,
 .auth-reference-brand small {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.2em;
 }
 
@@ -16097,7 +16104,7 @@ nav a.active,
   margin-top: 77px;
   color: #d8b36f;
   font-size: 0.89rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.5;
 }
 
@@ -16171,7 +16178,7 @@ nav a.active,
   display: block;
   color: #ffffff;
   font-size: 0.96rem;
-  font-weight: 750;
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -16191,7 +16198,7 @@ nav a.active,
   margin-top: 34px;
   color: rgba(255, 255, 255, 0.77);
   font-size: 0.84rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .auth-reference-secure .auth-ref-icon {
@@ -16216,7 +16223,7 @@ nav a.active,
   gap: 30px;
   color: #263955;
   font-size: 0.82rem;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .auth-reference-top button {
@@ -16286,7 +16293,7 @@ nav a.active,
   background: transparent;
   color: #7b8498;
   font-size: 0.9rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .auth-reference-tabs button.active {
@@ -16315,7 +16322,7 @@ nav a.active,
   gap: 7px;
   color: #16284a;
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .auth-reference-form label > span {
@@ -16332,7 +16339,7 @@ nav a.active,
   background: #ffffff;
   color: var(--auth-text);
   font-size: 0.82rem;
-  font-weight: 550;
+  font-weight: 500;
   outline: none;
 }
 
@@ -16382,7 +16389,7 @@ nav a.active,
   background: transparent;
   color: #174b92;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .auth-reference-consent {
@@ -16408,7 +16415,7 @@ nav a.active,
   padding: 10px 12px;
   border-radius: 5px;
   font-size: 0.76rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.45;
 }
 
@@ -16436,7 +16443,7 @@ nav a.active,
   background: #07265a;
   color: #ffffff;
   font-size: 0.88rem;
-  font-weight: 800;
+  font-weight: 600;
   box-shadow: 0 10px 20px rgba(7, 38, 90, 0.17);
 }
 
@@ -16463,7 +16470,7 @@ nav a.active,
   margin: 0;
   color: #7e8799;
   font-size: 0.74rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .auth-provider-row {
@@ -16485,7 +16492,7 @@ nav a.active,
   background: #ffffff;
   color: #233452;
   font-size: 0.76rem;
-  font-weight: 750;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -16524,7 +16531,7 @@ nav a.active,
 .auth-reference-security-note strong {
   color: #1b2f52;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .auth-reference-security-note span {
@@ -16540,13 +16547,13 @@ nav a.active,
   color: #7a8495;
   text-align: center;
   font-size: 0.72rem;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.55;
 }
 
 .auth-reference-terms a {
   color: #174b92;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .auth-signup-mode .auth-reference-panel {
@@ -16643,5 +16650,1518 @@ nav a.active,
 
   .auth-provider-row {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout fixes (Sep 2026 review): sidebar fit, promo-card icon, admin  */
+/* activity overflow, settings grid, mobile header and quiz table.      */
+/* ------------------------------------------------------------------ */
+
+/* App shell sidebar: keep everything visible at 900px-tall viewports and
+   pin the user block to the bottom instead of clipping "Log out". */
+.app-shell > aside {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 16px 14px 14px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.app-shell nav {
+  margin-top: 12px;
+}
+
+.app-shell nav a,
+.side-item {
+  min-height: 36px;
+}
+
+.side-section {
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+.upgrade-card {
+  margin: 14px 0 12px;
+  padding: 14px;
+}
+
+.aside-bottom {
+  margin-top: auto;
+  padding-bottom: 4px;
+}
+
+@media (max-height: 840px) {
+  .upgrade-card {
+    margin-top: 10px;
+    padding: 12px 14px;
+  }
+
+  .upgrade-card small {
+    display: none;
+  }
+}
+
+/* Phones: the sidebar becomes a brand + scrollable nav bar again. */
+@media (max-width: 900px) {
+  .app-shell > aside {
+    position: static;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    height: auto;
+    padding: 12px 14px;
+    overflow: visible;
+  }
+
+  .app-shell nav {
+    display: flex;
+    justify-content: flex-start;
+    gap: 4px;
+    margin: 0 0 0 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .app-shell nav a {
+    flex: 0 0 auto;
+  }
+}
+
+/* Reference sidebars: the crown badge was an inline box that wrapped
+   under the title in the 240px column. Lay the header out as a grid so
+   the icon stays centred beside the text. */
+.consideration-trial-card,
+.quiz-ref-trial-card,
+.force-trial-card,
+.force-quiz-trial-card {
+  display: grid;
+  grid-template-columns: 27px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: center;
+}
+
+.consideration-trial-card > span,
+.quiz-ref-trial-card > span,
+.force-trial-card > span,
+.force-quiz-trial-card > span {
+  display: grid;
+  margin: 0;
+}
+
+.consideration-trial-card > strong,
+.quiz-ref-trial-card > strong,
+.force-trial-card > strong,
+.force-quiz-trial-card > strong {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.consideration-trial-card > p,
+.consideration-trial-card > a,
+.quiz-ref-trial-card > p,
+.quiz-ref-trial-card > a,
+.force-trial-card > p,
+.force-trial-card > a,
+.force-quiz-trial-card > p,
+.force-quiz-trial-card > a {
+  grid-column: 1 / -1;
+}
+
+.consideration-trial-card > p,
+.quiz-ref-trial-card > p,
+.force-trial-card > p,
+.force-quiz-trial-card > p {
+  margin: 12px 0 14px;
+}
+
+/* Admin "Recent activity": long titles no longer run past the card. */
+.chart-card .mark-row {
+  flex-wrap: wrap;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.chart-card .mark-row strong,
+.chart-card .mark-row small {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Settings: Email + Password share a row, Privacy spans, then the two
+   preference cards share a row - no empty cell. */
+.account-stack .account-card.security-card:first-child {
+  grid-column: auto;
+}
+
+.settings-split-row > label {
+  min-width: 0;
+}
+
+/* Landing header on phones: brand on top, links wrap, both CTAs share a row. */
+@media (max-width: 640px) {
+  .home-reference .landing-nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+  }
+
+  .home-reference .landing-nav-links .home-lang {
+    margin-left: auto;
+  }
+
+  .home-reference .landing-nav-links a[href="/login"] {
+    flex: 1 1 calc(50% - 7px);
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* Quiz history table: scroll sideways on phones instead of squashing
+   the fixed-layout columns into each other. */
+@media (max-width: 1100px) {
+  .quiz-ref-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .quiz-history-card {
+    overflow-x: auto;
+  }
+
+  .quiz-history-card table {
+    min-width: 560px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Review round 2: bigger home icons, no step numbers, pricing strips,  */
+/* reference pages scroll, sidebars keep the account group in view.     */
+/* ------------------------------------------------------------------ */
+
+/* Home: benefit and workflow icons were 16-24px of visible glyph. */
+.home-ref-benefits .icon {
+  width: 52px;
+  height: 52px;
+  padding: 9px;
+}
+
+.home-ref-benefits span {
+  gap: 10px;
+  font-size: 0.84rem;
+}
+
+.home-ref-workflow article b {
+  display: none;
+}
+
+.home-ref-workflow article span {
+  width: 84px;
+  height: 84px;
+}
+
+.home-ref-workflow article .icon {
+  width: 56px;
+  height: 56px;
+}
+
+.home-ref-workflow article:not(:last-child):after {
+  top: 42px;
+  left: calc(50% + 60px);
+  right: -60px;
+}
+
+.home-ref-workflow article strong {
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+.home-ref-workflow article small {
+  font-size: 0.74rem;
+}
+
+.home-ref-features .icon {
+  width: 56px;
+  height: 56px;
+  padding: 11px;
+}
+
+/* Pricing: the two strips were navy with ink-coloured text (invisible). */
+.plan-feature-strip,
+.guarantee-strip {
+  background: #ffffff;
+  border-color: var(--line);
+  color: var(--ink);
+  box-shadow: 0 10px 24px rgba(7, 27, 73, 0.05);
+}
+
+.plan-feature-strip > span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.plan-feature-strip b,
+.guarantee-strip strong {
+  color: var(--ink);
+}
+
+.guarantee-strip p {
+  color: var(--muted);
+}
+
+/* Progress and Account were locked to the viewport (100vh + overflow
+   hidden), so everything below the fold was cut off. Let them scroll. */
+.progress-reference-page,
+.account-reference-page {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+/* Every reference sidebar: sticky, full height, and the Account /
+   Billing / Help / Sign Out group sits right under the main nav instead
+   of sinking to the bottom of long pages (it was off-screen on Quizzes). */
+.terms-reference-sidebar,
+.consideration-sidebar,
+.quiz-ref-sidebar,
+.force-sidebar,
+.force-quiz-sidebar,
+.progress-ref-sidebar,
+.contracts-quiz-sidebar,
+.indemnity-sidebar,
+.account-ref-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 0;
+  grid-template-rows: auto auto;
+  align-content: start;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.terms-reference-sidebar-bottom,
+.consideration-sidebar-bottom,
+.quiz-ref-sidebar-bottom,
+.force-sidebar-bottom,
+.force-quiz-sidebar-bottom,
+.progress-ref-sidebar-bottom,
+.contracts-quiz-sidebar-bottom,
+.indemnity-sidebar-bottom,
+.account-ref-sidebar-bottom {
+  align-self: start;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.quiz-ref-brand,
+.consideration-brand,
+.force-brand,
+.force-quiz-brand {
+  padding-bottom: 24px;
+}
+
+@media (max-width: 760px) {
+  .terms-reference-sidebar,
+  .consideration-sidebar,
+  .quiz-ref-sidebar,
+  .force-sidebar,
+  .force-quiz-sidebar,
+  .progress-ref-sidebar,
+  .contracts-quiz-sidebar,
+  .indemnity-sidebar,
+  .account-ref-sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Review round 3: type weight and footer.                              */
+/* Poppins is loaded at 400/500/600/700 only; the sheet used 650-900,   */
+/* which the browser faked by smearing glyphs (the "blurry, too bold"   */
+/* look). Weights are now capped at 600 for UI text, 700 for headings,  */
+/* and synthesis is disabled so nothing can be faked again.             */
+/* ------------------------------------------------------------------ */
+html,
+body {
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+.pricing-plan-card > strong,
+.home-ref-pricing article > strong {
+  font-weight: 700;
+}
+
+/* Footer: <nav> picked up the app sidebar's `nav a` rules (38px rows,
+   light-blue hover with white text). Reset to plain text links. */
+.landing-footer .footer-nav a,
+.landing-footer .footer-nav button {
+  display: inline-block;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(255, 255, 255, 0.68);
+  font-weight: 400;
+  line-height: 1.4;
+  transition: color 0.15s ease;
+}
+
+.landing-footer .footer-nav a:hover,
+.landing-footer .footer-nav a:focus-visible,
+.landing-footer .footer-nav button:hover {
+  background: transparent;
+  box-shadow: none;
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.landing-footer .footer-nav div {
+  gap: 9px;
+}
+
+.landing-footer .footer-nav span {
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.home-reference .landing-footer .footer-top {
+  grid-template-columns: 280px repeat(4, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+
+.landing-footer .footer-contact a {
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero photo flow (replaces the static laptop render).                 */
+/* ------------------------------------------------------------------ */
+.home-ref-product .hero-flow {
+  position: relative;
+  width: min(650px, 100%);
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #0b1f45;
+  box-shadow: 0 24px 48px rgba(7, 27, 73, 0.22);
+  isolation: isolate;
+}
+
+.home-ref-product .hero-flow-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: none;
+  transform: scale(1);
+  transition: opacity 1.1s ease;
+  will-change: opacity, transform;
+}
+
+.home-ref-product .hero-flow-slide.active {
+  opacity: 1;
+  animation: hero-flow-zoom 6.5s ease-out forwards;
+}
+
+@keyframes hero-flow-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.hero-flow-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 27, 73, 0) 45%, rgba(7, 27, 73, 0.72) 100%);
+  pointer-events: none;
+}
+
+.hero-flow-caption {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 18px;
+  display: grid;
+  gap: 6px;
+  color: #ffffff;
+  animation: hero-flow-caption 0.7s ease both;
+}
+
+@keyframes hero-flow-caption {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-flow-caption span {
+  justify-self: start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.hero-flow-caption strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.hero-flow-dots {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  display: flex;
+  gap: 6px;
+}
+
+.hero-flow-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.hero-flow-dots button.active {
+  width: 22px;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-ref-product .hero-flow-slide.active {
+    animation: none;
+  }
+
+  .hero-flow-caption {
+    animation: none;
+  }
+}
+
+/* Language pill in the landing header is now a real toggle button. */
+.home-reference .landing-nav-links .home-lang {
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.home-reference .landing-nav-links .home-lang b {
+  color: #98a4b8;
+  font-weight: 600;
+}
+
+.home-reference .landing-nav-links .home-lang b.on {
+  color: var(--navy);
+}
+
+/* =========================================================================
+   Learner workspace — functional pages (shared shell + live data states)
+   ========================================================================= */
+
+.learner-shell,
+.learner-shell.progress-reference-page,
+.learner-shell.account-reference-page {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+  grid-template-columns: 242px minmax(0, 1fr);
+}
+
+.learner-shell .terms-reference-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.learner-shell .terms-reference-search {
+  margin: 0;
+}
+
+.learner-shell .terms-reference-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--terms-ink, #0b214e);
+  font: inherit;
+  font-size: 0.78rem;
+  outline: none;
+}
+
+.learner-shell .terms-reference-user-tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.learner-shell .terms-reference-user-tools .lang-toggle {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid #e8edf4;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 0.72rem;
+}
+
+.learner-shell .terms-notification {
+  color: inherit;
+  text-decoration: none;
+}
+
+.learner-shell .terms-notification > span {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #e5533d;
+}
+
+.learner-avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1f4e9a, #2e7de6);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px #e8edf5;
+}
+
+.learner-avatar.large {
+  width: 82px;
+  height: 82px;
+  font-size: 1.5rem;
+}
+
+.learner-shell .terms-reference-nav button {
+  cursor: pointer;
+}
+
+.learner-shell .terms-trial-card a {
+  color: #ffffff;
+}
+
+.learner-shell .terms-trial-card.blocked {
+  border-color: #f3d2cb;
+  background: #fff6f4;
+}
+
+.learner-shell .terms-trial-card.blocked > span {
+  background: #ffe3dc;
+}
+
+.learner-shell .terms-trial-card p {
+  display: block;
+  -webkit-line-clamp: 4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.learner-shell .verify-banner {
+  margin: 20px 34px 0;
+}
+
+.learner-shell .blocked-panel {
+  max-width: 640px;
+  margin: 40px auto;
+}
+
+/* Pages that keep the older workspace body (billing, admin, settings…) */
+.learner-shell.app-shell-page .terms-reference-content {
+  padding: 24px 30px 30px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Library */
+.terms-tabs button,
+.terms-view-controls button,
+.terms-pagination button,
+.terms-per-page,
+.terms-category-select {
+  cursor: pointer;
+}
+
+.terms-pagination button:disabled {
+  cursor: default;
+}
+
+.terms-category-progress article[role="button"] {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.terms-category-progress article[role="button"]:hover,
+.terms-category-progress article.active {
+  border-color: #b9cdf0;
+  box-shadow: 0 12px 26px rgba(14, 33, 76, 0.08);
+}
+
+.terms-category-progress.large {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.terms-category-progress .terms-category-link {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  gap: 17px;
+  min-height: 120px;
+  padding: 20px 22px;
+  border: 1px solid #e7ecf4;
+  border-radius: 8px;
+  background: #ffffff;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(13, 35, 75, 0.04);
+}
+
+.terms-category-progress .terms-category-link:hover {
+  border-color: #b9cdf0;
+}
+
+.terms-category-progress .terms-category-link strong {
+  display: block;
+  color: var(--terms-ink, #0b214e);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.terms-category-progress .terms-category-link span,
+.terms-category-progress .terms-category-link small {
+  display: block;
+  color: #7c8797;
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.terms-category-progress .terms-category-link .terms-progress-track {
+  margin: 8px 0 6px;
+}
+
+.terms-category-progress .terms-category-link em {
+  display: block;
+  margin-top: 8px;
+  color: #2460ad;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.terms-category-section {
+  margin-top: 30px;
+}
+
+.terms-reference-heading.compact {
+  margin-bottom: 14px;
+}
+
+.terms-reference-heading.compact h2 {
+  margin: 0;
+  color: #0b234f;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.terms-category-more {
+  color: #2460ad;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.terms-card h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.terms-card h2 a:hover {
+  color: #2460ad;
+}
+
+.terms-card-topline button,
+.consideration-title-line button {
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.terms-card-topline button:hover,
+.consideration-title-line button:hover {
+  background: #eef3fb;
+}
+
+.terms-card-topline button.active,
+.consideration-title-line button.active {
+  background: #fff2d8;
+}
+
+.terms-card-topline button.active img,
+.consideration-title-line button.active img,
+.consideration-bottom-actions button.active img {
+  filter: sepia(1) saturate(4) hue-rotate(-10deg);
+}
+
+.terms-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.terms-status.draft {
+  background: #f1f3f7;
+  color: #6b778a;
+}
+
+.terms-card-grid.list {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.terms-card-grid.list .terms-card {
+  grid-template-columns: 130px minmax(0, 1fr) auto auto;
+  grid-template-rows: auto;
+  grid-template-areas: "category title foot save" "category body foot save";
+  column-gap: 16px;
+  align-items: center;
+  min-height: 0;
+  padding: 14px 18px;
+}
+
+/* In list mode the topline's two children are placed independently:
+   category label on the left, save button at the far right of the row. */
+.terms-card-grid.list .terms-card-topline {
+  display: contents;
+}
+
+.terms-card-grid.list .terms-card-topline > span {
+  grid-area: category;
+}
+
+.terms-card-grid.list .terms-card-topline > button {
+  grid-area: save;
+}
+
+.terms-card-grid.list .terms-card h2 {
+  grid-area: title;
+  margin: 0;
+}
+
+.terms-card-grid.list .terms-card p {
+  grid-area: body;
+  margin: 2px 0 0;
+  -webkit-line-clamp: 2;
+}
+
+.terms-card-grid.list .terms-card-foot {
+  grid-area: foot;
+  justify-content: flex-end;
+}
+
+.terms-menu {
+  position: relative;
+}
+
+.terms-pagination-row .terms-menu {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.terms-menu-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  min-width: 170px;
+  padding: 6px;
+  border: 1px solid #e4eaf3;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 32px rgba(14, 33, 76, 0.12);
+}
+
+.terms-menu-list.up {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+
+.terms-menu-list button {
+  height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #23344f;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.terms-menu-list button:hover,
+.terms-menu-list button.active {
+  background: #eef3fb;
+  color: #2460ad;
+}
+
+.terms-empty {
+  display: grid;
+  gap: 8px;
+  padding: 44px 28px;
+  border: 1px dashed #d8e0ec;
+  border-radius: 10px;
+  background: #fbfcfe;
+  text-align: center;
+}
+
+.terms-empty strong {
+  color: var(--terms-ink, #0b214e);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.terms-empty p {
+  margin: 0;
+  color: #7c8797;
+  font-size: 0.78rem;
+}
+
+.terms-pagination-row {
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.terms-pagination-row .terms-pagination {
+  grid-column: 2;
+}
+
+.terms-showing {
+  grid-column: 1;
+  grid-row: 1;
+  color: #7c8797;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* Term detail */
+.consideration-content.single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.consideration-pronunciation button {
+  cursor: pointer;
+}
+
+.consideration-pronunciation button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.consideration-pronunciation button.playing {
+  box-shadow: 0 0 0 3px rgba(36, 96, 173, 0.25);
+}
+
+.consideration-category-chip {
+  text-decoration: none;
+}
+
+.consideration-status-select button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.consideration-status-select button.state-new i {
+  background: #7c8797;
+}
+
+.consideration-status-select button.state-learning i {
+  background: #e49a29;
+}
+
+.consideration-status-select button.state-mastered i {
+  background: #1a9a72;
+}
+
+.consideration-options label {
+  cursor: pointer;
+}
+
+.consideration-options label.wrong,
+.quiz-active-options label.wrong {
+  border-color: #f0b4b4;
+  background: #fff3f3;
+}
+
+.consideration-options label.wrong > span,
+.quiz-active-options label.wrong > span {
+  border: 4px solid #d94b4b;
+}
+
+.consideration-quiz-result {
+  display: grid;
+  gap: 4px;
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.66rem;
+}
+
+.consideration-quiz-result.ok {
+  background: #effbf6;
+  color: #13704f;
+}
+
+.consideration-quiz-result.ko {
+  background: #fff3f3;
+  color: #a33a3a;
+}
+
+.consideration-quiz-result strong {
+  font-weight: 600;
+}
+
+.consideration-quiz-result p {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.45;
+}
+
+.consideration-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.consideration-bottom-actions button.done {
+  border-color: #b8e6d5;
+  background: #effbf6;
+  color: #13704f;
+}
+
+.consideration-term-nav button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.consideration-related-card div:last-child a {
+  display: grid;
+  place-items: center;
+  min-height: 31px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  background: #f7f9fc;
+  color: #536176;
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.consideration-related-card div:last-child a:hover {
+  background: #e8f0fb;
+  color: #2460ad;
+}
+
+.consideration-rail-heading > span {
+  color: #8b96a8;
+  font-size: 0.6rem;
+  font-weight: 600;
+}
+
+.consideration-source {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.consideration-source div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.consideration-source dt {
+  color: #7c8797;
+  font-size: 0.58rem;
+  font-weight: 500;
+}
+
+.consideration-source dd {
+  margin: 0;
+  color: #23344f;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.consideration-progress-scale span {
+  opacity: 0.55;
+}
+
+.consideration-progress-scale.state-new span:nth-child(1),
+.consideration-progress-scale.state-learning span:nth-child(-n + 2),
+.consideration-progress-scale.state-mastered span {
+  opacity: 1;
+}
+
+/* Quizzes */
+.quiz-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 14px;
+}
+
+.quiz-scope button {
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid #e3e9f2;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #4c5b72;
+  font: inherit;
+  font-size: 0.62rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quiz-scope button.active {
+  border-color: var(--quiz-blue, #2f73df);
+  background: var(--quiz-blue, #2f73df);
+  color: #ffffff;
+}
+
+.quiz-active-card h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.quiz-active-options label {
+  cursor: pointer;
+}
+
+.quiz-correct-row.wrong {
+  background: #fff3f3;
+  color: #a33a3a;
+}
+
+.quiz-correct-row.wrong img {
+  filter: grayscale(1) opacity(0.4);
+}
+
+.quiz-active-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.quiz-empty,
+.progress-empty {
+  margin: 12px 0 0;
+  color: #7c8797;
+  font-size: 0.68rem;
+}
+
+.quiz-history-card td a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.quiz-history-card td a:hover {
+  color: var(--quiz-blue, #2f73df);
+}
+
+.quiz-achievement-list article.pending,
+.progress-achievement-list article.pending {
+  opacity: 0.6;
+}
+
+.quiz-practice-grid button {
+  cursor: pointer;
+}
+
+/* Progress */
+.progress-range {
+  color: #728096;
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+.progress-category-list a {
+  display: grid;
+  grid-template-columns: 28px 125px minmax(0, 1fr) 56px 40px;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.progress-category-list a > span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #eef5ff;
+}
+
+.progress-category-list a.green > span {
+  background: #e8f7ef;
+}
+
+.progress-category-list a.purple > span {
+  background: #f0eafd;
+}
+
+.progress-week-row span.today b {
+  color: var(--progress-blue, #2476df);
+}
+
+.progress-ref-stats small a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* Account */
+.account-ref-form input:not([readonly]) {
+  border-color: #9fbdf0;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(36, 96, 173, 0.12);
+}
+
+.account-ref-form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.account-ref-message {
+  grid-column: 1 / -1;
+  margin: 6px 0 0;
+  color: #4c5b72;
+  font-size: 0.66rem;
+}
+
+.account-ref-card-heading button,
+.account-ref-setting-row button {
+  cursor: pointer;
+}
+
+.account-ref-setting-row button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #e2e8f2;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #233650;
+  font: inherit;
+  font-size: 0.63rem;
+  font-weight: 600;
+}
+
+.account-ref-setting-row {
+  align-items: start;
+  padding: 14px 0;
+}
+
+.account-ref-setting-row > span {
+  margin-top: 2px;
+}
+
+.account-ref-inline-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.account-ref-inline-form input {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #dbe3ee;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.7rem;
+}
+
+.account-ref-rail-heading span.blocked {
+  background: #ffe3dc;
+  color: #b3392b;
+}
+
+@media (max-width: 1100px) {
+  .terms-card-grid.list .terms-card {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "category save" "title title" "body body" "foot foot";
+  }
+
+  .account-ref-inline-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.payment-row a {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #dbe3ee;
+  border-radius: 6px;
+  color: #23344f;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.access-row.blocked strong {
+  color: #b3392b;
+}
+
+.settings-password-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.settings-password-form input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.settings-password-form > div {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+}
+
+.security-card a.ghost {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Payment method row: let the description take the width and push the action below on narrow cards */
+.billing-panel-card .payment-row {
+  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-areas: "icon text" "icon action";
+  row-gap: 10px;
+}
+
+.billing-panel-card .payment-row .icon {
+  grid-area: icon;
+}
+
+.billing-panel-card .payment-row > div {
+  grid-area: text;
+  min-width: 0;
+}
+
+.billing-panel-card .payment-row > div span {
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.billing-panel-card .payment-row > button,
+.billing-panel-card .payment-row > a {
+  grid-area: action;
+  justify-self: start;
+}
+
+/* Learner shell on tablets/phones: compact top bar instead of a tall stacked sidebar */
+@media (max-width: 1100px) {
+  .learner-shell .consideration-content,
+  .learner-shell .quiz-ref-content,
+  .learner-shell .progress-ref-content,
+  .learner-shell .account-ref-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .learner-shell .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .learner-shell {
+    display: block;
+  }
+
+  .learner-shell .terms-reference-sidebar {
+    position: static;
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 12px 16px;
+    overflow: visible;
+  }
+
+  .learner-shell .terms-reference-brand {
+    padding-bottom: 10px;
+  }
+
+  .learner-shell .terms-reference-sidebar > div {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .learner-shell .terms-reference-nav,
+  .learner-shell .terms-reference-nav.account {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+  }
+
+  .learner-shell .terms-reference-nav.account {
+    margin-top: 4px;
+  }
+
+  .learner-shell .terms-reference-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .learner-shell .terms-reference-nav a,
+  .learner-shell .terms-reference-nav button {
+    width: auto;
+    height: 36px;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
+  .learner-shell .terms-reference-sidebar-bottom {
+    display: block;
+    margin-top: 6px;
+  }
+
+  .learner-shell .terms-trial-card {
+    display: none;
+  }
+
+  .learner-shell .terms-reference-topbar {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    height: auto;
+    min-height: 0;
+    padding: 14px 16px;
+  }
+
+  .learner-shell .terms-reference-brand {
+    padding: 4px 0 10px;
+  }
+
+  .learner-shell .terms-reference-brand .terms-library-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .learner-shell .terms-reference-user-tools {
+    justify-content: space-between;
+  }
+
+  .learner-shell .terms-reference-content,
+  .learner-shell .consideration-content,
+  .learner-shell .quiz-ref-content,
+  .learner-shell .progress-ref-content,
+  .learner-shell .account-ref-content {
+    padding: 18px 16px 28px;
+  }
+
+  .learner-shell .verify-banner {
+    margin: 16px 16px 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .terms-pagination-row .terms-pagination,
+  .terms-pagination-row .terms-menu,
+  .terms-showing {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: center;
   }
 }

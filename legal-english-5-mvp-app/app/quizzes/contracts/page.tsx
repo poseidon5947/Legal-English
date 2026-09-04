@@ -1,5 +1,6 @@
-import { ContractsQuizReference } from "@/components/contracts-quiz-reference";
+import { redirect } from "next/navigation";
 
+// Legacy mock route: the real quiz runner takes the category as a query.
 export default function ContractsQuizPage() {
-  return <ContractsQuizReference />;
+  redirect("/quizzes?category=Contracts");
 }

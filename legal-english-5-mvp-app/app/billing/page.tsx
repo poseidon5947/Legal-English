@@ -1,15 +1,27 @@
 "use client";
 
 import { AppShell } from "@/components/app-shell";
-import { statusLabel, useApp } from "@/components/app-provider";
+import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
-import { entitlementLabel } from "@/lib/i18n";
+import { entitlementDetail, entitlementLabel, subscriptionStatusLabel, type MessageKey } from "@/lib/i18n";
 import { Icon, IconName } from "@/components/ui-icons";
 
+const HISTORY_KEY: Record<string, MessageKey> = {
+  payment_approved: "historyPaymentApproved",
+  payment_rejected: "historyPaymentRejected",
+  retries_exhausted: "historyRetriesExhausted",
+  cancelled: "historyCancelled",
+  period_ended: "historyPeriodEnded",
+  trial_expired: "historyTrialExpired",
+  reset: "historyReset",
+};
+
 export default function BillingPage() {
-  const { entitlement, applyBilling, session } = useApp();
+  const { entitlement, applyBilling, session, billingHistory } = useApp();
   const { locale, t } = useLocale();
   const subscription = session?.subscription;
+  const hasMethod = Boolean(subscription?.providerReference);
+  const accessValue = entitlement.allowed ? t("billingFullAccess") : t("billingBlocked");
   return (
     <AppShell>
       <div className="page-heading">
@@ -22,8 +34,8 @@ export default function BillingPage() {
       <div className="billing-card account-billing-grid">
         <section className="billing-subscription-card">
           <span className={`status ${entitlement.allowed ? "active" : "blocked"}`}>{entitlementLabel(locale, entitlement.label)}</span>
-          <h2>{subscription ? statusLabel(subscription.status) : t("noSession")}</h2>
-          <p>{entitlement.detail}</p>
+          <h2>{subscription ? subscriptionStatusLabel(locale, subscription.status) : t("noSession")}</h2>
+          <p>{entitlementDetail(locale, entitlement.detail)}</p>
           {subscription && (
             <dl className="dates">
               <div>
@@ -61,35 +73,42 @@ export default function BillingPage() {
           </button>
         </section>
         <section className="billing-panel-card">
-          <h2>Payment Method</h2>
+          <h2>{t("billingPaymentMethod")}</h2>
           <div className="payment-row">
             <Icon name="card" />
             <div>
-              <strong>Visa ending in 4242</strong>
-              <span>Expires 04/27</span>
+              <strong>{hasMethod ? t("billingCardEnding") : t("billingNoMethod")}</strong>
+              <span>{hasMethod ? `${subscription?.providerReference} · ${t("billingExpires")}` : t("billingNoMethodBody")}</span>
             </div>
-            <button>Update</button>
+            {hasMethod ? (
+              <a href="https://www.mercadopago.com.co/subscriptions" target="_blank" rel="noreferrer">
+                {t("billingUpdate")}
+              </a>
+            ) : (
+              <button onClick={() => void applyBilling("payment_approved", "monthly")}>{t("subscribeMonth")}</button>
+            )}
           </div>
         </section>
         <section className="billing-panel-card">
-          <h2>Billing History</h2>
-          {["May 20, 2025", "Apr 20, 2025", "Mar 20, 2025"].map((date) => (
-            <div className="billing-history-row" key={date}>
-              <span>{date}</span>
-              <b>Monthly Plan</b>
-              <strong>$9.99</strong>
+          <h2>{t("billingHistory")}</h2>
+          {billingHistory.length === 0 && <p className="muted">{t("billingNoHistory")}</p>}
+          {billingHistory.slice(0, 8).map((record) => (
+            <div className="billing-history-row" key={record.id} title={record.paymentId || undefined}>
+              <span>{new Date(record.at).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })}</span>
+              <b>{t(HISTORY_KEY[record.type] || "historyReset")}</b>
+              <strong>{record.plan ? t(record.plan === "annual" ? "billingAnnualPlan" : "billingMonthlyPlan") : subscriptionStatusLabel(locale, record.status)}</strong>
             </div>
           ))}
         </section>
         <section className="billing-panel-card">
-          <h2>Your Access</h2>
+          <h2>{t("billingYourAccess")}</h2>
           {[
-            ["book", "Terms Library", "Full Access"],
-            ["help", "Quizzes", "Unlimited"],
-            ["trend", "Progress Tracking", "Full Access"],
-            ["users", "Priority Support", "Included"],
+            ["book", t("billingTermsLibrary"), accessValue],
+            ["help", t("billingQuizzes"), entitlement.allowed ? t("billingUnlimited") : t("billingBlocked")],
+            ["trend", t("billingProgress"), t("billingFullAccess")],
+            ["users", t("billingSupport"), t("billingIncluded")],
           ].map(([icon, label, value]) => (
-            <div className="access-row" key={label}>
+            <div className={`access-row${value === t("billingBlocked") ? " blocked" : ""}`} key={label}>
               <Icon name={icon as IconName} />
               <span>{label}</span>
               <strong>{value}</strong>
@@ -97,8 +116,8 @@ export default function BillingPage() {
           ))}
         </section>
         <section className="billing-panel-card manage-card">
-          <h2>Manage Subscription</h2>
-          <p>Need a break? You can cancel anytime. You’ll keep access until the end of your billing period.</p>
+          <h2>{t("billingManage")}</h2>
+          <p>{t("billingManageBody")}</p>
           <div>
             <button onClick={() => void applyBilling("cancelled")}>{t("cancellation")}</button>
             <button className="primary" onClick={() => void applyBilling("payment_approved", "annual")}>

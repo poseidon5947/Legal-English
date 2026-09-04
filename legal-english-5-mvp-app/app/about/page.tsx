@@ -14,7 +14,7 @@ export default function AboutPage() {
     { title: t("step4Title"), body: t("step4Body") },
   ];
   return (
-    <main className="landing">
+    <main className="landing home-reference">
       <LandingHeader />
       <section className="landing-section">
         <div className="about-showcase">
@@ -28,7 +28,7 @@ export default function AboutPage() {
             <Icon name="scales" />
             <figcaption>
               <strong>Legal English 5</strong>
-              <span>One source of truth for terms, quizzes, audio, and progress.</span>
+              <span>{t("aboutCardBody")}</span>
             </figcaption>
           </figure>
         </div>

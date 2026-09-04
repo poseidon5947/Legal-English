@@ -4,38 +4,14 @@ import Link from "next/link";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
+import { landingCopy } from "@/lib/landing-copy";
 import { Icon } from "@/components/ui-icons";
 
-const pricingPlans = [
-  {
-    name: "7-Day Free Trial",
-    price: "$0",
-    period: "for 7 days",
-    body: "Full access. No credit card.",
-    cta: "Start Free Trial",
-    features: ["Access all lessons", "Practice quizzes", "Track your progress", "Cancel anytime"],
-  },
-  {
-    name: "Monthly Plan",
-    price: "$9.99",
-    period: "/month",
-    body: "Cancel anytime.",
-    cta: "Start Monthly Plan",
-    popular: true,
-    features: ["Everything in Free Trial", "Full library access", "Personalized progress", "Priority support"],
-  },
-  {
-    name: "Annual Plan",
-    price: "$79.99",
-    period: "/year",
-    body: "Best value. Save more.",
-    cta: "Start Annual Plan",
-    features: ["Everything in Monthly", "Save over 30%", "Early access to new content", "Cancel anytime"],
-  },
-];
+const prices = ["$0", "$9.99", "$79.99"];
 
 export default function PricingPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const c = landingCopy[locale].pricing;
   const faqs = [
     { q: t("faqQ1"), a: t("faqA1") },
     { q: t("faqQ2"), a: t("faqA2") },
@@ -43,7 +19,7 @@ export default function PricingPage() {
     { q: t("faqQ4"), a: t("faqA4") },
   ];
   return (
-    <main className="landing">
+    <main className="landing home-reference">
       <LandingHeader />
       <section className="landing-section">
         <div className="landing-section-heading">
@@ -52,22 +28,22 @@ export default function PricingPage() {
           <p>{t("pricingLead")}</p>
         </div>
         <div className="plan-feature-strip">
-          <span>All plans include:</span>
-          {["Full access", "All lessons", "Cancel anytime", "Secure payment"].map((item) => (
+          <span>{c.include}</span>
+          {c.includeItems.map((item, index) => (
             <b key={item}>
-              <Icon name={item === "Secure payment" ? "card" : item === "All lessons" ? "book" : "shield"} />
+              <Icon name={index === 3 ? "card" : index === 1 ? "book" : "shield"} />
               {item}
             </b>
           ))}
         </div>
         <div className="plans pricing-plans">
-          {pricingPlans.map((plan) => (
-            <article className={`media-card pricing-plan-card ${plan.popular ? "popular" : ""}`} key={plan.name}>
-              {plan.popular && <span className="popular-label">Most Popular</span>}
+          {c.plans.map((plan, index) => (
+            <article className={`media-card pricing-plan-card ${index === 1 ? "popular" : ""}`} key={plan.name}>
+              {index === 1 && <span className="popular-label">{c.mostPopular}</span>}
               <h3>{plan.name}</h3>
               <p>{plan.body}</p>
               <strong>
-                {plan.price}
+                {prices[index]}
                 <small>{plan.period}</small>
               </strong>
               <ul>
@@ -78,7 +54,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link className={plan.popular ? "primary" : "ghost"} href="/login">
+              <Link className={index === 1 ? "primary" : "ghost"} href="/login">
                 {plan.cta}
               </Link>
             </article>
@@ -87,8 +63,8 @@ export default function PricingPage() {
         <div className="guarantee-strip">
           <Icon name="shield" />
           <div>
-            <strong>30-Day Money-Back Guarantee</strong>
-            <p>Not satisfied? Get a full refund within 30 days of purchase.</p>
+            <strong>{c.guaranteeTitle}</strong>
+            <p>{c.guaranteeBody}</p>
           </div>
         </div>
         <div className="pricing-cta">

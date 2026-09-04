@@ -6,7 +6,7 @@ import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } 
 import { ALPHA_SESSION_COOKIE, hashPassword, oneTimeCode, readSession, verifyPassword } from "./crypto";
 import { entitlementFor } from "./entitlement";
 import { canPublish, publicationBlockers } from "./publication";
-import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User } from "./types";
+import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User, BillingRecord } from "./types";
 
 type ImportRun = {
   id: string;
@@ -21,7 +21,11 @@ type ImportRun = {
   rolledBackAt: string | null;
 };
 
-type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; inbox: Mail[]; importRuns?: ImportRun[] };
+type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
+
+function billingHistoryFor(data: StoreData, userId: string) {
+  return (data.billingLog ?? []).filter((item) => item.userId === userId).sort((a, b) => b.at.localeCompare(a.at));
+}
 
 const DIR = join(process.cwd(), "data");
 const FILE = join(DIR, "alpha-store.json");
@@ -292,6 +296,7 @@ export async function bootstrap(userId: string | null) {
     users: isAdmin ? data.users.map(publicUser) : [],
     inbox: await inboxFor(user.email),
     entitlement: entitlementFor(user.subscription),
+    billingHistory: billingHistoryFor(data, user.id),
   };
 }
 
@@ -362,8 +367,23 @@ export async function applyBilling(userId: string, event: string, plan?: Plan) {
   const transition = applyBillingEvent(user.subscription, billingEvent);
   if (!transition.applied) return { ok: false as const, message: transition.reason || "Event ignored." };
   user.subscription = transition.subscription;
+  // Every applied event is kept so Billing History reflects what actually
+  // happened to this account, not a decorative list.
+  data.billingLog = [
+    ...(data.billingLog ?? []),
+    {
+      id: `bill_${stamp}`,
+      userId,
+      type,
+      plan: type === "payment_approved" ? (plan ?? user.subscription.plan) : null,
+      paymentId: "paymentId" in billingEvent ? billingEvent.paymentId ?? null : null,
+      status: user.subscription.status,
+      at: new Date(stamp).toISOString(),
+      source: "simulator",
+    },
+  ];
   save(data);
-  return { ok: true as const, user: publicUser(user), entitlement: entitlementFor(user.subscription) };
+  return { ok: true as const, user: publicUser(user), entitlement: entitlementFor(user.subscription), billingHistory: billingHistoryFor(data, userId) };
 }
 
 export async function grantAccess(actorId: string, targetId: string) {

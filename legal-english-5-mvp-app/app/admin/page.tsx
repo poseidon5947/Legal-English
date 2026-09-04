@@ -2,7 +2,10 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
-import { AudioUploadResult, ImportPreview, statusLabel, useApp } from "@/components/app-provider";
+import { useLocale } from "@/components/locale-provider";
+import { adminText } from "@/lib/admin-copy";
+import { subscriptionStatusLabel } from "@/lib/i18n";
+import { AudioUploadResult, ImportPreview, useApp } from "@/components/app-provider";
 import { CATEGORIES, emptyQuiz, emptyTerm, type Term, type UseItWithItem } from "@/lib/types";
 
 function parseUseItWith(value: string, current: UseItWithItem[]): UseItWithItem[] {
@@ -32,6 +35,8 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 
 export default function AdminPage() {
   const { session, terms, users, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio, uploadAudioBatch, removeAudio } = useApp();
+  const { locale } = useLocale();
+  const a = (key: Parameters<typeof adminText>[1], vars?: Record<string, string | number>) => adminText(locale, key, vars);
   const [audioBusy, setAudioBusy] = useState<"us" | "uk" | "batch" | null>(null);
   const [audioResults, setAudioResults] = useState<AudioUploadResult[]>([]);
   const [lastRun, setLastRun] = useState<{ importRunId: string; inserted?: number; updated?: number; missing?: string[]; rolledBack?: boolean } | null>(null);
@@ -48,8 +53,8 @@ export default function AdminPage() {
     return (
       <AppShell>
         <div className="empty">
-          <h1>Owner access required</h1>
-          <p>This route is rejected for Learners on the server, not only hidden in the menu.</p>
+          <h1>{a("ownerOnlyTitle")}</h1>
+          <p>{a("ownerOnlyBody")}</p>
         </div>
       </AppShell>
     );
@@ -59,19 +64,19 @@ export default function AdminPage() {
     event.preventDefault();
     if (!editing) return;
     const result = await saveTerm(editing);
-    setMessage(result.ok ? "Term saved." : result.message || "Could not save.");
+    setMessage(result.ok ? a("termSaved") : result.message || a("couldNotSave"));
     if (result.ok) setEditing(null);
   }
 
   async function onUploadAudio(jurisdiction: "us" | "uk", file: File) {
     if (!editing?.id) {
-      setMessage("Save the term once, so it has a TermID, before uploading audio.");
+      setMessage(a("saveBeforeAudio"));
       return;
     }
     setAudioBusy(jurisdiction);
     const result = await uploadAudio(editing.id, jurisdiction, file);
     setAudioBusy(null);
-    setMessage(result.ok ? `Audio${jurisdiction.toUpperCase()} uploaded.` : result.message || "Audio upload failed.");
+    setMessage(result.ok ? a("audioUploaded", { jur: jurisdiction.toUpperCase() }) : result.message || a("audioUploadFailed"));
     const fresh = (result as { terms?: Term[] }).terms?.find((term) => term.id === editing.id);
     if (result.ok && fresh) setEditing({ ...editing, audioUsPath: fresh.audioUsPath, audioUkPath: fresh.audioUkPath });
   }
@@ -79,7 +84,7 @@ export default function AdminPage() {
   async function onRemoveAudio(jurisdiction: "us" | "uk") {
     if (!editing?.id) return;
     const result = await removeAudio(editing.id, jurisdiction);
-    setMessage(result.ok ? `Audio${jurisdiction.toUpperCase()} removed. The publication gate applies again.` : result.message || "Could not remove audio.");
+    setMessage(result.ok ? a("audioRemoved", { jur: jurisdiction.toUpperCase() }) : result.message || a("audioRemoveFailed"));
     if (result.ok) setEditing({ ...editing, [jurisdiction === "us" ? "audioUsPath" : "audioUkPath"]: "" });
   }
 
@@ -88,30 +93,30 @@ export default function AdminPage() {
     const result = await uploadAudioBatch(files);
     setAudioBusy(null);
     setAudioResults(result.results || []);
-    setMessage(result.message || (result.ok ? "Audio batch processed." : "Audio batch failed."));
+    setMessage(result.message || (result.ok ? a("batchDone") : a("batchFailed")));
   }
 
   return (
     <AppShell>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">OWNER CONSOLE · NO CODE</span>
-          <h1>Operate the studio</h1>
-          <p>LC-001 from MCD v1.3.81 loads unpublished. Publish only with quiz + AudioUS (and AudioUK for EMP-009). Import does not rewrite the MCD.</p>
+          <span className="eyebrow">{a("eyebrow")}</span>
+          <h1>{a("title")}</h1>
+          <p>{a("lead")}</p>
         </div>
         {tab === "terms" && (
           <button className="primary" onClick={() => setEditing(emptyTerm())}>
-            + New term
+            {a("newTerm")}
           </button>
         )}
       </div>
       <div className="tabs">
         {(
           [
-            ["overview", "Overview"],
-            ["terms", "Terms"],
-            ["users", "Users"],
-            ["import", "Excel import"],
+            ["overview", a("tabOverview")],
+            ["terms", a("tabTerms")],
+            ["users", a("tabUsers")],
+            ["import", a("tabImport")],
           ] as const
         ).map(([id, label]) => (
           <button key={id} className={tab === id ? "active" : ""} onClick={() => setTab(id)}>
@@ -125,38 +130,38 @@ export default function AdminPage() {
           <div className="stat-grid four">
             <div className="stat">
               <strong>{terms.length}</strong>
-              <span>MCD terms loaded</span>
+              <span>{a("statLoaded")}</span>
             </div>
             <div className="stat">
               <strong>{published}</strong>
-              <span>Published</span>
+              <span>{a("statPublished")}</span>
             </div>
             <div className="stat">
               <strong>{drafts}</strong>
-              <span>Drafts / future</span>
+              <span>{a("statDrafts")}</span>
             </div>
             <div className="stat">
               <strong>
                 {quizzes}/{terms.filter((term) => term.mcdStatus === "Approved").length || 30}
               </strong>
-              <span>Quizzes on Approved terms</span>
+              <span>{a("statQuizzes")}</span>
             </div>
           </div>
           <p className="muted">
-            Learners currently see {published} terms. Approved is not Published. AudioUS is 0/30 in v1.3.81, so publication stays blocked until you upload audio.
+            {a("learnersSee", { n: published })}
           </p>
           <div className="chart-grid">
             <section className="chart-card">
-              <h2>Users growth</h2>
-              <p>Alpha account activity by review session.</p>
+              <h2>{a("usersGrowth")}</h2>
+              <p>{a("usersGrowthBody")}</p>
               <svg viewBox="0 0 260 150" className="chart-svg funnel" aria-label="Users growth chart">
                 <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24 L232 132 L18 132Z" fill="#E0F1EB" />
                 <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24" fill="none" stroke="#006B5B" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </section>
             <section className="chart-card">
-              <h2>Top categories</h2>
-              <p>Published catalogue mix.</p>
+              <h2>{a("topCategories")}</h2>
+              <p>{a("topCategoriesBody")}</p>
               <div className="bar-chart">
                 {CATEGORIES.map((item) => {
                   const count = terms.filter((term) => term.category === item && term.published && !term.archived).length;
@@ -176,19 +181,19 @@ export default function AdminPage() {
               </div>
             </section>
             <section className="chart-card">
-              <h2>Recent activity</h2>
-              <p>Operational signals for the owner.</p>
+              <h2>{a("recentActivity")}</h2>
+              <p>{a("recentActivityBody")}</p>
               <div className="mark-list">
                 <div className="mark-row">
-                  <strong>New user registered</strong>
+                  <strong>{a("newUser")}</strong>
                   <small>{users[users.length - 1]?.email || "n/a"}</small>
                 </div>
                 <div className="mark-row">
-                  <strong>Terms awaiting audio</strong>
+                  <strong>{a("awaitingAudio")}</strong>
                   <small>{terms.filter((term) => term.mcdStatus === "Approved" && !term.audioUsPath).length}</small>
                 </div>
                 <div className="mark-row">
-                  <strong>Published terms</strong>
+                  <strong>{a("publishedTerms")}</strong>
                   <small>{published}</small>
                 </div>
               </div>
@@ -203,12 +208,12 @@ export default function AdminPage() {
               <div>
                 <strong>{user.name}</strong>
                 <span>
-                  {user.email} · {user.role === "admin" ? "Owner" : "Learner"} · {user.emailVerified ? "verified" : "unverified"}
+                  {user.email} · {user.role === "admin" ? a("roleOwner") : a("roleLearner")} · {user.emailVerified ? a("verified") : a("unverified")}
                 </span>
               </div>
               <div>
-                <span className="status active">{statusLabel(user.subscription.status)}</span>
-                {user.role !== "admin" && <button onClick={() => void grantAccess(user.id)}>Grant 30-day access</button>}
+                <span className="status active">{subscriptionStatusLabel(locale, user.subscription.status)}</span>
+                {user.role !== "admin" && <button onClick={() => void grantAccess(user.id)}>{a("grantAccess")}</button>}
               </div>
             </div>
           ))}
@@ -216,8 +221,8 @@ export default function AdminPage() {
       )}
       {tab === "import" && (
         <section className="import-panel">
-          <h2>Mass import from the Master Content Database</h2>
-          <p>Use MCD v1.3.81. The importer reads LC-001 only, keeps canonical IDs, accepts 3- or 4-option quizzes, and never publishes or deletes automatically.</p>
+          <h2>{a("importTitle")}</h2>
+          <p>{a("importBody")}</p>
           <input
             type="file"
             accept=".xlsx,.xls"
@@ -226,21 +231,30 @@ export default function AdminPage() {
               if (!file) return;
               void previewImport(file).then((result) => {
                 setPreview(result.preview || null);
-                setMessage(result.ok ? "Preview ready. Review the rows, then confirm. Nothing is published on import." : result.message || "The file has blocking errors.");
+                setMessage(result.ok ? a("previewReady") : result.message || a("fileBlocking"));
               });
             }}
           />
           {preview && (
             <div className="preview">
               <p>
-                {preview.workbookVersion || "version n/a"} · {preview.counts.terms} LC-001 terms · {preview.creates.length} new · {preview.updates.length} updates · {preview.unchanged?.length || 0} unchanged · {preview.counts.quizzes} quizzes ({preview.counts.quizzesThreeOptions || 0}×3 / {preview.counts.quizzesFourOptions || 0}×4)
+                {a("previewSummary", {
+                  version: preview.workbookVersion || a("versionNa"),
+                  terms: preview.counts.terms,
+                  creates: preview.creates.length,
+                  updates: preview.updates.length,
+                  unchanged: preview.unchanged?.length || 0,
+                  quizzes: preview.counts.quizzes,
+                  three: preview.counts.quizzesThreeOptions || 0,
+                  four: preview.counts.quizzesFourOptions || 0,
+                })}
               </p>
               {preview.issues.length > 0 && (
                 <ul className="errors">
                   {preview.issues.map((issue, index) => (
                     <li key={index}>
                       [{issue.severity}] {issue.sheet}
-                      {issue.row ? ` row ${issue.row}` : ""}
+                      {issue.row ? ` ${a("row")} ${issue.row}` : ""}
                       {issue.id ? ` ${issue.id}` : ""}: {issue.message}
                     </li>
                   ))}
@@ -251,7 +265,7 @@ export default function AdminPage() {
                   className="primary"
                   onClick={() => {
                     void commitImport(preview.terms).then((result) => {
-                      setMessage(result.ok ? "Import committed. Terms stay unpublished. Missing IDs were kept." : result.message || "Import failed.");
+                      setMessage(result.ok ? a("importCommitted") : result.message || a("importFailed"));
                       if (result.ok) {
                         setPreview(null);
                         setLastRun(result.importRunId ? { importRunId: result.importRunId, inserted: result.inserted, updated: result.updated, missing: result.missing } : null);
@@ -259,7 +273,7 @@ export default function AdminPage() {
                     });
                   }}
                 >
-                  Confirm import
+                  {a("confirmImport")}
                 </button>
               )}
             </div>
@@ -267,21 +281,21 @@ export default function AdminPage() {
           {lastRun && (
             <div className="preview">
               <p>
-                Last commit: {lastRun.inserted ?? 0} inserted · {lastRun.updated ?? 0} updated
-                {lastRun.missing?.length ? ` · ${lastRun.missing.length} existing TermID(s) kept, not touched` : ""}
-                {lastRun.rolledBack ? " · rolled back" : ""}
+                {a("lastCommit", { inserted: lastRun.inserted ?? 0, updated: lastRun.updated ?? 0 })}
+                {lastRun.missing?.length ? a("missingKept", { n: lastRun.missing.length }) : ""}
+                {lastRun.rolledBack ? a("rolledBack") : ""}
               </p>
               {!lastRun.rolledBack && (
                 <button
                   className="danger"
                   onClick={() => {
                     void rollbackImport(lastRun.importRunId).then((result) => {
-                      setMessage(result.ok ? "Import rolled back to its pre-commit state." : result.message || "Rollback failed.");
+                      setMessage(result.ok ? a("rollbackDone") : result.message || a("rollbackFailed"));
                       if (result.ok) setLastRun({ ...lastRun, rolledBack: true });
                     });
                   }}
                 >
-                  Undo this import
+                  {a("undoImport")}
                 </button>
               )}
             </div>
@@ -290,11 +304,10 @@ export default function AdminPage() {
       )}
       {tab === "terms" && (
         <section className="import-panel">
-          <h2>Bulk audio upload</h2>
+          <h2>{a("bulkAudioTitle")}</h2>
           <p>
-            Name each file <code>{"{TermID}_US.mp3"}</code> or <code>{"{TermID}_UK.mp3"}</code> (also m4a, wav, ogg) — for example <code>CON-001_US.mp3</code> or{" "}
-            <code>EMP-009_UK.mp3</code>. Files are associated by name; anything that does not match an existing TermID is rejected and listed below, never
-            guessed. Uploading the same name again replaces the previous recording.
+            {a("bulkAudioBody1")} <code>{"{TermID}_US.mp3"}</code> {a("bulkAudioBody2")} <code>{"{TermID}_UK.mp3"}</code> {a("bulkAudioBody3")} <code>CON-001_US.mp3</code>{" "}
+            {a("bulkAudioBody2")} <code>EMP-009_UK.mp3</code>. {a("bulkAudioBody4")}
           </p>
           <input
             type="file"
@@ -308,7 +321,7 @@ export default function AdminPage() {
             }}
           />
           <p className="muted tiny">
-            AudioUS: {terms.filter((term) => term.audioUsPath).length}/{terms.length} · AudioUK (EMP-009): {terms.find((term) => term.id === "EMP-009")?.audioUkPath ? "present" : "pending"}
+            {a("audioCount", { us: terms.filter((term) => term.audioUsPath).length, total: terms.length, uk: terms.find((term) => term.id === "EMP-009")?.audioUkPath ? a("present") : a("pending") })}
           </p>
           {audioResults.length > 0 && (
             <ul className="errors">
@@ -328,7 +341,7 @@ export default function AdminPage() {
               <div>
                 <strong>{term.term}</strong>
                 <span>
-                  #{term.displayOrder || "—"} · {term.id} · {term.category} · {term.quiz ? `Quiz ${term.quiz.options.length} opts` : "Quiz missing"} · {term.audioUsPath ? "AudioUS" : "No AudioUS"} · {term.mcdStatus}
+                  #{term.displayOrder || "—"} · {term.id} · {term.category} · {term.quiz ? a("quizOpts", { n: term.quiz.options.length }) : a("quizMissing")} · {term.audioUsPath ? "AudioUS" : a("noAudioUs")} · {term.mcdStatus}
                 </span>
               </div>
               <div>
@@ -336,33 +349,33 @@ export default function AdminPage() {
                   className={term.published ? "toggle on" : "toggle"}
                   onClick={() => {
                     void setPublished(term.id, !term.published).then((result) => {
-                      if (!result.ok) setMessage(result.message || "Publish blocked.");
+                      if (!result.ok) setMessage(result.message || a("publishBlocked"));
                       else setMessage("");
                     });
                   }}
                 >
-                  {term.published ? "Published" : "Draft"}
+                  {term.published ? a("published") : a("draft")}
                 </button>
-                <button onClick={() => setEditing(term)}>Edit</button>
+                <button onClick={() => setEditing(term)}>{a("edit")}</button>
                 {term.archived ? (
-                  <button onClick={() => void setArchived(term.id, false)}>Restore</button>
+                  <button onClick={() => void setArchived(term.id, false)}>{a("restore")}</button>
                 ) : (
                   <button className="danger" onClick={() => void setArchived(term.id, true)}>
-                    Archive
+                    {a("archive")}
                   </button>
                 )}
                 {!term.published && (
                   <button
                     className="danger"
                     onClick={() => {
-                      if (!window.confirm(`Permanently delete ${term.id}? This cannot be undone.`)) return;
+                      if (!window.confirm(a("deleteConfirm", { id: term.id }))) return;
                       void deleteTerm(term.id).then((result) => {
-                        if (!result.ok) setMessage(result.message || "Delete failed.");
-                        else setMessage(`${term.id} deleted.`);
+                        if (!result.ok) setMessage(result.message || a("deleteFailed"));
+                        else setMessage(a("deleted", { id: term.id }));
                       });
                     }}
                   >
-                    Delete
+                    {a("delete")}
                   </button>
                 )}
               </div>
@@ -373,23 +386,20 @@ export default function AdminPage() {
       {tab === "overview" && (
         <>
           <section className="import-panel">
-            <h2>Backup &amp; recovery</h2>
+            <h2>{a("backupTitle")}</h2>
             <p>
-              Export downloads terms, quizzes, users, subscriptions and progress as JSON — everything except audio files, which live in Storage and are
-              covered by the daily database backup instead. Nothing is deleted or changed by exporting.
+              {a("backupBody")}
             </p>
             <a className="primary inline" href="/api/admin/export">
-              Export data (JSON)
+              {a("exportJson")}
             </a>
             <p className="muted tiny">
-              What&apos;s recovered and by whom: this export restores content/users/progress into a new environment by hand. Point-in-time database
-              recovery (up to 24h RPO) is a Supabase Pro feature, requested from Supabase support, not from this panel — it does not restore Vercel,
-              Mercado Pago or DNS configuration.
+              {a("backupNote")}
             </p>
           </section>
           <p className="tiny muted">
             <button className="text-button" onClick={() => void resetDemo()}>
-              Reset alpha data
+              {a("resetAlpha")}
             </button>
           </p>
         </>
@@ -398,30 +408,30 @@ export default function AdminPage() {
         <div className="modal-backdrop">
           <form className="modal" onSubmit={(event) => void onSave(event)}>
             <header>
-              <h2>{editing.id ? `Edit ${editing.term}` : "New term"}</h2>
+              <h2>{editing.id ? a("editTerm", { term: editing.term }) : a("newTermTitle")}</h2>
               <button type="button" onClick={() => setEditing(null)}>
                 ×
               </button>
             </header>
             <div className="form-grid">
               <label>
-                TermID
+                {a("fTermId")}
                 <input value={editing.id} onChange={(e) => setEditing({ ...editing, id: e.target.value })} required placeholder="CORP-031" />
               </label>
               <label>
-                Term
+                {a("fTerm")}
                 <input value={editing.term} onChange={(e) => setEditing({ ...editing, term: e.target.value })} required />
               </label>
               <label>
-                Spanish equivalent
+                {a("fSpanish")}
                 <input value={editing.spanishEquivalent} onChange={(e) => setEditing({ ...editing, spanishEquivalent: e.target.value })} required />
               </label>
               <label>
-                Civil Law Equivalent
+                {a("fCivil")}
                 <input value={editing.civilLawEquivalent} onChange={(e) => setEditing({ ...editing, civilLawEquivalent: e.target.value })} />
               </label>
               <label>
-                Category
+                {a("fCategory")}
                 <select value={editing.category} onChange={(e) => setEditing({ ...editing, category: e.target.value })}>
                   {CATEGORIES.map((item) => (
                     <option key={item}>{item}</option>
@@ -429,7 +439,7 @@ export default function AdminPage() {
                 </select>
               </label>
               <label>
-                Jurisdiction
+                {a("fJurisdiction")}
                 <select value={editing.jurisdiction} onChange={(e) => setEditing({ ...editing, jurisdiction: e.target.value as Term["jurisdiction"] })}>
                   <option>US</option>
                   <option>UK</option>
@@ -437,16 +447,16 @@ export default function AdminPage() {
                 </select>
               </label>
               <label className="full">
-                Definition
+                {a("fDefinition")}
                 <textarea value={editing.definition} onChange={(e) => setEditing({ ...editing, definition: e.target.value })} required />
               </label>
               <label className="full">
-                Spanish Speaker Alert
+                {a("fAlert")}
                 <textarea value={editing.spanishSpeakerAlert} onChange={(e) => setEditing({ ...editing, spanishSpeakerAlert: e.target.value })} />
               </label>
               <label>
-                AudioUS path
-                <input value={editing.audioUsPath} onChange={(e) => setEditing({ ...editing, audioUsPath: e.target.value })} placeholder="Required to publish" />
+                {a("fAudioUs")}
+                <input value={editing.audioUsPath} onChange={(e) => setEditing({ ...editing, audioUsPath: e.target.value })} placeholder={a("fAudioUsPh")} />
                 <input
                   type="file"
                   accept="audio/*"
@@ -459,13 +469,13 @@ export default function AdminPage() {
                 />
                 {editing.audioUsPath && (
                   <button type="button" className="text-button" onClick={() => void onRemoveAudio("us")}>
-                    Remove AudioUS
+                    {a("removeAudioUs")}
                   </button>
                 )}
               </label>
               <label>
-                AudioUK path
-                <input value={editing.audioUkPath} onChange={(e) => setEditing({ ...editing, audioUkPath: e.target.value })} placeholder={editing.id === "EMP-009" ? "Required for EMP-009" : "Optional unless applicable"} />
+                {a("fAudioUk")}
+                <input value={editing.audioUkPath} onChange={(e) => setEditing({ ...editing, audioUkPath: e.target.value })} placeholder={editing.id === "EMP-009" ? a("fAudioUkReq") : a("fAudioUkOpt")} />
                 <input
                   type="file"
                   accept="audio/*"
@@ -478,16 +488,16 @@ export default function AdminPage() {
                 />
                 {editing.audioUkPath && (
                   <button type="button" className="text-button" onClick={() => void onRemoveAudio("uk")}>
-                    Remove AudioUK
+                    {a("removeAudioUk")}
                   </button>
                 )}
               </label>
               <label className="full">
-                Use It With
+                {a("fUseItWith")}
                 <input value={editing.useItWith.map((item) => item.expression).join(", ")} onChange={(e) => setEditing({ ...editing, useItWith: parseUseItWith(e.target.value, editing.useItWith) })} />
               </label>
               <label className="full">
-                In Context
+                {a("fInContext")}
                 <textarea
                   value={editing.inContext?.exampleText || ""}
                   onChange={(e) =>
@@ -506,7 +516,7 @@ export default function AdminPage() {
                 />
               </label>
               <label className="full">
-                Quiz question
+                {a("fQuizQuestion")}
                 <input
                   value={editing.quiz?.question || ""}
                   onChange={(e) => setEditing({ ...editing, quiz: withQuiz(editing, { question: e.target.value }) })}
@@ -514,8 +524,8 @@ export default function AdminPage() {
               </label>
               {[0, 1, 2, 3].map((index) => (
                 <label key={index}>
-                  Option {String.fromCharCode(65 + index)}
-                  {index === 3 ? " (optional)" : ""}
+                  {a("fOption", { letter: String.fromCharCode(65 + index) })}
+                  {index === 3 ? a("optional") : ""}
                   <input
                     value={editing.quiz?.options[index] || ""}
                     onChange={(e) => {
@@ -527,7 +537,7 @@ export default function AdminPage() {
                 </label>
               ))}
               <label className="full">
-                Quiz explanation
+                {a("fQuizExplanation")}
                 <textarea
                   value={editing.quiz?.explanation || ""}
                   onChange={(e) => setEditing({ ...editing, quiz: withQuiz(editing, { explanation: e.target.value }) })}
@@ -537,14 +547,14 @@ export default function AdminPage() {
             <footer>
               <label className="check">
                 <input type="checkbox" checked={editing.published} onChange={(e) => setEditing({ ...editing, published: e.target.checked })} />
-                Published (blocked without quiz + AudioUS)
+                {a("publishedCheck")}
               </label>
               <div>
                 <button type="button" onClick={() => setEditing(null)}>
-                  Cancel
+                  {a("cancel")}
                 </button>
                 <button className="primary" type="submit">
-                  Save term
+                  {a("saveTerm")}
                 </button>
               </div>
             </footer>

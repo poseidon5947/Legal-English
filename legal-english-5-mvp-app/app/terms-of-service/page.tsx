@@ -8,7 +8,7 @@ import { TERMS_SECTIONS } from "@/lib/legal-content";
 export default function TermsOfServicePage() {
   const { locale, t } = useLocale();
   return (
-    <main className="landing">
+    <main className="landing home-reference">
       <LandingHeader />
       <section className="landing-section legal-page">
         <div className="landing-section-heading">

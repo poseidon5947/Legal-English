@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { HeroImageFlow } from "@/components/hero-image-flow";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
-import { IMAGES } from "@/lib/media";
+import { useLocale } from "@/components/locale-provider";
+import { landingCopy } from "@/lib/landing-copy";
 
 type HomeIconName =
   | "arrow-right"
@@ -43,98 +45,68 @@ function HomeIcon({ name, className = "" }: { name: HomeIconName; className?: st
   return <img className={`icon home-generated-icon ${className}`.trim()} src={`/home-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-const practiceAreas: ReadonlyArray<readonly [string, string, HomeIconName]> = [
-  ["Contracts", "Master essential contract terms and clauses used in everyday practice.", "category-contracts"],
-  ["Corporate Law", "Learn the language of companies, governance, and business transactions.", "category-corporate"],
-  ["Employment Law", "Build confidence with employment terms and workplace terminology.", "category-employment"],
-];
-
-const learningTabs: ReadonlyArray<readonly [string, HomeIconName]> = [
-  ["Definition", "open-book"],
-  ["Spanish Equivalent", "globe"],
-  ["Civil Law Equivalent", "legal-scales"],
-  ["Spanish-Speaker Alert", "help"],
-  ["Use It With", "contract-clipboard"],
-  ["In Context", "bookmark"],
-];
-
-const workflow: ReadonlyArray<readonly [string, string, HomeIconName]> = [
-  ["Discover Terms", "Browse or search key legal terms by category or topic.", "workflow-book"],
-  ["Study in Context", "Review clear explanations, equivalents, and real-world examples.", "workflow-chat"],
-  ["Take Quiz", "Reinforce your knowledge with short, focused quizzes.", "workflow-quiz"],
-  ["Track Mastery", "Monitor your progress and build lasting confidence.", "workflow-growth"],
-];
-
-const features: ReadonlyArray<readonly [string, string, HomeIconName]> = [
-  ["Smart Search & Filters", "Find terms quickly by keyword, category, or practice area.", "feature-search"],
-  ["Learn Anywhere", "Responsive experience on desktop, tablet, and mobile.", "feature-mobile"],
-  ["Personalized Progress", "Terms are marked as New, Learning, or Mastered.", "feature-progress"],
-  ["All-Access Subscription", "Unlimited access to all terms, quizzes, and new content.", "feature-timer"],
-];
-
-const pricingPlans = [
-  ["7-Day Free Trial", "$0", "Full access to all features", "All terms and quizzes", "Cancel anytime", "Start Free Trial"],
-  ["Monthly Plan", "$12", "Unlimited access to all content", "New terms added regularly", "Cancel anytime", "Start Monthly Plan"],
-  ["Annual Plan", "$99", "Everything in Monthly Plan", "Save over 30% with annual billing", "Cancel anytime", "Start Annual Plan"],
-] as const;
+const categoryIcons: readonly HomeIconName[] = ["category-contracts", "category-corporate", "category-employment"];
+// Same order as landingCopy.categories.items; these are the canonical MCD category names.
+const categoryRoutes = ["Contracts", "Corporate Law", "Employment Law"] as const;
+const tabIcons: readonly HomeIconName[] = ["open-book", "globe", "legal-scales", "help", "contract-clipboard", "bookmark"];
+const workflowIcons: readonly HomeIconName[] = ["workflow-book", "workflow-chat", "workflow-quiz", "workflow-growth"];
+const featureIcons: readonly HomeIconName[] = ["feature-search", "feature-mobile", "feature-progress", "feature-timer"];
+const benefitIcons: readonly HomeIconName[] = ["flame-stopwatch", "shield-badge", "growth-chart", "credit-card"];
+const statIcons: readonly HomeIconName[] = ["contract-clipboard-stat", "legal-scales-stat", "shield-badge-stat", "user-avatar-stat"];
+const quotePhotos = ["/home-assets/people/carlos-mendez.png", "/home-assets/people/ana-rodriguez.png"];
+const homePrices = ["$0", "$12", "$99"];
 
 export default function Home() {
+  const { locale } = useLocale();
+  const c = landingCopy[locale];
   return (
     <main className="landing home-reference">
       <LandingHeader />
       <section className="home-ref-hero">
         <div className="home-ref-copy">
           <h1>
-            Master Legal English
+            {c.hero.title1}
             <br />
-            in 5-Minute Sessions.
+            {c.hero.title2}
           </h1>
-          <p>
-            The microlearning platform built for Spanish-speaking lawyers and law students. Learn essential legal terminology through clear explanations,
-            contextual usage, functional equivalents, and progress tracking.
-          </p>
+          <p>{c.hero.lead}</p>
           <div className="home-ref-actions">
             <Link className="primary" href="/login">
-              Start 7-Day Free Trial
+              {c.hero.cta}
               <HomeIcon name="arrow-right" />
             </Link>
-            <Link className="ghost" href="/sample-terms">
-              Explore Terms Library
+            <Link className="ghost" href="/terms">
+              {c.hero.explore}
             </Link>
           </div>
           <div className="home-ref-benefits">
-            {[
-              ["5-Minute Lessons", "flame-stopwatch"],
-              ["Built for legal professionals", "shield-badge"],
-              ["Track your progress", "growth-chart"],
-              ["No credit card required", "credit-card"],
-            ].map(([label, icon]) => (
+            {c.hero.benefits.map((label, index) => (
               <span key={label}>
-                <HomeIcon name={icon as HomeIconName} />
+                <HomeIcon name={benefitIcons[index]} />
                 {label}
               </span>
             ))}
           </div>
         </div>
         <div className="home-ref-product">
-          <img src={IMAGES.generatedHero} alt="Legal English 5 dashboard preview" />
+          <HeroImageFlow slides={c.hero.slides} />
         </div>
       </section>
 
       <section className="home-ref-categories">
         <div className="home-ref-heading">
-          <h2>Explore Our Launch Categories</h2>
-          <p>Focused learning paths designed for real legal practice.</p>
+          <h2>{c.categories.title}</h2>
+          <p>{c.categories.lead}</p>
         </div>
         <div className="home-ref-category-grid">
-          {practiceAreas.map(([title, body, icon]) => (
-            <Link href="/sample-terms" key={title}>
+          {c.categories.items.map(([title, body], index) => (
+            <Link href={`/terms?category=${encodeURIComponent(categoryRoutes[index])}`} key={title}>
               <span>
-                <HomeIcon name={icon} />
+                <HomeIcon name={categoryIcons[index]} />
               </span>
               <strong>{title}</strong>
               <small>{body}</small>
-              <b>Explore Terms →</b>
+              <b>{c.categories.explore}</b>
             </Link>
           ))}
         </div>
@@ -142,14 +114,14 @@ export default function Home() {
 
       <section className="home-ref-learn" id="how-it-works">
         <div className="home-ref-heading">
-          <h2>See How You’ll Learn</h2>
-          <p>Every term includes clear definitions, real-world context, and smart practice.</p>
+          <h2>{c.learn.title}</h2>
+          <p>{c.learn.lead}</p>
         </div>
         <div className="home-ref-lesson">
           <aside>
-            {learningTabs.map(([label, icon], index) => (
+            {c.learn.tabs.map((label, index) => (
               <button className={index === 0 ? "active" : ""} key={label}>
-                <HomeIcon name={icon} />
+                <HomeIcon name={tabIcons[index]} />
                 {label}
               </button>
             ))}
@@ -159,53 +131,48 @@ export default function Home() {
             <button aria-label="Play pronunciation">
               <HomeIcon name="speaker" />
             </button>
-            <p className="home-ref-pronunciation">Pronunciation: /kənˌsɪdəˈreɪʃən/</p>
-            <p>
-              Something of value exchanged between parties that induces each to enter into a contract. It is a fundamental element required for a valid,
-              enforceable contract in common law.
-            </p>
+            <p className="home-ref-pronunciation">{c.learn.pronunciation}</p>
+            <p>{c.learn.definition}</p>
             <div>
-              <strong>EXAMPLE</strong>
-              <span>The promisor agreed to pay $10,000 as consideration for the sale of the equipment.</span>
+              <strong>{c.learn.exampleLabel}</strong>
+              <span>{c.learn.example}</span>
             </div>
           </article>
           <article className="home-ref-quiz">
             <div>
-              <strong>Quick Quiz</strong>
-              <span>1 of 3</span>
+              <strong>{c.learn.quickQuiz}</strong>
+              <span>{c.learn.quizCount}</span>
             </div>
-            <h3>What is consideration in contract law?</h3>
-            {[
-              ["A legal duty imposed by statute", false],
-              ["A promise without any exchange", false],
-              ["Something of value exchanged between parties", true],
-              ["A contract term added later", false],
-            ].map(([label, checked]) => (
-              <label className={checked ? "selected" : ""} key={String(label)}>
-                <input type="radio" checked={Boolean(checked)} readOnly />
-                {label}
-                {checked && <HomeIcon name="shield-badge" />}
-              </label>
-            ))}
+            <h3>{c.learn.question}</h3>
+            {c.learn.options.map((label, index) => {
+              const checked = index === 2;
+              return (
+                <label className={checked ? "selected" : ""} key={label}>
+                  <input type="radio" checked={checked} readOnly />
+                  {label}
+                  {checked && <HomeIcon name="shield-badge" />}
+                </label>
+              );
+            })}
             <Link className="primary" href="/login">
-              Check Answer
+              {c.learn.check}
             </Link>
-            <Link href="/sample-terms">View full quiz →</Link>
+            <Link href="/quizzes">{c.learn.viewFull}</Link>
           </article>
         </div>
       </section>
 
       <section className="home-ref-workflow">
         <div className="home-ref-heading">
-          <h2>How It Works</h2>
-          <p>Learn smarter in four simple steps.</p>
+          <h2>{c.workflow.title}</h2>
+          <p>{c.workflow.lead}</p>
         </div>
         <div>
-          {workflow.map(([title, body, icon], index) => (
+          {c.workflow.steps.map(([title, body], index) => (
             <article key={title}>
               <b>{index + 1}</b>
               <span>
-                <HomeIcon name={icon} />
+                <HomeIcon name={workflowIcons[index]} />
               </span>
               <strong>{title}</strong>
               <small>{body}</small>
@@ -216,18 +183,19 @@ export default function Home() {
 
       <section className="home-ref-features">
         <div className="home-ref-heading">
-          <h2>Everything You Need to Succeed</h2>
+          <h2>{c.features.title}</h2>
         </div>
         <div>
-          {features.map(([title, body, icon]) => (
+          {c.features.items.map(([title, body], index) => (
             <article key={title}>
-              <HomeIcon name={icon} />
+              <HomeIcon name={featureIcons[index]} />
               <strong>{title}</strong>
               <small>
-                {title === "Personalized Progress" ? (
+                {index === 2 ? (
                   <>
-                    Terms are marked as <span className="dot-status new">New</span>, <span className="dot-status learning">Learning</span>, or{" "}
-                    <span className="dot-status mastered">Mastered</span>.
+                    {c.features.statusPrefix} <span className="dot-status new">{c.features.statusNew}</span>,{" "}
+                    <span className="dot-status learning">{c.features.statusLearning}</span> {c.features.statusOr}{" "}
+                    <span className="dot-status mastered">{c.features.statusMastered}</span>.
                   </>
                 ) : (
                   body
@@ -239,37 +207,19 @@ export default function Home() {
       </section>
 
       <section className="home-ref-proof">
-        <h2>Trusted by Legal Professionals</h2>
+        <h2>{c.proof.title}</h2>
         <div className="home-ref-proof-grid">
-          {[
-            [
-              "Legal English 5 me ayuda a entender y usar la terminología correcta en mis contratos diarios. Las lecciones son claras y muy prácticas.",
-              "Carlos Méndez",
-              "Abogado Corporativo, México",
-              "/home-assets/people/carlos-mendez.png",
-            ],
-            [
-              "Como estudiante de derecho, esta plataforma ha sido clave para ganar confianza en mis lecturas y clases en inglés.",
-              "Ana Rodríguez",
-              "Estudiante de Derecho, España",
-              "/home-assets/people/ana-rodriguez.png",
-            ],
-          ].map(([quote, name, role, photo]) => (
+          {c.proof.quotes.map(([quote, name, role], index) => (
             <article className="home-ref-quote" key={name}>
-              <img src={photo} alt="" aria-hidden="true" />
+              <img src={quotePhotos[index]} alt="" aria-hidden="true" />
               <p>“{quote}”</p>
               <strong>{name}</strong>
               <small>{role}</small>
             </article>
           ))}
-          {[
-            ["30+", "Published Terms", "contract-clipboard-stat"],
-            ["3", "Legal Categories", "legal-scales-stat"],
-            ["7-Day", "Free Trial", "shield-badge-stat"],
-            ["For Lawyers", "& Law Students", "user-avatar-stat"],
-          ].map(([value, label, icon]) => (
-            <article className="home-ref-stat" key={value}>
-              <HomeIcon name={icon as HomeIconName} />
+          {c.proof.stats.map(([value, label], index) => (
+            <article className="home-ref-stat" key={label}>
+              <HomeIcon name={statIcons[index]} />
               <strong>{value}</strong>
               <small>{label}</small>
             </article>
@@ -279,32 +229,32 @@ export default function Home() {
 
       <section className="home-ref-pricing" id="pricing">
         <div className="home-ref-heading">
-          <h2>Simple, Transparent Pricing</h2>
-          <p>Full access to all terms, quizzes, and features.</p>
+          <h2>{c.pricing.title}</h2>
+          <p>{c.pricing.lead}</p>
         </div>
         <div>
-          {pricingPlans.map((plan, index) => (
-            <article className={index === 2 ? "best" : ""} key={plan[0]}>
-              {index === 2 && <img className="best-value-badge" src="/home-assets/badges/best-value.png" alt="Best Value" />}
-              <h3>{plan[0]}</h3>
+          {c.pricing.plans.map((plan, index) => (
+            <article className={index === 2 ? "best" : ""} key={plan.name}>
+              {index === 2 && <img className="best-value-badge" src="/home-assets/badges/best-value.png" alt={c.pricing.bestValue} />}
+              <h3>{plan.name}</h3>
               <strong>
-                {plan[1]}
-                {index === 2 && <small>/year</small>}
+                {homePrices[index]}
+                {index === 2 && <small>{c.pricing.perYear}</small>}
               </strong>
               <ul>
-                <li>{plan[2]}</li>
-                <li>{plan[3]}</li>
-                <li>{plan[4]}</li>
+                {plan.features.slice(0, 3).map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
               </ul>
               <Link className={index === 1 ? "primary" : "ghost"} href="/login">
-                {plan[5]}
+                {plan.cta}
               </Link>
             </article>
           ))}
         </div>
         <p className="home-ref-secure">
           <HomeIcon name="lock" />
-          Secure checkout. Cancel anytime. No hidden fees.
+          {c.pricing.secure}
         </p>
       </section>
 
@@ -313,11 +263,11 @@ export default function Home() {
           <HomeIcon name="legal-scales" />
         </span>
         <div>
-          <h2>Ready to Master Legal English?</h2>
-          <p>Join thousands of lawyers and law students building confidence every day.</p>
+          <h2>{c.cta.title}</h2>
+          <p>{c.cta.lead}</p>
         </div>
         <Link className="primary" href="/login">
-          Start Your 7-Day Free Trial
+          {c.cta.button}
           <HomeIcon name="arrow-right" />
         </Link>
       </section>

@@ -3,13 +3,14 @@
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { useMemo } from "react";
+import { countsFor, studyTerms } from "@/lib/learner-stats";
 
 export default function AchievementsPage() {
-  const { publishedTerms, progress } = useApp();
+  const { terms, progress, session } = useApp();
   const { t } = useLocale();
-  const mastered = publishedTerms.filter((term) => progress[term.id]?.state === "mastered").length;
-  const learning = publishedTerms.filter((term) => progress[term.id]?.state === "learning").length;
-  const unread = publishedTerms.filter((term) => (progress[term.id]?.state || "new") === "new").length;
+  const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
+  const { mastered, learning, newCount: unread } = countsFor(visible, progress);
   const marks = [
     [t("markFirst"), mastered >= 1],
     [t("markFive"), mastered >= 5],
@@ -38,13 +39,13 @@ export default function AchievementsPage() {
           <span>{t("stateNew")}</span>
         </div>
         <div className="stat">
-          <strong>{publishedTerms.length}</strong>
+          <strong>{visible.length}</strong>
           <span>{t("glossary")}</span>
         </div>
       </div>
       <div className="account-stack">
         <section className="account-card">
-          {publishedTerms.length === 0 ? (
+          {visible.length === 0 ? (
             <p>{t("achievementsEmpty")}</p>
           ) : (
             <div className="mark-list">

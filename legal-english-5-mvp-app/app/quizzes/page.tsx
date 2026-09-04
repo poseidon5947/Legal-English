@@ -1,5 +1,10 @@
-import { QuizReference } from "@/components/quiz-reference";
+import { Suspense } from "react";
+import { QuizWorkspace } from "@/components/quiz-workspace";
 
 export default function QuizzesPage() {
-  return <QuizReference />;
+  return (
+    <Suspense fallback={null}>
+      <QuizWorkspace />
+    </Suspense>
+  );
 }

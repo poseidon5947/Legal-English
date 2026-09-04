@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { BillingEventType } from "@/lib/billing-state";
-import type { Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term } from "@/lib/types";
+import type { BillingRecord, Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term } from "@/lib/types";
 
 export type AudioUploadResult = { file: string; termId?: string; jurisdiction?: "us" | "uk"; status: "stored" | "rejected"; message: string };
 
@@ -23,9 +23,11 @@ type Ctx = {
   terms: Term[];
   publishedTerms: Term[];
   progress: Record<string, Progress>;
+  progressRows: Progress[];
   users: PublicUser[];
   inbox: Mail[];
   entitlement: Entitlement;
+  billingHistory: BillingRecord[];
   signIn: (email: string, password: string) => Promise<Result>;
   signUp: (name: string, email: string, password: string, privacyAccepted: boolean) => Promise<Result>;
   signOut: () => Promise<void>;
@@ -78,6 +80,7 @@ type Bootstrap = {
   users?: PublicUser[];
   inbox?: Mail[];
   entitlement?: Entitlement;
+  billingHistory?: BillingRecord[];
 };
 
 async function post(url: string, body: unknown) {
@@ -98,6 +101,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<PublicUser[]>([]);
   const [inbox, setInbox] = useState<Mail[]>([]);
   const [entitlement, setEntitlement] = useState<Entitlement>({ allowed: false, label: "Sign in required", detail: "Log in to continue." });
+  const [billingHistory, setBillingHistory] = useState<BillingRecord[]>([]);
 
   function applyBootstrap(data: Bootstrap) {
     setSession(data.session ?? null);
@@ -106,6 +110,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setUsers(data.users || []);
     setInbox(data.inbox || []);
     if (data.entitlement) setEntitlement(data.entitlement);
+    setBillingHistory(data.billingHistory || []);
     setReady(true);
   }
 
@@ -116,7 +121,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { void hydrate(); }, []);
 
-  const progress = useMemo(() => Object.fromEntries(progressList.map((item) => [item.termId, item])), [progressList]);
+  // The Owner's bootstrap carries every learner's rows (for the console); the
+  // learner views below must only ever reflect the signed-in user's own rows.
+  const progressRows = useMemo(
+    () => (session ? progressList.filter((item) => item.userId === session.user.id) : []),
+    [progressList, session]
+  );
+  const progress = useMemo(() => Object.fromEntries(progressRows.map((item) => [item.termId, item])), [progressRows]);
 
   const value: Ctx = {
     ready,
@@ -124,9 +135,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     terms,
     publishedTerms: terms.filter((term) => term.published && !term.archived),
     progress,
+    progressRows,
     users,
     inbox,
     entitlement,
+    billingHistory,
     async signIn(email, password) {
       const data = await post("/api/auth", { action: "login", email, password });
       if (data.ok && data.session) applyBootstrap(data);

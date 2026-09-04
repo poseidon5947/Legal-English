@@ -5,6 +5,100 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { DEMO_ACCOUNTS } from "@/lib/types";
+
+const COPY = {
+  en: {
+    kicker: "Professional Legal English for Lawyers & Law Students",
+    h1a: "Master Legal English.",
+    h1b: "Advance Your Career.",
+    lead: "Learn essential legal terminology through short, focused lessons with clear explanations, real-world context, and intelligent progress tracking.",
+    features: [
+      ["Curated Legal Terms", "Study the most important terms across Contracts, Corporate Law, and Employment Law."],
+      ["Context That Matters", "See how terms are used in real legal documents and practical examples."],
+      ["Track & Achieve", "Monitor your progress, take quizzes, and master terms step by step."],
+    ],
+    secure: "Secure. Private. Built for legal professionals.",
+    needHelp: "Need help?",
+    titleSignup: "Create your account",
+    titleRecover: "Recover access",
+    titleLogin: "Welcome back",
+    subSignup: "Start your legal English learning journey.",
+    subRecover: "Follow the steps below to continue.",
+    subLogin: "Sign in to continue your learning journey.",
+    signIn: "Sign In",
+    createAccount: "Create Account",
+    fullName: "Full name",
+    fullNamePh: "Enter your full name",
+    email: "Email address",
+    emailPh: "Enter your email",
+    password: "Password",
+    passwordPhNew: "Create a password",
+    passwordPh: "Enter your password",
+    togglePassword: "Toggle password visibility",
+    code: "Verification code",
+    codePh: "Enter 6-digit code",
+    forgot: "Forgot password?",
+    consent: "I agree to the Terms of Service and Privacy Policy.",
+    sendReset: "Send Reset Link",
+    confirm: "Confirm Account",
+    updatePassword: "Update Password",
+    demoDivider: "or try an alpha demo account",
+    demoOwner: "Owner",
+    demoLearner: "Learner",
+    secureTitle: "Your data is secure and private.",
+    secureBody: "We never share your information with third parties.",
+    termsA: "By signing in, you agree to our ",
+    termsB: " and ",
+    tos: "Terms of Service",
+    privacy: "Privacy Policy",
+  },
+  es: {
+    kicker: "Inglés jurídico profesional para abogados y estudiantes de Derecho",
+    h1a: "Domina el inglés jurídico.",
+    h1b: "Impulsa tu carrera.",
+    lead: "Aprende la terminología jurídica esencial con lecciones breves y enfocadas, explicaciones claras, contexto real y seguimiento inteligente de tu progreso.",
+    features: [
+      ["Términos curados", "Estudia los términos más importantes de Contratos, Derecho corporativo y Derecho laboral."],
+      ["Contexto que importa", "Mira cómo se usan los términos en documentos jurídicos reales y ejemplos prácticos."],
+      ["Sigue y logra", "Controla tu progreso, haz quizzes y domina los términos paso a paso."],
+    ],
+    secure: "Seguro. Privado. Hecho para profesionales del Derecho.",
+    needHelp: "¿Necesitas ayuda?",
+    titleSignup: "Crea tu cuenta",
+    titleRecover: "Recuperar acceso",
+    titleLogin: "Bienvenido de nuevo",
+    subSignup: "Empieza tu camino en el inglés jurídico.",
+    subRecover: "Sigue los pasos para continuar.",
+    subLogin: "Inicia sesión para continuar aprendiendo.",
+    signIn: "Iniciar sesión",
+    createAccount: "Crear cuenta",
+    fullName: "Nombre completo",
+    fullNamePh: "Escribe tu nombre completo",
+    email: "Correo electrónico",
+    emailPh: "Escribe tu correo",
+    password: "Contraseña",
+    passwordPhNew: "Crea una contraseña",
+    passwordPh: "Escribe tu contraseña",
+    togglePassword: "Mostrar u ocultar contraseña",
+    code: "Código de verificación",
+    codePh: "Código de 6 dígitos",
+    forgot: "¿Olvidaste tu contraseña?",
+    consent: "Acepto los Términos del servicio y la Política de privacidad.",
+    sendReset: "Enviar enlace",
+    confirm: "Confirmar cuenta",
+    updatePassword: "Actualizar contraseña",
+    demoDivider: "o prueba una cuenta demo del alpha",
+    demoOwner: "Titular",
+    demoLearner: "Alumno",
+    secureTitle: "Tus datos están seguros y son privados.",
+    secureBody: "Nunca compartimos tu información con terceros.",
+    termsA: "Al iniciar sesión aceptas nuestros ",
+    termsB: " y la ",
+    tos: "Términos del servicio",
+    privacy: "Política de privacidad",
+  },
+} as const;
 
 type AuthIconName =
   | "logo-shield"
@@ -34,7 +128,8 @@ function AuthIcon({ name, className = "" }: { name: AuthIconName; className?: st
 export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Extract<AuthMode, "login" | "signup"> }) {
   const router = useRouter();
   const { ready, session, signIn, signUp, forgot, resetPassword, verify } = useApp();
-  const { t } = useLocale();
+  const { locale, setLocale, t } = useLocale();
+  const c = COPY[locale];
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -92,8 +187,10 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
   const isSignup = mode === "signup";
   const isRecovery = mode === "forgot" || mode === "reset" || mode === "confirm";
-  const title = isSignup ? "Create your account" : isRecovery ? "Recover access" : "Welcome back";
-  const subtitle = isSignup ? "Start your legal English learning journey." : isRecovery ? "Follow the steps below to continue." : "Sign in to continue your learning journey.";
+  const title = isSignup ? c.titleSignup : isRecovery ? c.titleRecover : c.titleLogin;
+  const subtitle = isSignup ? c.subSignup : isRecovery ? c.subRecover : c.subLogin;
+  // Alpha only: the seeded review accounts. Production (Supabase) has no such users.
+  const demoAccounts = process.env.NEXT_PUBLIC_DATA_MODE === "production" ? [] : DEMO_ACCOUNTS.filter((account) => account.role === "Owner" || account.email.startsWith("maria"));
 
   return (
     <main className={`auth-reference-page ${isSignup ? "auth-signup-mode" : ""}`}>
@@ -111,26 +208,24 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
           <div className="auth-reference-kicker">
             <AuthIcon name="gold-divider" />
-            <span>Professional Legal English for Lawyers &amp; Law Students</span>
+            <span>{c.kicker}</span>
           </div>
 
           <h1>
-            Master Legal English.
-            <span>Advance Your Career.</span>
+            {c.h1a}
+            <span>{c.h1b}</span>
           </h1>
 
           <i />
 
           <p className="auth-reference-lead">
-            Learn essential legal terminology through short, focused lessons with clear explanations, real-world context, and intelligent progress tracking.
+            {c.lead}
           </p>
 
           <div className="auth-feature-list">
-            {[
-              ["Curated Legal Terms", "Study the most important terms across Contracts, Corporate Law, and Employment Law.", "feature-book"],
-              ["Context That Matters", "See how terms are used in real legal documents and practical examples.", "feature-chart"],
-              ["Track & Achieve", "Monitor your progress, take quizzes, and master terms step by step.", "feature-trophy"],
-            ].map(([heading, body, icon]) => (
+            {c.features.map(([heading, body], index) => {
+              const icon = (["feature-book", "feature-chart", "feature-trophy"] as const)[index];
+              return (
               <article key={heading}>
                 <span>
                   <AuthIcon name={icon as AuthIconName} />
@@ -140,24 +235,25 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                   <p>{body}</p>
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
 
           <div className="auth-reference-secure">
             <AuthIcon name="security-shield" />
-            <span>Secure. Private. Built for legal professionals.</span>
+            <span>{c.secure}</span>
           </div>
         </div>
       </section>
 
       <section className="auth-reference-panel">
         <header className="auth-reference-top">
-          <button type="button">
+          <button type="button" onClick={() => setLocale(locale === "en" ? "es" : "en")} aria-label={t("langToggle")}>
             <AuthIcon name="language-globe" />
-            English
+            {locale === "en" ? "English" : "Español"}
             <AuthIcon name="chevron-down" />
           </button>
-          <Link href="/account/help">Need help?</Link>
+          <Link href="/account/help">{c.needHelp}</Link>
         </header>
 
         <div className="auth-reference-card">
@@ -166,45 +262,45 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
           <div className="auth-reference-tabs">
             <button className={mode === "login" ? "active" : ""} type="button" onClick={() => setMode("login")}>
-              Sign In
+              {c.signIn}
             </button>
             <button className={mode === "signup" ? "active" : ""} type="button" onClick={() => setMode("signup")}>
-              Create Account
+              {c.createAccount}
             </button>
           </div>
 
           <form className="auth-reference-form" onSubmit={(event) => void submit(event)}>
             {isSignup && (
               <label>
-                Full name
+                {c.fullName}
                 <span>
-                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Enter your full name" required />
+                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder={c.fullNamePh} required />
                   <AuthIcon name="user-name" />
                 </span>
               </label>
             )}
 
             <label>
-              Email address
+              {c.email}
               <span>
-                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Enter your email" required readOnly={mode === "confirm"} />
+                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={c.emailPh} required readOnly={mode === "confirm"} />
                 <AuthIcon name="email-envelope" />
               </span>
             </label>
 
             {mode !== "forgot" && mode !== "confirm" && (
               <label>
-                Password
+                {c.password}
                 <span>
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
-                    placeholder={isSignup ? "Create a password" : "Enter your password"}
+                    placeholder={isSignup ? c.passwordPhNew : c.passwordPh}
                     minLength={8}
                     required
                   />
-                  <button type="button" aria-label="Toggle password visibility" onClick={() => setShowPassword((value) => !value)}>
+                  <button type="button" aria-label={c.togglePassword} onClick={() => setShowPassword((value) => !value)}>
                     <AuthIcon name={showPassword ? "lock-password" : "eye-visibility"} />
                   </button>
                 </span>
@@ -213,9 +309,9 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
             {(mode === "reset" || mode === "confirm") && (
               <label>
-                Verification code
+                {c.code}
                 <span>
-                  <input value={code} onChange={(event) => setCode(event.target.value)} placeholder="Enter 6-digit code" required />
+                  <input value={code} onChange={(event) => setCode(event.target.value)} placeholder={c.codePh} required />
                   <AuthIcon name="check-circle" />
                 </span>
               </label>
@@ -223,14 +319,14 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
             {mode === "login" && (
               <button className="auth-forgot-link" type="button" onClick={() => setMode("forgot")}>
-                Forgot password?
+                {c.forgot}
               </button>
             )}
 
             {mode === "signup" && (
               <label className="auth-reference-consent">
                 <input type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
-                <span>I agree to the Terms of Service and Privacy Policy.</span>
+                <span>{c.consent}</span>
               </label>
             )}
 
@@ -242,38 +338,55 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             {notice && <p className="auth-reference-notice">{notice}</p>}
 
             <button className="auth-reference-submit" type="submit">
-              {mode === "login" ? "Sign In" : mode === "signup" ? "Create Account" : mode === "forgot" ? "Send Reset Link" : mode === "confirm" ? "Confirm Account" : "Update Password"}
+              {mode === "login" ? c.signIn : mode === "signup" ? c.createAccount : mode === "forgot" ? c.sendReset : mode === "confirm" ? c.confirm : c.updatePassword}
             </button>
           </form>
 
-          <div className="auth-reference-divider">
-            <span />
-            <p>or continue with</p>
-            <span />
-          </div>
+          {mode === "login" && demoAccounts.length > 0 && (
+            <>
+              <div className="auth-reference-divider">
+                <span />
+                <p>{c.demoDivider}</p>
+                <span />
+              </div>
 
-          <div className="auth-provider-row">
-            <button type="button">
-              <AuthIcon name="google-provider" />
-              Continue with Google
-            </button>
-            <button type="button">
-              <AuthIcon name="microsoft-provider" />
-              Continue with Microsoft
-            </button>
-          </div>
+              <div className="auth-provider-row">
+                {demoAccounts.map((account) => (
+                  <button
+                    key={account.email}
+                    type="button"
+                    onClick={() => {
+                      setError("");
+                      setEmail(account.email);
+                      setPassword(account.password);
+                      void signIn(account.email, account.password).then((result) => {
+                        if (!result.ok) setError(result.message || t("couldNotContinue"));
+                        else window.location.assign("/terms");
+                      });
+                    }}
+                  >
+                    <AuthIcon name="user-name" />
+                    {account.role === "Owner" ? c.demoOwner : c.demoLearner} · {account.email.split("@")[0]}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
 
           <div className="auth-reference-security-note">
             <AuthIcon name="security-shield" />
             <div>
-              <strong>Your data is secure and private.</strong>
-              <span>We never share your information with third parties.</span>
+              <strong>{c.secureTitle}</strong>
+              <span>{c.secureBody}</span>
             </div>
           </div>
         </div>
 
         <p className="auth-reference-terms">
-          By signing in, you agree to our <Link href="/terms-of-service">Terms of Service</Link> and <Link href="/privacy">Privacy Policy</Link>.
+          {c.termsA}
+          <Link href="/terms-of-service">{c.tos}</Link>
+          {c.termsB}
+          <Link href="/privacy">{c.privacy}</Link>.
         </p>
       </section>
     </main>

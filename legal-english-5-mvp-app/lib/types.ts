@@ -126,6 +126,18 @@ export type Mail = {
   createdAt: string;
 };
 
+/** One applied billing event, as shown in the learner's Billing History. */
+export type BillingRecord = {
+  id: string;
+  userId: string;
+  type: string;
+  plan: Plan | null;
+  paymentId: string | null;
+  status: SubscriptionStatus;
+  at: string;
+  source: "simulator" | "webhook";
+};
+
 export type PublicUser = Omit<User, "passwordHash">;
 export type SessionPayload = { user: PublicUser; subscription: Subscription };
 export type Entitlement = { allowed: boolean; label: string; detail: string };

@@ -1,5 +1,10 @@
-import { TermsLibraryReference } from "@/components/terms-library-reference";
+import { Suspense } from "react";
+import { TermsLibrary } from "@/components/terms-library";
 
 export default function TermsPage() {
-  return <TermsLibraryReference />;
+  return (
+    <Suspense fallback={null}>
+      <TermsLibrary />
+    </Suspense>
+  );
 }
