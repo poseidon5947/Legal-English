@@ -11,6 +11,9 @@ export default function TermsOfServicePage() {
     <main className="landing home-reference">
       <LandingHeader />
       <section className="landing-section legal-page">
+        <figure className="legal-banner" aria-hidden="true">
+          <img src="/home-assets/photos/tos-signature.jpg" alt="" />
+        </figure>
         <div className="landing-section-heading">
           <span className="eyebrow">{t("termsPageEyebrow")}</span>
           <h2>{t("termsPageTitle")}</h2>

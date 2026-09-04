@@ -173,6 +173,16 @@ export default function SettingsPage() {
             <input type="checkbox" checked={notices} onChange={toggleNotices} />
           </label>
         </section>
+        <section className="account-card settings-photo-card">
+          <img src="/home-assets/photos/privacy-lock.jpg" alt="" loading="lazy" />
+          <div>
+            <h2>{t("settingsDataTitle")}</h2>
+            <p>{t("settingsDataBody")}</p>
+            <Link className="ghost inline" href="/privacy">
+              {t("settingsDataLink")}
+            </Link>
+          </div>
+        </section>
       </div>
     </AppShell>
   );

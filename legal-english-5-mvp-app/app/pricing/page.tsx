@@ -87,13 +87,23 @@ export default function PricingPage() {
           <h2>{t("faqTitle")}</h2>
           <p>{t("faqLead")}</p>
         </div>
-        <div className="faq-list">
-          {faqs.map((item) => (
-            <details key={item.q}>
-              <summary>{item.q}</summary>
-              <p>{item.a}</p>
-            </details>
-          ))}
+        <div className="faq-layout">
+          <div className="faq-list">
+            {faqs.map((item) => (
+              <details key={item.q}>
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+          <Link className="faq-photo-card" href="/signup">
+            <img src="/home-assets/photos/pricing-students.jpg" alt="" loading="lazy" />
+            <span>
+              <small>{t("faqPhotoTag")}</small>
+              <strong>{t("faqPhotoTitle")}</strong>
+              <em>{t("faqPhotoBody")}</em>
+            </span>
+          </Link>
         </div>
       </section>
       <LandingFooter />

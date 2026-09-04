@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
+import { categoryPhoto } from "@/lib/category-photos";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { achievementsFor, categoryStats, countsFor, formatWhen, recentActivity, streakFor, studyTerms, weeklyActivity } from "@/lib/learner-stats";
@@ -202,8 +203,9 @@ export default function ProgressPage() {
             </div>
             <div className="progress-category-list">
               {byCategory.map((item) => (
-                <Link className={CATEGORY_TONE[item.category]} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
+                <Link className={`${CATEGORY_TONE[item.category]} with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
                   <span>
+                    <img src={categoryPhoto(item.category)} alt="" loading="lazy" />
                     <ProgressIcon name={CATEGORY_ICON[item.category]} />
                   </span>
                   <strong>{categoryLabel(locale, item.category)}</strong>
@@ -221,6 +223,13 @@ export default function ProgressPage() {
         </section>
 
         <aside className="progress-ref-rail">
+          <Link className="learner-photo-card" href="/terms">
+            <img src="/home-assets/photos/workflow-study.jpg" alt="" loading="lazy" />
+            <span>
+              <small>{L("photoCardTag")}</small>
+              <strong>{L("photoCardTitle")}</strong>
+            </span>
+          </Link>
           <section className="progress-panel progress-streak-card">
             <h2>{L("currentStreak")}</h2>
             <div className="progress-streak-main">

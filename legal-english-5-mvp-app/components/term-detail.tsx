@@ -1,5 +1,7 @@
 "use client";
 
+import { categoryPhoto } from "@/lib/category-photos";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -117,6 +119,10 @@ export function TermDetail({ id }: { id: string }) {
       <audio ref={audioRef} onEnded={() => setPlaying(null)} onError={() => setPlaying(null)} preload="none" />
       <div className="consideration-content">
         <section className="consideration-main-column">
+          <div className="consideration-photo-band" aria-hidden="true">
+            <img src={categoryPhoto(term.category)} alt="" />
+            <span>{categoryLabel(locale, term.category)}</span>
+          </div>
           <nav className="consideration-breadcrumb" aria-label="Breadcrumb">
             <Link href="/terms">{L("breadcrumbLibrary")}</Link>
             <DetailIcon name="chevron-right" />
@@ -419,6 +425,14 @@ export function TermDetail({ id }: { id: string }) {
               </dl>
             </div>
           </section>
+
+          <Link className="learner-photo-card compact" href="/quizzes">
+            <img src="/home-assets/photos/workflow-study.jpg" alt="" loading="lazy" />
+            <span>
+              <small>{L("detailPhotoTag")}</small>
+              <strong>{L("detailPhotoTitle")}</strong>
+            </span>
+          </Link>
         </aside>
       </div>
     </LearnerShell>

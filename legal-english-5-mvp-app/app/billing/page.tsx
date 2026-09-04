@@ -32,7 +32,8 @@ export default function BillingPage() {
         </div>
       </div>
       <div className="billing-card account-billing-grid">
-        <section className="billing-subscription-card">
+        <section className="billing-subscription-card with-photo">
+          <img className="billing-card-photo" src="/home-assets/photos/cta-courthouse.jpg" alt="" aria-hidden="true" loading="lazy" />
           <span className={`status ${entitlement.allowed ? "active" : "blocked"}`}>{entitlementLabel(locale, entitlement.label)}</span>
           <h2>{subscription ? subscriptionStatusLabel(locale, subscription.status) : t("noSession")}</h2>
           <p>{entitlementDetail(locale, entitlement.detail)}</p>
@@ -126,8 +127,11 @@ export default function BillingPage() {
           </div>
         </section>
       </div>
-      <div className="simulator">
-        <h3>{t("sandboxTitle")}</h3>
+      <details className="simulator">
+        <summary>
+          <h3>{t("sandboxTitle")}</h3>
+          <span className="simulator-badge">Sandbox</span>
+        </summary>
         <p className="muted">{t("sandboxLead")}</p>
         <button onClick={() => void applyBilling("payment_rejected")}>{t("paymentRejected")}</button>
         <button onClick={() => void applyBilling("retries_exhausted")}>{t("paymentFailed")}</button>
@@ -135,7 +139,7 @@ export default function BillingPage() {
         <button onClick={() => void applyBilling("period_ended")}>{t("periodEnded")}</button>
         <button onClick={() => void applyBilling("trial_expired")}>{t("expireTrial")}</button>
         <button onClick={() => void applyBilling("reset")}>{t("resetTrial")}</button>
-      </div>
+      </details>
     </AppShell>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { categoryPhoto } from "@/lib/category-photos";
+
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -243,7 +245,7 @@ export function TermsLibrary() {
         <section className="terms-category-progress" aria-label="Category progress">
           {byCategory.map((item) => (
             <article
-              className={`${CATEGORY_THEME[item.category]}${category === item.category ? " active" : ""}`}
+              className={`${CATEGORY_THEME[item.category]} with-photo${category === item.category ? " active" : ""}`}
               key={item.category}
               role="button"
               tabIndex={0}
@@ -252,7 +254,8 @@ export function TermsLibrary() {
                 if (event.key === "Enter" || event.key === " ") chooseCategory(category === item.category ? "All" : item.category);
               }}
             >
-              <div className="terms-category-icon-shell">
+              <div className="terms-category-icon-shell with-photo">
+                <img src={categoryPhoto(item.category)} alt="" loading="lazy" />
                 <LibraryIcon name={CATEGORY_ICON[item.category]} />
               </div>
               <div>

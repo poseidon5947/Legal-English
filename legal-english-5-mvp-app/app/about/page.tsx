@@ -43,6 +43,31 @@ export default function AboutPage() {
           </figure>
         </div>
       </section>
+      <section className="landing-section about-studio" id="studio">
+        <figure className="about-studio-photo">
+          <img src="/home-assets/photos/studio-boardroom.jpg" alt="" loading="lazy" />
+          <figcaption>{t("aboutStudioCaption")}</figcaption>
+        </figure>
+        <div>
+          <span className="eyebrow">{t("aboutStudioEyebrow")}</span>
+          <h2>{t("aboutStudioTitle")}</h2>
+          <p>{t("aboutStudioBody")}</p>
+          <ul className="about-studio-points">
+            <li>
+              <Icon name="shield" />
+              {t("aboutStudioPoint1")}
+            </li>
+            <li>
+              <Icon name="speaker" />
+              {t("aboutStudioPoint2")}
+            </li>
+            <li>
+              <Icon name="lock" />
+              {t("aboutStudioPoint3")}
+            </li>
+          </ul>
+        </div>
+      </section>
       <section className="landing-section" id="how-it-works">
         <div className="landing-section-heading">
           <span className="eyebrow">{t("howItWorksEyebrow")}</span>

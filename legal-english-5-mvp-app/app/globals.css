@@ -19580,6 +19580,1046 @@ html {
   box-shadow: 0 18px 40px rgba(7, 27, 73, 0.1);
 }
 
+/* ================================================================== */
+/* Real-site details: trust strip, footer marks, 404, browser chrome    */
+/* ================================================================== */
+
+/* Thin brand scrollbar, no layout shift when it appears */
+html {
+  scrollbar-gutter: stable;
+  scrollbar-color: rgba(7, 27, 73, 0.28) transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: rgba(7, 27, 73, 0.28);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(7, 27, 73, 0.45);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Hero trust strip */
+.home-ref-trust {
+  max-width: var(--home-max);
+  margin: -8px auto 0;
+  padding: 0 18px;
+}
+
+.home-ref-trust ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  border-top: 1px solid rgba(7, 27, 73, 0.08);
+  border-bottom: 1px solid rgba(7, 27, 73, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.home-ref-trust li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 20px;
+}
+
+.home-ref-trust li + li {
+  border-left: 1px solid rgba(7, 27, 73, 0.08);
+}
+
+.home-ref-trust .icon,
+.home-ref-trust img {
+  width: 38px;
+  height: 38px;
+  padding: 8px;
+  border-radius: 10px;
+  background: #eef2f9;
+}
+
+.home-ref-trust strong {
+  display: block;
+  color: var(--navy);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.home-ref-trust small {
+  display: block;
+  margin-top: 3px;
+  color: #52617f;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.home-ref-categories {
+  padding-top: 64px;
+}
+
+/* Footer bottom row: rights, trust marks, origin */
+.home-reference .footer-bottom {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px 24px;
+  align-items: center;
+}
+
+.home-reference .footer-bottom .footer-trust {
+  text-align: center;
+}
+
+.home-reference .footer-bottom .footer-made {
+  text-align: right;
+}
+
+/* 404 */
+.not-found {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 120px 18px 140px;
+  text-align: center;
+}
+
+.not-found .eyebrow {
+  color: #b8860b;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.not-found h1 {
+  margin: 14px 0 16px;
+  color: var(--navy);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.not-found p {
+  margin: 0 auto;
+  max-width: 540px;
+  color: #253962;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.not-found-actions a {
+  min-height: 46px;
+  padding: 12px 22px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.not-found-actions a:not(.primary):not(.ghost) {
+  color: #0a4a91;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Billing sandbox: collapsed by default so the real UI leads */
+.learner-shell details.simulator {
+  padding: 0;
+}
+
+.learner-shell details.simulator summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.learner-shell details.simulator summary::-webkit-details-marker {
+  display: none;
+}
+
+.learner-shell details.simulator summary::after {
+  content: "";
+  margin-left: auto;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #6d7890;
+  border-bottom: 2px solid #6d7890;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.learner-shell details.simulator[open] summary::after {
+  transform: rotate(-135deg);
+}
+
+.learner-shell details.simulator summary h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.learner-shell details.simulator .simulator-badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #fff3d6;
+  color: #8a5a00;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.learner-shell details.simulator > p,
+.learner-shell details.simulator > button {
+  margin-left: 20px;
+}
+
+.learner-shell details.simulator > p {
+  margin-top: 0;
+  margin-right: 20px;
+}
+
+.learner-shell details.simulator > button:last-of-type {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 960px) {
+  .home-ref-trust ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-ref-trust li:nth-child(3) {
+    border-left: 0;
+  }
+
+  .home-ref-trust li:nth-child(n + 3) {
+    border-top: 1px solid rgba(7, 27, 73, 0.08);
+  }
+
+  .home-reference .footer-bottom {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .home-reference .footer-bottom .footer-trust,
+  .home-reference .footer-bottom .footer-made {
+    text-align: left;
+  }
+}
+
+@media (max-width: 560px) {
+  .home-ref-trust ul {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ref-trust li + li {
+    border-left: 0;
+    border-top: 1px solid rgba(7, 27, 73, 0.08);
+  }
+
+  .not-found {
+    padding: 72px 18px 90px;
+  }
+}
+
+/* Hero reassurance line (replaces the icon row; the trust strip below carries the detail) */
+.home-ref-copy > .home-ref-reassurance {
+  margin: 18px 0 0;
+  color: #52617f;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  animation: home-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
+}
+
+/* Studio note: a single wide editorial card with the brand mark */
+.home-ref-quote.wide {
+  grid-column: 1 / -1;
+  grid-template-columns: 72px 1fr;
+  gap: 6px 26px;
+  padding: 34px 40px 30px 34px;
+}
+
+.home-ref-quote.wide img {
+  width: 72px;
+  height: 72px;
+  padding: 14px;
+  border-radius: 18px;
+  background: #0b234f;
+  object-fit: contain;
+}
+
+.home-ref-quote.wide p {
+  max-width: 900px;
+  font-size: 1.28rem;
+  line-height: 1.5;
+}
+
+.home-ref-quote.wide:before {
+  font-size: 6.5rem;
+  top: 2px;
+  right: 30px;
+}
+
+/* Footer without dead social links: keep the brand column balanced */
+.home-reference .footer-brand p {
+  margin-bottom: 0;
+}
+
+/* Cookie / privacy notice */
+.cookie-notice {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  z-index: 80;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 22px;
+  align-items: center;
+  width: min(880px, calc(100% - 32px));
+  padding: 14px 18px 14px 22px;
+  border: 1px solid rgba(7, 27, 73, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #253962;
+  box-shadow: 0 18px 44px rgba(7, 27, 73, 0.16);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: home-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cookie-notice p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.cookie-notice > div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cookie-notice a {
+  color: #0a4a91;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.cookie-notice button.primary {
+  min-height: 38px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--navy);
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .cookie-notice {
+    grid-template-columns: 1fr;
+    bottom: 12px;
+  }
+
+  .cookie-notice > div {
+    justify-content: space-between;
+  }
+}
+
+/* ================================================================== */
+/* Editorial photography on sub-pages                                  */
+/* ================================================================== */
+
+/* Legal pages: wide banner above the heading */
+.legal-banner {
+  max-width: 980px;
+  height: 220px;
+  margin: 8px auto 36px;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 20px 44px rgba(7, 27, 73, 0.12);
+}
+
+.legal-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85);
+}
+
+/* 404 */
+.not-found-photo {
+  max-width: 720px;
+  height: 240px;
+  margin: 48px auto 0;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 20px 44px rgba(7, 27, 73, 0.12);
+}
+
+.not-found-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Learner shell: generic banner and rail photo card */
+.learner-shell .learner-photo-banner {
+  position: relative;
+  height: 180px;
+  margin: 0 0 22px;
+  overflow: hidden;
+  border-radius: var(--ws-radius);
+  box-shadow: var(--ws-shadow);
+}
+
+.learner-shell .learner-photo-banner.short {
+  height: 150px;
+  margin-bottom: 18px;
+}
+
+.learner-shell .learner-photo-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.learner-shell .learner-photo-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(9, 35, 90, 0.35), rgba(9, 35, 90, 0) 60%);
+}
+
+.learner-shell .learner-photo-card {
+  position: relative;
+  display: block;
+  height: 168px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border-radius: var(--ws-radius);
+  box-shadow: var(--ws-shadow);
+  color: #ffffff;
+  transition: transform 0.22s var(--ws-ease), box-shadow 0.22s var(--ws-ease);
+}
+
+.learner-shell .learner-photo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ws-shadow-hover);
+}
+
+.learner-shell .learner-photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ws-ease);
+}
+
+.learner-shell .learner-photo-card:hover img {
+  transform: scale(1.04);
+}
+
+.learner-shell .learner-photo-card span {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 4px;
+  padding: 40px 18px 16px;
+  background: linear-gradient(180deg, rgba(9, 35, 90, 0), rgba(9, 35, 90, 0.9));
+}
+
+.learner-shell .learner-photo-card small {
+  color: #f0c86a;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.learner-shell .learner-photo-card strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Terms Library: category summary cards with a photo header */
+.learner-shell .terms-category-progress article.with-photo {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.learner-shell .terms-category-progress article.with-photo > div:last-child {
+  min-width: 0;
+  padding: 14px 18px 16px;
+}
+
+.learner-shell .terms-category-icon-shell.with-photo {
+  position: relative;
+  width: 100%;
+  height: 92px;
+  overflow: hidden;
+  border-radius: 0;
+  place-items: end start;
+  padding: 10px;
+}
+
+.learner-shell .terms-category-icon-shell.with-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 27, 73, 0) 40%, rgba(7, 27, 73, 0.45) 100%);
+}
+
+.learner-shell .terms-category-progress article.with-photo:hover .terms-category-icon-shell.with-photo img {
+  transform: scale(1.04);
+}
+
+.learner-shell .terms-category-icon-shell.with-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.learner-shell .terms-category-icon-shell.with-photo .terms-library-icon {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  padding: 7px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 4px 12px rgba(7, 27, 73, 0.18);
+}
+
+/* Term detail: category band behind the breadcrumb */
+.learner-shell .consideration-photo-band {
+  position: relative;
+  height: 128px;
+  margin: 0 0 -46px;
+  overflow: hidden;
+  border-radius: var(--ws-radius);
+  box-shadow: var(--ws-shadow);
+}
+
+.learner-shell .consideration-photo-band img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.learner-shell .consideration-photo-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(9, 35, 90, 0.25), rgba(9, 35, 90, 0.75));
+}
+
+.learner-shell .consideration-photo-band span {
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  z-index: 1;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.learner-shell .consideration-photo-band + .consideration-breadcrumb {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  margin-left: 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: var(--ws-shadow);
+}
+
+/* Quizzes: practice cards with category thumbnails */
+.learner-shell .quiz-practice-grid article.with-photo {
+  grid-template-columns: 1fr;
+  grid-template-rows: 88px auto;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.learner-shell .quiz-practice-grid article.with-photo .quiz-practice-photo {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 88px;
+  object-fit: cover;
+}
+
+.learner-shell .quiz-practice-grid article.with-photo > span {
+  position: absolute;
+  top: 66px;
+  left: 14px;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(7, 27, 73, 0.14);
+}
+
+.learner-shell .quiz-practice-grid article.with-photo {
+  position: relative;
+}
+
+.learner-shell .quiz-practice-grid article.with-photo > div {
+  padding: 24px 14px 14px;
+}
+
+/* Account: cover photo above the profile */
+.learner-shell .account-ref-cover {
+  height: 124px;
+  margin: -15px -18px 14px;
+  overflow: hidden;
+  border-radius: var(--ws-radius) var(--ws-radius) 0 0;
+}
+
+.learner-shell .account-ref-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85);
+}
+
+.learner-shell .account-ref-profile-card .learner-avatar.large {
+  box-shadow: 0 0 0 4px #ffffff, 0 10px 24px rgba(7, 27, 73, 0.18);
+}
+
+/* Help: hero card with photo */
+.learner-shell .help-hero-card.with-photo {
+  grid-template-columns: 220px minmax(0, 1fr) auto;
+  overflow: hidden;
+  padding-left: 0;
+}
+
+.learner-shell .help-hero-card.with-photo .help-hero-photo {
+  display: block;
+  width: 220px;
+  height: 100%;
+  min-height: 160px;
+  object-fit: cover;
+}
+
+/* Billing: photo behind the dark subscription card */
+.learner-shell .billing-subscription-card.with-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.learner-shell .billing-subscription-card.with-photo .billing-card-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.28;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+}
+
+.learner-shell .billing-subscription-card.with-photo > :not(.billing-card-photo) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 960px) {
+  .legal-banner,
+  .not-found-photo {
+    height: 160px;
+  }
+
+  .learner-shell .help-hero-card.with-photo {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+  }
+
+  .learner-shell .help-hero-card.with-photo .help-hero-photo {
+    width: 100%;
+    height: 150px;
+  }
+
+  .learner-shell .help-hero-card.with-photo > div {
+    padding: 0 18px;
+  }
+
+  .learner-shell .learner-photo-banner {
+    height: 140px;
+  }
+}
+
+/* ---- Photo layer, second pass: captions, thumbnails and side cards ---- */
+
+/* Banner captions (Categories hero, Admin overview) */
+.learner-shell .learner-photo-banner.with-caption::after {
+  background: linear-gradient(90deg, rgba(7, 27, 73, 0.78), rgba(7, 27, 73, 0.25) 62%, rgba(7, 27, 73, 0.05));
+}
+
+.learner-shell .learner-photo-banner.with-caption figcaption {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  max-width: 520px;
+  padding: 0 28px;
+  color: #ffffff;
+}
+
+.learner-shell .learner-photo-banner.with-caption small {
+  color: #f0c86a;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.learner-shell .learner-photo-banner.with-caption strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.learner-shell .learner-photo-banner.short.with-caption strong {
+  font-size: 1.2rem;
+}
+
+/* Categories: section headings carry a small photo thumb */
+.learner-shell .terms-reference-heading.with-thumb {
+  align-items: center;
+  gap: 14px;
+}
+
+.learner-shell .terms-reference-heading.with-thumb > div:first-of-type {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.learner-shell .terms-section-thumb {
+  flex: none;
+  width: 64px;
+  height: 46px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 6px 14px rgba(7, 27, 73, 0.14);
+}
+
+/* Progress: category rows use photo thumbs behind the icon */
+.learner-shell .progress-category-list a.with-photo {
+  grid-template-columns: 48px 125px minmax(0, 1fr) 56px 40px;
+}
+
+.learner-shell .progress-category-list a.with-photo > span {
+  position: relative;
+  width: 48px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 7px;
+}
+
+.learner-shell .progress-category-list a.with-photo > span img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.learner-shell .progress-category-list a.with-photo > span .progress-ref-icon {
+  position: relative;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  padding: 3px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* Term detail: compact photo card at the foot of the rail */
+.learner-shell .learner-photo-card.compact {
+  height: 132px;
+  margin: 0;
+}
+
+.learner-shell .learner-photo-card.compact strong {
+  font-size: 1rem;
+}
+
+/* Settings: data-protection card */
+.learner-shell .settings-photo-card {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.learner-shell .settings-photo-card img {
+  width: 100%;
+  height: 100%;
+  min-height: 170px;
+  object-fit: cover;
+}
+
+.learner-shell .settings-photo-card > div {
+  padding: 22px 22px 22px 0;
+}
+
+.learner-shell .settings-photo-card p {
+  margin-bottom: 12px;
+}
+
+/* About: studio section */
+.about-studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.about-studio-photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 24px 50px rgba(7, 27, 73, 0.14);
+}
+
+.about-studio-photo img {
+  display: block;
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+}
+
+.about-studio-photo figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 44px 22px 18px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  background: linear-gradient(180deg, rgba(7, 27, 73, 0), rgba(7, 27, 73, 0.85));
+}
+
+.about-studio h2 {
+  margin: 10px 0 14px;
+}
+
+.about-studio p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.about-studio-points {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-studio-points li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.about-studio-points .icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border-radius: 9px;
+  background: #eef4fc;
+}
+
+/* Pricing: FAQ with a photo card beside the accordions */
+.faq-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: start;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.faq-layout .faq-list {
+  max-width: none;
+  margin: 0;
+}
+
+.faq-photo-card {
+  position: relative;
+  display: block;
+  height: 100%;
+  min-height: 340px;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 20px 44px rgba(7, 27, 73, 0.14);
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.faq-photo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 52px rgba(7, 27, 73, 0.2);
+}
+
+.faq-photo-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.faq-photo-card:hover img {
+  transform: scale(1.04);
+}
+
+.faq-photo-card span {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 6px;
+  padding: 60px 22px 22px;
+  background: linear-gradient(180deg, rgba(7, 27, 73, 0), rgba(7, 27, 73, 0.92));
+}
+
+.faq-photo-card small {
+  color: #f0c86a;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.faq-photo-card strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.faq-photo-card em {
+  font-size: 0.82rem;
+  font-style: normal;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+@media (max-width: 960px) {
+  .learner-shell .learner-photo-banner.with-caption figcaption {
+    max-width: none;
+    padding: 0 18px;
+  }
+
+  .learner-shell .learner-photo-banner.with-caption strong,
+  .learner-shell .learner-photo-banner.short.with-caption strong {
+    font-size: 1.05rem;
+  }
+
+  .learner-shell .settings-photo-card {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .learner-shell .settings-photo-card img {
+    height: 150px;
+    min-height: 0;
+  }
+
+  .learner-shell .settings-photo-card > div {
+    padding: 18px;
+  }
+
+  .about-studio {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .about-studio-photo img {
+    height: 240px;
+  }
+
+  .faq-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-photo-card {
+    min-height: 240px;
+  }
+}
+
 /* Billing grid: the subscription card spans two rows, so "Your access" and
    "Manage" share the third row instead of leaving an empty cell. */
 @media (min-width: 961px) {

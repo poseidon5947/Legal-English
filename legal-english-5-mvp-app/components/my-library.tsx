@@ -25,6 +25,9 @@ export function MyLibrary() {
             <p>{L("myLibraryLead")}</p>
           </div>
         </div>
+        <figure className="learner-photo-banner" aria-hidden="true">
+          <img src="/home-assets/photos/about-desk.jpg" alt="" loading="lazy" />
+        </figure>
         {saved.length === 0 ? (
           <div className="terms-empty">
             <strong>{L("emptyMyLibrary")}</strong>

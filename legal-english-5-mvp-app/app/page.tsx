@@ -52,13 +52,12 @@ const categoryRoutes = ["Contracts", "Corporate Law", "Employment Law"] as const
 const tabIcons: readonly HomeIconName[] = ["open-book", "globe", "legal-scales", "help", "contract-clipboard", "bookmark"];
 const workflowIcons: readonly HomeIconName[] = ["workflow-book", "workflow-chat", "workflow-quiz", "workflow-growth"];
 const featureIcons: readonly HomeIconName[] = ["feature-search", "feature-mobile", "feature-progress", "feature-timer"];
-const benefitIcons: readonly HomeIconName[] = ["flame-stopwatch", "shield-badge", "growth-chart", "credit-card"];
 const statIcons: readonly HomeIconName[] = ["contract-clipboard-stat", "legal-scales-stat", "shield-badge-stat", "user-avatar-stat"];
-const quotePhotos = ["/home-assets/photos/portrait-carlos.jpg", "/home-assets/photos/portrait-ana.jpg"];
 // Photography: Unsplash, see public/home-assets/photos/CREDITS.txt
 const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
 const lifePhotos = ["/home-assets/photos/mosaic-documents.jpg", "/home-assets/photos/mosaic-portrait.jpg", "/home-assets/photos/mosaic-library.jpg"];
 const homePrices = PLAN_PRICES;
+const trustIcons: HomeIconName[] = ["open-book", "shield-badge", "globe", "lock"];
 
 export default function Home() {
   const { locale } = useLocale();
@@ -84,18 +83,25 @@ export default function Home() {
               {c.hero.explore}
             </Link>
           </div>
-          <div className="home-ref-benefits">
-            {c.hero.benefits.map((label, index) => (
-              <span key={label}>
-                <HomeIcon name={benefitIcons[index]} />
-                {label}
-              </span>
-            ))}
-          </div>
+          <p className="home-ref-reassurance">{c.hero.reassurance}</p>
         </div>
         <div className="home-ref-product">
           <HeroImageFlow slides={c.hero.slides} />
         </div>
+      </section>
+
+      <section className="home-ref-trust" aria-label="Why Legal English 5">
+        <ul data-reveal="stagger">
+          {c.hero.trust.map(([title, body], index) => (
+            <li key={title}>
+              <HomeIcon name={trustIcons[index]} />
+              <div>
+                <strong>{title}</strong>
+                <small>{body}</small>
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="home-ref-categories">
@@ -247,9 +253,9 @@ export default function Home() {
           <h2>{c.proof.title}</h2>
         </div>
         <div className="home-ref-proof-grid" data-reveal="stagger">
-          {c.proof.quotes.map(([quote, name, role], index) => (
-            <article className="home-ref-quote" key={name}>
-              <img src={quotePhotos[index]} alt="" aria-hidden="true" />
+          {c.proof.quotes.map(([quote, name, role]) => (
+            <article className={`home-ref-quote${c.proof.quotes.length === 1 ? " wide" : ""}`} key={name}>
+              <img src="/home-assets/icons/le5-shield.png" alt="" aria-hidden="true" />
               <p>“{quote}”</p>
               <strong>{name}</strong>
               <small>{role}</small>

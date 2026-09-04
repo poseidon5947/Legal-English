@@ -5,6 +5,7 @@ import { AppShell } from "@/components/app-shell";
 import { useLocale } from "@/components/locale-provider";
 import { adminText } from "@/lib/admin-copy";
 import { subscriptionStatusLabel } from "@/lib/i18n";
+import { learnerText } from "@/lib/learner-copy";
 import { AudioUploadResult, ImportPreview, useApp } from "@/components/app-provider";
 import { CATEGORIES, emptyQuiz, emptyTerm, type Term, type UseItWithItem } from "@/lib/types";
 
@@ -127,6 +128,13 @@ export default function AdminPage() {
       {message && <p className="notice">{message}</p>}
       {tab === "overview" && (
         <>
+          <figure className="learner-photo-banner short with-caption" aria-hidden="true">
+            <img src="/home-assets/photos/admin-desk.jpg" alt="" loading="lazy" />
+            <figcaption>
+              <small>{learnerText(locale, "adminBannerTag")}</small>
+              <strong>{learnerText(locale, "adminBannerTitle")}</strong>
+            </figcaption>
+          </figure>
           <div className="stat-grid four">
             <div className="stat">
               <strong>{terms.length}</strong>

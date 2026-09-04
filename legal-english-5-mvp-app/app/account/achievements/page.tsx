@@ -25,6 +25,9 @@ export default function AchievementsPage() {
           <p>{t("achievementsLead")}</p>
         </div>
       </div>
+      <figure className="learner-photo-banner short" aria-hidden="true">
+        <img src="/home-assets/photos/achievements.jpg" alt="" loading="lazy" />
+      </figure>
       <div className="stat-grid four">
         <div className="stat">
           <strong>{mastered}</strong>

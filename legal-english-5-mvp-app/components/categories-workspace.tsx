@@ -34,6 +34,13 @@ export function CategoriesWorkspace() {
             <p>{L("categoriesLead")}</p>
           </div>
         </div>
+        <figure className="learner-photo-banner with-caption" aria-hidden="true">
+          <img src="/home-assets/photos/categories-hero.jpg" alt="" loading="lazy" />
+          <figcaption>
+            <small>{L("categoriesHeroTag")}</small>
+            <strong>{L("categoriesHeroTitle")}</strong>
+          </figcaption>
+        </figure>
         <section className="terms-category-progress large" aria-label={L("categoriesTitle")}>
           {stats.map((item) => (
             <Link className={`${CATEGORY_THEME[item.category]} terms-category-link with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
@@ -61,7 +68,8 @@ export function CategoriesWorkspace() {
           if (rows.length === 0) return null;
           return (
             <section className="terms-category-section" key={item.category} aria-label={categoryLabel(locale, item.category)}>
-              <div className="terms-reference-heading compact">
+              <div className="terms-reference-heading compact with-thumb">
+                <img className="terms-section-thumb" src={CATEGORY_PHOTO[item.category]} alt="" loading="lazy" />
                 <div>
                   <h2>{categoryLabel(locale, item.category)}</h2>
                   <p>{item.total === 1 ? L("termsCountOne") : L("termsCount", { n: item.total })}</p>

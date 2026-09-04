@@ -14,6 +14,8 @@ export type LandingCopy = {
     explore: string;
     benefits: readonly [string, string, string, string];
     slides: ReadonlyArray<{ caption: string; tag: string }>;
+    trust: ReadonlyArray<readonly [string, string]>;
+    reassurance: string;
   };
   categories: { eyebrow: string; title: string; lead: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
   learn: {
@@ -61,6 +63,11 @@ export type LandingCopy = {
     links: { library: string; categories: string; how: string; pricing: string; about: string; helpCenter: string; faqs: string; contactUs: string; billing: string; status: string; terms: string; privacy: string; cookies: string };
     reply: string;
     rights: string;
+    trust: string;
+    madeIn: string;
+    cookieText: string;
+    cookieAccept: string;
+    cookieMore: string;
   };
 };
 
@@ -74,6 +81,13 @@ const en: LandingCopy = {
     cta: "Start 7-Day Free Trial",
     explore: "Explore Terms Library",
     benefits: ["5-Minute Lessons", "Built for legal professionals", "Track your progress", "No credit card required"],
+    reassurance: "No credit card · Cancel anytime · 30 terms at launch, more every month",
+    trust: [
+      ["One source of truth", "Every term comes from a single Master Content Database"],
+      ["Lawyer-reviewed", "Approved by a practising lawyer before publication"],
+      ["Spanish-speaker notes", "Civil-law equivalents and false-friend alerts on every term"],
+      ["Secure checkout", "Subscriptions handled by Mercado Pago; cancel anytime"],
+    ],
     slides: [
       { caption: "Reviewing a contract before signature", tag: "Contracts" },
       { caption: "Negotiating terms with the counterparty", tag: "Corporate Law" },
@@ -146,15 +160,14 @@ const en: LandingCopy = {
     photos: ["Reading a closing checklist", "Corporate counsel before a board meeting", "Case law in the firm library"],
   },
   proof: {
-    eyebrow: "Trusted by professionals",
-    title: "Trusted by Legal Professionals",
+    eyebrow: "From the studio",
+    title: "Written by a lawyer who reads these documents every day",
     quotes: [
       [
-        "Legal English 5 helps me understand and use the right terminology in my everyday contracts. The lessons are clear and very practical.",
-        "Carlos Méndez",
-        "Corporate lawyer, Mexico",
+        "Every term in Legal English 5 started as a real question from a Spanish-speaking client or colleague: what does this clause actually mean, and what is the closest concept in our civil-law system? We answer it once, review it, and only then publish it. Nothing here is paraphrased by software.",
+        "MPC Law Studio",
+        "Editorial team · Colombia",
       ],
-      ["As a law student, this platform has been key to gaining confidence in my readings and classes in English.", "Ana Rodríguez", "Law student, Spain"],
     ],
     stats: [
       ["30+", "Published Terms"],
@@ -184,7 +197,7 @@ const en: LandingCopy = {
   },
   cta: {
     title: "Ready to Master Legal English?",
-    lead: "Join thousands of lawyers and law students building confidence every day.",
+    lead: "Built with a practising lawyer for Spanish-speaking professionals. Seven days free, no card required, cancel anytime.",
     button: "Start Your 7-Day Free Trial",
   },
   footer: {
@@ -209,7 +222,12 @@ const en: LandingCopy = {
       cookies: "Cookie Policy",
     },
     reply: "We typically reply within one business day.",
-    rights: "© 2025 Legal English 5. All rights reserved.",
+    rights: "© 2026 Legal English 5. All rights reserved.",
+    trust: "Payments by Mercado Pago · Data hosted on Supabase · Content from MCD v1.3.81",
+    madeIn: "MPC Law Studio · Colombia",
+    cookieText: "We only use essential cookies to keep you signed in and remember your language. No advertising trackers.",
+    cookieAccept: "Got it",
+    cookieMore: "Privacy notice",
   },
 };
 
@@ -223,6 +241,13 @@ const es: LandingCopy = {
     cta: "Empezar prueba gratis de 7 días",
     explore: "Explorar la biblioteca",
     benefits: ["Lecciones de 5 minutos", "Hecho para profesionales del derecho", "Sigue tu progreso", "Sin tarjeta de crédito"],
+    reassurance: "Sin tarjeta · Cancela cuando quieras · 30 términos al lanzamiento y más cada mes",
+    trust: [
+      ["Una sola fuente de verdad", "Cada término proviene de una única Master Content Database"],
+      ["Revisado por abogada", "Aprobado por una abogada en ejercicio antes de publicarse"],
+      ["Notas para hispanohablantes", "Equivalentes de derecho civil y alertas de falsos amigos en cada término"],
+      ["Pago seguro", "Suscripciones gestionadas por Mercado Pago; cancela cuando quieras"],
+    ],
     slides: [
       { caption: "Revisando un contrato antes de firmar", tag: "Contratos" },
       { caption: "Negociando condiciones con la contraparte", tag: "Derecho corporativo" },
@@ -295,15 +320,14 @@ const es: LandingCopy = {
     photos: ["Revisando un checklist de cierre", "Abogada corporativa antes de una junta", "Jurisprudencia en la biblioteca del despacho"],
   },
   proof: {
-    eyebrow: "Confianza profesional",
-    title: "Con la confianza de profesionales del derecho",
+    eyebrow: "Desde el estudio",
+    title: "Escrito por una abogada que lee estos documentos cada día",
     quotes: [
       [
-        "Legal English 5 me ayuda a entender y usar la terminología correcta en mis contratos diarios. Las lecciones son claras y muy prácticas.",
-        "Carlos Méndez",
-        "Abogado corporativo, México",
+        "Cada término de Legal English 5 nació de una pregunta real de un cliente o colega hispanohablante: ¿qué significa realmente esta cláusula y cuál es el concepto más cercano en nuestro sistema de derecho civil? La respondemos una vez, la revisamos y solo entonces la publicamos. Nada aquí está parafraseado por software.",
+        "MPC Law Studio",
+        "Equipo editorial · Colombia",
       ],
-      ["Como estudiante de derecho, esta plataforma ha sido clave para ganar confianza en mis lecturas y clases en inglés.", "Ana Rodríguez", "Estudiante de Derecho, España"],
     ],
     stats: [
       ["30+", "Términos publicados"],
@@ -333,7 +357,7 @@ const es: LandingCopy = {
   },
   cta: {
     title: "¿Listo para dominar el inglés jurídico?",
-    lead: "Únete a miles de abogados y estudiantes de derecho que ganan confianza cada día.",
+    lead: "Creado con una abogada en ejercicio para profesionales hispanohablantes. Siete días gratis, sin tarjeta, cancela cuando quieras.",
     button: "Empieza tu prueba gratis de 7 días",
   },
   footer: {
@@ -358,7 +382,12 @@ const es: LandingCopy = {
       cookies: "Política de cookies",
     },
     reply: "Normalmente respondemos en un día hábil.",
-    rights: "© 2025 Legal English 5. Todos los derechos reservados.",
+    rights: "© 2026 Legal English 5. Todos los derechos reservados.",
+    trust: "Pagos con Mercado Pago · Datos alojados en Supabase · Contenido de la MCD v1.3.81",
+    madeIn: "MPC Law Studio · Colombia",
+    cookieText: "Solo usamos cookies esenciales para mantener tu sesión y recordar tu idioma. Sin rastreadores publicitarios.",
+    cookieAccept: "Entendido",
+    cookieMore: "Aviso de privacidad",
   },
 };
 

@@ -4,13 +4,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
 import { useLocale } from "@/components/locale-provider";
 import { landingCopy } from "@/lib/landing-copy";
-
-const SOCIAL_LINKS = [
-  ["LinkedIn", "linkedin-footer"],
-  ["Twitter", "twitter-footer"],
-  ["Instagram", "instagram-footer"],
-  ["YouTube", "youtube-footer"],
-] as const;
+import { CookieNotice } from "@/components/cookie-notice";
 
 export function LandingFooter() {
   const { locale } = useLocale();
@@ -21,13 +15,6 @@ export function LandingFooter() {
         <div className="footer-brand">
           <BrandMark className="light" />
           <p>{f.blurb}</p>
-          <div className="footer-social" aria-label="Social links">
-            {SOCIAL_LINKS.map(([label, icon]) => (
-              <a href="#" aria-label={label} key={label}>
-                <img src={`/home-assets/icons/${icon}.png`} alt="" aria-hidden="true" />
-              </a>
-            ))}
-          </div>
         </div>
         <nav className="footer-nav">
           <div>
@@ -64,7 +51,10 @@ export function LandingFooter() {
       </div>
       <div className="footer-bottom">
         <span>{f.rights}</span>
+        <span className="footer-trust">{f.trust}</span>
+        <span className="footer-made">{f.madeIn}</span>
       </div>
+      <CookieNotice />
     </footer>
   );
 }

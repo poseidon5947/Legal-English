@@ -1,5 +1,7 @@
 "use client";
 
+import { categoryPhoto } from "@/lib/category-photos";
+
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -335,7 +337,8 @@ export function QuizWorkspace() {
             <p>{L("recommendedLead")}</p>
             <div className="quiz-practice-grid">
               {byCategory.map((item) => (
-                <article className={CATEGORY_TONE[item.category]} key={item.category}>
+                <article className={`${CATEGORY_TONE[item.category]} with-photo`} key={item.category}>
+                  <img className="quiz-practice-photo" src={categoryPhoto(item.category)} alt="" loading="lazy" />
                   <span>
                     <QuizIcon name={CATEGORY_ICON[item.category]} />
                   </span>
@@ -358,6 +361,13 @@ export function QuizWorkspace() {
         </section>
 
         <aside className="quiz-ref-right-rail">
+          <Link className="learner-photo-card" href="/terms?state=learning">
+            <img src="/home-assets/photos/quiz-focus.jpg" alt="" loading="lazy" />
+            <span>
+              <small>{L("quizPhotoTag")}</small>
+              <strong>{L("quizPhotoTitle")}</strong>
+            </span>
+          </Link>
           <section className="quiz-overall-card">
             <h2>{L("overallMastery")}</h2>
             <div className="quiz-overall-body">

@@ -11,6 +11,9 @@ export default function PrivacyPage() {
     <main className="landing home-reference">
       <LandingHeader />
       <section className="landing-section legal-page">
+        <figure className="legal-banner" aria-hidden="true">
+          <img src="/home-assets/photos/legal-books.jpg" alt="" />
+        </figure>
         <div className="landing-section-heading">
           <span className="eyebrow">{t("privacyPageEyebrow")}</span>
           <h2>{t("privacyPageTitle")}</h2>

@@ -109,6 +109,9 @@ export function AccountWorkspace() {
           </div>
 
           <section className="account-ref-profile-card">
+            <div className="account-ref-cover" aria-hidden="true">
+              <img src="/home-assets/photos/account-cover.jpg" alt="" loading="lazy" />
+            </div>
             <div className="account-ref-card-heading">
               <h2>{L("profileInfo")}</h2>
               {editing ? (
