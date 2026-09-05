@@ -67,7 +67,7 @@ export function LegalDocument({
         </figure>
         <div className="landing-section-heading">
           <span className="eyebrow">{eyebrow}</span>
-          <h2>{title}</h2>
+          <h1>{title}</h1>
           <p>{lead}</p>
           <p className="legal-updated">
             {learnerText(locale, "lastUpdated")}: {formatDate(updatedAt, locale)}

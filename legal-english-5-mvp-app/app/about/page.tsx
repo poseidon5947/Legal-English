@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div className="about-showcase">
           <div>
             <span className="eyebrow">{t("aboutEyebrow")}</span>
-            <h2>{t("aboutTitle")}</h2>
+            <h1>{t("aboutTitle")}</h1>
             <p>{t("aboutLead")}</p>
             <p>{t("aboutBody2")}</p>
           </div>

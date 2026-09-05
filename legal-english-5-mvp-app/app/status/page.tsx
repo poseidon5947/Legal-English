@@ -111,7 +111,7 @@ export default function StatusPage() {
       <section className="landing-section status-page">
         <div className="landing-section-heading">
           <span className="eyebrow">{c.eyebrow}</span>
-          <h2>{c.title}</h2>
+          <h1>{c.title}</h1>
           <p>{c.lead}</p>
         </div>
 

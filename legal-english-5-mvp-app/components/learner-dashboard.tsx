@@ -6,7 +6,7 @@ import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { StatusBadge } from "@/components/terms-library";
-import { categoryPhoto } from "@/lib/category-photos";
+import { categoryPhoto, termPhoto } from "@/lib/category-photos";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { categoryStats, countsFor, formatWhen, recentActivity, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
@@ -165,7 +165,7 @@ export function LearnerDashboard() {
               <span className="eyebrow">{L("dashContinue")}</span>
               {lastOpened ? (
                 <Link href={`/terms/${lastOpened.term.id}`} className="dashboard-continue-card">
-                  <img src={categoryPhoto(lastOpened.term.category)} alt="" loading="lazy" />
+                  <img src={termPhoto(lastOpened.term, terms)} alt="" loading="lazy" />
                   <span>
                     <strong>{lastOpened.term.term}</strong>
                     <small>

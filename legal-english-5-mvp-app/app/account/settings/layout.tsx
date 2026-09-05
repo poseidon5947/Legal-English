@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "How It Works",
-  description: "The five-step Legal English 5 learning loop, with your own progress against each step.",
-  path: "/how-it-works",
+  title: "Settings",
+  description: "Language, notifications, password and account controls.",
+  path: "/account/settings",
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

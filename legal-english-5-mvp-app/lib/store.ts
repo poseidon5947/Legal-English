@@ -142,6 +142,12 @@ function mail(data: StoreData, to: string, subject: string, body: string, code?:
   data.inbox.unshift({ id, to, subject, body, code, createdAt: new Date().toISOString() });
 }
 
+/** Read-only lookup for route metadata (browser tab / shared-link title). Never exposes unpublished content beyond the term name. */
+export async function findTermSummary(termId: string): Promise<{ term: string; category: string; definition: string; published: boolean } | null> {
+  const found = load().terms.find((item) => item.id === termId && !item.archived);
+  return found ? { term: found.term, category: found.category, definition: found.definition, published: Boolean(found.published) } : null;
+}
+
 export async function resetStore() {
   const created = initial();
   save(created);

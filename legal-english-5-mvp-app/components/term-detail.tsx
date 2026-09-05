@@ -1,6 +1,6 @@
 "use client";
 
-import { categoryPhoto } from "@/lib/category-photos";
+import { termPhoto } from "@/lib/category-photos";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -159,7 +159,7 @@ export function TermDetail({ id }: { id: string }) {
       <div className="consideration-content">
         <section className="consideration-main-column">
           <div className="consideration-photo-band" aria-hidden="true">
-            <img src={categoryPhoto(term.category)} alt="" />
+            <img src={termPhoto(term, terms)} alt="" />
             <span>{categoryLabel(locale, term.category)}</span>
           </div>
           <nav className="consideration-breadcrumb" aria-label="Breadcrumb">

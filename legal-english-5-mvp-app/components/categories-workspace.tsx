@@ -9,13 +9,9 @@ import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { categoryStats, stateOf, studyTerms } from "@/lib/learner-stats";
 import { CATEGORY_THEME, TermCard } from "@/components/terms-library";
+import { categoryPhoto, categoryPhotoAlt } from "@/lib/category-photos";
 
 const ICON: Record<string, string> = { Contracts: "category-contract", "Corporate Law": "category-corporate", "Employment Law": "category-employment" };
-const CATEGORY_PHOTO: Record<string, string> = {
-  Contracts: "/home-assets/photos/category-contracts.jpg",
-  "Corporate Law": "/home-assets/photos/category-corporate.jpg",
-  "Employment Law": "/home-assets/photos/category-employment.jpg",
-};
 
 /** The three canonical MCD categories with live counts and mastery, linking into the filtered library. */
 export function CategoriesWorkspace() {
@@ -44,7 +40,7 @@ export function CategoriesWorkspace() {
         <section className="terms-category-progress large" aria-label={L("categoriesTitle")}>
           {stats.map((item) => (
             <Link className={`${CATEGORY_THEME[item.category]} terms-category-link with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
-              <img className="terms-category-photo" src={CATEGORY_PHOTO[item.category]} alt="" loading="lazy" />
+              <img className="terms-category-photo" src={categoryPhoto(item.category)} alt="" loading="lazy" />
               <div className="terms-category-icon-shell">
                 <img className="terms-library-icon" src={`/terms-library-assets/icons/${ICON[item.category]}.png`} alt="" aria-hidden="true" />
               </div>
@@ -69,7 +65,7 @@ export function CategoriesWorkspace() {
           return (
             <section className="terms-category-section" key={item.category} aria-label={categoryLabel(locale, item.category)}>
               <div className="terms-reference-heading compact with-thumb">
-                <img className="terms-section-thumb" src={CATEGORY_PHOTO[item.category]} alt="" loading="lazy" />
+                <img className="terms-section-thumb" src={categoryPhotoAlt(item.category)} alt="" loading="lazy" />
                 <div>
                   <h2>{categoryLabel(locale, item.category)}</h2>
                   <p>{item.total === 1 ? L("termsCountOne") : L("termsCount", { n: item.total })}</p>

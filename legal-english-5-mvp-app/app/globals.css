@@ -289,7 +289,8 @@ textarea { min-height: 86px; resize: vertical; }
 
 .landing-section { padding: 30px clamp(16px, 4vw, 48px) 10px; }
 .landing-section-heading { max-width: 620px; margin: 0 auto 30px; text-align: center; }
-.landing-section-heading h2 { margin: 10px 0 12px; font-size: clamp(1.7rem, 3vw, 2.3rem); color: var(--ink); font-weight: 600; }
+.landing-section-heading h2,
+.landing-section-heading h1 { margin: 10px 0 12px; font-size: clamp(1.7rem, 3vw, 2.3rem); color: var(--ink); font-weight: 600; }
 .landing-section-heading p { color: var(--muted); line-height: 1.6; }
 
 .step-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
@@ -3264,7 +3265,8 @@ select:focus {
   padding: 28px;
 }
 
-.about-showcase h2 {
+.about-showcase h2,
+.about-showcase h1 {
   margin: 8px 0 12px;
   font-size: clamp(1.7rem, 3vw, 2.4rem);
 }
@@ -17497,10 +17499,26 @@ h3,
   gap: 10px;
 }
 
+/* Per-term editorial thumbnail (lib/category-photos termPhoto). Hidden in the
+   text-first grid, shown as a 56px tile in list view and on the Categories page. */
+.terms-card-thumb {
+  display: none;
+}
+
+.terms-card-grid.list .terms-card-thumb {
+  display: block;
+  grid-area: thumb;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: inset 0 0 0 1px rgba(17, 35, 72, 0.08);
+}
+
 .terms-card-grid.list .terms-card {
-  grid-template-columns: 130px minmax(0, 1fr) auto auto;
+  grid-template-columns: 56px 130px minmax(0, 1fr) auto auto;
   grid-template-rows: auto;
-  grid-template-areas: "category title foot save" "category body foot save";
+  grid-template-areas: "thumb category title foot save" "thumb category body foot save";
   column-gap: 16px;
   align-items: center;
   min-height: 0;
@@ -17977,8 +17995,15 @@ h3,
 
 @media (max-width: 1100px) {
   .terms-card-grid.list .terms-card {
-    grid-template-columns: 1fr auto;
-    grid-template-areas: "category save" "title title" "body body" "foot foot";
+    grid-template-columns: 44px 1fr auto;
+    grid-template-areas: "thumb category save" "thumb title title" "body body body" "foot foot foot";
+    column-gap: 12px;
+  }
+
+  .terms-card-grid.list .terms-card-thumb {
+    width: 44px;
+    height: 44px;
+    align-self: start;
   }
 
   .account-ref-inline-form {
@@ -19220,7 +19245,8 @@ html {
   padding-bottom: 8px;
 }
 
-.home-reference .landing-section-heading h2 {
+.home-reference .landing-section-heading h2,
+.home-reference .landing-section-heading h1 {
   font-size: clamp(1.9rem, 2.6vw, 2.4rem);
 }
 
@@ -20680,11 +20706,44 @@ html {
   position: relative;
   z-index: 1;
   width: fit-content;
+  max-width: calc(100% - 14px);
   margin-left: 14px;
   padding: 8px 14px;
   border-radius: 999px;
   background: #ffffff;
   box-shadow: var(--ws-shadow);
+}
+
+/* Long Spanish crumbs ("Biblioteca de términos › Derecho corporativo › …")
+   must never push the page wider than the phone: truncate instead. */
+.learner-shell .consideration-breadcrumb > a,
+.learner-shell .consideration-breadcrumb > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Category crumb keeps its full label; the current term truncates (its full
+   name is the H1 directly underneath). */
+.learner-shell .consideration-breadcrumb > a {
+  flex: 0 0 auto;
+}
+
+.learner-shell .consideration-breadcrumb > span {
+  flex: 0 1 auto;
+}
+
+.learner-shell .consideration-breadcrumb .consideration-icon {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+  /* Drop the "Terms Library" root crumb on phones; the tab bar already links there. */
+  .learner-shell .consideration-breadcrumb > a:first-child,
+  .learner-shell .consideration-breadcrumb > a:first-child + .consideration-icon {
+    display: none;
+  }
 }
 
 /* Quizzes: practice cards with category thumbnails */

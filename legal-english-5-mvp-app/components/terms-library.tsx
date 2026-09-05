@@ -1,6 +1,6 @@
 "use client";
 
-import { categoryPhoto } from "@/lib/category-photos";
+import { categoryPhotoAlt, termPhoto } from "@/lib/category-photos";
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -69,8 +69,10 @@ export function TermCard({
   locale: "en" | "es";
   draft: boolean;
 }) {
+  const { terms } = useApp();
   return (
     <article className={`terms-card ${CATEGORY_THEME[term.category] || "contracts"}`}>
+      <img className="terms-card-thumb" src={termPhoto(term, terms)} alt="" loading="lazy" />
       <div className="terms-card-topline">
         <span>{categoryLabel(locale, term.category)}</span>
         <button
@@ -250,10 +252,10 @@ export function TermsLibrary() {
             ))}
           </div>
           <div className="terms-view-controls" aria-label="View controls">
-            <button className={view === "grid" ? "active" : ""} type="button" aria-label="Grid view" onClick={() => chooseView("grid")}>
+            <button className={view === "grid" ? "active" : ""} type="button" aria-label={L("viewGrid")} title={L("viewGrid")} aria-pressed={view === "grid"} onClick={() => chooseView("grid")}>
               <LibraryIcon name="view-grid" />
             </button>
-            <button className={view === "list" ? "active" : ""} type="button" aria-label="List view" onClick={() => chooseView("list")}>
+            <button className={view === "list" ? "active" : ""} type="button" aria-label={L("viewList")} title={L("viewList")} aria-pressed={view === "list"} onClick={() => chooseView("list")}>
               <LibraryIcon name="view-list" />
             </button>
             <div className="terms-menu">
@@ -347,7 +349,7 @@ export function TermsLibrary() {
               }}
             >
               <div className="terms-category-icon-shell with-photo">
-                <img src={categoryPhoto(item.category)} alt="" loading="lazy" />
+                <img src={categoryPhotoAlt(item.category)} alt="" loading="lazy" />
                 <LibraryIcon name={CATEGORY_ICON[item.category]} />
               </div>
               <div>

@@ -24,7 +24,7 @@ export default function PricingPage() {
       <section className="landing-section">
         <div className="landing-section-heading">
           <span className="eyebrow">{t("pricingEyebrow")}</span>
-          <h2>{t("pricingTitle")}</h2>
+          <h1>{t("pricingTitle")}</h1>
           <p>{t("pricingLead")}</p>
         </div>
         <div className="plan-feature-strip">
