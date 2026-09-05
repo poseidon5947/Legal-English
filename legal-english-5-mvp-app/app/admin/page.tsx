@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { useLocale } from "@/components/locale-provider";
+import { canPublish, publicationBlockers } from "@/lib/publication";
 import { adminText } from "@/lib/admin-copy";
 import { subscriptionStatusLabel } from "@/lib/i18n";
 import { learnerText } from "@/lib/learner-copy";
@@ -45,10 +46,28 @@ export default function AdminPage() {
   const [editing, setEditing] = useState<Term | null>(null);
   const [message, setMessage] = useState("");
   const [preview, setPreview] = useState<ImportPreview | null>(null);
+  const [termQuery, setTermQuery] = useState("");
+  const [termCategory, setTermCategory] = useState("All");
+  const [termFilter, setTermFilter] = useState<"all" | "published" | "ready" | "blocked" | "archived">("all");
   const published = terms.filter((term) => term.published && !term.archived).length;
   const drafts = terms.filter((term) => !term.published && !term.archived).length;
   const quizzes = terms.filter((term) => term.quiz).length;
-  const visible = useMemo(() => terms.filter((term) => (tab === "terms" ? !term.archived : true)), [terms, tab]);
+  const visible = useMemo(() => {
+    const needle = termQuery.trim().toLowerCase();
+    return terms
+      .filter((term) => (termFilter === "archived" ? term.archived : !term.archived))
+      .filter((term) => termCategory === "All" || term.category === termCategory)
+      .filter((term) => {
+        if (termFilter === "published") return term.published;
+        if (termFilter === "ready") return !term.published && canPublish(term);
+        if (termFilter === "blocked") return !term.published && !canPublish(term);
+        return true;
+      })
+      .filter((term) => !needle || [term.id, term.term, term.spanishEquivalent, term.category, term.topic].join(" ").toLowerCase().includes(needle));
+  }, [terms, termQuery, termCategory, termFilter]);
+  const readyCount = terms.filter((term) => !term.archived && !term.published && canPublish(term)).length;
+  const blockedCount = terms.filter((term) => !term.archived && !term.published && !canPublish(term)).length;
+  const archivedCount = terms.filter((term) => term.archived).length;
 
   if (session?.user.role !== "admin") {
     return (
@@ -98,7 +117,7 @@ export default function AdminPage() {
   }
 
   return (
-    <AppShell>
+    <AppShell rail={false} pageClass="admin-console">
       <div className="page-heading">
         <div>
           <span className="eyebrow">{a("eyebrow")}</span>
@@ -343,14 +362,61 @@ export default function AdminPage() {
         </section>
       )}
       {tab === "terms" && (
+        <div className="admin-filters" role="search">
+          <input
+            type="search"
+            value={termQuery}
+            onChange={(event) => setTermQuery(event.target.value)}
+            placeholder={a("filterSearch")}
+            aria-label={a("filterSearch")}
+          />
+          <div className="admin-filter-chips" aria-label={a("filterStatus")}>
+            {(
+              [
+                ["all", a("filterAll"), terms.filter((term) => !term.archived).length],
+                ["published", a("published"), published],
+                ["ready", a("filterReady"), readyCount],
+                ["blocked", a("filterBlocked"), blockedCount],
+                ["archived", a("filterArchived"), archivedCount],
+              ] as const
+            ).map(([id, label, count]) => (
+              <button key={id} type="button" className={termFilter === id ? "active" : ""} onClick={() => setTermFilter(id)}>
+                {label} <b>{count}</b>
+              </button>
+            ))}
+          </div>
+          <select value={termCategory} onChange={(event) => setTermCategory(event.target.value)} aria-label={a("filterCategory")}>
+            <option value="All">{a("filterAllCategories")}</option>
+            {["Contracts", "Corporate Law", "Employment Law"].map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+      {tab === "terms" && visible.length === 0 && (
+        <div className="terms-empty">
+          <strong>{a("filterEmpty")}</strong>
+        </div>
+      )}
+      {tab === "terms" && (
         <div className="admin-list">
-          {visible.map((term) => (
-            <div className="admin-row" key={term.id}>
+          {visible.map((term) => {
+            const blockers = publicationBlockers(term);
+            const ready = blockers.length === 0;
+            return (
+            <div className={`admin-row${term.published ? " is-published" : ready ? " is-ready" : " is-blocked"}`} key={term.id}>
               <div>
-                <strong>{term.term}</strong>
+                <strong>
+                  <i className={`admin-ready-dot ${term.published ? "published" : ready ? "ready" : "blocked"}`} title={term.published ? a("published") : ready ? a("filterReady") : blockers.join(" ")} aria-hidden="true" />
+                  {term.term}
+                  <small className="admin-row-cat">{term.category}</small>
+                </strong>
                 <span>
-                  #{term.displayOrder || "—"} · {term.id} · {term.category} · {term.quiz ? a("quizOpts", { n: term.quiz.options.length }) : a("quizMissing")} · {term.audioUsPath ? "AudioUS" : a("noAudioUs")} · {term.mcdStatus}
+                  #{term.displayOrder || "—"} · {term.id} · {term.quiz ? a("quizOpts", { n: term.quiz.options.length }) : a("quizMissing")} · {term.audioUsPath ? "AudioUS ✓" : a("noAudioUs")} · {term.mcdStatus}
                 </span>
+                {!term.published && !ready && <span className="admin-row-blockers">{blockers.join(" ")}</span>}
               </div>
               <div>
                 <button
@@ -388,7 +454,8 @@ export default function AdminPage() {
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
       {tab === "overview" && (

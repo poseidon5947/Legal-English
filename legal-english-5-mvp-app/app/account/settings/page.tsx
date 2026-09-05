@@ -178,9 +178,15 @@ export default function SettingsPage() {
           <div>
             <h2>{t("settingsDataTitle")}</h2>
             <p>{t("settingsDataBody")}</p>
-            <Link className="ghost inline" href="/privacy">
-              {t("settingsDataLink")}
-            </Link>
+            <div className="settings-data-actions">
+              <a className="primary inline" href="/api/learn/export" download>
+                {t("settingsExport")}
+              </a>
+              <Link className="ghost inline" href="/privacy">
+                {t("settingsDataLink")}
+              </Link>
+            </div>
+            <small className="muted tiny">{t("settingsExportNote")}</small>
           </div>
         </section>
       </div>

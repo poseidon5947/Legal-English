@@ -109,8 +109,8 @@ export default function HelpPage() {
           <section className="account-card">
             <h2>{t("helpInbox")}</h2>
             <div className="inbox-list">
-              {inbox.slice(0, 5).map((item) => (
-                <article key={item.id}>
+              {inbox.slice(0, 5).map((item, index) => (
+                <article key={`${item.id}-${index}`}>
                   <strong>{item.subject}</strong>
                   <p>{item.body}</p>
                 </article>

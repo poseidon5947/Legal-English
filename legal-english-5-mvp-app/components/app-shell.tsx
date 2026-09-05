@@ -66,14 +66,18 @@ function ProgressRail() {
  * sidebar, topbar and access gates come from LearnerShell so navigation is the
  * same on every signed-in page; this only adds the progress rail.
  */
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children, rail = true, pageClass = "" }: { children: React.ReactNode; rail?: boolean; pageClass?: string }) {
   return (
-    <LearnerShell pageClass="app-shell-page">
+    <LearnerShell pageClass={`app-shell-page ${pageClass}`.trim()}>
       <div className="terms-reference-content">
-        <div className="workspace-grid">
-          <div className="workspace-main">{children}</div>
-          <ProgressRail />
-        </div>
+        {rail ? (
+          <div className="workspace-grid">
+            <div className="workspace-main">{children}</div>
+            <ProgressRail />
+          </div>
+        ) : (
+          <div className="workspace-main wide">{children}</div>
+        )}
       </div>
     </LearnerShell>
   );

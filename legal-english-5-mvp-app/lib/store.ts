@@ -77,7 +77,7 @@ function initial(): StoreData {
   });
   const maria = makeUser({
     id: "learner-maria",
-    name: "Maria Restrepo",
+    name: "Alex Johnson",
     email: "maria@legalenglish5.test",
     role: "learner",
     password: "Maria#Alpha26",
@@ -128,8 +128,11 @@ function save(data: StoreData) {
   writeFileSync(FILE, JSON.stringify(data, null, 2));
 }
 
+let mailSeq = 0;
 function mail(data: StoreData, to: string, subject: string, body: string, code?: string) {
-  data.inbox.unshift({ id: `mail-${Date.now()}`, to, subject, body, code, createdAt: new Date().toISOString() });
+  // Two mails can be written in the same millisecond (report → owner + copy to sender), so the id needs a sequence.
+  const id = `mail-${Date.now()}-${(mailSeq = (mailSeq + 1) % 1000).toString().padStart(3, "0")}`;
+  data.inbox.unshift({ id, to, subject, body, code, createdAt: new Date().toISOString() });
 }
 
 export async function resetStore() {

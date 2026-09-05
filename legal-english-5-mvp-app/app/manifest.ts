@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: SITE_NAME,
     short_name: "LE5",
     description: SITE_DESCRIPTION,
-    start_url: "/terms",
+    start_url: "/dashboard",
     display: "standalone",
     background_color: "#f6f8fc",
     theme_color: "#071b49",

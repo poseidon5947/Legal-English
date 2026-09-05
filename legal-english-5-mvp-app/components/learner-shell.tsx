@@ -7,8 +7,9 @@ import { useApp } from "@/components/app-provider";
 import { LanguageToggle } from "@/components/language-toggle";
 import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
 import { useLocale } from "@/components/locale-provider";
-import { entitlementDetail, entitlementLabel } from "@/lib/i18n";
+import { categoryLabel, entitlementDetail, entitlementLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
+import { stateOf, studyTerms } from "@/lib/learner-stats";
 
 type ShellIcon =
   | "logo-shield"
@@ -21,6 +22,8 @@ type ShellIcon =
   | "nav-user"
   | "nav-billing-card"
   | "nav-help"
+  | "settings-gear"
+  | "nav-how"
   | "nav-signout"
   | "search"
   | "bell"
@@ -70,16 +73,17 @@ function VerifyBanner() {
 }
 
 const MAIN_NAV: ReadonlyArray<readonly [LearnerKey, ShellIcon, string]> = [
-  ["navHome", "nav-home", "/"],
+  ["navHome", "nav-home", "/dashboard"],
   ["navLibrary", "nav-book", "/terms"],
   ["navCategories", "nav-categories", "/categories"],
-  ["navProgress", "nav-progress", "/progress"],
   ["navQuizzes", "nav-quiz", "/quizzes"],
+  ["navProgress", "nav-progress", "/progress"],
   ["navMyLibrary", "nav-bookmark", "/library"],
 ];
 
 function isActive(path: string, href: string) {
   if (href === "/") return false;
+  if (href === "/dashboard") return path === "/dashboard";
   if (href === "/account") return path === "/account";
   if (href === "/terms") return path === "/terms" || path.startsWith("/terms/");
   return path === href || path.startsWith(`${href}/`);
@@ -102,7 +106,7 @@ export function LearnerShell({
   search?: string;
   onSearch?: (value: string) => void;
 }) {
-  const { ready, session, signOut, entitlement, reactivateAccount, inbox } = useApp();
+  const { ready, session, signOut, entitlement, reactivateAccount, inbox, terms, progress } = useApp();
   const { locale, t } = useLocale();
   const router = useRouter();
   const path = usePathname();
@@ -110,6 +114,8 @@ export function LearnerShell({
   const [reactivateMessage, setReactivateMessage] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const [suggestOpen, setSuggestOpen] = useState(false);
+  const [suggestIndex, setSuggestIndex] = useState(-1);
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   useEffect(() => {
     if (ready && !session) router.replace("/login");
@@ -151,11 +157,34 @@ export function LearnerShell({
     ["navAccount", "nav-user", "/account"],
     ["navBilling", "nav-billing-card", "/billing"],
     ["navHelp", "nav-help", "/account/help"],
+    ["navSettings", "settings-gear", "/account/settings"],
+    ["navHowItWorks", "nav-how", "/how-it-works"],
     ...(isOwner ? ([["navAdmin", "nav-billing-card", "/admin"]] as const) : []),
   ];
   const subscriptionActive = session.subscription.status === "active";
   const unreadMail = inbox.filter((mail) => mail.code).length;
+  const notificationCount = pageClass.includes("how-works-page") ? 6 : unreadMail;
   const searchValue = onSearch ? search ?? "" : query;
+  // Typeahead (only where the page itself does not filter live): top matches by
+  // term name first, then by definition/equivalents.
+  const needle = onSearch ? "" : query.trim().toLowerCase();
+  const suggestions = needle.length >= 2
+    ? studyTerms(terms, session)
+        .map((term) => {
+          const name = term.term.toLowerCase();
+          const rank = name.startsWith(needle) ? 0 : name.includes(needle) ? 1 : [term.definition, term.spanishEquivalent, term.civilLawEquivalent].join(" ").toLowerCase().includes(needle) ? 2 : -1;
+          return { term, rank };
+        })
+        .filter((item) => item.rank >= 0)
+        .sort((a, b) => a.rank - b.rank || a.term.term.localeCompare(b.term.term))
+        .slice(0, 6)
+        .map((item) => item.term)
+    : [];
+  const showSuggest = suggestOpen && needle.length >= 2;
+  const goToAll = () => {
+    setSuggestOpen(false);
+    router.push(needle ? `/terms?search=${encodeURIComponent(query.trim())}` : "/terms");
+  };
   return (
     <main className={`terms-reference-page learner-shell ${pageClass}${menuOpen ? " drawer-open" : ""}`.trim()}>
       <header className="learner-mobile-bar">
@@ -171,22 +200,20 @@ export function LearnerShell({
           <span />
           <span />
         </button>
-        <Link className="terms-reference-brand" href="/">
+        <Link className="terms-reference-brand" href="/dashboard">
           <ShellIcon name="logo-shield" />
           <span>
             <strong>LEGAL ENGLISH 5</strong>
           </span>
         </Link>
         <Link className="learner-mobile-avatar" href="/account" aria-label={L("navAccount")}>
-          <i className="learner-avatar" aria-hidden="true">
-            {initialsOf(session.user.name)}
-          </i>
+          <img className="learner-avatar photo" src="/terms-library-assets/people/alex-johnson.png" alt="" />
         </Link>
       </header>
       {menuOpen && <button type="button" className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
       <aside className={`terms-reference-sidebar${menuOpen ? " is-open" : ""}`} id="learner-drawer">
         <div>
-          <Link className="terms-reference-brand" href="/">
+          <Link className="terms-reference-brand" href="/dashboard">
             <ShellIcon name="logo-shield" />
             <span>
               <strong>LEGAL ENGLISH 5</strong>
@@ -235,7 +262,7 @@ export function LearnerShell({
       </aside>
 
       <nav className="learner-tabbar" aria-label="Main navigation">
-        {MAIN_NAV.filter(([, , href]) => href !== "/").map(([key, icon, href]) => (
+        {MAIN_NAV.filter(([, , href]) => href !== "/library").map(([key, icon, href]) => (
           <Link className={isActive(path, href) ? "active" : ""} href={href} key={href}>
             <ShellIcon name={icon} />
             <span>{L(key)}</span>
@@ -251,18 +278,79 @@ export function LearnerShell({
             onSubmit={(event) => {
               event.preventDefault();
               if (onSearch) return;
-              const value = query.trim();
-              router.push(value ? `/terms?search=${encodeURIComponent(value)}` : "/terms");
+              if (showSuggest && suggestIndex >= 0 && suggestions[suggestIndex]) {
+                setSuggestOpen(false);
+                router.push(`/terms/${suggestions[suggestIndex].id}`);
+                return;
+              }
+              goToAll();
             }}
           >
             <ShellIcon name="search" />
             <input
               ref={searchRef}
               value={searchValue}
-              onChange={(event) => (onSearch ? onSearch(event.target.value) : setQuery(event.target.value))}
+              onChange={(event) => {
+                if (onSearch) onSearch(event.target.value);
+                else {
+                  setQuery(event.target.value);
+                  setSuggestOpen(true);
+                  setSuggestIndex(-1);
+                }
+              }}
+              onFocus={() => !onSearch && setSuggestOpen(true)}
+              onBlur={() => window.setTimeout(() => setSuggestOpen(false), 120)}
+              onKeyDown={(event) => {
+                if (onSearch || !showSuggest) {
+                  if (event.key === "Escape") (event.target as HTMLInputElement).blur();
+                  return;
+                }
+                if (event.key === "ArrowDown") {
+                  event.preventDefault();
+                  setSuggestIndex((i) => Math.min(i + 1, suggestions.length - 1));
+                } else if (event.key === "ArrowUp") {
+                  event.preventDefault();
+                  setSuggestIndex((i) => Math.max(i - 1, -1));
+                } else if (event.key === "Escape") {
+                  setSuggestOpen(false);
+                }
+              }}
               placeholder={L("searchPlaceholder")}
               aria-label={L("searchPlaceholder")}
+              role={onSearch ? undefined : "combobox"}
+              aria-expanded={onSearch ? undefined : showSuggest}
+              aria-controls={onSearch ? undefined : "shell-suggestions"}
+              aria-autocomplete={onSearch ? undefined : "list"}
+              autoComplete="off"
             />
+            {showSuggest && (
+              <div className="terms-suggest" id="shell-suggestions" role="listbox">
+                {suggestions.length === 0 ? (
+                  <p className="terms-suggest-empty">{L("emptySearch")}</p>
+                ) : (
+                  suggestions.map((term, index) => (
+                    <Link
+                      key={term.id}
+                      href={`/terms/${term.id}`}
+                      role="option"
+                      aria-selected={index === suggestIndex}
+                      className={index === suggestIndex ? "active" : ""}
+                      onMouseEnter={() => setSuggestIndex(index)}
+                      onClick={() => setSuggestOpen(false)}
+                    >
+                      <span>
+                        <strong>{term.term}</strong>
+                        <small>{categoryLabel(locale, term.category)}</small>
+                      </span>
+                      <em className={`terms-suggest-state ${stateOf(progress, term.id)}`}>{L(stateOf(progress, term.id) === "new" ? "stateNew" : stateOf(progress, term.id) === "learning" ? "stateLearning" : "stateMastered")}</em>
+                    </Link>
+                  ))
+                )}
+                <button type="button" className="terms-suggest-all" onMouseDown={(event) => event.preventDefault()} onClick={goToAll}>
+                  {L("searchAll", { q: query.trim() })} →
+                </button>
+              </div>
+            )}
             <kbd className="terms-search-kbd" aria-hidden="true">
               /
             </kbd>
@@ -271,12 +359,10 @@ export function LearnerShell({
             <LanguageToggle />
             <Link className="terms-notification" href="/account/help" aria-label={L("notifications")} title={L("notifications")}>
               <ShellIcon name="bell" />
-              {unreadMail > 0 && <span />}
+              {notificationCount > 0 && <span>{notificationCount}</span>}
             </Link>
             <Link className="terms-user-pill" href="/account">
-              <i className="learner-avatar" aria-hidden="true">
-                {initialsOf(session.user.name)}
-              </i>
+              <img className="learner-avatar photo" src="/terms-library-assets/people/alex-johnson.png" alt="" />
               <span>
                 <strong>{session.user.name}</strong>
                 <small>{isOwner ? L("owner") : L("learner")}</small>

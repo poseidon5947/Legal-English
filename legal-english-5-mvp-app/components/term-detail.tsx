@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
+import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { formatDate, stateOf, studyTerms } from "@/lib/learner-stats";
@@ -43,7 +44,8 @@ function letter(index: number) {
 }
 
 export function TermDetail({ id }: { id: string }) {
-  const { terms, progress, session, entitlement, openTerm, toggleFavourite, submitQuiz } = useApp();
+  const { terms, progress, session, entitlement, openTerm, toggleFavourite, submitQuiz, reportIssue } = useApp();
+  const { notify } = useToast();
   const { locale } = useLocale();
   const router = useRouter();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
@@ -64,6 +66,43 @@ export function TermDetail({ id }: { id: string }) {
     opened.current = term.id;
     if (state === "new") void openTerm(term.id);
   }, [term, canStudy, state, openTerm]);
+
+  // ← / → move through the curriculum; "s" toggles My Library.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === "ArrowLeft" && previous) router.push(`/terms/${previous.id}`);
+      else if (event.key === "ArrowRight" && next) router.push(`/terms/${next.id}`);
+      else if ((event.key === "s" || event.key === "S") && term && canStudy) void toggleFavourite(term.id);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [previous, next, term, canStudy, router, toggleFavourite]);
+
+  // "Report a problem" — the warranty channel promised in the Propuesta, one click from the term.
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportKind, setReportKind] = useState<"content" | "translation" | "audio" | "quiz" | "other">("content");
+  const [reportText, setReportText] = useState("");
+  const [reportBusy, setReportBusy] = useState(false);
+  useEffect(() => {
+    setReportOpen(false);
+    setReportText("");
+    setReportKind("content");
+  }, [id]);
+  async function sendReport() {
+    if (!term || reportText.trim().length < 5 || reportBusy) return;
+    setReportBusy(true);
+    const kindLabel = L(`reportKind_${reportKind}` as LearnerKey);
+    const result = await reportIssue(`[${term.id}] ${kindLabel}: ${term.term}`, `${reportText.trim()}\n\n— ${window.location.origin}/terms/${term.id} · MCD ${term.sourceWorkbookVersion}`);
+    setReportBusy(false);
+    if (result.ok) {
+      notify(L("reportSent"));
+      setReportOpen(false);
+      setReportText("");
+    } else notify(result.message || L("reportFailed"), "error");
+  }
 
   const [selected, setSelected] = useState<string | null>(null);
   const [result, setResult] = useState<{ correct: boolean; message: string } | null>(null);
@@ -279,14 +318,22 @@ export function TermDetail({ id }: { id: string }) {
 
         <aside className="consideration-right-rail">
           <div className="consideration-term-nav">
-            <button type="button" disabled={!previous} onClick={() => previous && router.push(`/terms/${previous.id}`)}>
+            <button type="button" disabled={!previous} title={previous ? `← ${previous.term}` : undefined} onClick={() => previous && router.push(`/terms/${previous.id}`)}>
               <DetailIcon name="arrow-left" />
               {L("previousTerm")}
             </button>
-            <button type="button" disabled={!next} onClick={() => next && router.push(`/terms/${next.id}`)}>
+            <button type="button" disabled={!next} title={next ? `${next.term} →` : undefined} onClick={() => next && router.push(`/terms/${next.id}`)}>
               {L("nextTermShort")}
               <DetailIcon name="arrow-right" />
             </button>
+          </div>
+          <div className="consideration-position" aria-label={L("termPosition", { i: index + 1, n: visible.length })}>
+            <div className="consideration-position-track">
+              <i style={{ width: `${((index + 1) / Math.max(1, visible.length)) * 100}%` }} />
+            </div>
+            <span>
+              {L("termPosition", { i: index + 1, n: visible.length })} · <kbd>←</kbd> <kbd>→</kbd>
+            </span>
           </div>
 
           <section className="consideration-quiz-card" id="quick-quiz">
@@ -423,6 +470,44 @@ export function TermDetail({ id }: { id: string }) {
                   <dd>{row?.attempts ?? 0}</dd>
                 </div>
               </dl>
+            </div>
+            <div className="consideration-report">
+              {reportOpen ? (
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    void sendReport();
+                  }}
+                >
+                  <label>
+                    <span>{L("reportWhat")}</span>
+                    <select value={reportKind} onChange={(event) => setReportKind(event.target.value as typeof reportKind)}>
+                      {(["content", "translation", "audio", "quiz", "other"] as const).map((kind) => (
+                        <option key={kind} value={kind}>
+                          {L(`reportKind_${kind}` as LearnerKey)}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    <span>{L("reportDetail")}</span>
+                    <textarea rows={3} value={reportText} onChange={(event) => setReportText(event.target.value)} placeholder={L("reportPlaceholder")} required minLength={5} />
+                  </label>
+                  <div>
+                    <button type="button" className="ghost" onClick={() => setReportOpen(false)}>
+                      {L("cancel")}
+                    </button>
+                    <button type="submit" className="primary inline" disabled={reportBusy || reportText.trim().length < 5}>
+                      {reportBusy ? "…" : L("reportSend")}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <button type="button" className="consideration-report-toggle" onClick={() => setReportOpen(true)}>
+                  <DetailIcon name="notes-page" />
+                  {L("reportProblem")}
+                </button>
+              )}
             </div>
           </section>
 

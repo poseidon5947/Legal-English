@@ -87,6 +87,8 @@ export function QuizWorkspace() {
   const [correctCount, setCorrectCount] = useState(0);
   const [busy, setBusy] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [missed, setMissed] = useState<string[]>([]);
+  const [answered, setAnswered] = useState(0);
 
   function buildQueue(scope: string, onlyTerm?: string | null) {
     const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption);
@@ -102,11 +104,62 @@ export function QuizWorkspace() {
     setResult(null);
     setCorrectCount(0);
     setFinished(false);
+    setMissed([]);
+    setAnswered(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible.length, category, focusTerm]);
 
   const current = queue.length ? visible.find((term) => term.id === queue[position]) : undefined;
   const options = current ? quizOptions(current) : [];
+
+  function check() {
+    if (!current || selected === null || busy || !canStudy || result) return;
+    setBusy(true);
+    void submitQuiz(current.id, selected).then((response) => {
+      setBusy(false);
+      const correct = Boolean(response.correct);
+      setAnswered((value) => value + 1);
+      if (correct) setCorrectCount((value) => value + 1);
+      else setMissed((list) => (list.includes(current.id) ? list : [...list, current.id]));
+      setResult({ correct, message: response.message || "" });
+    });
+  }
+
+  function restart() {
+    setQueue(buildQueue(category, focusTerm));
+    setPosition(0);
+    setSelected(null);
+    setResult(null);
+    setCorrectCount(0);
+    setFinished(false);
+    setMissed([]);
+    setAnswered(0);
+  }
+
+  // Keyboard: 1-4 (or A-D) pick an option, Enter checks / advances, Esc ends.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (!current || finished) return;
+      const key = event.key.toUpperCase();
+      const byNumber = /^[1-6]$/.test(key) ? options[Number(key) - 1] : undefined;
+      const byLetter = /^[A-F]$/.test(key) ? options.find((option) => option.letter === key) : undefined;
+      const pick = byNumber || byLetter;
+      if (pick && !result && canStudy) {
+        event.preventDefault();
+        setSelected(pick.letter);
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        if (result) advance();
+        else check();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, options, result, selected, busy, finished, canStudy, position, queue.length]);
 
   function advance() {
     if (position + 1 >= queue.length) {
@@ -192,6 +245,11 @@ export function QuizWorkspace() {
               <span>{L("activeQuiz")}</span>
               {queue.length > 0 && !finished && <strong>{L("questionOf", { i: position + 1, n: queue.length })}</strong>}
             </div>
+            {queue.length > 0 && !finished && (
+              <div className="quiz-progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={queue.length} aria-valuenow={position + (result ? 1 : 0)}>
+                <i style={{ width: `${((position + (result ? 1 : 0)) / queue.length) * 100}%` }} />
+              </div>
+            )}
             <div className="quiz-scope">
               {["All", "Contracts", "Corporate Law", "Employment Law"].map((item) => (
                 <button key={item} type="button" className={category === item ? "active" : ""} onClick={() => setCategory(item)}>
@@ -203,20 +261,37 @@ export function QuizWorkspace() {
               <p>{L("noQuizzes")}</p>
             ) : finished ? (
               <>
-                <h2>{L("sessionDone")}</h2>
-                <p>{L("sessionSummary", { correct: correctCount, n: queue.length })}</p>
+                <div className="quiz-done">
+                  <div className="quiz-done-score" style={{ ["--pct" as string]: `${answered ? Math.round((correctCount / answered) * 100) : 0}%` }}>
+                    <strong>{answered ? Math.round((correctCount / answered) * 100) : 0}%</strong>
+                  </div>
+                  <div>
+                    <h2>{L("sessionDone")}</h2>
+                    <p>{L("sessionSummary", { correct: correctCount, n: answered })}</p>
+                  </div>
+                </div>
+                {missed.length > 0 && (
+                  <div className="quiz-missed">
+                    <strong>{L("reviewMissed", { n: missed.length })}</strong>
+                    <ul>
+                      {missed.map((id) => {
+                        const term = visible.find((item) => item.id === id);
+                        if (!term) return null;
+                        return (
+                          <li key={id}>
+                            <Link href={`/terms/${id}`}>
+                              <b>{term.term}</b>
+                              <small>{categoryLabel(locale, term.category)}</small>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
                 <div className="quiz-active-actions">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setQueue(buildQueue(category, focusTerm));
-                      setPosition(0);
-                      setSelected(null);
-                      setResult(null);
-                      setCorrectCount(0);
-                      setFinished(false);
-                    }}
-                  >
+                  <Link href="/progress">{L("viewAll")}</Link>
+                  <button type="button" className="primary inline" onClick={restart}>
                     {L("startAgain")}
                   </button>
                 </div>
@@ -243,7 +318,9 @@ export function QuizWorkspace() {
                           disabled={Boolean(result) || !canStudy}
                           onChange={() => setSelected(option.letter)}
                         />
-                        <span />
+                        <span className="quiz-option-letter" aria-hidden="true">
+                          {option.letter}
+                        </span>
                         <b>{option.text}</b>
                         {result && isSelected && result.correct && <QuizIcon name="check-circle" />}
                       </label>
@@ -268,25 +345,15 @@ export function QuizWorkspace() {
                       <QuizIcon name="arrow-right" />
                     </button>
                   ) : (
-                    <button
-                      type="button"
-                      disabled={selected === null || busy || !canStudy}
-                      onClick={() => {
-                        if (!current || selected === null) return;
-                        setBusy(true);
-                        void submitQuiz(current.id, selected).then((response) => {
-                          setBusy(false);
-                          const correct = Boolean(response.correct);
-                          if (correct) setCorrectCount((value) => value + 1);
-                          setResult({ correct, message: response.message || "" });
-                        });
-                      }}
-                    >
+                    <button type="button" disabled={selected === null || busy || !canStudy} onClick={check}>
                       {L("checkAnswer")}
                       <QuizIcon name="arrow-right" />
                     </button>
                   )}
                 </div>
+                <p className="quiz-kbd-hint" aria-hidden="true">
+                  <kbd>1</kbd>–<kbd>{options.length}</kbd> {L("kbdPick")} · <kbd>Enter</kbd> {result ? L("kbdNext") : L("kbdCheck")}
+                </p>
               </>
             ) : null}
           </section>
