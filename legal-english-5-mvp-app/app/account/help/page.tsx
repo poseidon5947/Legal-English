@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { Icon } from "@/components/ui-icons";
 
 export default function HelpPage() {
@@ -43,7 +44,7 @@ export default function HelpPage() {
       {error && <p className="notice">{error}</p>}
       <div className="account-stack">
         <section className="account-card help-hero-card with-photo">
-          <img className="help-hero-photo" src="/home-assets/photos/help-support.jpg" alt="" loading="lazy" />
+          <Photo className="help-hero-photo" src="/home-assets/photos/help-support.jpg" size="card" priority />
           <div>
             <span className="eyebrow">{t("helpEyebrow")}</span>
             <h2>{t("helpTitle")}</h2>

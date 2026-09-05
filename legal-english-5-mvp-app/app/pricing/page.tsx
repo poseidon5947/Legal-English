@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { landingCopy, PLAN_PRICES } from "@/lib/landing-copy";
 import { Icon } from "@/components/ui-icons";
 
@@ -74,7 +75,7 @@ export default function PricingPage() {
         </div>
       </section>
       <section className="pricing-photo-band" aria-label={t("pricingBandTitle")}>
-        <img src="/home-assets/photos/pricing-lecture.jpg" alt="" loading="lazy" />
+        <Photo src="/home-assets/photos/pricing-lecture.jpg" size="full" />
         <div>
           <span className="eyebrow">{t("pricingBandEyebrow")}</span>
           <h2>{t("pricingBandTitle")}</h2>
@@ -97,7 +98,7 @@ export default function PricingPage() {
             ))}
           </div>
           <Link className="faq-photo-card" href="/signup">
-            <img src="/home-assets/photos/pricing-students.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/pricing-students.jpg" size="card" />
             <span>
               <small>{t("faqPhotoTag")}</small>
               <strong>{t("faqPhotoTitle")}</strong>

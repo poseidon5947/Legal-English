@@ -5,6 +5,7 @@ import { HeroImageFlow } from "@/components/hero-image-flow";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { ScrollEffects } from "@/components/scroll-effects";
+import { Photo } from "@/components/photo";
 import { useLocale } from "@/components/locale-provider";
 import { landingCopy, PLAN_PRICES } from "@/lib/landing-copy";
 
@@ -121,7 +122,7 @@ export default function Home() {
         <div className="home-ref-category-grid" data-reveal="stagger">
           {c.categories.items.map(([title, body], index) => (
             <Link href={`/terms?category=${encodeURIComponent(categoryRoutes[index])}`} key={title}>
-              <img className="home-ref-category-photo" src={categoryPhotos[index]} alt="" loading="lazy" />
+              <Photo className="home-ref-category-photo" src={categoryPhotos[index]} size="card" />
               <div className="home-ref-category-body">
                 <span>
                   <HomeIcon name={categoryIcons[index]} />
@@ -193,7 +194,7 @@ export default function Home() {
           <p>{c.workflow.lead}</p>
         </div>
         <figure className="home-ref-workflow-photo" data-reveal="left">
-          <img src="/home-assets/photos/workflow-study.jpg" alt="" loading="lazy" />
+          <Photo src="/home-assets/photos/workflow-study.jpg" size="card" />
           <figcaption>
             <span>{c.workflow.photoTag}</span>
             <strong>{c.workflow.photoCaption}</strong>
@@ -249,7 +250,7 @@ export default function Home() {
           {c.scenarios.items.map(([title, body], index) => (
             <article className={`home-ref-scenario${index === 1 ? " reverse" : ""}`} key={title}>
               <figure>
-                <img src={scenarioPhotos[index]} alt="" loading="lazy" />
+                <Photo src={scenarioPhotos[index]} size="card" />
                 <figcaption>
                   <HomeIcon name={categoryIcons[index]} />
                   {c.categories.items[index][0]}
@@ -281,7 +282,7 @@ export default function Home() {
         <div className="home-ref-life-mosaic" data-reveal="stagger">
           {lifePhotos.map((src, index) => (
             <figure key={src}>
-              <img src={src} alt="" loading="lazy" />
+              <Photo src={src} size="card" />
               <figcaption>{c.life.photos[index]}</figcaption>
             </figure>
           ))}

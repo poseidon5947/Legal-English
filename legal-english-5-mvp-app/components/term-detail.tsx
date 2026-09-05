@@ -1,6 +1,7 @@
 "use client";
 
 import { termPhoto } from "@/lib/category-photos";
+import { Photo } from "@/components/photo";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -159,7 +160,7 @@ export function TermDetail({ id }: { id: string }) {
       <div className="consideration-content">
         <section className="consideration-main-column">
           <div className="consideration-photo-band" aria-hidden="true">
-            <img src={termPhoto(term, terms)} alt="" />
+            <Photo src={termPhoto(term, terms)} size="wide" priority />
             <span>{categoryLabel(locale, term.category)}</span>
           </div>
           <nav className="consideration-breadcrumb" aria-label="Breadcrumb">
@@ -512,7 +513,7 @@ export function TermDetail({ id }: { id: string }) {
           </section>
 
           <Link className="learner-photo-card compact" href="/quizzes">
-            <img src="/home-assets/photos/workflow-study.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/workflow-study.jpg" size="card" />
             <span>
               <small>{L("detailPhotoTag")}</small>
               <strong>{L("detailPhotoTitle")}</strong>

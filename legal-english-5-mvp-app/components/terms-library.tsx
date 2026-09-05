@@ -1,6 +1,7 @@
 "use client";
 
 import { categoryPhotoAlt, termPhoto } from "@/lib/category-photos";
+import { Photo } from "@/components/photo";
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -72,7 +73,7 @@ export function TermCard({
   const { terms } = useApp();
   return (
     <article className={`terms-card ${CATEGORY_THEME[term.category] || "contracts"}`}>
-      <img className="terms-card-thumb" src={termPhoto(term, terms)} alt="" loading="lazy" />
+      <Photo className="terms-card-thumb" src={termPhoto(term, terms)} size="thumb" />
       <div className="terms-card-topline">
         <span>{categoryLabel(locale, term.category)}</span>
         <button
@@ -349,7 +350,7 @@ export function TermsLibrary() {
               }}
             >
               <div className="terms-category-icon-shell with-photo">
-                <img src={categoryPhotoAlt(item.category)} alt="" loading="lazy" />
+                <Photo src={categoryPhotoAlt(item.category)} size="card" />
                 <LibraryIcon name={CATEGORY_ICON[item.category]} />
               </div>
               <div>

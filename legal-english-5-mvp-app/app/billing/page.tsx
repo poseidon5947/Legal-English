@@ -5,6 +5,7 @@ import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
 import { entitlementDetail, entitlementLabel, subscriptionStatusLabel, type MessageKey } from "@/lib/i18n";
 import { Icon, IconName } from "@/components/ui-icons";
+import { Photo } from "@/components/photo";
 
 const HISTORY_KEY: Record<string, MessageKey> = {
   payment_approved: "historyPaymentApproved",
@@ -33,7 +34,7 @@ export default function BillingPage() {
       </div>
       <div className="billing-card account-billing-grid">
         <section className="billing-subscription-card with-photo">
-          <img className="billing-card-photo" src="/home-assets/photos/cta-courthouse.jpg" alt="" aria-hidden="true" loading="lazy" />
+          <Photo className="billing-card-photo" src="/home-assets/photos/cta-courthouse.jpg" size="card" aria-hidden="true" priority />
           <span className={`status ${entitlement.allowed ? "active" : "blocked"}`}>{entitlementLabel(locale, entitlement.label)}</span>
           <h2>{subscription ? subscriptionStatusLabel(locale, subscription.status) : t("noSession")}</h2>
           <p>{entitlementDetail(locale, entitlement.detail)}</p>

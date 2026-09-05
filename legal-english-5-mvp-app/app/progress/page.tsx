@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { categoryPhoto } from "@/lib/category-photos";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
@@ -205,7 +206,7 @@ export default function ProgressPage() {
               {byCategory.map((item) => (
                 <Link className={`${CATEGORY_TONE[item.category]} with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
                   <span>
-                    <img src={categoryPhoto(item.category)} alt="" loading="lazy" />
+                    <Photo src={categoryPhoto(item.category)} size="thumb" />
                     <ProgressIcon name={CATEGORY_ICON[item.category]} />
                   </span>
                   <strong>{categoryLabel(locale, item.category)}</strong>
@@ -224,7 +225,7 @@ export default function ProgressPage() {
 
         <aside className="progress-ref-rail">
           <Link className="learner-photo-card" href="/terms">
-            <img src="/home-assets/photos/workflow-study.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/workflow-study.jpg" size="card" />
             <span>
               <small>{L("photoCardTag")}</small>
               <strong>{L("photoCardTitle")}</strong>

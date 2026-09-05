@@ -1,7 +1,7 @@
 "use client";
 
 import { categoryPhoto } from "@/lib/category-photos";
-
+import { Photo } from "@/components/photo";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -405,7 +405,7 @@ export function QuizWorkspace() {
             <div className="quiz-practice-grid">
               {byCategory.map((item) => (
                 <article className={`${CATEGORY_TONE[item.category]} with-photo`} key={item.category}>
-                  <img className="quiz-practice-photo" src={categoryPhoto(item.category)} alt="" loading="lazy" />
+                  <Photo className="quiz-practice-photo" src={categoryPhoto(item.category)} size="card" />
                   <span>
                     <QuizIcon name={CATEGORY_ICON[item.category]} />
                   </span>
@@ -429,7 +429,7 @@ export function QuizWorkspace() {
 
         <aside className="quiz-ref-right-rail">
           <Link className="learner-photo-card" href="/terms?state=learning">
-            <img src="/home-assets/photos/quiz-focus.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/quiz-focus.jpg" size="card" />
             <span>
               <small>{L("quizPhotoTag")}</small>
               <strong>{L("quizPhotoTitle")}</strong>

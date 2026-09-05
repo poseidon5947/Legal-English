@@ -7,6 +7,7 @@ import { useLocale } from "@/components/locale-provider";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { stateOf, studyTerms } from "@/lib/learner-stats";
 import { TermCard } from "@/components/terms-library";
+import { Photo } from "@/components/photo";
 
 /** Terms the learner bookmarked (progress.favourite), stored server-side per user. */
 export function MyLibrary() {
@@ -26,7 +27,7 @@ export function MyLibrary() {
           </div>
         </div>
         <figure className="learner-photo-banner" aria-hidden="true">
-          <img src="/home-assets/photos/about-desk.jpg" alt="" loading="lazy" />
+          <Photo src="/home-assets/photos/about-desk.jpg" size="wide" priority />
         </figure>
         {saved.length === 0 ? (
           <div className="terms-empty">

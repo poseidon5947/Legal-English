@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
       // Fonts and photos never change without a new filename: cache them for a year.
       { source: "/fonts/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
       { source: "/home-assets/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }] },
+      // Icon packs and page-specific art (…-assets/) plus the generated review
+      // screenshots are static too; without this every page re-downloaded 40+ icons.
+      { source: "/:dir([a-z-]+-assets)/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }] },
+      { source: "/generated/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }] },
+      { source: "/brand/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }] },
     ];
   },
 };

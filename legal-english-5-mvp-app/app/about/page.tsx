@@ -3,6 +3,7 @@
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { Icon } from "@/components/ui-icons";
 
 export default function AboutPage() {
@@ -25,7 +26,7 @@ export default function AboutPage() {
             <p>{t("aboutBody2")}</p>
           </div>
           <figure className="about-photo-card">
-            <img src="/home-assets/photos/about-library.jpg" alt="" />
+            <Photo src="/home-assets/photos/about-library.jpg" size="card" priority />
             <figcaption>
               <strong>Legal English 5</strong>
               <span>{t("aboutCardBody")}</span>
@@ -34,18 +35,18 @@ export default function AboutPage() {
         </div>
         <div className="about-photo-strip">
           <figure>
-            <img src="/home-assets/photos/about-desk.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/about-desk.jpg" size="card" />
             <figcaption>{t("aboutPhotoDesk")}</figcaption>
           </figure>
           <figure>
-            <img src="/home-assets/photos/about-gavel.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/about-gavel.jpg" size="card" />
             <figcaption>{t("aboutPhotoGavel")}</figcaption>
           </figure>
         </div>
       </section>
       <section className="landing-section about-studio" id="studio">
         <figure className="about-studio-photo">
-          <img src="/home-assets/photos/studio-boardroom.jpg" alt="" loading="lazy" />
+          <Photo src="/home-assets/photos/studio-boardroom.jpg" size="wide" />
           <figcaption>{t("aboutStudioCaption")}</figcaption>
         </figure>
         <div>

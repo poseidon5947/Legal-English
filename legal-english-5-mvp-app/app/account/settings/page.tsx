@@ -8,6 +8,7 @@ import { useLocale } from "@/components/locale-provider";
 import type { Locale } from "@/lib/i18n";
 import { learnerText } from "@/lib/learner-copy";
 import { Icon } from "@/components/ui-icons";
+import { Photo } from "@/components/photo";
 
 const NOTIFY_KEY = "le5_help_notices";
 const PRIVACY_KEY = "le5_privacy_prefs";
@@ -174,7 +175,7 @@ export default function SettingsPage() {
           </label>
         </section>
         <section className="account-card settings-photo-card">
-          <img src="/home-assets/photos/privacy-lock.jpg" alt="" loading="lazy" />
+          <Photo src="/home-assets/photos/privacy-lock.jpg" size="card" />
           <div>
             <h2>{t("settingsDataTitle")}</h2>
             <p>{t("settingsDataBody")}</p>

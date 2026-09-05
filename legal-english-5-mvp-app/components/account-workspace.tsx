@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell, initialsOf } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { categoryLabel, entitlementLabel, subscriptionStatusLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { countsFor, formatDate, formatWhen, recentActivity, studyTerms } from "@/lib/learner-stats";
@@ -110,7 +111,7 @@ export function AccountWorkspace() {
 
           <section className="account-ref-profile-card">
             <div className="account-ref-cover" aria-hidden="true">
-              <img src="/home-assets/photos/account-cover.jpg" alt="" loading="lazy" />
+              <Photo src="/home-assets/photos/account-cover.jpg" size="wide" priority />
             </div>
             <div className="account-ref-card-heading">
               <h2>{L("profileInfo")}</h2>

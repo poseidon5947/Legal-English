@@ -36,7 +36,7 @@ export default function ReviewPage() {
         {DEMO_ACCOUNTS.map((account, index) => (
           <article className="media-card" key={account.email}>
             <div className="card-media">
-              <img src={portraits[index]} alt="" />
+              <img src={portraits[index]} alt="" loading="lazy" decoding="async" />
             </div>
             <span>{account.role}</span>
             <strong>{account.email}</strong>

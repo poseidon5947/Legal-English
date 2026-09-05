@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { canPublish, publicationBlockers } from "@/lib/publication";
 import { adminText } from "@/lib/admin-copy";
 import { subscriptionStatusLabel } from "@/lib/i18n";
@@ -148,7 +149,7 @@ export default function AdminPage() {
       {tab === "overview" && (
         <>
           <figure className="learner-photo-banner short with-caption" aria-hidden="true">
-            <img src="/home-assets/photos/admin-desk.jpg" alt="" loading="lazy" />
+            <Photo src="/home-assets/photos/admin-desk.jpg" size="wide" priority />
             <figcaption>
               <small>{learnerText(locale, "adminBannerTag")}</small>
               <strong>{learnerText(locale, "adminBannerTitle")}</strong>

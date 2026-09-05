@@ -7,6 +7,7 @@ import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { StatusBadge } from "@/components/terms-library";
 import { categoryPhoto, termPhoto } from "@/lib/category-photos";
+import { Photo } from "@/components/photo";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { categoryStats, countsFor, formatWhen, recentActivity, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
@@ -165,7 +166,7 @@ export function LearnerDashboard() {
               <span className="eyebrow">{L("dashContinue")}</span>
               {lastOpened ? (
                 <Link href={`/terms/${lastOpened.term.id}`} className="dashboard-continue-card">
-                  <img src={termPhoto(lastOpened.term, terms)} alt="" loading="lazy" />
+                  <Photo src={termPhoto(lastOpened.term, terms)} size="thumb" />
                   <span>
                     <strong>{lastOpened.term.term}</strong>
                     <small>
@@ -207,7 +208,7 @@ export function LearnerDashboard() {
           <div className="dashboard-category-grid">
             {byCategory.map((item) => (
               <Link href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category} className="dashboard-category">
-                <img src={categoryPhoto(item.category)} alt="" loading="lazy" />
+                <Photo src={categoryPhoto(item.category)} size="thumb" />
                 <span>
                   <strong>{categoryLabel(locale, item.category)}</strong>
                   <small>

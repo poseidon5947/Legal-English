@@ -3,6 +3,7 @@
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { useMemo } from "react";
 import { countsFor, studyTerms } from "@/lib/learner-stats";
 
@@ -26,7 +27,7 @@ export default function AchievementsPage() {
         </div>
       </div>
       <figure className="learner-photo-banner short" aria-hidden="true">
-        <img src="/home-assets/photos/achievements.jpg" alt="" loading="lazy" />
+        <Photo src="/home-assets/photos/achievements.jpg" size="wide" priority />
       </figure>
       <div className="stat-grid four">
         <div className="stat">

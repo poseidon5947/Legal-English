@@ -5,9 +5,10 @@ export const IMAGES = {
   landingThree: "/generated/page-progress.png",
   login: "/generated/page-sign-in.png",
   sidebar: "/generated/page-account-security.png",
-  reviewOwner: "/generated/page-admin-overview.png",
-  reviewMaria: "/generated/page-terms-library.png",
-  reviewAndres: "/generated/page-progress.png",
+  // WebP (960 px) versions of the review screenshots: ~90 KB instead of ~1.4 MB each.
+  reviewOwner: "/generated/page-admin-overview.webp",
+  reviewMaria: "/generated/page-terms-library.webp",
+  reviewAndres: "/generated/page-progress.webp",
   step1: "/generated/page-terms-library.png",
   step2: "/generated/page-term-detail.png",
   step3: "/generated/page-progress.png",

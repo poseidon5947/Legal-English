@@ -35,6 +35,17 @@ Open http://localhost:3000
 
 Server state lives in `data/alpha-store.json`. Reset it from the Owner overview or delete the file.
 
+`npm run dev` compiles each page on first visit, so the first open of a route is slow by design. To judge real loading speed run the production build: `npm run build && npm start`.
+
+### Images
+
+Photos are rendered through `components/photo.tsx`, which serves pre-built WebP variants (160/480/800/1200 px) from a sibling `w/` folder and lets the browser pick the smallest one that fits. After adding or replacing a JPG under `public/home-assets/photos`, `public/home-assets/hero` or `public/auth-assets/backgrounds`, run:
+
+```bash
+python3 scripts/build-photos.py      # WebP variants + lib/photo-manifest.json
+python3 scripts/optimize-icons.py    # palette-quantise new icon/badge PNGs
+```
+
 ## Switching to production mode (Supabase)
 
 `NEXT_PUBLIC_DATA_MODE` selects the backend: `alpha` (default, above) or

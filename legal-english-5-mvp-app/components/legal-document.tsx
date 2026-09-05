@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import type { LegalSection } from "@/lib/legal-content";
 import { learnerText } from "@/lib/learner-copy";
 import { formatDate } from "@/lib/learner-stats";
@@ -63,7 +64,7 @@ export function LegalDocument({
       <LandingHeader />
       <section className="landing-section legal-page">
         <figure className="legal-banner" aria-hidden="true">
-          <img src={photo} alt="" />
+          <Photo src={photo} size="wide" priority />
         </figure>
         <div className="landing-section-heading">
           <span className="eyebrow">{eyebrow}</span>

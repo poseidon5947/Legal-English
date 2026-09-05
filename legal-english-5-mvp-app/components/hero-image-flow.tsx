@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Photo } from "@/components/photo";
 
 const SLIDES = ["hero-1", "hero-2", "hero-3", "hero-4", "hero-5", "hero-6"] as const;
 const INTERVAL_MS = 4200;
@@ -15,6 +16,13 @@ type Slide = { caption: string; tag: string };
 export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Only the first slide is in the initial HTML; the other five mount after
+  // hydration so they never compete with the LCP image and above-the-fold CSS.
+  const [warm, setWarm] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => setWarm(true), 600);
+    return () => window.clearTimeout(id);
+  }, []);
   useEffect(() => {
     if (paused) return;
     const id = window.setInterval(() => setIndex((current) => (current + 1) % SLIDES.length), INTERVAL_MS);
@@ -32,17 +40,19 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
       aria-roledescription="carousel"
       aria-label={current?.caption}
     >
-      {SLIDES.map((name, i) => (
-        <img
-          key={name}
-          className={`hero-flow-slide${i === index ? " active" : ""}`}
-          src={`/home-assets/hero/${name}.jpg`}
-          alt=""
-          aria-hidden={i !== index}
-          loading={i === 0 ? "eager" : "lazy"}
-          decoding="async"
-        />
-      ))}
+      {SLIDES.map((name, i) =>
+        i === 0 || warm ? (
+          <Photo
+            key={name}
+            className={`hero-flow-slide${i === index ? " active" : ""}`}
+            src={`/home-assets/hero/${name}.jpg`}
+            size="wide"
+            sizes="(max-width: 960px) 100vw, 46vw"
+            priority={i === 0}
+            aria-hidden={i !== index}
+          />
+        ) : null,
+      )}
       <div className="hero-flow-shade" />
       <div className="hero-flow-caption" key={index}>
         <span>{current?.tag}</span>

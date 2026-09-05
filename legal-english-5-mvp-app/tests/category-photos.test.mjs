@@ -12,6 +12,17 @@ test("every category and term photo referenced by the seed exists on disk", () =
   for (const path of paths) assert.ok(existsSync(join(root, path)), `missing ${path}`);
 });
 
+test("every photo has its responsive WebP variants (scripts/build-photos.py)", () => {
+  const manifest = JSON.parse(readFileSync(join(process.cwd(), "lib", "photo-manifest.json"), "utf8"));
+  const used = new Set([...Object.values(CATEGORY_PHOTO), ...Object.values(CATEGORY_PHOTO_ALT), ...seed.map((t) => termPhoto(t, seed))]);
+  for (const path of used) assert.ok(manifest[path], `${path} missing from photo manifest — run scripts/build-photos.py`);
+  for (const [path, entry] of Object.entries(manifest)) {
+    const [, dir, name] = path.match(/^(.*)\/([^/]+)\.jpe?g$/i);
+    assert.ok(entry.w.includes(160) && entry.w.includes(480), `${path} needs 160 and 480 px variants`);
+    for (const w of entry.w) assert.ok(existsSync(join(root, dir, "w", `${name}-${w}.webp`)), `missing ${dir}/w/${name}-${w}.webp`);
+  }
+});
+
 test("library cards use a different photo from the home/category hero", () => {
   for (const category of Object.keys(CATEGORY_PHOTO)) assert.notEqual(categoryPhotoAlt(category), CATEGORY_PHOTO[category]);
 });

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 
 const copy = {
   en: {
@@ -50,7 +51,7 @@ export default function NotFound() {
           <Link href="/account/help">{c.help}</Link>
         </div>
         <figure className="not-found-photo" aria-hidden="true">
-          <img src="/home-assets/photos/mosaic-library.jpg" alt="" loading="lazy" />
+          <Photo src="/home-assets/photos/mosaic-library.jpg" size="card" priority />
         </figure>
       </section>
       <LandingFooter />

@@ -1671,7 +1671,7 @@ blockquote {
   border-radius: 0;
   background:
     linear-gradient(90deg, rgba(0, 20, 44, 0.98), rgba(0, 27, 56, 0.94)),
-    url("/home-assets/photos/cta-courthouse.jpg");
+    url("/home-assets/photos/w/cta-courthouse-1200.webp");
   background-size: cover;
   background-position: center;
   box-shadow: none;
@@ -3167,7 +3167,7 @@ select:focus {
   padding: 34px clamp(20px, 5vw, 72px) 18px;
   background:
     linear-gradient(90deg, rgba(7, 26, 61, 0.96), rgba(11, 31, 68, 0.9)),
-    url("/home-assets/photos/cta-courthouse.jpg");
+    url("/home-assets/photos/w/cta-courthouse-1200.webp");
   background-size: cover;
   background-position: center;
 }
@@ -3345,7 +3345,7 @@ select:focus {
 .auth-brand {
   background:
     linear-gradient(180deg, rgba(7, 26, 61, 0.58), rgba(7, 26, 61, 0.95)),
-    url("/home-assets/photos/cta-courthouse.jpg");
+    url("/home-assets/photos/w/cta-courthouse-1200.webp");
   background-size: cover;
   background-position: center;
   justify-content: flex-start;
@@ -18587,7 +18587,7 @@ h3,
   position: relative;
   min-height: 118px;
   padding: 22px 32px;
-  background: linear-gradient(90deg, rgba(10, 24, 54, 0.96) 0%, rgba(10, 24, 54, 0.82) 55%, rgba(10, 24, 54, 0.6) 100%), url("/home-assets/photos/cta-courthouse.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(10, 24, 54, 0.96) 0%, rgba(10, 24, 54, 0.82) 55%, rgba(10, 24, 54, 0.6) 100%), url("/home-assets/photos/w/cta-courthouse-1200.webp") center / cover no-repeat;
 }
 
 /* About · photo card + strip */

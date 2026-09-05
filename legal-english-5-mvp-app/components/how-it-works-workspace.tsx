@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { countsFor, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
 
@@ -120,7 +121,7 @@ export function HowItWorksWorkspace() {
           </ol>
 
           <section className="how-works-result-card">
-            <img className="how-works-result-photo" src="/home-assets/photos/study-group.jpg" alt="" aria-hidden="true" loading="lazy" />
+            <Photo className="how-works-result-photo" src="/home-assets/photos/study-group.jpg" size="card" aria-hidden="true" />
             <span>
               <HowIcon name="built-star" />
             </span>

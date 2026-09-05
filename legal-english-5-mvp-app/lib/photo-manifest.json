@@ -1,0 +1,452 @@
+{
+ "/auth-assets/backgrounds/courthouse-auth.jpg": {
+  "ar": 0.6667,
+  "w": [
+   160,
+   480,
+   800,
+   1024
+  ]
+ },
+ "/home-assets/hero/hero-1.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/hero/hero-2.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/hero/hero-3.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/hero/hero-4.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/hero/hero-5.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/hero/hero-6.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/about-desk.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/about-gavel.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/about-library.jpg": {
+  "ar": 0.8333,
+  "w": [
+   160,
+   480,
+   800,
+   1000
+  ]
+ },
+ "/home-assets/photos/account-cover.jpg": {
+  "ar": 3.0769,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/achievements.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/admin-desk.jpg": {
+  "ar": 3.0769,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/categories-hero.jpg": {
+  "ar": 2.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/category-contracts.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/category-corporate.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/category-employment.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/cta-courthouse.jpg": {
+  "ar": 2.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/help-support.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/legal-books.jpg": {
+  "ar": 2.2857,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/mosaic-documents.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/mosaic-library.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/mosaic-portrait.jpg": {
+  "ar": 0.75,
+  "w": [
+   160,
+   480,
+   800,
+   900
+  ]
+ },
+ "/home-assets/photos/pricing-lecture.jpg": {
+  "ar": 2.2222,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/pricing-students.jpg": {
+  "ar": 0.8182,
+  "w": [
+   160,
+   480,
+   800,
+   900
+  ]
+ },
+ "/home-assets/photos/privacy-lock.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   900
+  ]
+ },
+ "/home-assets/photos/quiz-focus.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/scenario-boardroom.jpg": {
+  "ar": 1.7778,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/scenario-negotiation.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/scenario-onboarding.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/studio-boardroom.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/study-group.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-contracts-checklist.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-contracts-drafting.jpg": {
+  "ar": 1.7804,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-contracts-paperwork.jpg": {
+  "ar": 1.5056,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-contracts-review.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-contracts-signing.jpg": {
+  "ar": 1.5094,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-corporate-analytics.jpg": {
+  "ar": 1.6393,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-corporate-boardroom.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-corporate-office.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-corporate-press.jpg": {
+  "ar": 1.5094,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-corporate-workspace.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-employment-colleagues.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-employment-interview.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-employment-manager.jpg": {
+  "ar": 0.6674,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-employment-office.jpg": {
+  "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-employment-portrait.jpg": {
+  "ar": 0.6667,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/term-employment-team.jpg": {
+  "ar": 1.4981,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/tos-signature.jpg": {
+  "ar": 3.0769,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/workflow-study.jpg": {
+  "ar": 0.8571,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ }
+}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
+import { Photo } from "@/components/photo";
 import { DEMO_ACCOUNTS } from "@/lib/types";
 
 const COPY = {
@@ -201,7 +202,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   return (
     <main className={`auth-reference-page ${isSignup ? "auth-signup-mode" : ""}`}>
       <section className="auth-reference-hero">
-        <img src="/auth-assets/backgrounds/courthouse-auth.jpg" alt="" />
+        <Photo src="/auth-assets/backgrounds/courthouse-auth.jpg" size="wide" priority />
         <div className="auth-reference-overlay" />
         <div className="auth-reference-hero-content">
           <Link className="auth-reference-brand light" href="/">
