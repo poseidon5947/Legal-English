@@ -4,6 +4,7 @@ import { AppProvider } from "@/components/app-provider";
 import { LocaleProvider } from "@/components/locale-provider";
 import { RouteProgress } from "@/components/route-progress";
 import { SkipLink } from "@/components/skip-link";
+import { ToastProvider } from "@/components/toaster";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -63,7 +64,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <LocaleProvider>
           <SkipLink />
           <RouteProgress />
-          <AppProvider>{children}</AppProvider>
+          <ToastProvider>
+            <AppProvider>{children}</AppProvider>
+          </ToastProvider>
         </LocaleProvider>
       </body>
     </html>

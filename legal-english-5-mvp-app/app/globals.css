@@ -20631,3 +20631,347 @@ html {
     grid-column: 2;
   }
 }
+
+/* ---- Professional pass: chrome shared by every page ---- */
+
+/* Skip link: invisible until focused, then a gold pill at the top-left. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #071b49;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 10px 24px rgba(7, 27, 73, 0.3);
+  transform: translateY(0);
+  outline: 2px solid #f0c86a;
+  outline-offset: 2px;
+}
+
+/* Route progress: a 3px gold line that fills while the router navigates. */
+.route-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 190;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #c89534, #f0c86a);
+  box-shadow: 0 0 10px rgba(240, 200, 106, 0.6);
+  pointer-events: none;
+}
+
+.route-progress.loading {
+  animation: route-progress-grow 6s cubic-bezier(0.1, 0.6, 0.2, 1) forwards;
+}
+
+.route-progress.done {
+  width: 100%;
+  opacity: 0;
+  transition: width 0.18s ease, opacity 0.3s ease 0.12s;
+}
+
+@keyframes route-progress-grow {
+  0% { width: 0; }
+  20% { width: 45%; }
+  60% { width: 78%; }
+  100% { width: 92%; }
+}
+
+/* Workspace skeleton: shown while the session bootstraps. Mirrors the shell
+   (sidebar + topbar + cards) so the page does not jump when data lands. */
+.workspace-skeleton {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: 100vh;
+  background: #f6f8fb;
+}
+
+.workspace-skeleton .sk-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 24px 20px;
+  border-right: 1px solid #e6ebf3;
+  background: #ffffff;
+}
+
+.workspace-skeleton .sk-main {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 22px 32px;
+}
+
+.workspace-skeleton .sk-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.workspace-skeleton .sk-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.workspace-skeleton .sk {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e9eef6;
+}
+
+.workspace-skeleton .sk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
+  animation: sk-shimmer 1.4s ease-in-out infinite;
+}
+
+.workspace-skeleton .sk.brand { height: 34px; width: 70%; margin-bottom: 14px; }
+.workspace-skeleton .sk.nav { height: 16px; width: 80%; border-radius: 6px; }
+.workspace-skeleton .sk.nav.short { width: 55%; }
+.workspace-skeleton .sk.topbar { height: 44px; border-radius: 12px; }
+.workspace-skeleton .sk.title { height: 34px; width: 32%; margin-top: 10px; }
+.workspace-skeleton .sk.lead { height: 14px; width: 48%; border-radius: 6px; }
+.workspace-skeleton .sk.block { height: 96px; }
+.workspace-skeleton .sk.card { height: 260px; border-radius: 14px; }
+.workspace-skeleton .sk.rail { height: 180px; border-radius: 14px; }
+
+.workspace-skeleton .sk-status {
+  margin: 8px 0 0;
+  color: #8a94a6;
+  font-size: 0.78rem;
+}
+
+@keyframes sk-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@media (max-width: 960px) {
+  .workspace-skeleton {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-skeleton .sk-sidebar {
+    display: none;
+  }
+
+  .workspace-skeleton .sk-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workspace-skeleton .sk-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-skeleton .sk::after,
+  .route-progress.loading {
+    animation: none;
+  }
+
+  .route-progress.loading {
+    width: 60%;
+  }
+}
+
+/* Toasts: bottom-right stack, one line each, auto-dismiss. */
+.toast-stack {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 180;
+  display: grid;
+  gap: 10px;
+  max-width: min(360px, calc(100vw - 40px));
+  pointer-events: none;
+}
+
+.toast {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0b1f4d;
+  color: #ffffff;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  box-shadow: 0 18px 40px rgba(7, 27, 73, 0.32);
+  pointer-events: auto;
+  animation: toast-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.toast.error {
+  background: #7a1d1d;
+}
+
+.toast i {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #f0c86a;
+  color: #071b49;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.toast.error i {
+  background: #ffd9d9;
+  color: #7a1d1d;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 600px) {
+  .toast-stack {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    max-width: none;
+  }
+}
+
+/* Print: legal pages read cleanly on paper; chrome and photos drop out. */
+@media print {
+  .landing-nav,
+  .landing-footer,
+  .cookie-notice,
+  .legal-banner,
+  .skip-link,
+  .route-progress,
+  .toast-stack,
+  .home-reference::before {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000;
+  }
+
+  .legal-page,
+  .landing-section {
+    max-width: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555555;
+  }
+}
+
+/* Home "Everything you need" strip: four breathing cards instead of a cramped
+   icon+text row, so titles no longer wrap mid-word. */
+.home-reference .home-ref-features > div:last-child {
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.home-reference .home-ref-features article {
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: start;
+  align-content: start;
+  min-height: 0;
+  padding: 24px 22px 22px;
+  border: 1px solid #e6ebf3;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(7, 27, 73, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.home-reference .home-ref-features article + article {
+  border-left: 1px solid #e6ebf3;
+}
+
+.home-reference .home-ref-features article:hover {
+  transform: translateY(-3px);
+  border-color: #cfdaf0;
+  box-shadow: 0 18px 38px rgba(7, 27, 73, 0.1);
+}
+
+.home-reference .home-ref-features .icon {
+  grid-row: auto;
+  width: 48px;
+  height: 48px;
+  padding: 11px;
+  border-radius: 12px;
+}
+
+.home-reference .home-ref-features strong {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.home-reference .home-ref-features small {
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 960px) {
+  .home-reference .home-ref-features > div:last-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .home-reference .home-ref-features > div:last-child {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Error page reference line */
+.not-found-ref {
+  margin-top: 18px;
+  color: #8a94a6;
+  font-size: 0.78rem;
+}
+
+.not-found-ref code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #eef2f8;
+  font-size: 0.76rem;
+}
+
+.not-found-actions button.primary {
+  min-height: 46px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}

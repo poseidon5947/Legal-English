@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LanguageToggle } from "@/components/language-toggle";
+import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
 import { useLocale } from "@/components/locale-provider";
 import { entitlementDetail, entitlementLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
@@ -112,12 +113,7 @@ export function LearnerShell({
     if (ready && !session) router.replace("/login");
   }, [ready, session, router]);
   if (!ready || !session) {
-    return (
-      <main className="center-screen">
-        <div className="loader" />
-        <p>{L("opening")}</p>
-      </main>
-    );
+    return <WorkspaceSkeleton status={L("opening")} />;
   }
   const isOwner = session.user.role === "admin";
   const disabled = Boolean(session.user.disabledAt);

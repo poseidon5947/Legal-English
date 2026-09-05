@@ -166,7 +166,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
     if (mode === "confirm") {
       const result = await verify(email, code);
       if (!result.ok) setError(result.message || t("couldNotContinue"));
-      else window.location.assign("/terms");
+      else router.push("/terms");
       return;
     }
     if (mode === "signup" && !privacyAccepted) {
@@ -179,7 +179,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
       else if (result.needsConfirmation) {
         setNotice(t("confirmNotice"));
         setMode("confirm");
-      } else window.location.assign("/terms");
+      } else router.push("/terms");
     } catch {
       setError(t("loginBlocked"));
     }
@@ -361,7 +361,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                       setPassword(account.password);
                       void signIn(account.email, account.password).then((result) => {
                         if (!result.ok) setError(result.message || t("couldNotContinue"));
-                        else window.location.assign("/terms");
+                        else router.push("/terms");
                       });
                     }}
                   >

@@ -1,7 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useLocale } from "@/components/locale-provider";
+import { useToast } from "@/components/toaster";
 import type { BillingEventType } from "@/lib/billing-state";
+import { learnerText } from "@/lib/learner-copy";
 import type { BillingRecord, Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term } from "@/lib/types";
 
 export type AudioUploadResult = { file: string; termId?: string; jurisdiction?: "us" | "uk"; status: "stored" | "rejected"; message: string };
@@ -102,6 +105,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [inbox, setInbox] = useState<Mail[]>([]);
   const [entitlement, setEntitlement] = useState<Entitlement>({ allowed: false, label: "Sign in required", detail: "Log in to continue." });
   const [billingHistory, setBillingHistory] = useState<BillingRecord[]>([]);
+  const { locale } = useLocale();
+  const { notify } = useToast();
+  const T = (key: Parameters<typeof learnerText>[1], vars?: Record<string, string | number>) => learnerText(locale, key, vars);
 
   function applyBootstrap(data: Bootstrap) {
     setSession(data.session ?? null);
@@ -144,6 +150,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const data = await post("/api/auth", { action: "login", email, password });
       if (data.ok && data.session) applyBootstrap(data);
       else if (data.ok) await hydrate();
+      if (data.ok && data.session?.user?.name) notify(T("toastWelcome", { name: String(data.session.user.name).split(" ")[0] }));
       return data;
     },
     async signUp(name, email, password, privacyAccepted) {
@@ -172,8 +179,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (data.progress) setProgressList(data.progress);
     },
     async toggleFavourite(id) {
+      const wasFavourite = Boolean(progress[id]?.favourite);
       const data = await post("/api/learn", { action: "favourite", termId: id });
-      if (data.progress) setProgressList(data.progress);
+      if (data.progress) {
+        setProgressList(data.progress);
+        notify(T(wasFavourite ? "toastFavRemoved" : "toastFavAdded"));
+      } else if (data.message) {
+        notify(data.message, "error");
+      }
     },
     async submitQuiz(id, option) {
       const data = await post("/api/learn", { action: "quiz", termId: id, option });
@@ -219,6 +232,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     async setPublished(id, published) {
       const data = await post("/api/admin", { action: "publish", termId: id, published });
       if (data.terms) setTerms(data.terms);
+      if (data.ok) notify(T(published ? "toastPublished" : "toastUnpublished", { id }));
+      else if (data.message) notify(data.message, "error");
       return data;
     },
     async setArchived(id, archived) {
@@ -244,6 +259,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     async commitImport(nextTerms) {
       const data = await post("/api/admin", { action: "commit-import", terms: nextTerms });
       if (data.terms) setTerms(data.terms);
+      if (data.ok) notify(T("toastImported", { n: (data.inserted ?? 0) + (data.updated ?? 0) }));
       return data;
     },
     async rollbackImport(importRunId) {
@@ -257,11 +273,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     },
     async updateProfile(name) {
       const data = await post("/api/auth", { action: "update-profile", name });
-      if (data.ok) applyBootstrap(data);
+      if (data.ok) {
+        applyBootstrap(data);
+        notify(T("toastProfileSaved"));
+      }
       return data;
     },
     async changePassword(currentPassword, nextPassword) {
-      return post("/api/auth", { action: "change-password", currentPassword, nextPassword });
+      const data = await post("/api/auth", { action: "change-password", currentPassword, nextPassword });
+      if (data.ok) notify(T("toastPasswordChanged"));
+      return data;
     },
     async deleteAccount() {
       const data = await post("/api/auth", { action: "delete-account" });
