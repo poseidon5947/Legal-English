@@ -7,6 +7,9 @@ import type { Locale } from "./i18n";
 
 export type LegalSection = { title: string; body: string };
 
+/** Bump whenever either policy text changes; shown as "Last updated" on both pages. */
+export const LEGAL_UPDATED_AT = "2026-09-05";
+
 export const PRIVACY_SECTIONS: Record<Locale, LegalSection[]> = {
   en: [
     {

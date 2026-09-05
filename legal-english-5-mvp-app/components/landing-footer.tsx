@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
 import { useLocale } from "@/components/locale-provider";
 import { landingCopy } from "@/lib/landing-copy";
+import { BackToTop } from "@/components/back-to-top";
 import { CookieNotice } from "@/components/cookie-notice";
 
 export function LandingFooter() {
@@ -31,7 +32,7 @@ export function LandingFooter() {
             <Link href="/account/help">{f.links.faqs}</Link>
             <Link href="/account/help">{f.links.contactUs}</Link>
             <Link href="/billing">{f.links.billing}</Link>
-            <Link href="/review">{f.links.status}</Link>
+            <Link href="/status">{f.links.status}</Link>
           </div>
           <div>
             <span>{f.legal}</span>
@@ -55,6 +56,7 @@ export function LandingFooter() {
         <span className="footer-made">{f.madeIn}</span>
       </div>
       <CookieNotice />
+      <BackToTop />
     </footer>
   );
 }

@@ -17,4 +17,4 @@ export function siteUrl(): URL {
 }
 
 /** Public routes worth indexing. Learner/owner pages are behind sign-in and stay out. */
-export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/login", "/signup", "/privacy", "/terms-of-service"] as const;
+export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/login", "/signup", "/privacy", "/terms-of-service", "/status"] as const;

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import "./fonts.css";
 import "./globals.css";
 import { AppProvider } from "@/components/app-provider";
 import { LocaleProvider } from "@/components/locale-provider";
@@ -28,13 +29,13 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     locale: "en_US",
     alternateLocale: ["es_CO"],
-    images: [{ url: "/home-assets/photos/cta-courthouse.jpg", width: 1600, height: 900, alt: "Legal English 5" }],
+    images: [{ url: "/home-assets/og/og-default.jpg", width: 1200, height: 630, alt: "Legal English 5 — Master Legal English in 5-minute sessions" }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — Legal English in five-minute sessions`,
     description: SITE_DESCRIPTION,
-    images: ["/home-assets/photos/cta-courthouse.jpg"],
+    images: ["/home-assets/og/og-default.jpg"],
   },
   robots: { index: true, follow: true },
   manifest: "/manifest.webmanifest",
@@ -52,11 +53,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="preconnect" href="https://videos.pexels.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        {/* Fonts are self-hosted (public/fonts) so no request leaves for Google; preload the three faces above the fold. */}
+        <link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       {/* suppressHydrationWarning: browser extensions (Grammarly etc.) inject data-* attributes
           on <body> before React hydrates; they are not part of our markup. */}

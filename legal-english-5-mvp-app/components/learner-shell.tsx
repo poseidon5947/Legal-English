@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LanguageToggle } from "@/components/language-toggle";
 import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
@@ -108,10 +108,39 @@ export function LearnerShell({
   const path = usePathname();
   const [query, setQuery] = useState("");
   const [reactivateMessage, setReactivateMessage] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   useEffect(() => {
     if (ready && !session) router.replace("/login");
   }, [ready, session, router]);
+  // Mobile drawer: close on navigation and Escape; lock scroll while open.
+  useEffect(() => setMenuOpen(false), [path]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previous;
+    };
+  }, [menuOpen]);
+  // "/" focuses the search box from anywhere in the workspace (not while typing).
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
+      event.preventDefault();
+      searchRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
   if (!ready || !session) {
     return <WorkspaceSkeleton status={L("opening")} />;
   }
@@ -128,8 +157,34 @@ export function LearnerShell({
   const unreadMail = inbox.filter((mail) => mail.code).length;
   const searchValue = onSearch ? search ?? "" : query;
   return (
-    <main className={`terms-reference-page learner-shell ${pageClass}`.trim()}>
-      <aside className="terms-reference-sidebar">
+    <main className={`terms-reference-page learner-shell ${pageClass}${menuOpen ? " drawer-open" : ""}`.trim()}>
+      <header className="learner-mobile-bar">
+        <button
+          type="button"
+          className="learner-menu-toggle"
+          aria-label={menuOpen ? L("closeMenu") : L("openMenu")}
+          aria-expanded={menuOpen}
+          aria-controls="learner-drawer"
+          onClick={() => setMenuOpen((value) => !value)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+        <Link className="terms-reference-brand" href="/">
+          <ShellIcon name="logo-shield" />
+          <span>
+            <strong>LEGAL ENGLISH 5</strong>
+          </span>
+        </Link>
+        <Link className="learner-mobile-avatar" href="/account" aria-label={L("navAccount")}>
+          <i className="learner-avatar" aria-hidden="true">
+            {initialsOf(session.user.name)}
+          </i>
+        </Link>
+      </header>
+      {menuOpen && <button type="button" className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
+      <aside className={`terms-reference-sidebar${menuOpen ? " is-open" : ""}`} id="learner-drawer">
         <div>
           <Link className="terms-reference-brand" href="/">
             <ShellIcon name="logo-shield" />
@@ -173,8 +228,20 @@ export function LearnerShell({
             <p>{entitlementDetail(locale, entitlement.detail)}</p>
             <Link href="/billing">{subscriptionActive || isOwner ? L("manageAccess") : L("upgradeNow")}</Link>
           </section>
+          <div className="learner-drawer-tools">
+            <LanguageToggle />
+          </div>
         </div>
       </aside>
+
+      <nav className="learner-tabbar" aria-label="Main navigation">
+        {MAIN_NAV.filter(([, , href]) => href !== "/").map(([key, icon, href]) => (
+          <Link className={isActive(path, href) ? "active" : ""} href={href} key={href}>
+            <ShellIcon name={icon} />
+            <span>{L(key)}</span>
+          </Link>
+        ))}
+      </nav>
 
       <section className="terms-reference-workspace">
         <header className="terms-reference-topbar">
@@ -190,11 +257,15 @@ export function LearnerShell({
           >
             <ShellIcon name="search" />
             <input
+              ref={searchRef}
               value={searchValue}
               onChange={(event) => (onSearch ? onSearch(event.target.value) : setQuery(event.target.value))}
               placeholder={L("searchPlaceholder")}
               aria-label={L("searchPlaceholder")}
             />
+            <kbd className="terms-search-kbd" aria-hidden="true">
+              /
+            </kbd>
           </form>
           <div className="terms-reference-user-tools">
             <LanguageToggle />
