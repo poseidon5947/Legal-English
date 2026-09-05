@@ -19988,6 +19988,190 @@ html {
   padding-top: 64px;
 }
 
+/* Landing · "Where you will use it": one real-practice scene per canonical category */
+.home-ref-scenarios {
+  max-width: var(--home-max);
+  margin: 72px auto 0;
+  padding: 0 18px;
+}
+
+.home-ref-scenario-grid {
+  display: grid;
+  gap: 26px;
+  margin-top: 34px;
+}
+
+.home-ref-scenario {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0 44px;
+  overflow: hidden;
+  border: 1px solid #e6ebf3;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(7, 27, 73, 0.05);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.home-ref-scenario:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 44px rgba(7, 27, 73, 0.1);
+}
+
+.home-ref-scenario.reverse figure {
+  order: 2;
+}
+
+.home-ref-scenario figure {
+  position: relative;
+  margin: 0;
+  min-height: 320px;
+  height: 100%;
+  overflow: hidden;
+  background: #0f1f3d;
+}
+
+.home-ref-scenario figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.home-ref-scenario:hover figure img {
+  transform: scale(1.04);
+}
+
+.home-ref-scenario figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 27, 73, 0) 55%, rgba(7, 27, 73, 0.55));
+  pointer-events: none;
+}
+
+.home-ref-scenario figcaption {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #071b49;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.home-ref-scenario figcaption .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.home-ref-scenario > div {
+  padding: 34px 40px 34px 0;
+}
+
+.home-ref-scenario.reverse > div {
+  padding: 34px 0 34px 40px;
+}
+
+.home-ref-scenario-index {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #c89534;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.home-ref-scenario h3 {
+  margin: 0;
+  color: #071b49;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.4rem, 1.9vw, 1.7rem);
+  font-weight: 600;
+  line-height: 1.18;
+}
+
+.home-ref-scenario > div > p {
+  margin: 12px 0 0;
+  color: #4b5a73;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.home-ref-scenario small {
+  display: block;
+  margin-top: 18px;
+  color: #8a6a1a;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home-ref-scenario ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-ref-scenario ul li {
+  padding: 6px 12px;
+  border: 1px solid #e0e7f2;
+  border-radius: 999px;
+  background: #f7f9fc;
+  color: #071b49;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.home-ref-scenario > div > a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #0a4a91;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-ref-scenario > div > a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .home-ref-scenario,
+  .home-ref-scenario.reverse {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-ref-scenario.reverse figure {
+    order: 0;
+  }
+
+  .home-ref-scenario figure {
+    min-height: 0;
+    height: 220px;
+  }
+
+  .home-ref-scenario > div,
+  .home-ref-scenario.reverse > div {
+    padding: 22px 22px 26px;
+  }
+}
+
 /* Footer bottom row: rights, trust marks, origin */
 .home-reference .footer-bottom {
   display: grid;
@@ -21359,8 +21543,29 @@ html {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
+  z-index: 1;
   height: 3px;
   background: linear-gradient(90deg, #c89534, rgba(200, 149, 52, 0.15));
+}
+
+/* Real-life photo behind the navy, desaturated so the copy stays legible */
+.how-works-result-photo {
+  position: absolute;
+  inset: 0 0 0 38%;
+  width: 62%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 40%;
+  opacity: 0.34;
+  mix-blend-mode: luminosity;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 45%);
+  mask-image: linear-gradient(90deg, transparent, #000 45%);
+  pointer-events: none;
+}
+
+.how-works-result-card > :not(.how-works-result-photo) {
+  position: relative;
+  z-index: 1;
 }
 
 .how-works-result-card > span {

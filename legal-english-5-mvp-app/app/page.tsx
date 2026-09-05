@@ -56,6 +56,14 @@ const statIcons: readonly HomeIconName[] = ["contract-clipboard-stat", "legal-sc
 // Photography: Unsplash, see public/home-assets/photos/CREDITS.txt
 const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
 const lifePhotos = ["/home-assets/photos/mosaic-documents.jpg", "/home-assets/photos/mosaic-portrait.jpg", "/home-assets/photos/mosaic-library.jpg"];
+// Real-practice scenarios, one per canonical category (same order as categoryRoutes); the
+// sample terms are real MCD entries so what the visitor sees is what the library teaches.
+const scenarioPhotos = ["/home-assets/photos/scenario-negotiation.jpg", "/home-assets/photos/scenario-boardroom.jpg", "/home-assets/photos/scenario-onboarding.jpg"];
+const scenarioTerms: ReadonlyArray<readonly string[]> = [
+  ["binding", "consideration", "breach"],
+  ["board of directors", "resolution", "share issuance"],
+  ["employment agreement", "overtime", "workplace harassment"],
+];
 const homePrices = PLAN_PRICES;
 const trustIcons: HomeIconName[] = ["open-book", "shield-badge", "globe", "lock"];
 
@@ -226,6 +234,39 @@ export default function Home() {
                   body
                 )}
               </small>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="home-ref-scenarios" aria-labelledby="home-scenarios-title">
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.scenarios.eyebrow}</span>
+          <h2 id="home-scenarios-title">{c.scenarios.title}</h2>
+          <p>{c.scenarios.lead}</p>
+        </div>
+        <div className="home-ref-scenario-grid" data-reveal="stagger">
+          {c.scenarios.items.map(([title, body], index) => (
+            <article className={`home-ref-scenario${index === 1 ? " reverse" : ""}`} key={title}>
+              <figure>
+                <img src={scenarioPhotos[index]} alt="" loading="lazy" />
+                <figcaption>
+                  <HomeIcon name={categoryIcons[index]} />
+                  {c.categories.items[index][0]}
+                </figcaption>
+              </figure>
+              <div>
+                <span className="home-ref-scenario-index">0{index + 1}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+                <small>{c.scenarios.termsLabel}</small>
+                <ul>
+                  {scenarioTerms[index].map((term) => (
+                    <li key={term}>{term}</li>
+                  ))}
+                </ul>
+                <Link href={`/terms?category=${encodeURIComponent(categoryRoutes[index])}`}>{c.scenarios.explore}</Link>
+              </div>
             </article>
           ))}
         </div>

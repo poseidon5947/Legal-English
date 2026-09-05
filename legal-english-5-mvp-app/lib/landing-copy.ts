@@ -36,6 +36,7 @@ export type LandingCopy = {
   };
   workflow: { eyebrow: string; title: string; lead: string; photoCaption: string; photoTag: string; steps: ReadonlyArray<readonly [string, string]> };
   life: { eyebrow: string; title: string; lead: string; photos: readonly [string, string, string] };
+  scenarios: { eyebrow: string; title: string; lead: string; termsLabel: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
   features: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]>; statusNew: string; statusLearning: string; statusMastered: string; statusPrefix: string; statusOr: string };
   proof: { eyebrow: string; title: string; quotes: ReadonlyArray<readonly [string, string, string]>; stats: ReadonlyArray<readonly [string, string]> };
   pricing: {
@@ -158,6 +159,18 @@ const en: LandingCopy = {
     title: "The vocabulary you meet in real files, not in textbooks",
     lead: "Every term comes from documents lawyers actually draft, negotiate and litigate: share purchase agreements, board minutes, employment contracts. You learn the word the way you will use it.",
     photos: ["Reading a closing checklist", "Corporate counsel before a board meeting", "Case law in the firm library"],
+  },
+  scenarios: {
+    eyebrow: "Where you will use it",
+    title: "Three situations every Spanish-speaking lawyer meets in English",
+    lead: "The curriculum is organised around the three canonical categories of the Master Content Database, and each one maps to a moment in real practice.",
+    termsLabel: "Terms you will meet",
+    explore: "Open this category →",
+    items: [
+      ["Negotiating a cross-border contract", "Your client's counterpart drafts in English. You need to read every clause, spot what is binding and answer on the spot."],
+      ["Reporting to a board with foreign investors", "Minutes, resolutions and share issuances are discussed in English. Corporate vocabulary lets you follow and lead the conversation."],
+      ["Hiring for a multinational's Colombian office", "Employment agreements, overtime and anti-discrimination policies arrive from headquarters in English. You translate the law, not just the words."],
+    ],
   },
   proof: {
     eyebrow: "From the studio",
@@ -318,6 +331,18 @@ const es: LandingCopy = {
     title: "El vocabulario que aparece en expedientes reales, no en manuales",
     lead: "Cada término viene de documentos que los abogados redactan, negocian y litigan: contratos de compraventa de acciones, actas de junta, contratos laborales. Aprendes la palabra como la vas a usar.",
     photos: ["Revisando un checklist de cierre", "Abogada corporativa antes de una junta", "Jurisprudencia en la biblioteca del despacho"],
+  },
+  scenarios: {
+    eyebrow: "Dónde lo vas a usar",
+    title: "Tres situaciones que todo abogado hispanohablante enfrenta en inglés",
+    lead: "El currículo se organiza en las tres categorías canónicas de la Master Content Database, y cada una corresponde a un momento de la práctica real.",
+    termsLabel: "Términos que encontrarás",
+    explore: "Abrir esta categoría →",
+    items: [
+      ["Negociar un contrato transfronterizo", "La contraparte de tu cliente redacta en inglés. Necesitas leer cada cláusula, identificar qué es vinculante y responder en el momento."],
+      ["Informar a una junta con inversionistas extranjeros", "Actas, resoluciones y emisiones de acciones se discuten en inglés. El vocabulario corporativo te permite seguir y liderar la conversación."],
+      ["Contratar para la oficina colombiana de una multinacional", "Contratos laborales, horas extra y políticas antidiscriminación llegan de la casa matriz en inglés. Traduces el derecho, no solo las palabras."],
+    ],
   },
   proof: {
     eyebrow: "Desde el estudio",

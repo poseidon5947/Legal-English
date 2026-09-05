@@ -120,6 +120,7 @@ export function HowItWorksWorkspace() {
           </ol>
 
           <section className="how-works-result-card">
+            <img className="how-works-result-photo" src="/home-assets/photos/study-group.jpg" alt="" aria-hidden="true" loading="lazy" />
             <span>
               <HowIcon name="built-star" />
             </span>
