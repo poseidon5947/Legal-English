@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { AvatarPicker } from "@/components/avatar-picker";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
-import { categoryLabel, entitlementLabel, subscriptionStatusLabel } from "@/lib/i18n";
+import { categoryLabel, entitlementLabel, subscriptionStatusLabel, type Locale } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { countsFor, formatDate, formatWhen, recentActivity, studyTerms } from "@/lib/learner-stats";
 
@@ -37,11 +37,88 @@ const ACTIVITY_ICON = { mastered: "activity-book", attempted: "activity-quiz", s
 const ACTIVITY_TONE = { mastered: "green", attempted: "purple", studied: "orange", saved: "blue" } as const;
 const ACTIVITY_KEY: Record<string, LearnerKey> = { mastered: "mastered", attempted: "attempted", studied: "studied", saved: "savedTerm" };
 
-export function AccountWorkspace() {
+export type AccountTab = "profile" | "preferences" | "security" | "notifications";
+const TABS: ReadonlyArray<AccountTab> = ["profile", "preferences", "security", "notifications"];
+const TAB_LABEL: Record<AccountTab, LearnerKey> = { profile: "tabProfile", preferences: "tabPreferences", security: "tabSecurity", notifications: "tabNotifications" };
+export function accountTabHref(tab: AccountTab) {
+  return tab === "profile" ? "/account" : `/account/settings?tab=${tab}`;
+}
+
+// Browser-side preferences (no server column yet): keys are shared with the
+// Help page (Alpha Inbox notices) so both screens read the same choice.
+const NOTIFY_KEY = "le5_help_notices";
+const PRIVACY_KEY = "le5_privacy_prefs";
+const NOTIF_KEY = "le5_notification_prefs";
+type PrivacyPrefs = { visibility: "limited" | "team"; dataUsage: boolean; dataSharing: boolean };
+type NotifPrefs = { reminders: boolean; progress: boolean };
+const DEFAULT_PRIVACY: PrivacyPrefs = { visibility: "limited", dataUsage: true, dataSharing: false };
+const DEFAULT_NOTIF: NotifPrefs = { reminders: true, progress: true };
+
+function readJson<T>(key: string, fallback: T): T {
+  try {
+    const stored = window.localStorage.getItem(key);
+    return stored ? { ...fallback, ...(JSON.parse(stored) as Partial<T>) } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function Switch({ on, onChange, label, disabled }: { on: boolean; onChange?: (next: boolean) => void; label: string; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      className={`account-ref-switch ${on ? "on" : ""}`}
+      disabled={disabled}
+      onClick={() => onChange?.(!on)}
+    >
+      <span />
+    </button>
+  );
+}
+
+export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: AccountTab }) {
   const { session, terms, progress, progressRows, entitlement, updateProfile, changePassword, deactivateAccount, deleteAccount } = useApp();
-  const { locale, t } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const router = useRouter();
+  const params = useSearchParams();
+  const requested = params.get("tab");
+  const active: AccountTab = TABS.includes(requested as AccountTab) ? (requested as AccountTab) : defaultTab;
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
+
+  const [notices, setNotices] = useState(true);
+  const [privacy, setPrivacy] = useState<PrivacyPrefs>(DEFAULT_PRIVACY);
+  const [notif, setNotif] = useState<NotifPrefs>(DEFAULT_NOTIF);
+  const [prefsMessage, setPrefsMessage] = useState("");
+  useEffect(() => {
+    setNotices(window.localStorage.getItem(NOTIFY_KEY) !== "off");
+    setPrivacy(readJson(PRIVACY_KEY, DEFAULT_PRIVACY));
+    setNotif(readJson(NOTIF_KEY, DEFAULT_NOTIF));
+  }, []);
+  useEffect(() => {
+    if (!prefsMessage) return;
+    const timer = window.setTimeout(() => setPrefsMessage(""), 2200);
+    return () => window.clearTimeout(timer);
+  }, [prefsMessage]);
+  function updatePrivacy(patch: Partial<PrivacyPrefs>) {
+    const next = { ...privacy, ...patch };
+    setPrivacy(next);
+    window.localStorage.setItem(PRIVACY_KEY, JSON.stringify(next));
+    setPrefsMessage(L("prefsSaved"));
+  }
+  function updateNotif(patch: Partial<NotifPrefs>) {
+    const next = { ...notif, ...patch };
+    setNotif(next);
+    window.localStorage.setItem(NOTIF_KEY, JSON.stringify(next));
+    setPrefsMessage(L("prefsSaved"));
+  }
+  function toggleNotices(next: boolean) {
+    setNotices(next);
+    window.localStorage.setItem(NOTIFY_KEY, next ? "on" : "off");
+    setPrefsMessage(L("prefsSaved"));
+  }
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
   const counts = countsFor(visible, progress);
   const activity = recentActivity(visible, progressRows, 4);
@@ -64,13 +141,6 @@ export function AccountWorkspace() {
   const subscription = session.subscription;
   const isOwner = user.role === "admin";
   const planKey: LearnerKey = subscription.plan === "monthly" ? "planMonthly" : subscription.plan === "annual" ? "planAnnual" : subscription.status === "trialing" ? "planTrial" : "planNone";
-  const tabs: ReadonlyArray<readonly [LearnerKey, string]> = [
-    ["tabProfile", "/account"],
-    ["tabPreferences", "/account/settings#preferences"],
-    ["tabSecurity", "/account/settings#security"],
-    ["tabNotifications", "/account/settings#notifications"],
-  ];
-
   function saveProfile(event: FormEvent) {
     event.preventDefault();
     const trimmed = name.trim();
@@ -98,18 +168,187 @@ export function AccountWorkspace() {
       <div className="account-ref-content">
         <section className="account-ref-main-column">
           <div className="account-ref-heading">
-            <h1>{L("accountTitle")}</h1>
-            <p>{L("accountLead")}</p>
+            <h1>{L(active === "profile" ? "accountTitle" : active === "preferences" ? "prefsTitle" : active === "security" ? "securityTitle" : "notificationsTitle")}</h1>
+            <p>{L(active === "profile" ? "accountLead" : active === "preferences" ? "prefsLead" : active === "security" ? "securityLead" : "notificationsLead")}</p>
           </div>
 
-          <div className="account-ref-tabs" role="tablist" aria-label="Account sections">
-            {tabs.map(([key, href], index) => (
-              <Link className={index === 0 ? "active" : ""} role="tab" aria-selected={index === 0} href={href} key={key}>
-                {L(key)}
+          <div className="account-ref-tabs" role="tablist" aria-label={L("accountTitle")}>
+            {TABS.map((tab) => (
+              <Link className={tab === active ? "active" : ""} role="tab" aria-selected={tab === active} href={accountTabHref(tab)} key={tab} scroll={false}>
+                {L(TAB_LABEL[tab])}
               </Link>
             ))}
           </div>
 
+          {active === "preferences" && (
+            <section className="account-ref-settings-card" id="preferences">
+              <h2>{L("language")}</h2>
+              <p className="account-ref-card-lead">{L("prefsLanguageBody")}</p>
+              <div className="account-ref-lang-choice" role="radiogroup" aria-label={L("language")}>
+                {(["en", "es"] as Locale[]).map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    role="radio"
+                    aria-checked={locale === item}
+                    className={locale === item ? "active" : ""}
+                    onClick={() => {
+                      setLocale(item);
+                      setPrefsMessage(learnerText(item, "prefsSaved"));
+                    }}
+                  >
+                    <span aria-hidden="true">{item.toUpperCase()}</span>
+                    {item === "en" ? "English" : "Español"}
+                  </button>
+                ))}
+              </div>
+
+              <h2>{t("settingsPrivacyTitle")}</h2>
+              <p className="account-ref-card-lead">{t("settingsPrivacyBody")}</p>
+              <div className="account-ref-settings-list">
+                <div className="account-ref-setting-row">
+                  <span className="blue">
+                    <AccountIcon name="security-shield" />
+                  </span>
+                  <div>
+                    <strong>{t("settingsVisibility")}</strong>
+                    <p>{t("settingsVisibilityLimited")} · {t("settingsVisibilityTeam")}</p>
+                  </div>
+                  <select
+                    className="account-ref-select"
+                    aria-label={t("settingsVisibility")}
+                    value={privacy.visibility}
+                    onChange={(event) => updatePrivacy({ visibility: event.target.value as PrivacyPrefs["visibility"] })}
+                  >
+                    <option value="limited">{t("settingsVisibilityLimited")}</option>
+                    <option value="team">{t("settingsVisibilityTeam")}</option>
+                  </select>
+                </div>
+                <div className="account-ref-setting-row">
+                  <span className="green">
+                    <AccountIcon name="trend-chart" />
+                  </span>
+                  <div>
+                    <strong>{t("settingsDataUsage")}</strong>
+                    <p>{t("settingsExportNote")}</p>
+                  </div>
+                  <Switch on={privacy.dataUsage} onChange={(next) => updatePrivacy({ dataUsage: next })} label={t("settingsDataUsage")} />
+                </div>
+                <div className="account-ref-setting-row">
+                  <span className="red">
+                    <AccountIcon name="activity-gear" />
+                  </span>
+                  <div>
+                    <strong>{t("settingsDataSharing")}</strong>
+                    <p>{L("prefsPrivacyNote")}</p>
+                  </div>
+                  <Switch on={privacy.dataSharing} onChange={(next) => updatePrivacy({ dataSharing: next })} label={t("settingsDataSharing")} />
+                </div>
+              </div>
+
+              <h2>{L("prefsDataTitle")}</h2>
+              <p className="account-ref-card-lead">{L("prefsDataBody")}</p>
+              <div className="account-ref-data-actions">
+                <a className="primary inline" href="/api/learn/export" download>
+                  {t("settingsExport")}
+                </a>
+                <Link className="ghost inline" href="/privacy">
+                  {t("settingsDataLink")}
+                </Link>
+              </div>
+              {prefsMessage && <p className="account-ref-message" role="status">{prefsMessage}</p>}
+            </section>
+          )}
+
+          {active === "notifications" && (
+            <section className="account-ref-settings-card" id="notifications">
+              <h2>{L("notificationsTitle")}</h2>
+              <p className="account-ref-card-lead">{t("settingsNotifyBody")}</p>
+              <div className="account-ref-settings-list">
+                <div className="account-ref-setting-row">
+                  <span className="blue">
+                    <AccountIcon name="activity-study" />
+                  </span>
+                  <div>
+                    <strong>{L("notifStudyReminders")}</strong>
+                    <p>{L("notifStudyRemindersBody")}</p>
+                  </div>
+                  <Switch on={notif.reminders} onChange={(next) => updateNotif({ reminders: next })} label={L("notifStudyReminders")} />
+                </div>
+                <div className="account-ref-setting-row">
+                  <span className="green">
+                    <AccountIcon name="trend-chart" />
+                  </span>
+                  <div>
+                    <strong>{L("notifProgress")}</strong>
+                    <p>{L("notifProgressBody")}</p>
+                  </div>
+                  <Switch on={notif.progress} onChange={(next) => updateNotif({ progress: next })} label={L("notifProgress")} />
+                </div>
+                <div className="account-ref-setting-row">
+                  <span className="purple">
+                    <AccountIcon name="premium-badge" />
+                  </span>
+                  <div>
+                    <strong>{L("notifBilling")}</strong>
+                    <p>{L("notifBillingBody")}</p>
+                  </div>
+                  <Switch on disabled label={`${L("notifBilling")} — ${L("notifAlways")}`} />
+                </div>
+                <div className="account-ref-setting-row">
+                  <span className="orange">
+                    <AccountIcon name="mail-envelope" />
+                  </span>
+                  <div>
+                    <strong>{L("notifInbox")}</strong>
+                    <p>{L("notifInboxBody")}</p>
+                  </div>
+                  <Switch on={notices} onChange={toggleNotices} label={L("notifInbox")} />
+                </div>
+              </div>
+              {prefsMessage && <p className="account-ref-message" role="status">{prefsMessage}</p>}
+            </section>
+          )}
+
+          {active === "security" && (
+            <section className="account-ref-settings-card" id="email">
+              <h2>{L("emailVerification")}</h2>
+              <div className="account-ref-settings-list">
+                <div className="account-ref-setting-row">
+                  <span className={user.emailVerified ? "green" : "orange"}>
+                    <AccountIcon name={user.emailVerified ? "check-circle" : "mail-envelope"} />
+                  </span>
+                  <div>
+                    <strong>{user.email}</strong>
+                    <p>{user.emailVerified ? L("emailVerifiedBody") : L("emailUnverifiedBody")}</p>
+                  </div>
+                  {user.emailVerified ? (
+                    <span className="account-ref-pill ok">{L("verified")}</span>
+                  ) : (
+                    <Link className="account-ref-row-link" href="/account/help">
+                      {L("openInbox")}
+                      <AccountIcon name="chevron-right" />
+                    </Link>
+                  )}
+                </div>
+                <div className="account-ref-setting-row">
+                  <span className="blue">
+                    <AccountIcon name="activity-gear" />
+                  </span>
+                  <div>
+                    <strong>{t("settingsChangeEmail")}</strong>
+                    <p>{L("changeEmailBody")}</p>
+                  </div>
+                  <Link className="account-ref-row-link" href="/account/help">
+                    {L("contactSupport")}
+                    <AccountIcon name="chevron-right" />
+                  </Link>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {active === "profile" && (
           <section className="account-ref-profile-card">
             <div className="account-ref-cover" aria-hidden="true">
               <Photo src="/home-assets/photos/account-cover.jpg" size="wide" priority />
@@ -202,9 +441,11 @@ export function AccountWorkspace() {
               {profileMessage && <p className="account-ref-message">{profileMessage}</p>}
             </form>
           </section>
+          )}
 
+          {active === "security" && (
           <section className="account-ref-settings-card" id="security">
-            <h2>{L("accountSettings")}</h2>
+            <h2>{L("dangerZone")}</h2>
             <div className="account-ref-settings-list">
               <div className="account-ref-setting-row">
                 <span className="blue">
@@ -292,6 +533,7 @@ export function AccountWorkspace() {
               </div>
             </div>
           </section>
+          )}
         </section>
 
         <aside className="account-ref-right-rail">

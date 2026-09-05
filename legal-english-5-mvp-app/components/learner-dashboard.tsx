@@ -46,7 +46,7 @@ export function LearnerDashboard() {
     { id: "open", done: counts.studied > 0, href: today[0] ? `/terms/${today[0].id}` : "/terms", label: L("checkOpen") },
     { id: "quiz", done: counts.attempts > 0, href: "/quizzes", label: L("checkQuiz") },
     { id: "save", done: counts.favourites > 0, href: "/terms", label: L("checkSave") },
-    { id: "verify", done: Boolean(session?.user.emailVerified), href: "/account/settings", label: L("checkVerify") },
+    { id: "verify", done: Boolean(session?.user.emailVerified), href: "/account/settings?tab=security", label: L("checkVerify") },
     { id: "master", done: counts.mastered > 0, href: "/quizzes", label: L("checkMaster") },
   ];
   const doneCount = steps.filter((step) => step.done).length;
