@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useApp } from "@/components/app-provider";
-import { LearnerShell, initialsOf } from "@/components/learner-shell";
+import { AvatarPicker } from "@/components/avatar-picker";
+import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
 import { categoryLabel, entitlementLabel, subscriptionStatusLabel } from "@/lib/i18n";
@@ -134,11 +135,7 @@ export function AccountWorkspace() {
             </div>
 
             <div className="account-ref-profile-intro">
-              <div className="account-ref-avatar-wrap">
-                <i className="learner-avatar large" aria-hidden="true">
-                  {initialsOf(user.name)}
-                </i>
-              </div>
+              <AvatarPicker name={user.name} src={user.avatarUrl} />
               <div>
                 <div className="account-ref-name-line">
                   <h3>{user.name}</h3>

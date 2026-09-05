@@ -31,6 +31,8 @@ export interface Store {
   inboxFor(email: string): Promise<Mail[]>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateProfile(userId: string, name: string): Promise<any>;
+  saveAvatar(userId: string, bytes: Buffer, extension: "webp" | "jpg" | "png"): Promise<{ ok: true; user: PublicUser } | { ok: false; message: string }>;
+  removeAvatar(userId: string): Promise<{ ok: true; user: PublicUser } | { ok: false; message: string }>;
   changeOwnPassword(userId: string, currentPassword: string, nextPassword: string): Promise<{ ok: boolean; message?: string }>;
   deleteAccount(userId: string): Promise<{ ok: boolean; message?: string }>;
   deactivateAccount(userId: string): Promise<{ ok: boolean; message?: string }>;

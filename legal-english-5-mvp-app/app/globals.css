@@ -15379,10 +15379,86 @@ nav a.active,
 
 .account-ref-profile-intro {
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 17px;
   margin-top: 11px;
+}
+
+/* Profile photo picker: avatar with pencil badge + compact action column. */
+.avatar-picker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-picker .account-ref-avatar-wrap button:hover {
+  background: #f3f6fb;
+}
+
+.avatar-picker .account-ref-avatar-wrap button:focus-visible {
+  outline: 2px solid #2e7de6;
+  outline-offset: 1px;
+}
+
+.avatar-picker .account-ref-avatar-wrap button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.avatar-picker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  max-width: 220px;
+}
+
+.avatar-picker-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 11px;
+  border: 1px solid #e2e8f2;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #233552;
+  font: inherit;
+  font-size: 0.64rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.avatar-picker-actions button:hover {
+  background: #f3f6fb;
+}
+
+.avatar-picker-actions button.primary {
+  border-color: #1f4e9a;
+  background: linear-gradient(135deg, #1f4e9a, #2e7de6);
+  color: #ffffff;
+}
+
+.avatar-picker-actions button.danger {
+  color: #b42318;
+}
+
+.avatar-picker-actions button.danger:hover {
+  border-color: #f4c7c3;
+  background: #fef3f2;
+}
+
+.avatar-picker-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.avatar-picker-actions small {
+  flex-basis: 100%;
+  color: #6a768c;
+  font-size: 0.6rem;
+  line-height: 1.4;
 }
 
 .account-ref-avatar-wrap {
@@ -15968,6 +16044,14 @@ nav a.active,
   .account-ref-progress-body,
   .account-ref-setting-row {
     grid-template-columns: 1fr;
+  }
+
+  .avatar-picker {
+    align-items: flex-start;
+  }
+
+  .avatar-picker-actions {
+    max-width: none;
   }
 
   .account-ref-setting-row button,

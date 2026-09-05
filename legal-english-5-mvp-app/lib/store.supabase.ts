@@ -184,13 +184,28 @@ async function lookupEmailVerified(userId: string): Promise<boolean> {
   return Boolean(data.user.email_confirmed_at);
 }
 
+export const AVATAR_BUCKET = "avatars";
+const AVATAR_URL_TTL_SECONDS = 60 * 60;
+
+/** Signs private profile-photo object paths (`<userId>/avatar.<ext>`) so the browser can render them. */
+async function signAvatars(paths: (string | null)[]): Promise<Map<string, string>> {
+  const wanted = Array.from(new Set(paths.filter((p): p is string => Boolean(p))));
+  if (!wanted.length) return new Map();
+  const admin = getSupabaseServiceRoleClient();
+  const { data } = await admin.storage.from(AVATAR_BUCKET).createSignedUrls(wanted, AVATAR_URL_TTL_SECONDS);
+  return new Map((data ?? []).filter((entry) => entry.signedUrl).map((entry) => [String(entry.path), String(entry.signedUrl)]));
+}
+
 export async function getUser(id: string): Promise<PublicUser | null> {
   const supabase = await getSupabaseServerClient();
   const { data: profile } = await supabase.from("users").select("*").eq("id", id).maybeSingle();
   if (!profile) return null;
   const { data: sub } = await supabase.from("subscriptions").select("*").eq("user_id", id).maybeSingle();
   const emailVerified = await lookupEmailVerified(id);
+  const avatarPath = (profile.avatar_path as string | null) ?? null;
+  const signed = await signAvatars([avatarPath]);
   return {
+    avatarUrl: avatarPath ? signed.get(avatarPath) ?? null : null,
     id: String(profile.id),
     name: String(profile.full_name ?? ""),
     email: String(profile.email ?? ""),
@@ -213,7 +228,9 @@ async function listUsers(): Promise<PublicUser[]> {
   const { data: authList } = await admin.auth.admin.listUsers({ perPage: 200 });
   const confirmedById = new Map((authList?.users ?? []).map((u) => [u.id, Boolean(u.email_confirmed_at)]));
   const subById = new Map((subs ?? []).map((row) => [String(row.user_id), row]));
+  const signed = await signAvatars((profiles ?? []).map((profile) => (profile.avatar_path as string | null) ?? null));
   return (profiles ?? []).map((profile) => ({
+    avatarUrl: profile.avatar_path ? signed.get(String(profile.avatar_path)) ?? null : null,
     id: String(profile.id),
     name: String(profile.full_name ?? ""),
     email: String(profile.email ?? ""),
@@ -304,6 +321,39 @@ export async function updateProfile(userId: string, name: string) {
   return { ok: true as const, user, entitlement: entitlementFor(user.subscription) };
 }
 
+const AVATAR_CONTENT_TYPE: Record<string, string> = { webp: "image/webp", jpg: "image/jpeg", png: "image/png" };
+
+export async function saveAvatar(userId: string, bytes: Buffer, extension: "webp" | "jpg" | "png") {
+  const admin = getSupabaseServiceRoleClient();
+  const { data: profile } = await admin.from("users").select("avatar_path").eq("id", userId).maybeSingle();
+  if (!profile) return { ok: false as const, message: "Sign in required." };
+  const path = `${userId}/avatar.${extension}`;
+  const previous = (profile.avatar_path as string | null) ?? null;
+  if (previous && previous !== path) await admin.storage.from(AVATAR_BUCKET).remove([previous]);
+  const { error: uploadError } = await admin.storage
+    .from(AVATAR_BUCKET)
+    .upload(path, bytes, { contentType: AVATAR_CONTENT_TYPE[extension], upsert: true, cacheControl: "0" });
+  if (uploadError) return { ok: false as const, message: uploadError.message };
+  const { error } = await admin.from("users").update({ avatar_path: path, updated_at: new Date().toISOString() }).eq("id", userId);
+  if (error) return { ok: false as const, message: error.message };
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  return { ok: true as const, user };
+}
+
+export async function removeAvatar(userId: string) {
+  const admin = getSupabaseServiceRoleClient();
+  const { data: profile } = await admin.from("users").select("avatar_path").eq("id", userId).maybeSingle();
+  if (!profile) return { ok: false as const, message: "Sign in required." };
+  const previous = (profile.avatar_path as string | null) ?? null;
+  if (previous) await admin.storage.from(AVATAR_BUCKET).remove([previous]);
+  const { error } = await admin.from("users").update({ avatar_path: null, updated_at: new Date().toISOString() }).eq("id", userId);
+  if (error) return { ok: false as const, message: error.message };
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  return { ok: true as const, user };
+}
+
 export async function changeOwnPassword(userId: string, currentPassword: string, nextPassword: string) {
   const user = await getUser(userId);
   if (!user) return { ok: false as const, message: "Sign in required." };
@@ -318,12 +368,14 @@ export async function changeOwnPassword(userId: string, currentPassword: string,
 
 export async function deleteAccount(userId: string) {
   const admin = getSupabaseServiceRoleClient();
-  const { data: target } = await admin.from("users").select("role").eq("id", userId).maybeSingle();
+  const { data: target } = await admin.from("users").select("role, avatar_path").eq("id", userId).maybeSingle();
   if (!target) return { ok: false as const, message: "Sign in required." };
   if (target.role === "admin") {
     const { count } = await admin.from("users").select("id", { count: "exact", head: true }).eq("role", "admin").neq("id", userId);
     if (!count) return { ok: false as const, message: "The last Owner account cannot be deleted." };
   }
+  // Habeas data: the profile photo leaves Storage together with the row (cascade covers the tables, not the bucket).
+  if (target.avatar_path) await admin.storage.from(AVATAR_BUCKET).remove([String(target.avatar_path)]);
   const { error } = await admin.auth.admin.deleteUser(userId);
   if (error) return { ok: false as const, message: error.message };
   return { ok: true as const };

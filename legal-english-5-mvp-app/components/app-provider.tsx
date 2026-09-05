@@ -54,6 +54,8 @@ type Ctx = {
   rollbackImport: (importRunId: string) => Promise<Result>;
   resetDemo: () => Promise<void>;
   updateProfile: (name: string) => Promise<Result>;
+  uploadAvatar: (file: Blob) => Promise<Result>;
+  removeAvatar: () => Promise<Result>;
   changePassword: (currentPassword: string, nextPassword: string) => Promise<Result>;
   deleteAccount: () => Promise<Result>;
   deactivateAccount: () => Promise<Result>;
@@ -276,6 +278,28 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (data.ok) {
         applyBootstrap(data);
         notify(T("toastProfileSaved"));
+      }
+      return data;
+    },
+    async uploadAvatar(file) {
+      const form = new FormData();
+      form.append("file", file, (file as File).name || "avatar.webp");
+      const data = await fetch("/api/account/avatar", { method: "POST", body: form, credentials: "include" })
+        .then((r) => r.json())
+        .catch(() => ({ ok: false, message: T("photoFailed") }));
+      if (data.ok) {
+        applyBootstrap(data);
+        notify(T("toastPhotoSaved"));
+      }
+      return data;
+    },
+    async removeAvatar() {
+      const data = await fetch("/api/account/avatar", { method: "DELETE", credentials: "include" })
+        .then((r) => r.json())
+        .catch(() => ({ ok: false, message: T("photoFailed") }));
+      if (data.ok) {
+        applyBootstrap(data);
+        notify(T("toastPhotoRemoved"));
       }
       return data;
     },

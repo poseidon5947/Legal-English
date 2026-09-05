@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
+import { Avatar, initialsOf } from "@/components/avatar";
 import { LanguageToggle } from "@/components/language-toggle";
 import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
 import { useLocale } from "@/components/locale-provider";
@@ -34,15 +35,7 @@ export function ShellIcon({ name, className = "" }: { name: ShellIcon; className
   return <img className={`terms-library-icon ${className}`.trim()} src={`/terms-library-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-export function initialsOf(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
+export { initialsOf };
 
 function VerifyBanner() {
   const { inbox, verify, session } = useApp();
@@ -219,7 +212,7 @@ export function LearnerShell({
           </span>
         </Link>
         <Link className="learner-mobile-avatar" href="/account" aria-label={L("navAccount")}>
-          <i className="learner-avatar" aria-hidden="true">{initialsOf(session.user.name)}</i>
+          <Avatar name={session.user.name} src={session.user.avatarUrl} />
         </Link>
       </header>
       {menuOpen && <button type="button" className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
@@ -377,7 +370,7 @@ export function LearnerShell({
               {notificationCount > 0 && <span>{notificationCount}</span>}
             </Link>
             <Link className="terms-user-pill" href="/account">
-              <i className="learner-avatar" aria-hidden="true">{initialsOf(session.user.name)}</i>
+              <Avatar name={session.user.name} src={session.user.avatarUrl} />
               <span>
                 <strong>{session.user.name}</strong>
                 <small>{isOwner ? L("owner") : L("learner")}</small>

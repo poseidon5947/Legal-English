@@ -1,6 +1,8 @@
+import { readFileSync } from "fs";
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/api";
-import { store } from "@/lib/data-store";
+import { DATA_MODE, store } from "@/lib/data-store";
+import { avatarFile } from "@/lib/store";
 import type { Progress, Term } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -35,11 +37,29 @@ export async function GET() {
     }))
     .sort((a, b) => a.termId.localeCompare(b.termId));
 
+  // The profile photo is personal data too: embed the stored bytes so the
+  // export stands on its own (alpha reads the local file; production fetches
+  // the signed Storage URL that bootstrap already produced).
+  const profile = (data.session?.user ?? null) as (Record<string, unknown> & { avatarUrl?: string | null }) | null;
+  let profilePhoto: { contentType: string; base64: string } | null = null;
+  if (profile?.avatarUrl) {
+    if (DATA_MODE === "alpha") {
+      const file = avatarFile(user.id);
+      if (file) profilePhoto = { contentType: file.contentType, base64: readFileSync(file.path).toString("base64") };
+    } else {
+      const response = await fetch(profile.avatarUrl).catch(() => null);
+      if (response?.ok) {
+        profilePhoto = { contentType: response.headers.get("content-type") || "image/webp", base64: Buffer.from(await response.arrayBuffer()).toString("base64") };
+      }
+    }
+  }
+
   const payload = {
     format: "legal-english-5/learner-export",
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
-    profile: data.session?.user ?? null,
+    profile,
+    profilePhoto,
     subscription: data.session?.subscription ?? null,
     progress: rows,
     billingHistory: data.billingHistory ?? [],

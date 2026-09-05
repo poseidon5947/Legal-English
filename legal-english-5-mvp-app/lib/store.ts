@@ -259,6 +259,7 @@ export async function deleteAccount(userId: string) {
   }
   data.users = data.users.filter((item) => item.id !== userId);
   data.progress = data.progress.filter((item) => item.userId !== userId);
+  for (const file of avatarFilesFor(userId)) rmSync(file, { force: true });
   save(data);
   return { ok: true as const };
 }
@@ -574,6 +575,48 @@ export async function saveAudio(actorId: string, termId: string, jurisdiction: A
   else term.audioUkPath = url;
   save(data);
   return { ok: true as const, terms: data.terms, path: url };
+}
+
+/* ---------- profile photos ---------- */
+
+const AVATAR_DIR = join(DIR, "avatars");
+export const AVATAR_MIME: Record<string, string> = { webp: "image/webp", jpg: "image/jpeg", png: "image/png" };
+
+function avatarFilesFor(userId: string) {
+  if (!existsSync(AVATAR_DIR)) return [];
+  return readdirSync(AVATAR_DIR)
+    .filter((name) => name.startsWith(`${userId}.`))
+    .map((name) => join(AVATAR_DIR, name));
+}
+
+export function avatarFile(userId: string) {
+  const [file] = avatarFilesFor(userId);
+  if (!file) return null;
+  const extension = file.slice(file.lastIndexOf(".") + 1).toLowerCase();
+  return { path: file, contentType: AVATAR_MIME[extension] || "application/octet-stream" };
+}
+
+export async function saveAvatar(userId: string, bytes: Buffer, extension: keyof typeof AVATAR_MIME) {
+  const data = load();
+  const user = data.users.find((item) => item.id === userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  mkdirSync(AVATAR_DIR, { recursive: true });
+  for (const previous of avatarFilesFor(userId)) rmSync(previous, { force: true });
+  writeFileSync(join(AVATAR_DIR, `${userId}.${extension}`), bytes);
+  // The version query string busts the browser cache the moment a new photo lands.
+  user.avatarUrl = `/api/account/avatar?v=${Date.now()}`;
+  save(data);
+  return { ok: true as const, user: publicUser(user) };
+}
+
+export async function removeAvatar(userId: string) {
+  const data = load();
+  const user = data.users.find((item) => item.id === userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  for (const previous of avatarFilesFor(userId)) rmSync(previous, { force: true });
+  user.avatarUrl = null;
+  save(data);
+  return { ok: true as const, user: publicUser(user) };
 }
 
 export async function removeAudio(actorId: string, termId: string, jurisdiction: AudioJurisdiction) {

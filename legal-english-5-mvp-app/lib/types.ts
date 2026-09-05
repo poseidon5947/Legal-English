@@ -106,6 +106,8 @@ export type User = {
   subscription: Subscription;
   disabledAt: string | null;
   privacyAcceptedAt: string | null;
+  /** Profile photo. Alpha: `/api/account/avatar?v=<updatedAt>`; production: short-lived signed Storage URL. Null = initials. */
+  avatarUrl?: string | null;
 };
 
 export type Progress = {
