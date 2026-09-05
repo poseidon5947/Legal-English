@@ -90,7 +90,14 @@ function initial(): StoreData {
     password: "Andres#Alpha26",
   });
   const seed = JSON.parse(readFileSync(join(DIR, "mcd-seed.json"), "utf8")) as { terms: Term[] };
-  const terms = seed.terms.map((term) => ({ ...term, quiz: term.quiz ?? null }));
+  // Approved static audio (AUDIO-PROD-01) lives in data/audio/{TermID}/us|uk.mp3 and is
+  // versioned with the app, so a fresh alpha store re-associates it instead of starting silent.
+  const terms = seed.terms.map((term) => ({
+    ...term,
+    quiz: term.quiz ?? null,
+    audioUsPath: audioFilesFor(term.id, "us").length ? mediaUrl(term.id, "us") : term.audioUsPath || "",
+    audioUkPath: audioFilesFor(term.id, "uk").length ? mediaUrl(term.id, "uk") : term.audioUkPath || "",
+  }));
   const progress: Progress[] = [
     { userId: maria.id, termId: "CORP-005", favourite: true, state: "mastered", attempts: 1, updatedAt: now.toISOString() },
     { userId: maria.id, termId: "CON-001", favourite: false, state: "learning", attempts: 1, updatedAt: now.toISOString() },

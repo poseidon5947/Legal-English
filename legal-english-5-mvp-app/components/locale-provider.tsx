@@ -13,11 +13,22 @@ type Ctx = {
 
 const Context = createContext<Ctx | null>(null);
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+function writeCookie(locale: Locale) {
+  document.cookie = `${STORAGE}=${locale}; path=/; max-age=31536000; samesite=lax`;
+}
+
+export function LocaleProvider({ children, initialLocale = "en" }: { children: React.ReactNode; initialLocale?: Locale }) {
+  // The server already picked the language (cookie, then Accept-Language), so
+  // the first paint is right. localStorage is only consulted for people who
+  // chose a language before the cookie existed; it then becomes the cookie.
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE);
-    if (saved === "en" || saved === "es") setLocaleState(saved);
+    const hasCookie = document.cookie.split(";").some((part) => part.trim().startsWith(`${STORAGE}=`));
+    if (!hasCookie && (saved === "en" || saved === "es")) {
+      setLocaleState(saved);
+      writeCookie(saved);
+    }
   }, []);
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -28,6 +39,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
       setLocale: (next) => {
         setLocaleState(next);
         window.localStorage.setItem(STORAGE, next);
+        writeCookie(next);
       },
       t: (key, vars) => translate(locale, key, vars),
     }),

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { cookies, headers } from "next/headers";
 import "./fonts.css";
 import "./globals.css";
 import { AppProvider } from "@/components/app-provider";
@@ -7,6 +8,7 @@ import { RouteProgress } from "@/components/route-progress";
 import { SkipLink } from "@/components/skip-link";
 import { ToastProvider } from "@/components/toaster";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
+import type { Locale } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl(),
@@ -49,9 +51,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+/**
+ * Resolve the UI language on the server so Spanish users never see an English
+ * flash: the cookie the toggle writes wins; a first-time visitor gets the
+ * language of the browser (the audience is Spanish-speaking lawyers).
+ */
+async function initialLocale(): Promise<Locale> {
+  const saved = (await cookies()).get("le5_locale")?.value;
+  if (saved === "en" || saved === "es") return saved;
+  const accept = ((await headers()).get("accept-language") ?? "").toLowerCase();
+  const first = accept.split(",")[0]?.trim() ?? "";
+  return first.startsWith("es") ? "es" : "en";
+}
+
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await initialLocale();
   return (
-    <html lang="en">
+    <html lang={locale} data-scroll-behavior="smooth">
       <head>
         {/* Fonts are self-hosted (public/fonts) so no request leaves for Google; preload the three faces above the fold. */}
         <link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
@@ -61,7 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       {/* suppressHydrationWarning: browser extensions (Grammarly etc.) inject data-* attributes
           on <body> before React hydrates; they are not part of our markup. */}
       <body suppressHydrationWarning>
-        <LocaleProvider>
+        <LocaleProvider initialLocale={locale}>
           <SkipLink />
           <RouteProgress />
           <ToastProvider>

@@ -125,6 +125,12 @@ function AuthIcon({ name, className = "" }: { name: AuthIconName; className?: st
   return <img className={`auth-ref-icon ${className}`.trim()} src={`/auth-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
+/** Safe in-app return path from ?next= (same-origin absolute paths only). */
+function afterLogin() {
+  const next = new URLSearchParams(window.location.search).get("next") ?? "";
+  return next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/login") && !next.startsWith("/signup") ? next : "/dashboard";
+}
+
 export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Extract<AuthMode, "login" | "signup"> }) {
   const router = useRouter();
   const { ready, session, signIn, signUp, forgot, resetPassword, verify } = useApp();
@@ -141,7 +147,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    if (ready && session) router.replace("/dashboard");
+    if (ready && session) router.replace(afterLogin());
   }, [ready, session, router]);
 
   async function submit(event: FormEvent) {
@@ -166,7 +172,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
     if (mode === "confirm") {
       const result = await verify(email, code);
       if (!result.ok) setError(result.message || t("couldNotContinue"));
-      else router.push("/dashboard");
+      else router.push(afterLogin());
       return;
     }
     if (mode === "signup" && !privacyAccepted) {
@@ -179,7 +185,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
       else if (result.needsConfirmation) {
         setNotice(t("confirmNotice"));
         setMode("confirm");
-      } else router.push("/dashboard");
+      } else router.push(afterLogin());
     } catch {
       setError(t("loginBlocked"));
     }
@@ -361,7 +367,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                       setPassword(account.password);
                       void signIn(account.email, account.password).then((result) => {
                         if (!result.ok) setError(result.message || t("couldNotContinue"));
-                        else router.push("/dashboard");
+                        else router.push(afterLogin());
                       });
                     }}
                   >

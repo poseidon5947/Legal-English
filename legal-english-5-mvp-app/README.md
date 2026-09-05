@@ -12,6 +12,7 @@ Production-path alpha for MPC LAW STUDIO. It is not the ChatGPT Sites prototype 
 - Mercado Pago monthly and annual sandbox events run through the same state machine the production webhook uses (`lib/billing-state.ts`): `active` → `past_due` (charge rejected, 5-day grace, access kept) → `payment_failed` (retries exhausted) ; `cancelled` keeps access until the paid period ends; stale or duplicate events are ignored.
 - Owner console: publish gate, Excel import preview + commit + rollback, bulk audio upload by filename, users and exceptional access, JSON export.
 - Audio: files named `{TermID}_US.mp3` / `{TermID}_UK.mp3` (also m4a, wav, ogg) are associated by name; anything else is rejected and listed. Alpha stores them under `data/audio/` and serves them only through `/api/media/...` after session + publication + entitlement checks. Production uses the private `term-audio` bucket with signed URLs.
+- AUDIO-PROD-01 (2026-09-05): the Owner's 31 approved static files (30 AudioUS + `EMP-009_UK`, ElevenLabs, MP3 44.1 kHz / 128 kbps) are versioned under `data/audio/{TermID}/{us|uk}.mp3` with the delivery `MANIFEST.json`. `tests/audio-assets.test.mjs` is the 31-asset gate (nothing missing, nothing extra, SHA-256 identical to the manifest); a fresh alpha store re-associates them automatically. For production, upload the same files through the Owner console's bulk upload (they land at `term-audio/{TermID}/{us|uk}.mp3`). TTS generation stays outside the app by the Owner's rule.
 
 ## Review accounts
 

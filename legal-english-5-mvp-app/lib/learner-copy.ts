@@ -365,6 +365,22 @@ const en = {
   howHelpBody: "Check the Help Center or contact the team with any question.",
   howHelpCta: "Visit Help Center",
   howProgressEmpty: "Open your first term and this card starts filling in.",
+  // keyboard shortcuts
+  shortcutsButton: "Keyboard shortcuts",
+  shortcutsTitle: "Keyboard shortcuts",
+  shortcutsLead: "Work faster without leaving the keyboard. Press ? at any time to open this list.",
+  shortcutsAnywhere: "Anywhere",
+  shortcutsTerm: "On a term",
+  shortcutsQuiz: "In a quiz",
+  shortcutSearch: "Focus the search box",
+  shortcutSuggest: "Move through search suggestions",
+  shortcutOpen: "Open the highlighted suggestion",
+  shortcutHelp: "Show this list",
+  shortcutClose: "Close menus and dialogs",
+  shortcutTermNav: "Previous / next term",
+  shortcutSave: "Save or unsave in My Library",
+  shortcutQuizPick: "Pick an answer",
+  shortcutQuizCheck: "Check the answer, then go to the next question",
 };
 
 const es: typeof en = {
@@ -724,6 +740,22 @@ const es: typeof en = {
   howHelpBody: "Consulta el Centro de ayuda o escribe al equipo con cualquier duda.",
   howHelpCta: "Ir al Centro de ayuda",
   howProgressEmpty: "Abre tu primer término y esta tarjeta empieza a llenarse.",
+  // keyboard shortcuts
+  shortcutsButton: "Atajos de teclado",
+  shortcutsTitle: "Atajos de teclado",
+  shortcutsLead: "Trabaja más rápido sin soltar el teclado. Pulsa ? en cualquier momento para abrir esta lista.",
+  shortcutsAnywhere: "En cualquier página",
+  shortcutsTerm: "En un término",
+  shortcutsQuiz: "En un quiz",
+  shortcutSearch: "Ir al buscador",
+  shortcutSuggest: "Moverse por las sugerencias",
+  shortcutOpen: "Abrir la sugerencia marcada",
+  shortcutHelp: "Mostrar esta lista",
+  shortcutClose: "Cerrar menús y ventanas",
+  shortcutTermNav: "Término anterior / siguiente",
+  shortcutSave: "Guardar o quitar de Mi biblioteca",
+  shortcutQuizPick: "Elegir una respuesta",
+  shortcutQuizCheck: "Comprobar la respuesta y pasar a la siguiente",
 };
 
 export type LearnerKey = keyof typeof en;

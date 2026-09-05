@@ -118,7 +118,12 @@ export function LearnerShell({
   const [suggestIndex, setSuggestIndex] = useState(-1);
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   useEffect(() => {
-    if (ready && !session) router.replace("/login");
+    if (ready && !session) {
+      // Remember where the visitor was heading so login can send them back
+      // (e.g. "Open this category" on the home page → login → that category).
+      const target = `${window.location.pathname}${window.location.search}`;
+      router.replace(target === "/dashboard" ? "/login" : `/login?next=${encodeURIComponent(target)}`);
+    }
   }, [ready, session, router]);
   // Mobile drawer: close on navigation and Escape; lock scroll while open.
   useEffect(() => setMenuOpen(false), [path]);
@@ -135,14 +140,21 @@ export function LearnerShell({
       document.body.style.overflow = previous;
     };
   }, [menuOpen]);
-  // "/" focuses the search box from anywhere in the workspace (not while typing).
+  // "/" focuses the search box and "?" opens the shortcut list from anywhere
+  // in the workspace (not while typing in a field).
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === "Escape") {
+        setShortcutsOpen(false);
+        return;
+      }
+      if ((event.key !== "/" && event.key !== "?") || event.metaKey || event.ctrlKey || event.altKey) return;
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
       event.preventDefault();
-      searchRef.current?.focus();
+      if (event.key === "?") setShortcutsOpen((value) => !value);
+      else searchRef.current?.focus();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
@@ -207,7 +219,7 @@ export function LearnerShell({
           </span>
         </Link>
         <Link className="learner-mobile-avatar" href="/account" aria-label={L("navAccount")}>
-          <img className="learner-avatar photo" src="/terms-library-assets/people/alex-johnson.png" alt="" />
+          <i className="learner-avatar" aria-hidden="true">{initialsOf(session.user.name)}</i>
         </Link>
       </header>
       {menuOpen && <button type="button" className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
@@ -357,12 +369,15 @@ export function LearnerShell({
           </form>
           <div className="terms-reference-user-tools">
             <LanguageToggle />
+            <button type="button" className="terms-shortcuts" onClick={() => setShortcutsOpen(true)} aria-label={L("shortcutsButton")} title={L("shortcutsButton")}>
+              <kbd>?</kbd>
+            </button>
             <Link className="terms-notification" href="/account/help" aria-label={L("notifications")} title={L("notifications")}>
               <ShellIcon name="bell" />
               {notificationCount > 0 && <span>{notificationCount}</span>}
             </Link>
             <Link className="terms-user-pill" href="/account">
-              <img className="learner-avatar photo" src="/terms-library-assets/people/alex-johnson.png" alt="" />
+              <i className="learner-avatar" aria-hidden="true">{initialsOf(session.user.name)}</i>
               <span>
                 <strong>{session.user.name}</strong>
                 <small>{isOwner ? L("owner") : L("learner")}</small>
@@ -407,6 +422,45 @@ export function LearnerShell({
           children
         )}
       </section>
+      {shortcutsOpen && (
+        <div className="shortcuts-backdrop" onClick={() => setShortcutsOpen(false)}>
+          <div className="shortcuts-dialog" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title" onClick={(event) => event.stopPropagation()}>
+            <div className="shortcuts-head">
+              <div>
+                <h2 id="shortcuts-title">{L("shortcutsTitle")}</h2>
+                <p>{L("shortcutsLead")}</p>
+              </div>
+              <button type="button" onClick={() => setShortcutsOpen(false)} aria-label={L("closeMenu")}>
+                ×
+              </button>
+            </div>
+            <div className="shortcuts-grid">
+              <section>
+                <h3>{L("shortcutsAnywhere")}</h3>
+                <dl>
+                  <div><dt><kbd>/</kbd></dt><dd>{L("shortcutSearch")}</dd></div>
+                  <div><dt><kbd>↑</kbd><kbd>↓</kbd></dt><dd>{L("shortcutSuggest")}</dd></div>
+                  <div><dt><kbd>Enter</kbd></dt><dd>{L("shortcutOpen")}</dd></div>
+                  <div><dt><kbd>?</kbd></dt><dd>{L("shortcutHelp")}</dd></div>
+                  <div><dt><kbd>Esc</kbd></dt><dd>{L("shortcutClose")}</dd></div>
+                </dl>
+              </section>
+              <section>
+                <h3>{L("shortcutsTerm")}</h3>
+                <dl>
+                  <div><dt><kbd>←</kbd><kbd>→</kbd></dt><dd>{L("shortcutTermNav")}</dd></div>
+                  <div><dt><kbd>S</kbd></dt><dd>{L("shortcutSave")}</dd></div>
+                </dl>
+                <h3>{L("shortcutsQuiz")}</h3>
+                <dl>
+                  <div><dt><kbd>1</kbd>–<kbd>4</kbd></dt><dd>{L("shortcutQuizPick")}</dd></div>
+                  <div><dt><kbd>Enter</kbd></dt><dd>{L("shortcutQuizCheck")}</dd></div>
+                </dl>
+              </section>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

@@ -1,0 +1,266 @@
+{
+  "control": "AUDIO-PROD-01",
+  "state": "PACKAGE PREPARED / APPLICATION VALIDATION PENDING",
+  "mcd_collection": "LC-001",
+  "audio_us_count": 30,
+  "audio_uk_count": 1,
+  "pronunciation_qa": "PASS reported and approved by user; not independently repeated",
+  "technical_qa": "31 MP3 decode successfully; 44.1 kHz / 128 kbps",
+  "filename_defect": {
+    "received": "EMP-009_UK.mp3.mp3",
+    "packaged": "EMP-009_UK.mp3",
+    "reason": "Duplicate extension violates approved filename convention",
+    "audio_bytes_changed": false
+  },
+  "excluded": "Nested EMP-010_US.zip contains an identical duplicate of EMP-010_US.mp3",
+  "files": [
+    {
+      "TermID": "CON-001",
+      "field": "AudioUS",
+      "filename": "CON-001_US.mp3",
+      "package_path": "audio/CON-001_US.mp3",
+      "bytes": 17598,
+      "sha256": "734e60c2909dc88cfdfe71650f1c5e078a6d72725ba211f692453ae8bb091d37"
+    },
+    {
+      "TermID": "CON-002",
+      "field": "AudioUS",
+      "filename": "CON-002_US.mp3",
+      "package_path": "audio/CON-002_US.mp3",
+      "bytes": 14254,
+      "sha256": "a124cf045e60439dd3ca0cbe83d9824efa2f4c2c21920b0d37c349b07a103f07"
+    },
+    {
+      "TermID": "CON-003",
+      "field": "AudioUS",
+      "filename": "CON-003_US.mp3",
+      "package_path": "audio/CON-003_US.mp3",
+      "bytes": 18852,
+      "sha256": "787bb76fd618600de58b26250c990d2dae750adfefc0198bb96f6cd6b9a6116a"
+    },
+    {
+      "TermID": "CON-004",
+      "field": "AudioUS",
+      "filename": "CON-004_US.mp3",
+      "package_path": "audio/CON-004_US.mp3",
+      "bytes": 15926,
+      "sha256": "80d500ad5030b0f2f64f4843c301d2ae63daad352f1b952441c8a49233fc69b8"
+    },
+    {
+      "TermID": "CON-005",
+      "field": "AudioUS",
+      "filename": "CON-005_US.mp3",
+      "package_path": "audio/CON-005_US.mp3",
+      "bytes": 20942,
+      "sha256": "7935fa9c340bdde4e62e12d088ee7909efa305870c18611fa41d6ff2af52e4f6"
+    },
+    {
+      "TermID": "CON-006",
+      "field": "AudioUS",
+      "filename": "CON-006_US.mp3",
+      "package_path": "audio/CON-006_US.mp3",
+      "bytes": 19688,
+      "sha256": "2f618bbd40eada0f53c45c2814a4f49aca536b91919285dff0cb81ae9b7c7a28"
+    },
+    {
+      "TermID": "CON-007",
+      "field": "AudioUS",
+      "filename": "CON-007_US.mp3",
+      "package_path": "audio/CON-007_US.mp3",
+      "bytes": 16762,
+      "sha256": "bc08f42e2c69e0e76a4e224ee2ef7ed2bb08186f11faec71583c7edccc9d3548"
+    },
+    {
+      "TermID": "CON-008",
+      "field": "AudioUS",
+      "filename": "CON-008_US.mp3",
+      "package_path": "audio/CON-008_US.mp3",
+      "bytes": 15926,
+      "sha256": "56fece101c80923c23522071be9f1bc41faed99a41f83ab044d668c8d777160b"
+    },
+    {
+      "TermID": "CON-009",
+      "field": "AudioUS",
+      "filename": "CON-009_US.mp3",
+      "package_path": "audio/CON-009_US.mp3",
+      "bytes": 17598,
+      "sha256": "4f582502a45dfb2fb1adfb373d72f07ae30d61422a1aa6de6ab64d377775dcaa"
+    },
+    {
+      "TermID": "CON-010",
+      "field": "AudioUS",
+      "filename": "CON-010_US.mp3",
+      "package_path": "audio/CON-010_US.mp3",
+      "bytes": 15090,
+      "sha256": "2512b9e0a5210f5ffbacef6310af58c99f84247f11909e1f9d0b5d45093a3caa"
+    },
+    {
+      "TermID": "CORP-001",
+      "field": "AudioUS",
+      "filename": "CORP-001_US.mp3",
+      "package_path": "audio/CORP-001_US.mp3",
+      "bytes": 30137,
+      "sha256": "ea5797f0228cf085049bd25f648c0c7c8cc4a6c220d80cd9896d05b799925aae"
+    },
+    {
+      "TermID": "CORP-002",
+      "field": "AudioUS",
+      "filename": "CORP-002_US.mp3",
+      "package_path": "audio/CORP-002_US.mp3",
+      "bytes": 24285,
+      "sha256": "1d50e9235978568daf9d47d3541ed8506138071fc2774d414af607783ed9293d"
+    },
+    {
+      "TermID": "CORP-003",
+      "field": "AudioUS",
+      "filename": "CORP-003_US.mp3",
+      "package_path": "audio/CORP-003_US.mp3",
+      "bytes": 18016,
+      "sha256": "ca733bc1ea627856cd5cf36ac375534487e2785322a24d1682513b40abcbf94c"
+    },
+    {
+      "TermID": "CORP-005",
+      "field": "AudioUS",
+      "filename": "CORP-005_US.mp3",
+      "package_path": "audio/CORP-005_US.mp3",
+      "bytes": 38914,
+      "sha256": "9503259542f62d2f8309dcbd421c945b5fa6355cfc93d05f58e80f92f55e74e3"
+    },
+    {
+      "TermID": "CORP-006",
+      "field": "AudioUS",
+      "filename": "CORP-006_US.mp3",
+      "package_path": "audio/CORP-006_US.mp3",
+      "bytes": 15090,
+      "sha256": "f27871144a65c91f469bd37cfd448ea01d131c1359d23a348d333ed11b798741"
+    },
+    {
+      "TermID": "CORP-007",
+      "field": "AudioUS",
+      "filename": "CORP-007_US.mp3",
+      "package_path": "audio/CORP-007_US.mp3",
+      "bytes": 16762,
+      "sha256": "bd4454e2586e8ea310028ae706c8022b9da1452765fe5f609715dfa428b236e7"
+    },
+    {
+      "TermID": "CORP-010",
+      "field": "AudioUS",
+      "filename": "CORP-010_US.mp3",
+      "package_path": "audio/CORP-010_US.mp3",
+      "bytes": 18852,
+      "sha256": "644b3689bca2d800be861fe13a567df2c6f8818a3f1dbbf45349866d67b9065f"
+    },
+    {
+      "TermID": "CORP-011",
+      "field": "AudioUS",
+      "filename": "CORP-011_US.mp3",
+      "package_path": "audio/CORP-011_US.mp3",
+      "bytes": 24285,
+      "sha256": "6479cb7c2901e11315fa351deed09554fc513fb974371d4cb299f76b8ce21cf6"
+    },
+    {
+      "TermID": "CORP-012",
+      "field": "AudioUS",
+      "filename": "CORP-012_US.mp3",
+      "package_path": "audio/CORP-012_US.mp3",
+      "bytes": 33898,
+      "sha256": "af43f68aab4bc5fd2e419a7e0285fa870bad389ac96c5c50e80e946f707571a6"
+    },
+    {
+      "TermID": "CORP-018",
+      "field": "AudioUS",
+      "filename": "CORP-018_US.mp3",
+      "package_path": "audio/CORP-018_US.mp3",
+      "bytes": 20942,
+      "sha256": "f18a2ed78b25b27e0b830ae808c194e1cd8dd2483ed4b187a06c9d7c0b4d0d31"
+    },
+    {
+      "TermID": "EMP-001",
+      "field": "AudioUS",
+      "filename": "EMP-001_US.mp3",
+      "package_path": "audio/EMP-001_US.mp3",
+      "bytes": 16762,
+      "sha256": "36cf02bd848a0089941cc91684bd8c7b9c8ee0bb0caef24da2cf9866e2c56b48"
+    },
+    {
+      "TermID": "EMP-002",
+      "field": "AudioUS",
+      "filename": "EMP-002_US.mp3",
+      "package_path": "audio/EMP-002_US.mp3",
+      "bytes": 18852,
+      "sha256": "26ec9c067d4f64c9392a0110abae4efebfae7371e58527754b9fc70932abab09"
+    },
+    {
+      "TermID": "EMP-003",
+      "field": "AudioUS",
+      "filename": "EMP-003_US.mp3",
+      "package_path": "audio/EMP-003_US.mp3",
+      "bytes": 23449,
+      "sha256": "42d602db0ae188d1841af00acae9ceb9cda2b9752d3fb30d5e1747b849a21ac9"
+    },
+    {
+      "TermID": "EMP-004",
+      "field": "AudioUS",
+      "filename": "EMP-004_US.mp3",
+      "package_path": "audio/EMP-004_US.mp3",
+      "bytes": 27629,
+      "sha256": "d6672c05805c3d6f57c4482edfa5206af95366e47f0e2e30c3c17cd6fa16a1d9"
+    },
+    {
+      "TermID": "EMP-005",
+      "field": "AudioUS",
+      "filename": "EMP-005_US.mp3",
+      "package_path": "audio/EMP-005_US.mp3",
+      "bytes": 16762,
+      "sha256": "18c2687c97b96e62839de8bf29f9c05fdb012edd641ca4e477dda9003777eb04"
+    },
+    {
+      "TermID": "EMP-006",
+      "field": "AudioUS",
+      "filename": "EMP-006_US.mp3",
+      "package_path": "audio/EMP-006_US.mp3",
+      "bytes": 20942,
+      "sha256": "fa8cf24f17be1931fd407e73bcaf8576a419b0b7bf8052c2553112357ce74d02"
+    },
+    {
+      "TermID": "EMP-007",
+      "field": "AudioUS",
+      "filename": "EMP-007_US.mp3",
+      "package_path": "audio/EMP-007_US.mp3",
+      "bytes": 18852,
+      "sha256": "e80b2a715b28b2d3b8cd160189913409a24b0a6e85388f9a5db25e5658f27ff3"
+    },
+    {
+      "TermID": "EMP-008",
+      "field": "AudioUS",
+      "filename": "EMP-008_US.mp3",
+      "package_path": "audio/EMP-008_US.mp3",
+      "bytes": 21777,
+      "sha256": "83a6200962d351c9cde8e8051f93785c82ffce8e7167125b98d270004c535a26"
+    },
+    {
+      "TermID": "EMP-009",
+      "field": "AudioUK",
+      "filename": "EMP-009_UK.mp3",
+      "package_path": "audio/EMP-009_UK.mp3",
+      "bytes": 41725,
+      "sha256": "6b6505f1b0ecb6e633ca6f8406d7d11ced301f2fd76c0fa4d204ce9fcb7f3773"
+    },
+    {
+      "TermID": "EMP-009",
+      "field": "AudioUS",
+      "filename": "EMP-009_US.mp3",
+      "package_path": "audio/EMP-009_US.mp3",
+      "bytes": 25539,
+      "sha256": "009a08a650448b6145fc67b7d4c893422cd57f44b79b44ebf7e7c7bcf6329ef6"
+    },
+    {
+      "TermID": "EMP-010",
+      "field": "AudioUS",
+      "filename": "EMP-010_US.mp3",
+      "package_path": "audio/EMP-010_US.mp3",
+      "bytes": 21777,
+      "sha256": "7807e70471a015113894e90f081a1e281aace821adad122cb0ed37118f508c18"
+    }
+  ]
+}
