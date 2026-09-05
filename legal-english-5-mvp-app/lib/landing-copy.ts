@@ -5,7 +5,7 @@ import type { Locale } from "@/lib/i18n";
 export const PLAN_PRICES = ["$0", "$9.99", "$79.99"] as const;
 
 export type LandingCopy = {
-  nav: { home: string; library: string; how: string; pricing: string; about: string; signIn: string; trial: string };
+  nav: { home: string; library: string; how: string; pricing: string; about: string; signIn: string; trial: string; dashboard: string; signOut: string };
   hero: {
     title1: string;
     title2: string;
@@ -72,7 +72,7 @@ export type LandingCopy = {
 };
 
 const en: LandingCopy = {
-  nav: { home: "Home", library: "Terms Library", how: "How It Works", pricing: "Pricing", about: "About", signIn: "Sign In", trial: "Start 7-Day Free Trial" },
+  nav: { home: "Home", library: "Terms Library", how: "How It Works", pricing: "Pricing", about: "About", signIn: "Sign In", trial: "Start 7-Day Free Trial", dashboard: "My dashboard", signOut: "Sign out" },
   hero: {
     title1: "Master Legal English",
     title2: "in 5-Minute Sessions.",
@@ -232,7 +232,7 @@ const en: LandingCopy = {
 };
 
 const es: LandingCopy = {
-  nav: { home: "Inicio", library: "Biblioteca de términos", how: "Cómo funciona", pricing: "Precios", about: "Nosotros", signIn: "Iniciar sesión", trial: "Prueba gratis de 7 días" },
+  nav: { home: "Inicio", library: "Biblioteca de términos", how: "Cómo funciona", pricing: "Precios", about: "Nosotros", signIn: "Iniciar sesión", trial: "Prueba gratis de 7 días", dashboard: "Mi panel", signOut: "Cerrar sesión" },
   hero: {
     title1: "Domina el inglés jurídico",
     title2: "en sesiones de 5 minutos.",

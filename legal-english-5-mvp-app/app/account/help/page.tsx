@@ -83,7 +83,7 @@ export default function HelpPage() {
             <Link href="/admin">{t("navAdmin")}</Link>
           </section>
         )}
-        <section className="account-card">
+        <section className="account-card" id="contact">
           <div className="settings-card-head">
             <Icon name="help" />
             <div>

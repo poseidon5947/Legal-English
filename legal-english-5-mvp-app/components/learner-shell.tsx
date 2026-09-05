@@ -163,7 +163,7 @@ export function LearnerShell({
   ];
   const subscriptionActive = session.subscription.status === "active";
   const unreadMail = inbox.filter((mail) => mail.code).length;
-  const notificationCount = pageClass.includes("how-works-page") ? 6 : unreadMail;
+  const notificationCount = unreadMail;
   const searchValue = onSearch ? search ?? "" : query;
   // Typeahead (only where the page itself does not filter live): top matches by
   // term name first, then by definition/equivalents.
@@ -200,7 +200,7 @@ export function LearnerShell({
           <span />
           <span />
         </button>
-        <Link className="terms-reference-brand" href="/dashboard">
+        <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
           <ShellIcon name="logo-shield" />
           <span>
             <strong>LEGAL ENGLISH 5</strong>
@@ -213,7 +213,7 @@ export function LearnerShell({
       {menuOpen && <button type="button" className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
       <aside className={`terms-reference-sidebar${menuOpen ? " is-open" : ""}`} id="learner-drawer">
         <div>
-          <Link className="terms-reference-brand" href="/dashboard">
+          <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
             <ShellIcon name="logo-shield" />
             <span>
               <strong>LEGAL ENGLISH 5</strong>

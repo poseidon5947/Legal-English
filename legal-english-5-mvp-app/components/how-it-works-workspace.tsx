@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
+import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
+import { countsFor, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
 
 type HowIconName =
   | "explore-search"
@@ -23,115 +26,145 @@ function HowIcon({ name, className = "" }: { name: HowIconName; className?: stri
   return <img className={`how-works-icon ${className}`.trim()} src={`/how-it-works-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-const steps = [
-  {
-    title: "Explore Terms",
-    text: "Browse or search our comprehensive library of legal terms. Each term includes clear definitions and real-world examples.",
-    icon: "explore-search",
-    tone: "blue",
-  },
-  {
-    title: "Learn & Understand",
-    text: "Read detailed explanations, view usage in context, and add important terms to your library.",
-    icon: "learn-book",
-    tone: "green",
-  },
-  {
-    title: "Practice with Quizzes",
-    text: "Test your knowledge with interactive quizzes and track your progress over time.",
-    icon: "quiz-clipboard",
-    tone: "purple",
-  },
-  {
-    title: "Track Your Progress",
-    text: "Monitor your learning journey with detailed statistics and personalized insights.",
-    icon: "progress-chart",
-    tone: "orange",
-  },
-  {
-    title: "Master Legal English",
-    text: "Stay consistent, reach your goals, and confidently use Legal English in real situations.",
-    icon: "mastery-award",
-    tone: "blue",
-  },
-] as const;
+const REASONS: ReadonlyArray<readonly [LearnerKey, LearnerKey, HowIconName, string]> = [
+  ["howWhy1Title", "howWhy1Body", "reviewed-shield", "green"],
+  ["howWhy2Title", "howWhy2Body", "practical-target", "purple"],
+  ["howWhy3Title", "howWhy3Body", "pace-clock", "orange"],
+  ["howWhy4Title", "howWhy4Body", "secure-lock", "blue"],
+];
 
-const reasons = [
-  ["Expert-Reviewed Content", "All terms and examples are reviewed by legal professionals.", "reviewed-shield", "green"],
-  ["Practical & Relevant", "Learn the terms you need with examples from real legal situations.", "practical-target", "purple"],
-  ["Learn at Your Pace", "Study anytime, anywhere with flexible learning that fits your schedule.", "pace-clock", "orange"],
-  ["Secure & Reliable", "Your progress and personal data are always safe with us.", "secure-lock", "blue"],
-] as const;
-
-const referenceStats = {
-  masteryPct: 90,
-  studied: 82,
-  mastered: 56,
-  attempts: 24,
-  accuracyPct: 78,
-};
-
+/**
+ * "How It Works" for signed-in learners. The five steps are the real learning
+ * loop (library → term → quiz → progress → daily session) and each one links to
+ * the page where it happens and shows whether this learner has done it yet. The
+ * progress rail reads the same counts as the Progress page, so it never shows a
+ * number the learner cannot find elsewhere.
+ */
 export function HowItWorksWorkspace() {
+  const { terms, progress, progressRows, session } = useApp();
   const { locale } = useLocale();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
+
+  const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
+  const counts = countsFor(visible, progress);
+  const streak = streakFor(progressRows);
+  const started = counts.studied > 0 || counts.attempts > 0;
+
+  // The best term to open next: something in progress first, otherwise a new one.
+  const nextTerm = useMemo(() => {
+    const learning = visible.find((term) => stateOf(progress, term.id) === "learning");
+    return learning ?? visible.find((term) => stateOf(progress, term.id) === "new") ?? visible[0] ?? null;
+  }, [visible, progress]);
+  const nextHref = nextTerm ? `/terms/${nextTerm.id}` : "/terms";
+
+  const steps: ReadonlyArray<{
+    title: LearnerKey;
+    body: LearnerKey;
+    cta: LearnerKey;
+    icon: HowIconName;
+    tone: string;
+    href: string;
+    done: boolean;
+    stat: string;
+  }> = [
+    { title: "howStep1Title", body: "howStep1Body", cta: "howStep1Cta", icon: "explore-search", tone: "blue", href: "/terms", done: counts.studied > 0, stat: L("howStat1", { n: counts.studied, total: counts.total }) },
+    { title: "howStep2Title", body: "howStep2Body", cta: "howStep2Cta", icon: "learn-book", tone: "green", href: nextHref, done: counts.favourites > 0, stat: L("howStat2", { n: counts.favourites }) },
+    { title: "howStep3Title", body: "howStep3Body", cta: "howStep3Cta", icon: "quiz-clipboard", tone: "purple", href: "/quizzes", done: counts.attempts > 0, stat: L("howStat3", { n: counts.attempts }) },
+    { title: "howStep4Title", body: "howStep4Body", cta: "howStep4Cta", icon: "progress-chart", tone: "orange", href: "/progress", done: streak.current > 0, stat: L("howStat4", { n: streak.current }) },
+    { title: "howStep5Title", body: "howStep5Body", cta: "howStep5Cta", icon: "mastery-award", tone: "blue", href: "/dashboard", done: counts.mastered > 0, stat: L("howStat5", { n: counts.mastered, total: counts.total }) },
+  ];
+
+  const ring = `conic-gradient(var(--how-green) 0 ${counts.masteryPct}%, #e8eef7 ${counts.masteryPct}% 100%)`;
 
   return (
     <LearnerShell pageClass="how-works-page">
       <div className="how-works-content">
         <section className="how-works-main">
           <div className="how-works-heading">
-            <h1>How It Works</h1>
-            <p>Legal English 5 is designed to help you learn, practice, and master legal terms in a simple and effective way.</p>
+            <p className="eyebrow">{L("howEyebrow")}</p>
+            <h1>{L("howTitle")}</h1>
+            <p>{L("howLead")}</p>
           </div>
 
-          <section className="how-works-steps" aria-label="How Legal English 5 works">
+          <ol className="how-works-steps" aria-label={L("howStepsLabel")}>
             {steps.map((step, index) => (
-              <article className={`how-works-step ${step.tone}`} key={step.title}>
-                <span className="how-works-step-number">{index + 1}</span>
+              <li className={`how-works-step ${step.tone}${step.done ? " is-done" : ""}`} key={step.title}>
+                <span className="how-works-step-number" aria-hidden="true">
+                  {step.done ? (
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 8.5l3.2 3L13 4.5" />
+                    </svg>
+                  ) : (
+                    index + 1
+                  )}
+                </span>
                 <span className="how-works-step-icon">
                   <HowIcon name={step.icon} />
                 </span>
-                <div>
-                  <h2>{step.title}</h2>
-                  <p>{step.text}</p>
+                <div className="how-works-step-body">
+                  <h2>
+                    <Link href={step.href}>{L(step.title)}</Link>
+                  </h2>
+                  <p>{L(step.body)}</p>
+                  <div className="how-works-step-meta">
+                    <span className={`how-works-step-state${step.done ? " done" : ""}`}>
+                      <i aria-hidden="true" />
+                      {step.done ? L("howStepDone") : L("howStepTodo")}
+                      <em>· {step.stat}</em>
+                    </span>
+                    <Link href={step.href}>{L(step.cta)} →</Link>
+                  </div>
                 </div>
-              </article>
+              </li>
             ))}
-          </section>
+          </ol>
 
           <section className="how-works-result-card">
             <span>
               <HowIcon name="built-star" />
             </span>
             <div>
-              <h2>Built for real results</h2>
-              <p>Our structured learning system, expert content, and smart tracking help you build lasting knowledge and skills.</p>
+              <h2>{L("howResultTitle")}</h2>
+              <p>{L("howResultBody")}</p>
             </div>
-            <Link href="/terms">Start Learning</Link>
+            <Link href={started ? "/dashboard" : nextHref}>{started ? L("howContinueLearning") : L("howStartLearning")}</Link>
           </section>
 
           <p className="how-works-support-line">
             <HowIcon name="support-bulb" />
-            Have questions? We&apos;re here to help you succeed.
-            <Link href="/account/help">Contact Support</Link>
+            {L("howSupportLine")}
+            <Link href="/account/help#contact">{L("howContactSupport")}</Link>
           </p>
         </section>
 
         <aside className="how-works-rail">
-          <section className="how-works-panel how-works-progress-card">
+          <section className="how-works-panel how-works-progress-card" aria-label={L("yourProgress")}>
             <h2>{L("yourProgress")}</h2>
             <div className="how-works-progress-body">
-              <div className="how-works-ring" style={{ background: `conic-gradient(var(--how-green) 0 ${referenceStats.masteryPct}%, #e8eef7 ${referenceStats.masteryPct}% 100%)` }}>
-                <strong>{referenceStats.masteryPct}%</strong>
+              <div className="how-works-ring" style={{ background: ring }} role="img" aria-label={`${counts.masteryPct}% ${L("stateMastered")}`}>
+                <strong>{counts.masteryPct}%</strong>
                 <span>{L("stateMastered")}</span>
               </div>
               <dl>
-                <div><dt>{L("termsStudied")}</dt><dd>{referenceStats.studied}</dd></div>
-                <div><dt>{L("termsMastered")}</dt><dd>{referenceStats.mastered}</dd></div>
-                <div><dt>{L("quizzesCompleted")}</dt><dd>{referenceStats.attempts}</dd></div>
-                <div><dt>{L("quizAccuracy")}</dt><dd>{referenceStats.accuracyPct}%</dd></div>
+                <div>
+                  <dt>{L("termsStudied")}</dt>
+                  <dd>{counts.studied}</dd>
+                </div>
+                <div>
+                  <dt>{L("termsMastered")}</dt>
+                  <dd>{counts.mastered}</dd>
+                </div>
+                <div>
+                  <dt>{L("quizzesCompleted")}</dt>
+                  <dd>{counts.attempts}</dd>
+                </div>
+                <div>
+                  <dt>{L("quizAccuracy")}</dt>
+                  <dd>{counts.accuracyPct}%</dd>
+                </div>
               </dl>
             </div>
+            {!started && <p className="how-works-progress-empty">{L("howProgressEmpty")}</p>}
             <Link href="/progress">
               <HowIcon name="progress-chart" />
               {L("viewFullProgress")}
@@ -139,16 +172,16 @@ export function HowItWorksWorkspace() {
           </section>
 
           <section className="how-works-panel how-works-reasons-card">
-            <h2>Why Learn with Legal English 5?</h2>
+            <h2>{L("howWhyTitle")}</h2>
             <div className="how-works-reason-list">
-              {reasons.map(([title, text, icon, tone]) => (
+              {REASONS.map(([title, body, icon, tone]) => (
                 <article className={`how-works-reason ${tone}`} key={title}>
                   <span>
-                    <HowIcon name={icon as HowIconName} />
+                    <HowIcon name={icon} />
                   </span>
                   <div>
-                    <h3>{title}</h3>
-                    <p>{text}</p>
+                    <h3>{L(title)}</h3>
+                    <p>{L(body)}</p>
                   </div>
                 </article>
               ))}
@@ -156,10 +189,10 @@ export function HowItWorksWorkspace() {
           </section>
 
           <section className="how-works-panel how-works-help-card">
-            <h2>Need More Help?</h2>
-            <p>Check out our Help Center or contact our support team for any questions.</p>
+            <h2>{L("howHelpTitle")}</h2>
+            <p>{L("howHelpBody")}</p>
             <Link href="/account/help">
-              Visit Help Center
+              {L("howHelpCta")}
               <HowIcon name="external-link" />
             </Link>
           </section>

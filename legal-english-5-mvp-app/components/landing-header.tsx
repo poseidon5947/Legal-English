@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useApp } from "@/components/app-provider";
 import { BrandMark } from "@/components/brand-mark";
 import { useLocale } from "@/components/locale-provider";
 import { landingCopy } from "@/lib/landing-copy";
@@ -10,7 +11,9 @@ import { landingCopy } from "@/lib/landing-copy";
 export function LandingHeader() {
   const path = usePathname();
   const { locale, setLocale, t } = useLocale();
+  const { ready, session, signOut } = useApp();
   const nav = landingCopy[locale].nav;
+  const signedIn = ready && Boolean(session);
   const [open, setOpen] = useState(false);
   const links: ReadonlyArray<readonly [string, string]> = [
     ["/", nav.home],
@@ -72,12 +75,25 @@ export function LandingHeader() {
           <i>/</i>
           <b className={locale === "es" ? "on" : ""}>ES</b>
         </button>
-        <Link href="/login" onClick={() => setOpen(false)}>
-          {nav.signIn}
-        </Link>
-        <Link className="primary inline" href="/login" onClick={() => setOpen(false)}>
-          {nav.trial}
-        </Link>
+        {signedIn ? (
+          <>
+            <button type="button" className="landing-signout" onClick={() => void signOut().then(() => setOpen(false))}>
+              {nav.signOut}
+            </button>
+            <Link className="primary inline" href="/dashboard" onClick={() => setOpen(false)}>
+              {nav.dashboard}
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link href="/login" onClick={() => setOpen(false)}>
+              {nav.signIn}
+            </Link>
+            <Link className="primary inline" href="/login" onClick={() => setOpen(false)}>
+              {nav.trial}
+            </Link>
+          </>
+        )}
       </div>
       {open && <button type="button" className="landing-menu-backdrop" aria-label={menuLabel} onClick={() => setOpen(false)} />}
     </header>
