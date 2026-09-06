@@ -123,7 +123,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function hydrate() {
-    const data = await fetch("/api/bootstrap", { cache: "no-store", credentials: "include" }).then((r) => r.json());
+    // Default cache mode (not no-store) so this reuses the <link rel="preload">
+    // response the layout starts before hydration; the route itself answers
+    // with Cache-Control: no-store, so nothing stale is ever served.
+    const data = await fetch("/api/bootstrap", { credentials: "include" }).then((r) => r.json());
     applyBootstrap(data);
   }
 

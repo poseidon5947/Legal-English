@@ -18694,7 +18694,7 @@ h3,
   position: relative;
   min-height: 118px;
   padding: 22px 32px;
-  background: linear-gradient(90deg, rgba(10, 24, 54, 0.96) 0%, rgba(10, 24, 54, 0.82) 55%, rgba(10, 24, 54, 0.6) 100%), url("/home-assets/photos/w/cta-courthouse-1200.webp") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(10, 24, 54, 0.96) 0%, rgba(10, 24, 54, 0.82) 55%, rgba(10, 24, 54, 0.6) 100%), url("/home-assets/photos/w/cta-courthouse-800.webp") center / cover no-repeat;
 }
 
 /* About · photo card + strip */
@@ -19605,6 +19605,18 @@ html {
 .home-ref-benefits,
 .home-ref-product {
   animation: home-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* The headline is the page's Largest Contentful Paint. It slides in but never
+   fades from transparent, so the browser can count it as painted immediately
+   (a fade-in used to push LCP from ~250 ms to ~1 s). */
+@keyframes home-rise-solid {
+  from { transform: translate3d(0, 18px, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+.home-ref-copy h1 {
+  animation: home-rise-solid 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .home-ref-copy > p {
@@ -24894,5 +24906,226 @@ textarea:focus-visible {
   .account-ref-setting-row .account-ref-pill,
   .account-ref-setting-row .account-ref-row-link {
     justify-self: start;
+  }
+}
+
+/* =====================================================================
+   Interaction system: every button and button-like link shares one
+   motion language (fast hover lift, press-down on click, spinner while a
+   request is in flight, quiet disabled state). Selectors are wrapped in
+   :where() so they never out-rank a component's own colours.
+   ===================================================================== */
+:where(button, .primary, .ghost, .text-button, a.primary, a.ghost, .auth-reference-submit, [role="button"]) {
+  transition:
+    transform 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    opacity 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Press feedback: the element settles down 1 px while the pointer is held. */
+:where(button, .primary, .ghost, a.primary, a.ghost, .auth-reference-submit):not(:disabled):not([aria-busy="true"]):active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: 0.06s;
+}
+
+:where(button, .primary, .ghost):disabled,
+:where(button, .primary, .ghost)[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* In-flight requests: the label stays legible, a ring spins at the right edge,
+   and further clicks are ignored until the promise settles. */
+[aria-busy="true"]:where(button, .primary, .ghost, .auth-reference-submit) {
+  position: relative;
+  pointer-events: none;
+  padding-right: calc(18px + 1.4em);
+  opacity: 0.85;
+  cursor: progress;
+}
+
+[aria-busy="true"]:where(button, .primary, .ghost, .auth-reference-submit)::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: button-spin 0.7s linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(button, .primary, .ghost, .text-button, a.primary, a.ghost, .auth-reference-submit, [role="button"]) {
+    transition-duration: 0.01ms;
+  }
+
+  :where(button, .primary, .ghost, a.primary, a.ghost, .auth-reference-submit):not(:disabled):active {
+    transform: none;
+  }
+}
+
+/* ---- Owner console · Insights (visits, Web Vitals, top pages) ---- */
+.admin-insights {
+  margin-top: 18px;
+}
+
+.admin-insights .chart-svg.funnel {
+  max-width: none;
+  margin-top: 6px;
+}
+
+.admin-insights-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.admin-insights-head p {
+  margin-bottom: 10px;
+}
+
+.admin-insights-range {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+.admin-insights-range button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.admin-insights-range button.active {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 2px 6px rgba(7, 27, 73, 0.1);
+}
+
+.admin-insights-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+
+.admin-insights-kpis div {
+  display: grid;
+  gap: 2px;
+}
+
+.admin-insights-kpis strong {
+  font-size: 1.25rem;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.admin-insights-kpis span {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.admin-insights-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.admin-insights-empty {
+  padding: 18px 0 6px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.admin-vitals {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-vital {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.admin-vital > div {
+  display: grid;
+  gap: 1px;
+}
+
+.admin-vital > div:last-child {
+  text-align: right;
+}
+
+.admin-vital strong {
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.admin-vital small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.admin-vital b {
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-vital span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-vital.good { border-left-color: #1f9d6a; }
+.admin-vital.good span { color: #1f9d6a; }
+.admin-vital.needs-improvement { border-left-color: #d8a852; }
+.admin-vital.needs-improvement span { color: #b07d1f; }
+.admin-vital.poor { border-left-color: #d64545; }
+.admin-vital.poor span { color: #d64545; }
+.admin-vital.none { border-left-color: var(--line); }
+.admin-vital.none span { color: var(--muted); }
+
+@media (max-width: 960px) {
+  .admin-insights-head {
+    flex-direction: column;
+  }
+
+  .admin-insights-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

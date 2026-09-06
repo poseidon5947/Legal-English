@@ -5,6 +5,7 @@ import { AUDIO_MIME, extensionOf, type AudioJurisdiction } from "./audio-naming"
 import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } from "./billing-state";
 import { ALPHA_SESSION_COOKIE, hashPassword, oneTimeCode, readSession, verifyPassword } from "./crypto";
 import { entitlementFor } from "./entitlement";
+import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
 import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User, BillingRecord } from "./types";
 
@@ -632,6 +633,36 @@ export async function removeAudio(actorId: string, termId: string, jurisdiction:
   if (term.published && !canPublish(term)) term.published = false;
   save(data);
   return { ok: true as const, terms: data.terms };
+}
+
+/* ---- Visitor insights (anonymous page views + Web Vitals) ---------------- */
+
+const INSIGHTS_FILE = join(DIR, "insights.json");
+
+function loadInsights(): InsightEvent[] {
+  if (!existsSync(INSIGHTS_FILE)) return [];
+  try {
+    return JSON.parse(readFileSync(INSIGHTS_FILE, "utf8")) as InsightEvent[];
+  } catch {
+    return [];
+  }
+}
+
+export async function recordInsights(events: InsightEvent[]) {
+  if (!events.length) return { ok: true as const };
+  const cutoff = Date.now() - INSIGHTS_RETENTION_DAYS * 86_400_000;
+  const kept = loadInsights().filter((event) => new Date(event.at).getTime() >= cutoff);
+  kept.push(...events);
+  if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
+  // Newline-free JSON keeps the file compact; 90 days of alpha traffic stays in the low MB.
+  writeFileSync(INSIGHTS_FILE, JSON.stringify(kept));
+  return { ok: true as const };
+}
+
+export async function insightSummary(actorId: string, days = 14) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  return { ok: true as const, summary: summarizeInsights(loadInsights(), days) };
 }
 
 export async function metrics() {

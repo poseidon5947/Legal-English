@@ -191,7 +191,7 @@ export function LearnerShell({
     router.push(needle ? `/terms?search=${encodeURIComponent(query.trim())}` : "/terms");
   };
   return (
-    <main className={`terms-reference-page learner-shell ${pageClass}${menuOpen ? " drawer-open" : ""}`.trim()}>
+    <main id="main" className={`terms-reference-page learner-shell ${pageClass}${menuOpen ? " drawer-open" : ""}`.trim()}>
       <header className="learner-mobile-bar">
         <button
           type="button"

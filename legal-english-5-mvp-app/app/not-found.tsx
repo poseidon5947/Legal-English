@@ -35,7 +35,7 @@ export default function NotFound() {
     document.title = `${c.tab} · Legal English 5`;
   }, [c.tab]);
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="not-found">
         <span className="eyebrow">{c.eyebrow}</span>

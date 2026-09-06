@@ -1,5 +1,6 @@
 import { freshTrial } from "./billing-state";
 import { entitlementFor } from "./entitlement";
+import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
 import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
@@ -702,6 +703,54 @@ export async function rollbackImportRun(actorId: string, runId: string) {
   const { data, error } = await supabase.rpc("rollback_import_run", { run_id: runId });
   if (error) return { ok: false as const, message: error.message };
   return { ok: true as const, terms: await listTerms(true), result: data as { restoredTerms: number; deletedTerms: number } };
+}
+
+/* ---- Visitor insights (anonymous page views + Web Vitals) ---------------- */
+
+/**
+ * Written through the service role: the beacon is sent by anonymous
+ * visitors, so there is no user session to write under. RLS on the table
+ * therefore only needs a read policy for the Owner (see 006_insights.sql).
+ */
+export async function recordInsights(events: InsightEvent[]) {
+  if (!events.length) return { ok: true as const };
+  const admin = getSupabaseServiceRoleClient();
+  const rows = events.map((event) => ({
+    kind: event.kind,
+    path: event.path,
+    locale: event.locale,
+    device: event.device,
+    sid: event.sid,
+    name: event.name ?? null,
+    value: event.value ?? null,
+    at: event.at,
+  }));
+  const { error } = await admin.from("insights").insert(rows);
+  if (error) return { ok: false as const, message: error.message };
+  // Opportunistic retention sweep (cheap: indexed on `at`).
+  const cutoff = new Date(Date.now() - INSIGHTS_RETENTION_DAYS * 86_400_000).toISOString();
+  await admin.from("insights").delete().lt("at", cutoff);
+  return { ok: true as const };
+}
+
+export async function insightSummary(actorId: string, days = 14) {
+  const admin = getSupabaseServiceRoleClient();
+  const { data: actor } = await admin.from("users").select("role").eq("id", actorId).maybeSingle();
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const since = new Date(Date.now() - days * 86_400_000).toISOString();
+  const { data, error } = await admin.from("insights").select("kind, path, locale, device, sid, name, value, at").gte("at", since).limit(50_000);
+  if (error) return { ok: false as const, message: error.message };
+  const events = (data ?? []).map((row) => ({
+    kind: row.kind as InsightEvent["kind"],
+    path: String(row.path),
+    locale: row.locale as InsightEvent["locale"],
+    device: row.device as InsightEvent["device"],
+    sid: String(row.sid),
+    name: (row.name ?? undefined) as InsightEvent["name"],
+    value: row.value === null ? undefined : Number(row.value),
+    at: new Date(String(row.at)).toISOString(),
+  }));
+  return { ok: true as const, summary: summarizeInsights(events, days) };
 }
 
 export async function metrics() {

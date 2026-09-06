@@ -16,6 +16,82 @@ export function siteUrl(): URL {
   return new URL(`http://localhost:${process.env.PORT || 3000}`);
 }
 
+/* ---- Structured data (schema.org) --------------------------------------- */
+
+const ORGANIZATION_ID = "#organization";
+
+/** Site-wide graph: who publishes the site and what the site is. Rendered once in the root layout. */
+export function siteJsonLd() {
+  const base = siteUrl().origin;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${base}/${ORGANIZATION_ID}`,
+        name: "MPC Law Studio",
+        url: base,
+        logo: `${base}/home-assets/icons/le5-shield.png`,
+        brand: { "@type": "Brand", name: SITE_NAME },
+        areaServed: "CO",
+        knowsLanguage: ["en", "es"],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${base}/#website`,
+        url: base,
+        name: SITE_NAME,
+        description: SITE_DESCRIPTION,
+        inLanguage: ["en", "es"],
+        publisher: { "@id": `${base}/${ORGANIZATION_ID}` },
+      },
+    ],
+  };
+}
+
+/** The product as a Course (home page). Prices are the public plan prices. */
+export function courseJsonLd(options: { monthly: string; annual: string; termCount: number }) {
+  const base = siteUrl().origin;
+  const price = (label: string) => label.replace(/[^0-9.]/g, "");
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "@id": `${base}/#course`,
+    name: `${SITE_NAME} — Legal English for Spanish-speaking lawyers`,
+    description: SITE_DESCRIPTION,
+    url: base,
+    inLanguage: "en",
+    provider: { "@id": `${base}/${ORGANIZATION_ID}` },
+    educationalLevel: "Professional",
+    teaches: ["Legal English vocabulary", "Contracts", "Corporate Law", "Employment Law"],
+    numberOfCredits: options.termCount,
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      courseWorkload: "PT5M",
+      courseSchedule: { "@type": "Schedule", repeatFrequency: "Daily", duration: "PT5M" },
+    },
+    offers: [
+      { "@type": "Offer", name: "Free trial", price: "0", priceCurrency: "USD", category: "Free", url: `${base}/signup` },
+      { "@type": "Offer", name: "Monthly", price: price(options.monthly), priceCurrency: "USD", url: `${base}/pricing` },
+      { "@type": "Offer", name: "Annual", price: price(options.annual), priceCurrency: "USD", url: `${base}/pricing` },
+    ],
+  };
+}
+
+/** FAQ rich results for the pricing page. */
+export function faqJsonLd(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+}
+
 /** Public routes worth indexing. Learner/owner pages are behind sign-in and stay out. */
 export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/login", "/signup", "/privacy", "/terms-of-service", "/status"] as const;
 

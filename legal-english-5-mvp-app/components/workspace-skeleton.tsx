@@ -1,7 +1,7 @@
 /** Placeholder layout shown while the session bootstraps; mirrors LearnerShell so nothing jumps. */
 export function WorkspaceSkeleton({ status }: { status: string }) {
   return (
-    <main className="workspace-skeleton" aria-busy="true" aria-live="polite">
+    <main id="main" className="workspace-skeleton" aria-busy="true" aria-live="polite">
       <aside className="sk-sidebar" aria-hidden="true">
         <div className="sk brand" />
         {Array.from({ length: 6 }, (_, i) => (

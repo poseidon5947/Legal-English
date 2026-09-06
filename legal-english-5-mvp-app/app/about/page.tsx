@@ -15,7 +15,7 @@ export default function AboutPage() {
     { title: t("step4Title"), body: t("step4Body") },
   ];
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="landing-section">
         <div className="about-showcase">

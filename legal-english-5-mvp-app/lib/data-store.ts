@@ -1,5 +1,6 @@
 import * as alphaStore from "./store";
 import * as productionStore from "./store.supabase";
+import type { InsightEvent, InsightSummary } from "./insights";
 import type { Mail, Plan, Progress, PublicUser, Term } from "./types";
 
 // "alpha" = local JSON file, no external services (default, matches
@@ -64,6 +65,8 @@ export interface Store {
   rollbackImportRun(actorId: string, runId: string): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metrics(): Promise<any>;
+  recordInsights(events: InsightEvent[]): Promise<{ ok: true } | { ok: false; message: string }>;
+  insightSummary(actorId: string, days?: number): Promise<{ ok: true; summary: InsightSummary } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   exportSnapshot(actorId: string): Promise<any>;
   resetStore(): Promise<unknown>;

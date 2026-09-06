@@ -50,6 +50,12 @@ python3 scripts/optimize-icons.py    # palette-quantise new icon/badge PNGs
 
 Account → Profile lets a learner add, change or remove a profile photo. The browser centre-crops and downsizes it to 256×256 WebP (`components/avatar-picker.tsx`) before upload, and `POST /api/account/avatar` re-checks the bytes (real JPG/PNG/WebP, ≤512 KB, ≤1024 px). Alpha mode stores `data/avatars/<userId>.webp` and serves it only to that signed-in user; production stores it in the private `avatars` bucket and returns a signed URL. The photo is included in the learner's data export and deleted together with the account.
 
+### Visitor insights (Owner console → Overview)
+
+The site measures itself instead of loading a third-party analytics script. `components/insight-beacon.tsx` sends anonymous page views and Core Web Vitals (LCP, CLS, INP, TTFB) to `POST /api/insights` — no cookie, no IP, no user agent, no account id; the only identifier is a random per-tab value so visits can be counted. The Owner's Overview tab shows visits per day, p75 vitals against Google's thresholds and the most viewed pages (`GET /api/admin/insights?days=7|14|30`). Alpha mode keeps 90 days in `data/insights.json`; production uses the `insights` table from migration `006`. Automated browsers (`navigator.webdriver`) are excluded so tests never inflate the numbers.
+
+SEO is handled in `lib/site.ts`: per-route titles/canonicals/`noindex`, `sitemap.xml`, `robots.txt`, Open Graph/Twitter cards, and schema.org JSON-LD (`Organization` + `WebSite` on every page, `Course` on the home page, `FAQPage` on Pricing).
+
 ## Switching to production mode (Supabase)
 
 `NEXT_PUBLIC_DATA_MODE` selects the backend: `alpha` (default, above) or
@@ -60,10 +66,11 @@ regardless of which mode is currently set elsewhere.
 
 1. Create the Supabase project (the Owner's account, per the Propuesta §9).
 2. Run `supabase/migrations/001_initial_schema.sql` through
-   `005_profile_photo.sql`, in order — Supabase SQL Editor or
+   `006_insights.sql`, in order — Supabase SQL Editor or
    `supabase db push`, either is fine pre-launch. `005` adds the private
    `avatars` bucket + `users.avatar_path` for the Account-panel profile
-   photo (alpha mode keeps the file under `data/avatars/` instead).
+   photo (alpha mode keeps the file under `data/avatars/` instead); `006`
+   adds the anonymous `insights` table behind the Owner's visitor panel.
 3. Dashboard → Authentication → Emails → SMTP Settings: point it at Resend.
    All verification/recovery mail then sends through Resend without any app
    code change.

@@ -73,7 +73,7 @@ export default function Home() {
   const { locale } = useLocale();
   const c = landingCopy[locale];
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <ScrollEffects />
       <section className="home-ref-hero">

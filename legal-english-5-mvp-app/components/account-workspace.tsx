@@ -141,26 +141,37 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
   const subscription = session.subscription;
   const isOwner = user.role === "admin";
   const planKey: LearnerKey = subscription.plan === "monthly" ? "planMonthly" : subscription.plan === "annual" ? "planAnnual" : subscription.status === "trialing" ? "planTrial" : "planNone";
+  // One in-flight save at a time: the submit button shows a spinner and a
+  // second click cannot send a duplicate request.
+  const [saving, setSaving] = useState<"profile" | "password" | null>(null);
+
   function saveProfile(event: FormEvent) {
     event.preventDefault();
     const trimmed = name.trim();
-    if (trimmed.length < 2) return;
-    void updateProfile(trimmed).then((result) => {
-      setProfileMessage(result.ok ? L("profileSaved") : result.message || t("couldNotContinue"));
-      if (result.ok) setEditing(false);
-    });
+    if (trimmed.length < 2 || saving) return;
+    setSaving("profile");
+    void updateProfile(trimmed)
+      .then((result) => {
+        setProfileMessage(result.ok ? L("profileSaved") : result.message || t("couldNotContinue"));
+        if (result.ok) setEditing(false);
+      })
+      .finally(() => setSaving(null));
   }
 
   function savePassword(event: FormEvent) {
     event.preventDefault();
-    void changePassword(currentPassword, nextPassword).then((result) => {
-      setPasswordMessage(result.ok ? L("passwordChanged") : result.message || t("couldNotContinue"));
-      if (result.ok) {
-        setCurrentPassword("");
-        setNextPassword("");
-        setPasswordOpen(false);
-      }
-    });
+    if (saving) return;
+    setSaving("password");
+    void changePassword(currentPassword, nextPassword)
+      .then((result) => {
+        setPasswordMessage(result.ok ? L("passwordChanged") : result.message || t("couldNotContinue"));
+        if (result.ok) {
+          setCurrentPassword("");
+          setNextPassword("");
+          setPasswordOpen(false);
+        }
+      })
+      .finally(() => setSaving(null));
   }
 
   return (
@@ -433,7 +444,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
               </label>
               {editing && (
                 <div className="account-ref-form-actions">
-                  <button type="submit" className="primary inline">
+                  <button type="submit" className="primary inline" disabled={saving === "profile"} aria-busy={saving === "profile" || undefined}>
                     {L("saveProfile")}
                   </button>
                 </div>
@@ -473,7 +484,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                         required
                         onChange={(event) => setNextPassword(event.target.value)}
                       />
-                      <button type="submit" className="primary inline">
+                      <button type="submit" className="primary inline" disabled={saving === "password"} aria-busy={saving === "password" || undefined}>
                         {L("saveProfile")}
                       </button>
                     </form>

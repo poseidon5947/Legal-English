@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { cookies, headers } from "next/headers";
+import { preload } from "react-dom";
 import "./fonts.css";
 import "./globals.css";
 import { AppProvider } from "@/components/app-provider";
+import { InsightBeacon } from "@/components/insight-beacon";
 import { LocaleProvider } from "@/components/locale-provider";
 import { RouteProgress } from "@/components/route-progress";
 import { SkipLink } from "@/components/skip-link";
 import { ToastProvider } from "@/components/toaster";
-import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
-import type { Locale } from "@/lib/i18n";
+import { JsonLd } from "@/components/json-ld";
+import { SITE_DESCRIPTION, SITE_NAME, siteJsonLd, siteUrl } from "@/lib/site";
+import { serverLocale } from "@/lib/locale-server";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl(),
@@ -51,21 +53,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-/**
- * Resolve the UI language on the server so Spanish users never see an English
- * flash: the cookie the toggle writes wins; a first-time visitor gets the
- * language of the browser (the audience is Spanish-speaking lawyers).
- */
-async function initialLocale(): Promise<Locale> {
-  const saved = (await cookies()).get("le5_locale")?.value;
-  if (saved === "en" || saved === "es") return saved;
-  const accept = ((await headers()).get("accept-language") ?? "").toLowerCase();
-  const first = accept.split(",")[0]?.trim() ?? "";
-  return first.startsWith("es") ? "es" : "en";
-}
-
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const locale = await initialLocale();
+  const locale = await serverLocale();
+  // Every page needs the session/terms payload before it can render real
+  // content. Starting the request from the HTML head (instead of after
+  // hydration) takes ~300 ms off the first meaningful paint of learner pages.
+  preload("/api/bootstrap", { as: "fetch", crossOrigin: "use-credentials" });
   return (
     <html lang={locale} data-scroll-behavior="smooth">
       <head>
@@ -73,6 +66,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <JsonLd data={siteJsonLd()} />
       </head>
       {/* suppressHydrationWarning: browser extensions (Grammarly etc.) inject data-* attributes
           on <body> before React hydrates; they are not part of our markup. */}
@@ -80,6 +74,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <LocaleProvider initialLocale={locale}>
           <SkipLink />
           <RouteProgress />
+          <InsightBeacon />
           <ToastProvider>
             <AppProvider>{children}</AppProvider>
           </ToastProvider>

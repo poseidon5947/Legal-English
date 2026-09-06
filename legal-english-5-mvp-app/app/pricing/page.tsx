@@ -20,7 +20,7 @@ export default function PricingPage() {
     { q: t("faqQ4"), a: t("faqA4") },
   ];
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="landing-section">
         <div className="landing-section-heading">

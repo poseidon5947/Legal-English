@@ -60,7 +60,7 @@ export function LegalDocument({
   }, [ids.join("|")]);
 
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="landing-section legal-page">
         <figure className="legal-banner" aria-hidden="true">

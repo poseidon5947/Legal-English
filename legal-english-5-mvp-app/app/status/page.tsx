@@ -106,7 +106,7 @@ export default function StatusPage() {
   const tone = overall === "operational" || overall === "sandbox" ? "ok" : overall === "degraded" ? "warn" : overall === "loading" ? "idle" : "bad";
 
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="landing-section status-page">
         <div className="landing-section-heading">

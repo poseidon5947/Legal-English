@@ -145,6 +145,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
@@ -153,6 +154,16 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (busy) return;
+    setBusy(true);
+    try {
+      await run();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function run() {
     setError("");
     setNotice("");
     if (mode === "forgot") {
@@ -200,7 +211,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   const demoAccounts = process.env.NEXT_PUBLIC_DATA_MODE === "production" ? [] : DEMO_ACCOUNTS.filter((account) => account.role === "Owner" || account.email.startsWith("maria"));
 
   return (
-    <main className={`auth-reference-page ${isSignup ? "auth-signup-mode" : ""}`}>
+    <main id="main" className={`auth-reference-page ${isSignup ? "auth-signup-mode" : ""}`}>
       <section className="auth-reference-hero">
         <Photo src="/auth-assets/backgrounds/courthouse-auth.jpg" size="wide" priority />
         <div className="auth-reference-overlay" />
@@ -344,7 +355,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             )}
             {notice && <p className="auth-reference-notice">{notice}</p>}
 
-            <button className="auth-reference-submit" type="submit">
+            <button className="auth-reference-submit" type="submit" disabled={busy} aria-busy={busy || undefined}>
               {mode === "login" ? c.signIn : mode === "signup" ? c.createAccount : mode === "forgot" ? c.sendReset : mode === "confirm" ? c.confirm : c.updatePassword}
             </button>
           </form>

@@ -36,7 +36,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
     console.error(error);
   }, [error]);
   return (
-    <main className="landing home-reference">
+    <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="not-found">
         <span className="eyebrow">{c.eyebrow}</span>

@@ -51,7 +51,7 @@ export default function ReviewPage() {
   const { locale } = useLocale();
   const copy = COPY[locale];
   return (
-    <main className="review">
+    <main id="main" className="review">
       <Link className="back-link" href="/">
         ← {copy.back}
       </Link>

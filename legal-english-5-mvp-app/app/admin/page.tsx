@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { AdminInsights } from "@/components/admin-insights";
 import { AppShell } from "@/components/app-shell";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
@@ -81,12 +82,19 @@ export default function AdminPage() {
     );
   }
 
+  const [saving, setSaving] = useState(false);
+
   async function onSave(event: FormEvent) {
     event.preventDefault();
-    if (!editing) return;
-    const result = await saveTerm(editing);
-    setMessage(result.ok ? a("termSaved") : result.message || a("couldNotSave"));
-    if (result.ok) setEditing(null);
+    if (!editing || saving) return;
+    setSaving(true);
+    try {
+      const result = await saveTerm(editing);
+      setMessage(result.ok ? a("termSaved") : result.message || a("couldNotSave"));
+      if (result.ok) setEditing(null);
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function onUploadAudio(jurisdiction: "us" | "uk", file: File) {
@@ -178,14 +186,12 @@ export default function AdminPage() {
           <p className="muted">
             {a("learnersSee", { n: published })}
           </p>
+          <AdminInsights />
           <div className="chart-grid">
             <section className="chart-card">
               <h2>{a("usersGrowth")}</h2>
               <p>{a("usersGrowthBody")}</p>
-              <svg viewBox="0 0 260 150" className="chart-svg funnel" aria-label="Users growth chart">
-                <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24 L232 132 L18 132Z" fill="#E0F1EB" />
-                <path d="M18 124 C44 96, 62 108, 82 76 S124 67, 146 51 190 38, 232 24" fill="none" stroke="#006B5B" strokeWidth="4" strokeLinecap="round" />
-              </svg>
+              <UsersGrowthChart createdAt={users.map((user) => user.createdAt)} locale={locale} />
             </section>
             <section className="chart-card">
               <h2>{a("topCategories")}</h2>
@@ -629,7 +635,7 @@ export default function AdminPage() {
                 <button type="button" onClick={() => setEditing(null)}>
                   {a("cancel")}
                 </button>
-                <button className="primary" type="submit">
+                <button className="primary" type="submit" disabled={saving} aria-busy={saving || undefined}>
                   {a("saveTerm")}
                 </button>
               </div>
@@ -638,5 +644,35 @@ export default function AdminPage() {
         </div>
       )}
     </AppShell>
+  );
+}
+
+
+/** Real sign-up curve: cumulative accounts per day over the last 30 days (was a decorative path). */
+function UsersGrowthChart({ createdAt, locale }: { createdAt: string[]; locale: "en" | "es" }) {
+  const days = 30;
+  const now = Date.now();
+  const series = Array.from({ length: days }, (_, index) => {
+    const end = now - (days - 1 - index) * 86_400_000;
+    return createdAt.filter((iso) => new Date(iso).getTime() <= end).length;
+  });
+  const peak = Math.max(1, ...series);
+  const width = 260;
+  const height = 120;
+  const step = width / (days - 1);
+  const points = series.map((value, index) => [Math.round(index * step), Math.round(height - 8 - (value / peak) * (height - 24))] as const);
+  const line = points.map(([x, y], index) => `${index ? "L" : "M"}${x} ${y}`).join(" ");
+  const label = locale === "es" ? `${series[series.length - 1]} cuentas en total` : `${series[series.length - 1]} accounts in total`;
+  return (
+    <>
+      <svg viewBox={`0 0 ${width} ${height}`} className="chart-svg funnel" role="img" aria-label={label}>
+        <path d={`${line} L${width} ${height} L0 ${height} Z`} fill="#E0F1EB" />
+        <path d={line} fill="none" stroke="#006B5B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <div className="admin-insights-axis" aria-hidden="true">
+        <span>{locale === "es" ? "hace 30 días" : "30 days ago"}</span>
+        <span>{label}</span>
+      </div>
+    </>
   );
 }
