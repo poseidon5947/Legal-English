@@ -4,6 +4,7 @@ import Link from "next/link";
 import { HeroImageFlow } from "@/components/hero-image-flow";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
+import { LessonPreview } from "@/components/lesson-preview";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { Photo } from "@/components/photo";
 import { useLocale } from "@/components/locale-provider";
@@ -142,49 +143,7 @@ export default function Home() {
           <h2>{c.learn.title}</h2>
           <p>{c.learn.lead}</p>
         </div>
-        <div className="home-ref-lesson" data-reveal>
-          <aside>
-            {c.learn.tabs.map((label, index) => (
-              <button className={index === 0 ? "active" : ""} key={label}>
-                <HomeIcon name={tabIcons[index]} />
-                {label}
-              </button>
-            ))}
-          </aside>
-          <article className="home-ref-term">
-            <h3>Consideration</h3>
-            <button aria-label="Play pronunciation">
-              <HomeIcon name="speaker" />
-            </button>
-            <p className="home-ref-pronunciation">{c.learn.pronunciation}</p>
-            <p>{c.learn.definition}</p>
-            <div>
-              <strong>{c.learn.exampleLabel}</strong>
-              <span>{c.learn.example}</span>
-            </div>
-          </article>
-          <article className="home-ref-quiz">
-            <div>
-              <strong>{c.learn.quickQuiz}</strong>
-              <span>{c.learn.quizCount}</span>
-            </div>
-            <h3>{c.learn.question}</h3>
-            {c.learn.options.map((label, index) => {
-              const checked = index === 2;
-              return (
-                <label className={checked ? "selected" : ""} key={label}>
-                  <input type="radio" checked={checked} readOnly />
-                  {label}
-                  {checked && <HomeIcon name="shield-badge" />}
-                </label>
-              );
-            })}
-            <Link className="primary" href="/login">
-              {c.learn.check}
-            </Link>
-            <Link href="/quizzes">{c.learn.viewFull}</Link>
-          </article>
-        </div>
+        <LessonPreview copy={c.learn} locale={locale} tabIcons={tabIcons} renderIcon={({ name }) => <HomeIcon name={name as HomeIconName} />} />
       </section>
 
       <section className="home-ref-workflow">
