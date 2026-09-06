@@ -25129,3 +25129,21 @@ textarea:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---- Focus rings only for keyboard users ----
+   components/input-modality.tsx sets data-input on <html>. After a mouse or
+   touch interaction the ring is hidden (nothing "stays lit" on the button that
+   was just clicked); pressing Tab/arrow keys turns it back on immediately.
+   Text fields keep their own :focus border, which is unaffected. */
+html[data-input="pointer"] :focus-visible,
+html[data-input="pointer"] a:focus,
+html[data-input="pointer"] button:focus,
+html[data-input="pointer"] summary:focus,
+html[data-input="pointer"] [role="button"]:focus,
+html[data-input="pointer"] [role="tab"]:focus {
+  outline: none !important;
+}
+
+html[data-input="pointer"] .skip-link:focus-visible {
+  outline: 2px solid #2e7de6 !important;
+}

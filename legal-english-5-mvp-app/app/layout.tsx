@@ -53,6 +53,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// 1. Track modality on <html data-input>. 2. In pointer mode, links/buttons do not
+//    keep focus after a click (form fields are never touched), so no focus ring —
+//    ours, the browser's default, or one drawn by an extension/OS highlighter —
+//    can stay on the element that was just clicked. Keyboard mode is untouched.
+const INPUT_MODALITY_SCRIPT = `(function(){var h=document.documentElement,k=["Tab","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Home","End"],m=/^(A|BUTTON|SUMMARY)$/;function p(){h.setAttribute("data-input","pointer")}function b(t){return t&&t.nodeType===1&&(m.test(t.tagName)||t.getAttribute("role")==="button"||t.getAttribute("role")==="tab")&&!t.isContentEditable}function r(){if(h.getAttribute("data-input")!=="pointer")return;var a=document.activeElement;if(b(a))a.blur()}addEventListener("pointerdown",p,true);addEventListener("mousedown",p,true);addEventListener("touchstart",p,{capture:true,passive:true});addEventListener("keydown",function(e){if(k.indexOf(e.key)>-1)h.setAttribute("data-input","keyboard")},true);addEventListener("click",function(){setTimeout(r,0)},false);addEventListener("focusin",function(e){if(h.getAttribute("data-input")==="pointer"&&b(e.target))setTimeout(r,0)},true)})();`;
+
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const locale = await serverLocale();
   // Every page needs the session/terms payload before it can render real
@@ -60,13 +66,17 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   // hydration) takes ~300 ms off the first meaningful paint of learner pages.
   preload("/api/bootstrap", { as: "fetch", crossOrigin: "use-credentials" });
   return (
-    <html lang={locale} data-scroll-behavior="smooth">
+    <html lang={locale} data-scroll-behavior="smooth" data-input="pointer" suppressHydrationWarning>
       <head>
         {/* Fonts are self-hosted (public/fonts) so no request leaves for Google; preload the three faces above the fold. */}
         <link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <JsonLd data={siteJsonLd()} />
+        {/* Focus-ring modality (see globals.css "Focus rings only for keyboard users").
+            Inline and first in <head> so it is active before React hydrates: a click that
+            lands while the JS bundle is still downloading must not leave a ring behind. */}
+        <script dangerouslySetInnerHTML={{ __html: INPUT_MODALITY_SCRIPT }} />
       </head>
       {/* suppressHydrationWarning: browser extensions (Grammarly etc.) inject data-* attributes
           on <body> before React hydrates; they are not part of our markup. */}
