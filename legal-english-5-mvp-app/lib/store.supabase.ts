@@ -1,9 +1,14 @@
-import { freshTrial } from "./billing-state";
+import { applyBillingEvent, freshTrial } from "./billing-state";
+import { canLearn, canStudyTerm, lockTerm } from "./access";
+import { normalizePreferences } from "./preferences";
+import { acceptDay, type StudyDelta } from "./study-day";
 import { entitlementFor } from "./entitlement";
+import { cancelPreapproval, createPreapproval, mercadoPagoConfig } from "./mercadopago";
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
-import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
+import type { Preferences } from "./preferences";
+import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, StudyDay, SupportTicket, TicketStatus, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
 
 // Production data layer: Supabase Auth for identity, Postgres + RLS for
 // everything else. Every exported function here has the exact name/shape as
@@ -216,7 +221,20 @@ export async function getUser(id: string): Promise<PublicUser | null> {
     subscription: rowToSubscription(sub),
     disabledAt: (profile.disabled_at as string | null) ?? null,
     privacyAcceptedAt: (profile.privacy_accepted_at as string | null) ?? null,
+    preferences: normalizePreferences(profile.preferences as Partial<Preferences> | null),
   };
+}
+
+export async function updatePreferences(userId: string, patch: unknown) {
+  const current = await getUser(userId);
+  if (!current) return { ok: false as const, message: "Sign in required." };
+  const preferences = normalizePreferences(current.preferences, patch);
+  // Written under the learner's own session: "users update own name" covers
+  // the row; the column was added by migration 007.
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.from("users").update({ preferences, updated_at: new Date().toISOString() }).eq("id", userId);
+  if (error) return { ok: false as const, message: error.message };
+  return { ok: true as const, user: { ...current, preferences } };
 }
 
 async function listUsers(): Promise<PublicUser[]> {
@@ -241,6 +259,7 @@ async function listUsers(): Promise<PublicUser[]> {
     subscription: rowToSubscription(subById.get(String(profile.id))),
     disabledAt: (profile.disabled_at as string | null) ?? null,
     privacyAcceptedAt: (profile.privacy_accepted_at as string | null) ?? null,
+    preferences: normalizePreferences(profile.preferences as Partial<Preferences> | null),
   }));
 }
 
@@ -259,6 +278,12 @@ export async function authenticate(email: string, password: string) {
   const user = await getUser(data.user.id);
   if (!user) return { ok: false as const, message: "Account profile is missing." };
   return { ok: true as const, user };
+}
+
+/** Revokes the Supabase session and lets the SSR client clear its auth cookies on this response. */
+export async function signOut() {
+  const supabase = await getSupabaseServerClient();
+  await supabase.auth.signOut();
 }
 
 export async function register(name: string, email: string, password: string, privacyAccepted: boolean) {
@@ -403,7 +428,43 @@ export async function reportIssue(userId: string, summary: string, detail: strin
   const supabase = await getSupabaseServerClient();
   const { error } = await supabase.from("support_tickets").insert({ reporter_id: userId, summary: title, detail: body });
   if (error) return { ok: false as const, message: error.message };
-  return { ok: true as const, inbox: [] as Mail[] };
+  const tickets = await listTickets(userId);
+  return { ok: true as const, inbox: [] as Mail[], tickets: tickets.ok ? tickets.tickets : [] };
+}
+
+function rowToTicket(row: Record<string, unknown>, reporter?: { name: string; email: string }): SupportTicket {
+  return {
+    id: String(row.id),
+    reporterId: String(row.reporter_id),
+    reporterName: reporter?.name ?? "",
+    reporterEmail: reporter?.email ?? "",
+    summary: String(row.summary ?? ""),
+    detail: String(row.detail ?? ""),
+    status: (row.status as TicketStatus) ?? "open",
+    createdAt: String(row.created_at ?? new Date().toISOString()),
+    updatedAt: String(row.updated_at ?? row.created_at ?? new Date().toISOString()),
+  };
+}
+
+/** RLS decides the scope: the Owner gets every ticket, a learner only their own. */
+export async function listTickets(actorId: string) {
+  const supabase = await getSupabaseServerClient();
+  const { data, error } = await supabase.from("support_tickets").select("*").order("created_at", { ascending: false }).limit(500);
+  if (error) return { ok: false as const, message: error.message };
+  const reporterIds = Array.from(new Set((data ?? []).map((row) => String(row.reporter_id))));
+  const { data: reporters } = reporterIds.length ? await supabase.from("users").select("id, full_name, email").in("id", reporterIds) : { data: [] };
+  const byId = new Map((reporters ?? []).map((row) => [String(row.id), { name: String(row.full_name ?? ""), email: String(row.email ?? "") }]));
+  void actorId;
+  return { ok: true as const, tickets: (data ?? []).map((row) => rowToTicket(row, byId.get(String(row.reporter_id)))) };
+}
+
+export async function updateTicket(actorId: string, ticketId: string, status: TicketStatus) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const supabase = await getSupabaseServerClient();
+  const { error } = await supabase.from("support_tickets").update({ status, updated_at: new Date().toISOString() }).eq("id", ticketId);
+  if (error) return { ok: false as const, message: error.message };
+  return listTickets(actorId);
 }
 
 export const AUDIO_BUCKET = "term-audio";
@@ -435,12 +496,16 @@ async function withSignedAudio(terms: Term[]): Promise<Term[]> {
   }));
 }
 
-async function listTerms(includeUnpublished: boolean): Promise<Term[]> {
+async function listTerms(includeUnpublished: boolean, withContent = true): Promise<Term[]> {
   const supabase = await getSupabaseServerClient();
   let query = supabase.from("terms").select("*, quiz_items(*)");
   if (!includeUnpublished) query = query.eq("published", true).is("archived_at", null);
   const { data } = await query;
   const terms = (data ?? []).map((row) => rowToTerm(row as TermRow)).sort((a, b) => a.displayOrder - b.displayOrder);
+  // Without active access the account gets titles only — and no signed audio
+  // URLs are minted for it (signing happens with the service role, so the
+  // entitlement check has to happen here, before it).
+  if (!withContent) return terms.map(lockTerm);
   return withSignedAudio(terms);
 }
 
@@ -455,13 +520,48 @@ function rowToProgress(row: Record<string, unknown>): Progress {
   };
 }
 
+function rowToStudyDay(row: Record<string, unknown>): StudyDay {
+  return {
+    userId: String(row.user_id),
+    day: String(row.day).slice(0, 10),
+    opened: Number(row.opened ?? 0),
+    attempts: Number(row.attempts ?? 0),
+    correct: Number(row.correct ?? 0),
+    saved: Number(row.saved ?? 0),
+  };
+}
+
+async function studyDaysFor(userId: string): Promise<StudyDay[]> {
+  const supabase = await getSupabaseServerClient();
+  const { data } = await supabase.from("study_days").select("*").eq("user_id", userId).order("day", { ascending: false }).limit(400);
+  return (data ?? []).map(rowToStudyDay);
+}
+
+/** Bump today's aggregate for the learner (their own RLS-scoped client writes the row). */
+async function recordStudy(userId: string, day: unknown, delta: StudyDelta) {
+  const supabase = await getSupabaseServerClient();
+  const key = acceptDay(day);
+  const { data: existing } = await supabase.from("study_days").select("*").eq("user_id", userId).eq("day", key).maybeSingle();
+  const next = {
+    user_id: userId,
+    day: key,
+    opened: Number(existing?.opened ?? 0) + (delta.opened ?? 0),
+    attempts: Number(existing?.attempts ?? 0) + (delta.attempts ?? 0),
+    correct: Number(existing?.correct ?? 0) + (delta.correct ?? 0),
+    saved: Number(existing?.saved ?? 0) + (delta.saved ?? 0),
+    updated_at: new Date().toISOString(),
+  };
+  if (existing) await supabase.from("study_days").update(next).eq("user_id", userId).eq("day", key);
+  else await supabase.from("study_days").insert(next);
+}
+
 export async function bootstrap(userId: string | null) {
   if (!userId) return { session: null, terms: [], progress: [], users: [], inbox: [], entitlement: entitlementFor(trial()) };
   const user = await getUser(userId);
   if (!user) return { session: null, terms: [], progress: [], users: [], inbox: [], entitlement: entitlementFor(trial()) };
   const isAdmin = user.role === "admin";
   const supabase = await getSupabaseServerClient();
-  const terms = await listTerms(isAdmin);
+  const terms = await listTerms(isAdmin, isAdmin || canLearn(user).ok);
   let progressQuery = supabase.from("user_term_progress").select("*");
   if (!isAdmin) progressQuery = progressQuery.eq("user_id", userId);
   const { data: progressRows } = await progressQuery;
@@ -469,6 +569,8 @@ export async function bootstrap(userId: string | null) {
     session: { user, subscription: user.subscription },
     terms,
     progress: (progressRows ?? []).map(rowToProgress),
+    studyDays: await studyDaysFor(userId),
+    tickets: await listTickets(userId).then((result) => (result.ok ? result.tickets : [])),
     users: isAdmin ? await listUsers() : [],
     inbox: [] as Mail[],
     entitlement: entitlementFor(user.subscription),
@@ -503,11 +605,17 @@ async function billingHistoryFor(userId: string): Promise<BillingRecord[]> {
   }));
 }
 
-export async function openTerm(userId: string, termId: string) {
+/** The term as the caller's RLS-scoped client sees it (null = missing or not published for a learner). */
+async function visibleTerm(termId: string) {
+  const supabase = await getSupabaseServerClient();
+  const { data } = await supabase.from("terms").select("id, published, archived_at").eq("id", termId).maybeSingle();
+  return data ? { published: Boolean(data.published), archived: Boolean(data.archived_at) } : null;
+}
+
+export async function openTerm(userId: string, termId: string, day?: unknown) {
   const user = await getUser(userId);
-  if (!user) return { ok: false as const, message: "Sign in required." };
-  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
-  if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
+  const access = canStudyTerm(user, await visibleTerm(termId));
+  if (!access.ok) return { ok: false as const, message: access.message };
   const supabase = await getSupabaseServerClient();
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
   if (!existing) {
@@ -515,30 +623,33 @@ export async function openTerm(userId: string, termId: string) {
   } else if (existing.state === "new") {
     await supabase.from("user_term_progress").update({ state: "learning", updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
   }
+  await recordStudy(userId, day, { opened: 1 });
   const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
-  return { ok: true as const, progress: (rows ?? []).map(rowToProgress) };
+  return { ok: true as const, progress: (rows ?? []).map(rowToProgress), studyDays: await studyDaysFor(userId) };
 }
 
-export async function toggleFavourite(userId: string, termId: string) {
+export async function toggleFavourite(userId: string, termId: string, day?: unknown) {
+  const user = await getUser(userId);
+  const access = canStudyTerm(user, await visibleTerm(termId));
+  if (!access.ok) return { ok: false as const, message: access.message };
   const supabase = await getSupabaseServerClient();
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
-  if (existing) {
-    await supabase.from("user_term_progress").update({ favourite: !existing.favourite, updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
-  } else {
-    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: true, state: "learning", attempts: 0 });
-  }
+  const { error } = existing
+    ? await supabase.from("user_term_progress").update({ favourite: !existing.favourite, updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId)
+    : await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: true, state: "learning", attempts: 0 });
+  if (error) return { ok: false as const, message: error.message };
+  if (!existing || !existing.favourite) await recordStudy(userId, day, { saved: 1 });
   const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
-  return (rows ?? []).map(rowToProgress);
+  return { ok: true as const, progress: (rows ?? []).map(rowToProgress), studyDays: await studyDaysFor(userId) };
 }
 
-export async function submitQuiz(userId: string, termId: string, option: string) {
+export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown) {
   const user = await getUser(userId);
-  if (!user) return { ok: false as const, message: "Quiz unavailable." };
-  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
-  if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
   const supabase = await getSupabaseServerClient();
   const { data: termRow } = await supabase.from("terms").select("*, quiz_items(*)").eq("id", termId).maybeSingle();
   const term = termRow ? rowToTerm(termRow as TermRow) : null;
+  const access = canStudyTerm(user, term);
+  if (!access.ok) return { ok: false as const, message: access.message };
   if (!term?.quiz) return { ok: false as const, message: "Quiz unavailable." };
   const correct = term.quiz.correctOption === option || term.quiz.options[term.quiz.correctOption.charCodeAt(0) - 65] === option;
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
@@ -549,8 +660,9 @@ export async function submitQuiz(userId: string, termId: string, option: string)
   } else {
     await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state, attempts });
   }
+  await recordStudy(userId, day, { attempts: 1, correct: correct ? 1 : 0 });
   const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
-  return { ok: true as const, correct, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress) };
+  return { ok: true as const, correct, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays: await studyDaysFor(userId) };
 }
 
 export async function applyBilling(_userId: string, _event: string, _plan?: Plan) {
@@ -563,6 +675,56 @@ export async function applyBilling(_userId: string, _event: string, _plan?: Plan
   // webhook signature — never this function reached from an authenticated
   // request.
   return { ok: false as const, message: "Billing state changes must come from the Mercado Pago webhook, not the client." };
+}
+
+const PLAN_REASON: Record<Plan, string> = { monthly: "Legal English 5 — monthly plan", annual: "Legal English 5 — annual plan" };
+
+export async function startCheckout(userId: string, plan: Plan, origin: string) {
+  const config = mercadoPagoConfig();
+  if (!config.ready) return { ok: false as const, message: "Payments are not enabled on this server yet. Your trial and any Owner-granted access continue to work." };
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  if (user.subscription.status === "active") return { ok: false as const, message: "This account already has an active subscription." };
+  try {
+    const created = await createPreapproval({
+      accessToken: config.accessToken,
+      planId: config.planIds[plan]!,
+      payerEmail: user.email,
+      externalReference: userId,
+      reason: PLAN_REASON[plan],
+      backUrl: `${origin}/billing?checkout=pending&plan=${plan}`,
+    });
+    // Remember the preapproval id now so the first webhook matches by
+    // provider_reference even if external_reference is absent from the payload.
+    const admin = getSupabaseServiceRoleClient();
+    await admin.from("subscriptions").update({ provider_reference: created.id, provider: "mercadopago", plan, updated_at: new Date().toISOString() }).eq("user_id", userId);
+    return { ok: true as const, url: created.initPoint, external: true };
+  } catch (error) {
+    return { ok: false as const, message: error instanceof Error ? error.message : "Checkout could not be started." };
+  }
+}
+
+export async function cancelSubscription(userId: string) {
+  const config = mercadoPagoConfig();
+  const user = await getUser(userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  const reference = user.subscription.providerReference;
+  if (!reference || user.subscription.provider !== "mercadopago") return { ok: false as const, message: "There is no active Mercado Pago subscription to cancel." };
+  if (!config.ready) return { ok: false as const, message: "Payments are not enabled on this server yet." };
+  try {
+    await cancelPreapproval(config.accessToken, reference);
+  } catch (error) {
+    return { ok: false as const, message: error instanceof Error ? error.message : "Cancellation failed at Mercado Pago." };
+  }
+  // Apply the same transition the webhook will confirm: access continues to
+  // the end of the paid period. The webhook redelivery is idempotent.
+  const transition = applyBillingEvent(user.subscription, { type: "cancelled" });
+  if (transition.applied) {
+    const admin = getSupabaseServiceRoleClient();
+    const { error } = await admin.from("subscriptions").update(subscriptionToRow(transition.subscription)).eq("user_id", userId);
+    if (error) return { ok: false as const, message: error.message };
+  }
+  return { ok: true as const };
 }
 
 export async function grantAccess(actorId: string, targetId: string) {

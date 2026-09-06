@@ -1,5 +1,5 @@
 import { json, requireUser, sessionUserId } from "@/lib/api";
-import { store } from "@/lib/data-store";
+import { DATA_MODE, store } from "@/lib/data-store";
 
 export const runtime = "nodejs";
 
@@ -26,6 +26,9 @@ export async function POST(request: Request) {
     return json({ ok: true, code: result.code, ...(await store.bootstrap(result.user.id)) }, 200, request, result.user.id);
   }
   if (action === "logout") {
+    // Production: revoke the Supabase session server-side (the SSR client
+    // clears its cookies); alpha: the signed cookie is deleted by json(null).
+    await store.signOut();
     return json({ ok: true }, 200, request, null);
   }
   if (action === "verify") {
@@ -45,6 +48,14 @@ export async function POST(request: Request) {
   if (action === "forgot") return json(await store.requestReset(body.email), 200, request);
   if (action === "reset") return json(await store.resetPassword(body.email, body.code, body.password), 200, request);
   if (action === "reset-store") {
+    // Alpha-only demo convenience. Requires a signed-in Owner AND an explicit
+    // opt-in on the server (ALLOW_STORE_RESET=1), so an exposed alpha
+    // deployment cannot be wiped by an anonymous request.
+    const actor = await requireUser();
+    if (actor?.role !== "admin") return json({ ok: false, message: "Owner access required." }, 403, request);
+    if (DATA_MODE !== "alpha" || process.env.ALLOW_STORE_RESET !== "1") {
+      return json({ ok: false, message: "Store reset is disabled on this server." }, 403, request);
+    }
     await store.resetStore();
     return json({ ok: true }, 200, request, null);
   }
@@ -57,6 +68,13 @@ export async function POST(request: Request) {
     const user = await requireUser();
     if (!user) return json({ ok: false, message: "Sign in required." }, 401, request);
     const result = await store.updateProfile(user.id, String(body.name || ""));
+    if (!result.ok) return json(result, 400, request);
+    return json({ ok: true, ...(await store.bootstrap(user.id)) }, 200, request);
+  }
+  if (action === "update-preferences") {
+    const user = await requireUser();
+    if (!user) return json({ ok: false, message: "Sign in required." }, 401, request);
+    const result = await store.updatePreferences(user.id, body.preferences);
     if (!result.ok) return json(result, 400, request);
     return json({ ok: true, ...(await store.bootstrap(user.id)) }, 200, request);
   }

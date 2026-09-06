@@ -1,0 +1,154 @@
+{
+  "mobileLogin": {
+    "top": 1230.296875,
+    "viewport": 844
+  },
+  "drawer": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 844,
+      "top": 0,
+      "right": 320,
+      "bottom": 844,
+      "left": 0
+    },
+    "links": 14
+  },
+  "dialogFocus": {
+    "inside": false,
+    "tag": "BODY"
+  },
+  "dialogTab": {
+    "inside": false,
+    "tag": "A"
+  },
+  "admin": {
+    "Terms": {
+      "errorUI": 0,
+      "text": "OWNER CONSOLE \u00b7 NO CODE\nOperate the studio\n\nLC-001 from MCD v1.3.81 loads unpublished. Publish only with quiz + AudioUS (and AudioUK for EMP-009). Import does not rewrite the MCD.\n\n+ New term\nOverview\nTerms\nUsers\nExcel import\nBulk audio upload\n\nName each file {TermID}_US.mp3 or {TermID}_UK.mp3 (also m4a, wav, ogg) \u2014 for example CON-001_US.mp3 or EMP-009_UK.mp3. Files are associated by name; anything that does not match an existing TermID is rejected and listed below, never guessed. Uploading the same name again replaces the previous recording.\n\nAudioUS: 30/30 \u00b7 AudioUK (EMP-009): present\n\nActive\n30\nPublished\n0\nReady to publish\n30\nBlocked\n0\nArchived\n0\nAll categories\nContracts\nCorporate Law\nEm"
+    },
+    "Users": {
+      "errorUI": 0,
+      "text": "OWNER CONSOLE \u00b7 NO CODE\nOperate the studio\n\nLC-001 from MCD v1.3.81 loads unpublished. Publish only with quiz + AudioUS (and AudioUK for EMP-009). Import does not rewrite the MCD.\n\nOverview\nTerms\nUsers\nExcel import\nPilar Cruz\npilar@mpclaw.studio \u00b7 Owner \u00b7 verified\nEXCEPTIONAL ACCESS\nAlex Johnson\nmaria@legalenglish5.test \u00b7 Learner \u00b7 verified\nTRIAL\nGrant 30-day access\nAndres Molina\nandres@legalenglish5.test \u00b7 Learner \u00b7 verified\nTRIAL\nGrant 30-day access"
+    },
+    "Excel import": {
+      "errorUI": 0,
+      "text": "OWNER CONSOLE \u00b7 NO CODE\nOperate the studio\n\nLC-001 from MCD v1.3.81 loads unpublished. Publish only with quiz + AudioUS (and AudioUK for EMP-009). Import does not rewrite the MCD.\n\nOverview\nTerms\nUsers\nExcel import\nMass import from the Master Content Database\n\nUse MCD v1.3.81. The importer reads LC-001 only, keeps canonical IDs, accepts 3- or 4-option quizzes, and never publishes or deletes automatically."
+    },
+    "Overview": {
+      "errorUI": 0,
+      "text": "OWNER CONSOLE \u00b7 NO CODE\nOperate the studio\n\nLC-001 from MCD v1.3.81 loads unpublished. Publish only with quiz + AudioUS (and AudioUK for EMP-009). Import does not rewrite the MCD.\n\nOverview\nTerms\nUsers\nExcel import\nOWNER CONSOLE\nImport, review and publish, in that order\n30\nMCD terms loaded\n0\nPublished\n30\nDrafts / future\n30/30\nQuizzes on Approved terms\n\nLearners currently see 0 terms. Approved is not Published. AudioUS is 0/30 in v1.3.81, so publication stays blocked until you upload audio.\n\nVisits\n\nAnonymous first-party count: no cookies, no third-party script. Automated browsers are excluded.\n\n7 d\n14 d\n30 d\n7\nVisits\n116\nPage views\n2%\nOn phones\n1%\nIn Spanish\n24 Aug\n6 Sept\nSpeed as visitors f"
+    }
+  },
+  "account": {
+    "url": "http://127.0.0.1:3217/account",
+    "h1": [
+      "Account"
+    ],
+    "text": "Skip to content\nLEGAL ENGLISH 5\nMPC LAW STUDIO\nHome\nTerms Library\nCategories\nQuizzes\nProgress\nMy Library\nAccount\nBilling\nHelp & Support\nSettings\nHow It Works\nAdmin panel\nSign Out\nExceptional access\n\nOwner grant until 03/09/2036.\n\nManage access\n/\nEN\n/\nES\n?\nPC\nPilar Cruz\nOwner\nAccount\n\nManage your profile, preferences, and account settings.\n\nProfile\nPreferences\nSecurity\nNotifications\nProfile Information\nEdit Profile\nPC\nAdd photo\nJPG, PNG or WebP. Cropped to a square and resized to 256 px.\nPilar Cruz\nOwner\n\npilar@mpclaw.studio\n\nJoined September 6, 2026\nVerified\nFull Name\nEmail Address\nRole\nMember since\nEmail status\nInterface language\nYour Progress\n0%\nMastered\nTerms Studied\n0\nTerms Mastered\n0\nQuizzes Completed\n0\nQuiz Accuracy\n0%\nView Full Progress\nSubscription\nExceptional access\nNo plan yet\nExceptional access\nAccess until\nSeptember 3, 2036\nManage Subscription\nRecent Activity\nView All\n\nNo activity yet. Open a term to begin."
+  },
+  "homeReveal": [
+    {
+      "inView": true,
+      "height": 356.5625,
+      "text": "One source of truthEvery term comes from a si"
+    },
+    {
+      "inView": true,
+      "height": 153.71875,
+      "text": "CurriculumExplore Our Launch CategoriesFocuse"
+    },
+    {
+      "inView": true,
+      "height": 1087.46875,
+      "text": "ContractsMaster essential contract terms and "
+    },
+    {
+      "inView": true,
+      "height": 119.671875,
+      "text": "Inside a lessonSee How You\u2019ll LearnEvery term"
+    },
+    {
+      "inView": true,
+      "height": 986.171875,
+      "text": "DefinitionSpanish EquivalentCivil Law Equival"
+    },
+    {
+      "inView": true,
+      "height": 94.859375,
+      "text": "MethodHow It WorksLearn smarter in four simpl"
+    },
+    {
+      "inView": true,
+      "height": 193.5,
+      "text": "Study anywhereFive minutes between classes or"
+    },
+    {
+      "inView": true,
+      "height": 423.578125,
+      "text": "1Discover TermsBrowse or search key legal ter"
+    },
+    {
+      "inView": true,
+      "height": 94.09375,
+      "text": "PlatformEverything You Need to Succeed"
+    },
+    {
+      "inView": true,
+      "height": 787.8125,
+      "text": "Smart Search & FiltersFind terms quickly by k"
+    },
+    {
+      "inView": true,
+      "height": 237.390625,
+      "text": "Where you will use itThree situations every S"
+    },
+    {
+      "inView": true,
+      "height": 1877.8125,
+      "text": "Contracts01Negotiating a cross-border contrac"
+    },
+    {
+      "inView": true,
+      "height": 218.0625,
+      "text": "Made for real practiceThe vocabulary you meet"
+    },
+    {
+      "inView": true,
+      "height": 538,
+      "text": "Reading a closing checklistCorporate counsel "
+    },
+    {
+      "inView": true,
+      "height": 128.140625,
+      "text": "From the studioWritten by a lawyer who reads "
+    },
+    {
+      "inView": true,
+      "height": 1006.828125,
+      "text": "\u201cEvery term in Legal English 5 started as a r"
+    },
+    {
+      "inView": true,
+      "height": 94.859375,
+      "text": "PlansSimple, Transparent PricingFull access t"
+    },
+    {
+      "inView": true,
+      "height": 990.796875,
+      "text": "7-Day Free Trial$0Access all lessonsPractice "
+    },
+    {
+      "inView": true,
+      "height": 312,
+      "text": "Ready to Master Legal English?Built with a pr"
+    }
+  ],
+  "performance": {
+    "ttfb": 6.300000190734863,
+    "domContentLoaded": 43.200000286102295,
+    "transferBytes": 794875
+  }
+}

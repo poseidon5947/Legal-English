@@ -7,6 +7,7 @@ import { useApp } from "@/components/app-provider";
 import { Avatar, initialsOf } from "@/components/avatar";
 import { LanguageToggle } from "@/components/language-toggle";
 import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
+import { useFocusTrap } from "@/components/use-focus-trap";
 import { useLocale } from "@/components/locale-provider";
 import { categoryLabel, entitlementDetail, entitlementLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
@@ -99,7 +100,7 @@ export function LearnerShell({
   search?: string;
   onSearch?: (value: string) => void;
 }) {
-  const { ready, session, signOut, entitlement, reactivateAccount, inbox, terms, progress } = useApp();
+  const { ready, loadError, refresh, session, signOut, entitlement, reactivateAccount, inbox, terms, progress } = useApp();
   const { locale, t } = useLocale();
   const router = useRouter();
   const path = usePathname();
@@ -136,6 +137,15 @@ export function LearnerShell({
   // "/" focuses the search box and "?" opens the shortcut list from anywhere
   // in the workspace (not while typing in a field).
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  // Modal surfaces contain keyboard focus and make the page behind inert;
+  // focus returns to the opener when they close.
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const backdropRef = useRef<HTMLButtonElement | null>(null);
+  const mobileBarRef = useRef<HTMLElement | null>(null);
+  useFocusTrap(shortcutsOpen, dialogRef);
+  // The hamburger (in the mobile bar) stays usable so it can close the drawer it opened.
+  useFocusTrap(menuOpen, drawerRef, [backdropRef, mobileBarRef]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -153,6 +163,9 @@ export function LearnerShell({
     return () => document.removeEventListener("keydown", onKey);
   }, []);
   if (!ready || !session) {
+    // A failed bootstrap (offline, server restart) must not look like an
+    // endless load: name the problem and offer a retry.
+    if (loadError) return <WorkspaceSkeleton status={L("retry")} error={L("loadFailed")} onRetry={() => void refresh()} />;
     return <WorkspaceSkeleton status={L("opening")} />;
   }
   const isOwner = session.user.role === "admin";
@@ -192,7 +205,7 @@ export function LearnerShell({
   };
   return (
     <main id="main" className={`terms-reference-page learner-shell ${pageClass}${menuOpen ? " drawer-open" : ""}`.trim()}>
-      <header className="learner-mobile-bar">
+      <header className="learner-mobile-bar" ref={mobileBarRef}>
         <button
           type="button"
           className="learner-menu-toggle"
@@ -215,8 +228,8 @@ export function LearnerShell({
           <Avatar name={session.user.name} src={session.user.avatarUrl} />
         </Link>
       </header>
-      {menuOpen && <button type="button" className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
-      <aside className={`terms-reference-sidebar${menuOpen ? " is-open" : ""}`} id="learner-drawer">
+      {menuOpen && <button type="button" ref={backdropRef} className="learner-drawer-backdrop" aria-label={L("closeMenu")} onClick={() => setMenuOpen(false)} />}
+      <aside className={`terms-reference-sidebar${menuOpen ? " is-open" : ""}`} id="learner-drawer" ref={drawerRef} aria-modal={menuOpen || undefined} role={menuOpen ? "dialog" : undefined}>
         <div>
           <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
             <ShellIcon name="logo-shield" />
@@ -417,7 +430,7 @@ export function LearnerShell({
       </section>
       {shortcutsOpen && (
         <div className="shortcuts-backdrop" onClick={() => setShortcutsOpen(false)}>
-          <div className="shortcuts-dialog" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title" onClick={(event) => event.stopPropagation()}>
+          <div className="shortcuts-dialog" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title" ref={dialogRef} onClick={(event) => event.stopPropagation()}>
             <div className="shortcuts-head">
               <div>
                 <h2 id="shortcuts-title">{L("shortcutsTitle")}</h2>

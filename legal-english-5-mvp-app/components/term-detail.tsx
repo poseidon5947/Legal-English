@@ -45,7 +45,7 @@ function letter(index: number) {
 }
 
 export function TermDetail({ id }: { id: string }) {
-  const { terms, progress, session, entitlement, openTerm, toggleFavourite, submitQuiz, reportIssue } = useApp();
+  const { terms, progress, session, entitlement, openTerm, toggleFavourite, submitQuiz, reportIssue, refresh } = useApp();
   const { notify } = useToast();
   const { locale } = useLocale();
   const router = useRouter();
@@ -95,14 +95,17 @@ export function TermDetail({ id }: { id: string }) {
   async function sendReport() {
     if (!term || reportText.trim().length < 5 || reportBusy) return;
     setReportBusy(true);
-    const kindLabel = L(`reportKind_${reportKind}` as LearnerKey);
-    const result = await reportIssue(`[${term.id}] ${kindLabel}: ${term.term}`, `${reportText.trim()}\n\n— ${window.location.origin}/terms/${term.id} · MCD ${term.sourceWorkbookVersion}`);
-    setReportBusy(false);
-    if (result.ok) {
-      notify(L("reportSent"));
-      setReportOpen(false);
-      setReportText("");
-    } else notify(result.message || L("reportFailed"), "error");
+    try {
+      const kindLabel = L(`reportKind_${reportKind}` as LearnerKey);
+      const result = await reportIssue(`[${term.id}] ${kindLabel}: ${term.term}`, `${reportText.trim()}\n\n— ${window.location.origin}/terms/${term.id} · MCD ${term.sourceWorkbookVersion}`);
+      if (result.ok) {
+        notify(L("reportSent"));
+        setReportOpen(false);
+        setReportText("");
+      } else notify(result.message || L("reportFailed"), "error");
+    } finally {
+      setReportBusy(false);
+    }
   }
 
   const [selected, setSelected] = useState<string | null>(null);
@@ -115,14 +118,46 @@ export function TermDetail({ id }: { id: string }) {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState<"us" | "uk" | null>(null);
-  function play(jurisdiction: "us" | "uk") {
+  // The bootstrap payload already carries the playable URL for each recording:
+  // alpha serves /api/media/... behind the session gate, production hands out
+  // a short-lived signed Storage URL. Using it (instead of hard-coding the
+  // alpha route) is what makes playback work in production.
+  const retried = useRef(false);
+  const [retryWith, setRetryWith] = useState<"us" | "uk" | null>(null);
+  function start(jurisdiction: "us" | "uk") {
     if (!term) return;
     const element = audioRef.current;
-    if (!element) return;
-    element.src = `/api/media/${encodeURIComponent(term.id)}/${jurisdiction}`;
+    const src = jurisdiction === "us" ? term.audioUsPath : term.audioUkPath;
+    if (!element || !src) return;
+    if (element.src !== src) element.src = src;
     setPlaying(jurisdiction);
-    void element.play().catch(() => setPlaying(null));
+    void element.play().catch(() => void onAudioError(jurisdiction));
   }
+  function play(jurisdiction: "us" | "uk") {
+    retried.current = false;
+    start(jurisdiction);
+  }
+  async function onAudioError(jurisdiction?: "us" | "uk") {
+    const which = jurisdiction ?? playing;
+    setPlaying(null);
+    // A signed URL expires after a long study session: fetch fresh URLs once
+    // and retry before telling the learner the recording is unavailable.
+    if (which && !retried.current) {
+      retried.current = true;
+      if (await refresh()) {
+        setRetryWith(which);
+        return;
+      }
+    }
+    notify(L("audioFailed"), "error");
+  }
+  // Runs once the refreshed terms (with new URLs) have rendered.
+  useEffect(() => {
+    if (!retryWith) return;
+    setRetryWith(null);
+    start(retryWith);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [retryWith, terms]);
 
   const options = term?.quiz ? term.quiz.options.map((text, i) => ({ letter: letter(i), text })).filter((option) => option.text && option.text.trim()) : [];
   const related = term ? visible.filter((item) => item.category === term.category && item.id !== term.id).slice(0, 6) : [];
@@ -156,7 +191,7 @@ export function TermDetail({ id }: { id: string }) {
 
   return (
     <LearnerShell pageClass="consideration-reference-page">
-      <audio ref={audioRef} onEnded={() => setPlaying(null)} onError={() => setPlaying(null)} preload="none" />
+      <audio ref={audioRef} onEnded={() => setPlaying(null)} onError={() => void onAudioError()} preload="none" />
       <div className="consideration-content">
         <section className="consideration-main-column">
           <div className="consideration-photo-band" aria-hidden="true">
@@ -397,10 +432,16 @@ export function TermDetail({ id }: { id: string }) {
                     onClick={() => {
                       if (selected === null) return;
                       setBusy(true);
-                      void submitQuiz(term.id, selected).then((response) => {
-                        setBusy(false);
-                        setResult({ correct: Boolean(response.correct), message: response.ok ? response.message || "" : response.message || "" });
-                      });
+                      void submitQuiz(term.id, selected)
+                        .then((response) => {
+                          // A failed request is not a wrong answer: report it and keep the selection.
+                          if (!response.ok) {
+                            notify(response.message || L("reportFailed"), "error");
+                            return;
+                          }
+                          setResult({ correct: Boolean(response.correct), message: response.message || "" });
+                        })
+                        .finally(() => setBusy(false));
                     }}
                   >
                     {L("checkAnswer")}

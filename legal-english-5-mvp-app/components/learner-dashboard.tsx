@@ -22,14 +22,14 @@ const CHECKLIST_KEY = "le5.dashboard.checklist.hidden";
  * the Progress page uses, so the numbers always agree.
  */
 export function LearnerDashboard() {
-  const { terms, progress, progressRows, session } = useApp();
+  const { terms, progress, progressRows, studyDays, session } = useApp();
   const { locale } = useLocale();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
   const isOwner = session?.user.role === "admin";
-  const counts = countsFor(visible, progress);
+  const counts = countsFor(visible, progress, studyDays);
   const byCategory = categoryStats(visible, progress);
-  const streak = streakFor(progressRows);
+  const streak = streakFor(progressRows, new Date(), studyDays);
   const recent = recentActivity(visible, progressRows, 4);
 
   const today = useMemo(() => {

@@ -10,6 +10,7 @@ import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
 import { categoryLabel, entitlementLabel, subscriptionStatusLabel, type Locale } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
+import { normalizePreferences, type Preferences } from "@/lib/preferences";
 import { countsFor, formatDate, formatWhen, recentActivity, studyTerms } from "@/lib/learner-stats";
 
 type AccountIcon =
@@ -44,24 +45,8 @@ export function accountTabHref(tab: AccountTab) {
   return tab === "profile" ? "/account" : `/account/settings?tab=${tab}`;
 }
 
-// Browser-side preferences (no server column yet): keys are shared with the
-// Help page (Alpha Inbox notices) so both screens read the same choice.
-const NOTIFY_KEY = "le5_help_notices";
-const PRIVACY_KEY = "le5_privacy_prefs";
-const NOTIF_KEY = "le5_notification_prefs";
-type PrivacyPrefs = { visibility: "limited" | "team"; dataUsage: boolean; dataSharing: boolean };
-type NotifPrefs = { reminders: boolean; progress: boolean };
-const DEFAULT_PRIVACY: PrivacyPrefs = { visibility: "limited", dataUsage: true, dataSharing: false };
-const DEFAULT_NOTIF: NotifPrefs = { reminders: true, progress: true };
-
-function readJson<T>(key: string, fallback: T): T {
-  try {
-    const stored = window.localStorage.getItem(key);
-    return stored ? { ...fallback, ...(JSON.parse(stored) as Partial<T>) } : fallback;
-  } catch {
-    return fallback;
-  }
-}
+type PrivacyPrefs = Pick<Preferences, "visibility" | "dataUsage" | "dataSharing">;
+type NotifPrefs = Pick<Preferences, "reminders" | "progressSummary">;
 
 function Switch({ on, onChange, label, disabled }: { on: boolean; onChange?: (next: boolean) => void; label: string; disabled?: boolean }) {
   return (
@@ -80,7 +65,7 @@ function Switch({ on, onChange, label, disabled }: { on: boolean; onChange?: (ne
 }
 
 export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: AccountTab }) {
-  const { session, terms, progress, progressRows, entitlement, updateProfile, changePassword, deactivateAccount, deleteAccount } = useApp();
+  const { session, terms, progress, progressRows, studyDays, entitlement, updateProfile, updatePreferences, changePassword, deactivateAccount, deleteAccount } = useApp();
   const { locale, setLocale, t } = useLocale();
   const router = useRouter();
   const params = useSearchParams();
@@ -88,39 +73,28 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
   const active: AccountTab = TABS.includes(requested as AccountTab) ? (requested as AccountTab) : defaultTab;
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
 
-  const [notices, setNotices] = useState(true);
-  const [privacy, setPrivacy] = useState<PrivacyPrefs>(DEFAULT_PRIVACY);
-  const [notif, setNotif] = useState<NotifPrefs>(DEFAULT_NOTIF);
+  // Preferences live on the account (server), so they follow the learner
+  // across browsers and devices; the provider applies changes optimistically.
+  const prefs = normalizePreferences(session?.user.preferences);
+  const privacy: PrivacyPrefs = prefs;
+  const notif: NotifPrefs = prefs;
+  const notices = prefs.inboxNotices;
   const [prefsMessage, setPrefsMessage] = useState("");
-  useEffect(() => {
-    setNotices(window.localStorage.getItem(NOTIFY_KEY) !== "off");
-    setPrivacy(readJson(PRIVACY_KEY, DEFAULT_PRIVACY));
-    setNotif(readJson(NOTIF_KEY, DEFAULT_NOTIF));
-  }, []);
   useEffect(() => {
     if (!prefsMessage) return;
     const timer = window.setTimeout(() => setPrefsMessage(""), 2200);
     return () => window.clearTimeout(timer);
   }, [prefsMessage]);
-  function updatePrivacy(patch: Partial<PrivacyPrefs>) {
-    const next = { ...privacy, ...patch };
-    setPrivacy(next);
-    window.localStorage.setItem(PRIVACY_KEY, JSON.stringify(next));
-    setPrefsMessage(L("prefsSaved"));
+  function savePrefs(patch: Partial<Preferences>) {
+    void updatePreferences(patch).then((result) => {
+      if (result.ok) setPrefsMessage(L("prefsSaved"));
+    });
   }
-  function updateNotif(patch: Partial<NotifPrefs>) {
-    const next = { ...notif, ...patch };
-    setNotif(next);
-    window.localStorage.setItem(NOTIF_KEY, JSON.stringify(next));
-    setPrefsMessage(L("prefsSaved"));
-  }
-  function toggleNotices(next: boolean) {
-    setNotices(next);
-    window.localStorage.setItem(NOTIFY_KEY, next ? "on" : "off");
-    setPrefsMessage(L("prefsSaved"));
-  }
+  const updatePrivacy = (patch: Partial<PrivacyPrefs>) => savePrefs(patch);
+  const updateNotif = (patch: Partial<NotifPrefs>) => savePrefs(patch);
+  const toggleNotices = (next: boolean) => savePrefs({ inboxNotices: next });
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
-  const counts = countsFor(visible, progress);
+  const counts = countsFor(visible, progress, studyDays);
   const activity = recentActivity(visible, progressRows, 4);
 
   const [editing, setEditing] = useState(false);
@@ -131,19 +105,22 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
   const [nextPassword, setNextPassword] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [dangerMessage, setDangerMessage] = useState("");
+  // One in-flight save at a time: the submit button shows a spinner and a
+  // second click cannot send a duplicate request.
+  const [saving, setSaving] = useState<"profile" | "password" | null>(null);
   // The session arrives after the first render; keep the field in sync until the user edits it.
   useEffect(() => {
     if (!editing && session) setName(session.user.name);
   }, [session, editing]);
 
+  // All hooks are declared above this line: the session arrives after the
+  // first render, and returning early before a hook changes the hook order
+  // between renders (React error #310).
   if (!session) return <LearnerShell pageClass="account-reference-page">{null}</LearnerShell>;
   const user = session.user;
   const subscription = session.subscription;
   const isOwner = user.role === "admin";
   const planKey: LearnerKey = subscription.plan === "monthly" ? "planMonthly" : subscription.plan === "annual" ? "planAnnual" : subscription.status === "trialing" ? "planTrial" : "planNone";
-  // One in-flight save at a time: the submit button shows a spinner and a
-  // second click cannot send a duplicate request.
-  const [saving, setSaving] = useState<"profile" | "password" | null>(null);
 
   function saveProfile(event: FormEvent) {
     event.preventDefault();
@@ -283,6 +260,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                   <div>
                     <strong>{L("notifStudyReminders")}</strong>
                     <p>{L("notifStudyRemindersBody")}</p>
+                    <p className="account-ref-soon">{L("notifEmailSoon")}</p>
                   </div>
                   <Switch on={notif.reminders} onChange={(next) => updateNotif({ reminders: next })} label={L("notifStudyReminders")} />
                 </div>
@@ -293,8 +271,9 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                   <div>
                     <strong>{L("notifProgress")}</strong>
                     <p>{L("notifProgressBody")}</p>
+                    <p className="account-ref-soon">{L("notifEmailSoon")}</p>
                   </div>
-                  <Switch on={notif.progress} onChange={(next) => updateNotif({ progress: next })} label={L("notifProgress")} />
+                  <Switch on={notif.progressSummary} onChange={(next) => updateNotif({ progressSummary: next })} label={L("notifProgress")} />
                 </div>
                 <div className="account-ref-setting-row">
                   <span className="purple">

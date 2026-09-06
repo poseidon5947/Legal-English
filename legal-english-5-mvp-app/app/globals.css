@@ -25147,3 +25147,301 @@ html[data-input="pointer"] [role="tab"]:focus {
 html[data-input="pointer"] .skip-link:focus-visible {
   outline: 2px solid #2e7de6 !important;
 }
+
+/* Bootstrap failure inside the loading skeleton: message + retry */
+.workspace-skeleton .sk-error {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 22px;
+  border: 1px solid #f1d0d0;
+  border-radius: 12px;
+  background: #fff7f7;
+  color: #7a1d1d;
+  text-align: center;
+}
+
+.workspace-skeleton .sk-error p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+/* Billing: checkout return notices and plan intent banner */
+.billing-notice {
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #d7e3f4;
+  background: #f3f7fd;
+  color: #1d3557;
+  font-size: 0.94rem;
+}
+
+.billing-notice.ok {
+  border-color: #cbe7d4;
+  background: #f1faf4;
+  color: #1f5c37;
+}
+
+.billing-notice.error {
+  border-color: #f1d0d0;
+  background: #fff7f7;
+  color: #7a1d1d;
+}
+
+.billing-plan-intent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Notification rows whose email delivery is not live yet: say so in place. */
+.account-ref-setting-row .account-ref-soon {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #8a6d1f;
+}
+
+/* ---- Mobile task order (audit #14) ------------------------------------------
+   Phones and small tablets: the thing the visitor came to do comes first.
+   Login → form before the promotional hero; Terms → compact category chips
+   before the list; Quizzes → the question before the statistics. */
+
+.auth-reference-brand-mobile {
+  display: none;
+  margin-right: auto;
+}
+
+.auth-reference-brand.dark strong {
+  color: var(--auth-navy);
+}
+
+.auth-reference-brand.dark small {
+  color: var(--auth-muted);
+}
+
+@media (max-width: 1100px) {
+  .auth-reference-page {
+    grid-auto-rows: max-content;
+  }
+
+  /* Form first: the returning learner sees the fields within the first screen. */
+  .auth-reference-panel {
+    order: -1;
+  }
+
+  .auth-reference-hero {
+    order: 1;
+  }
+
+  .auth-reference-brand-mobile {
+    display: inline-grid;
+    grid-template-columns: 34px auto;
+    gap: 9px;
+  }
+
+  .auth-reference-brand-mobile .auth-ref-icon {
+    width: 34px;
+    height: 34px;
+    filter: none;
+  }
+
+  .auth-reference-brand-mobile strong {
+    font-size: 0.82rem;
+  }
+
+  .auth-reference-brand-mobile small {
+    font-size: 0.5rem;
+  }
+
+  .auth-reference-top {
+    justify-content: flex-end;
+    gap: 18px;
+  }
+
+  /* The hero's own brand is now redundant on phones. */
+  .auth-reference-hero .auth-reference-brand {
+    display: none;
+  }
+
+  .auth-reference-kicker {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  /* Terms: three compact chips in one row instead of three tall photo cards. */
+  .terms-reference-content .terms-category-progress:not(.large) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .terms-reference-content .terms-category-progress:not(.large) article {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    min-height: 0;
+    padding: 10px 8px 9px;
+    text-align: center;
+  }
+
+  .terms-reference-content .terms-category-progress:not(.large) .terms-category-icon-shell,
+  .terms-reference-content .terms-category-progress:not(.large) .terms-progress-track {
+    display: none;
+  }
+
+  .terms-reference-content .terms-category-progress:not(.large) strong {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .terms-reference-content .terms-category-progress:not(.large) span,
+  .terms-reference-content .terms-category-progress:not(.large) small {
+    display: inline;
+    font-size: 0.72rem;
+  }
+
+  .terms-reference-content .terms-category-progress:not(.large) span::after {
+    content: " · ";
+  }
+}
+
+@media (max-width: 760px) {
+  /* Quizzes: question first, statistics after. */
+  .quiz-ref-main-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quiz-ref-main-column > * {
+    order: 2;
+  }
+
+  .quiz-ref-main-column > .quiz-ref-heading {
+    order: 0;
+  }
+
+  .quiz-ref-main-column > .quiz-active-card {
+    order: 1;
+  }
+}
+
+/* Public Help & Support page */
+.public-help .home-ref-heading {
+  margin-bottom: 30px;
+}
+
+.public-help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.public-help-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 22px 22px 20px;
+  border: 1px solid #e3e9f3;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(17, 35, 72, 0.04);
+}
+
+.public-help-card h2 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.public-help-card p {
+  margin: 0;
+  color: #4a5872;
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+.public-help-card a {
+  justify-self: start;
+  margin-top: 4px;
+}
+
+.public-help-contact {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+  margin-top: 30px;
+  padding: 28px;
+  border-radius: 16px;
+  background: #0b1f4b;
+  color: #ffffff;
+}
+
+.public-help-contact h2 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.public-help-contact p {
+  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+}
+
+.public-help-contact .muted.tiny {
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.public-help-contact a.ghost {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .public-help-contact {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Owner console: support queue + tab badge */
+.tabs .tab-badge,
+.support-queue h2 .tab-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #c8102e;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.support-queue .admin-row.ticket.resolved {
+  opacity: 0.6;
+}
+
+.support-queue .ticket-detail {
+  margin: 6px 0 0;
+  color: #4a5872;
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+}
+
+.support-queue select {
+  padding: 6px 10px;
+  border: 1px solid #d5deea;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.inbox-list article.ticket strong .status {
+  margin-left: 8px;
+  font-size: 0.7rem;
+}

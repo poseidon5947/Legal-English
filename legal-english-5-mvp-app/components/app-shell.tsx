@@ -10,10 +10,10 @@ import { categoryLabel, entitlementDetail, entitlementLabel } from "@/lib/i18n";
 import { countsFor, stateOf, studyTerms } from "@/lib/learner-stats";
 
 function ProgressRail() {
-  const { terms, progress, session, entitlement } = useApp();
+  const { terms, progress, studyDays, session, entitlement } = useApp();
   const { locale, t } = useLocale();
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
-  const counts = countsFor(visible, progress);
+  const counts = countsFor(visible, progress, studyDays);
   const nextTerms = visible.filter((term) => stateOf(progress, term.id) !== "mastered").slice(0, 4);
   return (
     <aside className="progress-rail" aria-label="Your progress">

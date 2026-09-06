@@ -104,14 +104,14 @@ function ActivityChart({ weeks, locale }: { weeks: { start: Date; studied: numbe
 }
 
 export default function ProgressPage() {
-  const { terms, progress, progressRows, session } = useApp();
+  const { terms, progress, progressRows, studyDays, session } = useApp();
   const { locale } = useLocale();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
-  const counts = countsFor(visible, progress);
+  const counts = countsFor(visible, progress, studyDays);
   const byCategory = categoryStats(visible, progress);
-  const streak = streakFor(progressRows);
-  const weeks = weeklyActivity(progressRows);
+  const streak = streakFor(progressRows, new Date(), studyDays);
+  const weeks = weeklyActivity(progressRows, new Date(), 6, studyDays);
   const activity = recentActivity(visible, progressRows, 6);
   const achievements = achievementsFor(counts, streak, byCategory);
   const rangeLabel = `${weeks[0].start.toLocaleDateString(locale, { month: "short", day: "numeric" })} – ${new Date().toLocaleDateString(locale, { month: "short", day: "numeric" })}`;

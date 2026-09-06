@@ -1,0 +1,95 @@
+{
+  "learnerDirect": {
+    "errorUI": 1,
+    "errors": [
+      "Error: Minified React error #310; visit https://react.dev/errors/310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at aT (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:54655)\n    at aI (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:55719)\n    at Object.useState (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:68135)\n    at t.useState (http://127.0.0.1:3217/_next/static/chunks/8538-ab2a5b897a0397f2.js:1:71756)\n    at T (http://127.0.0.1:3217/_next/static/chunks/4588-713415a056e35132.js:1:5545)\n    at aw (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:53369)\n    at o1 (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:73805)\n    at id (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:85407)\n    at sh (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128647)\n    at http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128492",
+      "Error: Minified React error #310; visit https://react.dev/errors/310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at aT (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:54655)\n    at aI (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:55719)\n    at Object.useState (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:68135)\n    at t.useState (http://127.0.0.1:3217/_next/static/chunks/8538-ab2a5b897a0397f2.js:1:71756)\n    at T (http://127.0.0.1:3217/_next/static/chunks/4588-713415a056e35132.js:1:5545)\n    at aw (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:53369)\n    at o1 (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:73805)\n    at id (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:85407)\n    at sh (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128647)\n    at http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128492"
+    ]
+  },
+  "learnerClientNavigation": {
+    "h1": [],
+    "errorUI": 0
+  },
+  "ownerDirect": {
+    "errorUI": 1,
+    "errors": [
+      "Error: Minified React error #310; visit https://react.dev/errors/310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at aT (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:54655)\n    at aI (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:55719)\n    at Object.useState (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:68135)\n    at t.useState (http://127.0.0.1:3217/_next/static/chunks/8538-ab2a5b897a0397f2.js:1:71756)\n    at j (http://127.0.0.1:3217/_next/static/chunks/app/admin/page-f07e94becef6831f.js:1:20064)\n    at aw (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:53369)\n    at o1 (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:73805)\n    at id (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:85407)\n    at sh (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128647)\n    at http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128492",
+      "Error: Minified React error #310; visit https://react.dev/errors/310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at aT (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:54655)\n    at aI (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:55719)\n    at Object.useState (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:68135)\n    at t.useState (http://127.0.0.1:3217/_next/static/chunks/8538-ab2a5b897a0397f2.js:1:71756)\n    at j (http://127.0.0.1:3217/_next/static/chunks/app/admin/page-f07e94becef6831f.js:1:20064)\n    at aw (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:53369)\n    at o1 (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:73805)\n    at id (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:85407)\n    at sh (http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128647)\n    at http://127.0.0.1:3217/_next/static/chunks/d7f9d932-01adb03b8c670c23.js:1:128492"
+    ]
+  },
+  "ownerClientNavigation": {
+    "h1": [
+      "Good afternoon, Pilar"
+    ],
+    "errorUI": 0
+  },
+  "ownerButtons": [
+    "Sign Out",
+    "EN/ES",
+    "?",
+    "Overview",
+    "Terms",
+    "Users",
+    "Excel import",
+    "7 d",
+    "14 d",
+    "30 d",
+    "Reset alpha data"
+  ],
+  "signupFields": [
+    {
+      "type": "text",
+      "placeholder": "Enter your full name",
+      "name": ""
+    },
+    {
+      "type": "email",
+      "placeholder": "Enter your email",
+      "name": ""
+    },
+    {
+      "type": "password",
+      "placeholder": "Create a password",
+      "name": ""
+    },
+    {
+      "type": "checkbox",
+      "placeholder": "",
+      "name": ""
+    }
+  ],
+  "signup": {
+    "ok": true,
+    "hasSession": true,
+    "verified": false
+  },
+  "verify": {
+    "ok": true,
+    "verified": true
+  },
+  "profile": {
+    "ok": true,
+    "name": "Audit Renamed"
+  },
+  "changePassword": {
+    "ok": true
+  },
+  "export": {
+    "format": "legal-english-5/learner-export",
+    "name": "Audit Renamed",
+    "rows": 0
+  },
+  "deleted": {
+    "ok": true
+  },
+  "language": {
+    "lang": "es",
+    "h1": "Domina el ingl\u00e9s jur\u00eddico\nen sesiones de 5 minutos."
+  },
+  "unauthReset": {
+    "status": 200,
+    "body": {
+      "ok": true
+    }
+  }
+}

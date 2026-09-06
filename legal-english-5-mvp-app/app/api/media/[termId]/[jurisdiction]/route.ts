@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { requireUser } from "@/lib/api";
 import { DATA_MODE, store } from "@/lib/data-store";
-import { entitlementFor } from "@/lib/entitlement";
+import { canStudyTerm } from "@/lib/access";
 import { audioFile } from "@/lib/store";
 
 export const runtime = "nodejs";
@@ -19,10 +19,12 @@ export async function GET(_request: Request, context: { params: Promise<{ termId
   if (!user) return new Response("Sign in required.", { status: 401 });
   const { terms } = (await store.bootstrap(user.id)) as { terms: { id: string; published: boolean; archived: boolean }[] };
   const term = terms.find((item) => item.id === termId);
-  if (!term) return new Response("Not found", { status: 404 });
-  if (user.role !== "admin") {
-    if (!term.published || term.archived) return new Response("Not found", { status: 404 });
-    if (!entitlementFor(user.subscription).allowed) return new Response("Access is not active.", { status: 403 });
+  // Same gate as the term text and every learning mutation: signed in, not
+  // deactivated, entitled, and the term is published (Owner sees everything).
+  const access = canStudyTerm(user, term);
+  if (!access.ok) {
+    if (access.reason === "missing" || access.reason === "unavailable") return new Response("Not found", { status: 404 });
+    return new Response(access.message, { status: 403 });
   }
   const file = audioFile(termId, jurisdiction);
   if (!file) return new Response("Not found", { status: 404 });

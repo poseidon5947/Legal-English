@@ -93,7 +93,7 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
 }
 
 /** Public routes worth indexing. Learner/owner pages are behind sign-in and stay out. */
-export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/login", "/signup", "/privacy", "/terms-of-service", "/status"] as const;
+export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/help", "/login", "/signup", "/privacy", "/terms-of-service", "/status"] as const;
 
 /**
  * Per-route metadata: own canonical URL (instead of inheriting the root "/")

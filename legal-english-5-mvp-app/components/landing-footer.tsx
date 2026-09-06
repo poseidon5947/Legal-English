@@ -28,9 +28,9 @@ export function LandingFooter() {
           </div>
           <div>
             <span>{f.support}</span>
-            <Link href="/account/help">{f.links.helpCenter}</Link>
-            <Link href="/account/help">{f.links.faqs}</Link>
-            <Link href="/account/help">{f.links.contactUs}</Link>
+            <Link href="/help">{f.links.helpCenter}</Link>
+            <Link href="/pricing#faq">{f.links.faqs}</Link>
+            <Link href="/help">{f.links.contactUs}</Link>
             <Link href="/billing">{f.links.billing}</Link>
             <Link href="/status">{f.links.status}</Link>
           </div>

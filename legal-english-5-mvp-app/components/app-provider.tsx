@@ -4,8 +4,10 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocale } from "@/components/locale-provider";
 import { useToast } from "@/components/toaster";
 import type { BillingEventType } from "@/lib/billing-state";
+import { normalizePreferences, type Preferences } from "@/lib/preferences";
+import { localDay } from "@/lib/study-day";
 import { learnerText } from "@/lib/learner-copy";
-import type { BillingRecord, Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term } from "@/lib/types";
+import type { BillingRecord, Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term, StudyDay, SupportTicket, TicketStatus } from "@/lib/types";
 
 export type AudioUploadResult = { file: string; termId?: string; jurisdiction?: "us" | "uk"; status: "stored" | "rejected"; message: string };
 
@@ -22,13 +24,21 @@ type Result = {
 };
 type Ctx = {
   ready: boolean;
+  /** Set when the initial /api/bootstrap request failed (offline, server down). `refresh()` retries. */
+  loadError: boolean;
+  /** Re-fetch the bootstrap payload (session, terms with fresh signed audio URLs, progress). */
+  refresh: () => Promise<boolean>;
   session: SessionPayload | null;
   terms: Term[];
   publishedTerms: Term[];
   progress: Record<string, Progress>;
   progressRows: Progress[];
+  /** Dated activity (one row per local calendar day): streaks, weekly chart, answer accuracy. */
+  studyDays: StudyDay[];
   users: PublicUser[];
   inbox: Mail[];
+  /** Support reports: the Owner sees every ticket, a learner their own (with status). */
+  tickets: SupportTicket[];
   entitlement: Entitlement;
   billingHistory: BillingRecord[];
   signIn: (email: string, password: string) => Promise<Result>;
@@ -41,6 +51,9 @@ type Ctx = {
   toggleFavourite: (id: string) => Promise<void>;
   submitQuiz: (id: string, option: string) => Promise<Result>;
   applyBilling: (event: BillingEventType, plan?: Plan) => Promise<Result>;
+  /** Start a purchase; resolves with the URL to continue at (external = hosted Mercado Pago page). */
+  startCheckout: (plan: Plan) => Promise<Result & { url?: string; external?: boolean }>;
+  cancelSubscription: () => Promise<Result>;
   saveTerm: (term: Term) => Promise<Result>;
   uploadAudio: (termId: string, jurisdiction: "us" | "uk", file: File) => Promise<Result>;
   uploadAudioBatch: (files: File[]) => Promise<Result & { results?: AudioUploadResult[] }>;
@@ -49,11 +62,13 @@ type Ctx = {
   setArchived: (id: string, archived: boolean) => Promise<Result>;
   deleteTerm: (id: string) => Promise<Result>;
   grantAccess: (id: string) => Promise<void>;
+  setTicketStatus: (ticketId: string, status: TicketStatus) => Promise<Result>;
   previewImport: (file: File) => Promise<{ ok: boolean; preview?: ImportPreview; message?: string }>;
   commitImport: (terms: Term[]) => Promise<Result>;
   rollbackImport: (importRunId: string) => Promise<Result>;
-  resetDemo: () => Promise<void>;
+  resetDemo: () => Promise<Result>;
   updateProfile: (name: string) => Promise<Result>;
+  updatePreferences: (patch: Partial<Preferences>) => Promise<Result>;
   uploadAvatar: (file: Blob) => Promise<Result>;
   removeAvatar: () => Promise<Result>;
   changePassword: (currentPassword: string, nextPassword: string) => Promise<Result>;
@@ -82,20 +97,33 @@ type Bootstrap = {
   session?: SessionPayload | null;
   terms?: Term[];
   progress?: Progress[];
+  studyDays?: StudyDay[];
   users?: PublicUser[];
   inbox?: Mail[];
+  tickets?: SupportTicket[];
   entitlement?: Entitlement;
   billingHistory?: BillingRecord[];
 };
 
+/**
+ * Every mutation goes through here. A network failure or a non-JSON reply
+ * resolves to `{ ok: false, message, networkError: true }` instead of throwing,
+ * so no caller can be left with a stuck busy state or an unhandled rejection.
+ */
 async function post(url: string, body: unknown) {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(body),
-  });
-  return response.json();
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+    const data = await response.json().catch(() => null);
+    if (data && typeof data === "object") return data;
+    return { ok: false, message: `The server replied with an error (${response.status}).`, networkError: true };
+  } catch {
+    return { ok: false, message: "We could not reach the server. Check your connection and try again.", networkError: true };
+  }
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -103,8 +131,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<SessionPayload | null>(null);
   const [terms, setTerms] = useState<Term[]>([]);
   const [progressList, setProgressList] = useState<Progress[]>([]);
+  const [studyDays, setStudyDays] = useState<StudyDay[]>([]);
   const [users, setUsers] = useState<PublicUser[]>([]);
   const [inbox, setInbox] = useState<Mail[]>([]);
+  const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [entitlement, setEntitlement] = useState<Entitlement>({ allowed: false, label: "Sign in required", detail: "Log in to continue." });
   const [billingHistory, setBillingHistory] = useState<BillingRecord[]>([]);
   const { locale } = useLocale();
@@ -115,19 +145,32 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setSession(data.session ?? null);
     setTerms(data.terms || []);
     setProgressList(data.progress || []);
+    setStudyDays(data.studyDays || []);
     setUsers(data.users || []);
     setInbox(data.inbox || []);
+    setTickets(data.tickets || []);
     if (data.entitlement) setEntitlement(data.entitlement);
     setBillingHistory(data.billingHistory || []);
     setReady(true);
   }
 
-  async function hydrate() {
-    // Default cache mode (not no-store) so this reuses the <link rel="preload">
-    // response the layout starts before hydration; the route itself answers
-    // with Cache-Control: no-store, so nothing stale is ever served.
-    const data = await fetch("/api/bootstrap", { credentials: "include" }).then((r) => r.json());
-    applyBootstrap(data);
+  const [loadError, setLoadError] = useState(false);
+
+  async function hydrate(): Promise<boolean> {
+    try {
+      // Default cache mode (not no-store) so this reuses the <link rel="preload">
+      // response the layout starts before hydration; the route itself answers
+      // with Cache-Control: no-store, so nothing stale is ever served.
+      const response = await fetch("/api/bootstrap", { credentials: "include" });
+      if (!response.ok) throw new Error(`bootstrap ${response.status}`);
+      applyBootstrap(await response.json());
+      setLoadError(false);
+      return true;
+    } catch {
+      // Never leave the skeleton up forever: the shell shows a retry action.
+      setLoadError(true);
+      return false;
+    }
   }
 
   useEffect(() => { void hydrate(); }, []);
@@ -142,13 +185,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const value: Ctx = {
     ready,
+    loadError,
+    refresh: hydrate,
     session,
     terms,
     publishedTerms: terms.filter((term) => term.published && !term.archived),
     progress,
     progressRows,
+    studyDays,
     users,
     inbox,
+    tickets,
     entitlement,
     billingHistory,
     async signIn(email, password) {
@@ -180,12 +227,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     forgot: (email) => post("/api/auth", { action: "forgot", email }),
     resetPassword: (email, code, password) => post("/api/auth", { action: "reset", email, code, password }),
     async openTerm(id) {
-      const data = await post("/api/learn", { action: "open", termId: id });
+      const data = await post("/api/learn", { action: "open", termId: id, day: localDay() });
       if (data.progress) setProgressList(data.progress);
+      if (data.studyDays) setStudyDays(data.studyDays);
     },
     async toggleFavourite(id) {
       const wasFavourite = Boolean(progress[id]?.favourite);
-      const data = await post("/api/learn", { action: "favourite", termId: id });
+      const data = await post("/api/learn", { action: "favourite", termId: id, day: localDay() });
+      if (data.studyDays) setStudyDays(data.studyDays);
       if (data.progress) {
         setProgressList(data.progress);
         notify(T(wasFavourite ? "toastFavRemoved" : "toastFavAdded"));
@@ -194,12 +243,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
     },
     async submitQuiz(id, option) {
-      const data = await post("/api/learn", { action: "quiz", termId: id, option });
+      const data = await post("/api/learn", { action: "quiz", termId: id, option, day: localDay() });
       if (data.progress) setProgressList(data.progress);
+      if (data.studyDays) setStudyDays(data.studyDays);
       return data;
     },
     async applyBilling(event, plan) {
-      const data = await post("/api/billing", { event, plan });
+      const data = await post("/api/billing", { action: "simulate", event, plan });
+      if (data.ok) await hydrate();
+      return data;
+    },
+    async startCheckout(plan) {
+      const data = await post("/api/billing", { action: "checkout", plan });
+      // Alpha approves in place; production hands back the hosted checkout
+      // URL and the webhook updates the subscription while we are away.
+      if (data.ok && !data.external) await hydrate();
+      return data;
+    },
+    async cancelSubscription() {
+      const data = await post("/api/billing", { action: "cancel" });
       if (data.ok) await hydrate();
       return data;
     },
@@ -255,6 +317,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const data = await post("/api/admin", { action: "grant", userId: id });
       if (data.users) setUsers(data.users);
     },
+    async setTicketStatus(ticketId, status) {
+      const data = await post("/api/admin", { action: "ticket-status", ticketId, status });
+      if (data.tickets) setTickets(data.tickets);
+      else notify(data.message || T("prefsFailed"), "error");
+      return data;
+    },
     async previewImport(file) {
       const form = new FormData();
       form.append("file", file);
@@ -273,8 +341,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return data;
     },
     async resetDemo() {
-      await post("/api/auth", { action: "reset-store" });
-      await hydrate();
+      const data = await post("/api/auth", { action: "reset-store" });
+      if (data.ok) await hydrate();
+      else notify(data.message || "Store reset is disabled on this server.", "error");
+      return data;
+    },
+    async updatePreferences(patch) {
+      // Optimistic: flip the switch now, reconcile with the server's answer.
+      setSession((current) => (current ? { ...current, user: { ...current.user, preferences: normalizePreferences(current.user.preferences, patch) } } : current));
+      const data = await post("/api/auth", { action: "update-preferences", preferences: patch });
+      if (data.ok) applyBootstrap(data);
+      else {
+        await hydrate();
+        notify(data.message || T("prefsFailed"), "error");
+      }
+      return data;
     },
     async updateProfile(name) {
       const data = await post("/api/auth", { action: "update-profile", name });
@@ -335,6 +416,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     async reportIssue(summary, detail) {
       const data = await post("/api/auth", { action: "report-issue", summary, detail });
       if (data.inbox) setInbox(data.inbox);
+      if (data.tickets) setTickets(data.tickets);
       return data;
     },
   };

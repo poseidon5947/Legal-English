@@ -66,11 +66,15 @@ regardless of which mode is currently set elsewhere.
 
 1. Create the Supabase project (the Owner's account, per the Propuesta §9).
 2. Run `supabase/migrations/001_initial_schema.sql` through
-   `006_insights.sql`, in order — Supabase SQL Editor or
+   `007_study_days.sql`, in order — Supabase SQL Editor or
    `supabase db push`, either is fine pre-launch. `005` adds the private
    `avatars` bucket + `users.avatar_path` for the Account-panel profile
    photo (alpha mode keeps the file under `data/avatars/` instead); `006`
-   adds the anonymous `insights` table behind the Owner's visitor panel.
+   adds the anonymous `insights` table behind the Owner's visitor panel;
+   `007` adds `study_days` (one row per learner per calendar day — quiz
+   accuracy and streaks are computed from it) and `users.preferences`
+   (privacy/notification switches, so they follow the account across
+   devices).
 3. Dashboard → Authentication → Emails → SMTP Settings: point it at Resend.
    All verification/recovery mail then sends through Resend without any app
    code change.
@@ -87,10 +91,34 @@ regardless of which mode is currently set elsewhere.
 8. Seed content: `POST /api/admin` with the MCD Excel file (multipart) does
    preflight + commit through the existing importer, same as alpha mode.
 
+### Access rules (both modes)
+
+`lib/access.ts` is the single place that decides who may study what.
+`/api/bootstrap` sends an account without active access (trial expired,
+subscription lapsed, deactivated) the term *titles* only — no definitions,
+quiz items or audio URLs — and `/api/learn` + `/api/media` refuse the same
+accounts, plus any term that is unpublished, archived or unknown. Every
+mutation validates the term before touching progress.
+
+The Owner's alpha "Reset store" needs a signed-in Owner **and**
+`ALLOW_STORE_RESET=1` on the server; it is refused everywhere else.
+
 ## Mercado Pago (Hito C)
 
-`applyBilling` refuses every call in production mode on purpose — there is
-no authenticated write policy on `public.subscriptions`. The only writer is
+Checkout and cancellation go through `store.startCheckout` /
+`store.cancelSubscription` (`POST /api/billing` with `action: "checkout" |
+"cancel"`). In alpha mode they run against the local sandbox reducer so the
+Billing screen can be exercised end-to-end; in production they create /
+cancel a Mercado Pago preapproval (`lib/mercadopago.ts`) and the learner is
+sent to `init_point`. Mercado Pago returns to
+`/billing?checkout=success|pending|failure`; while a payment is pending the
+page polls `/api/bootstrap` until the webhook has landed. Pricing and
+landing CTAs carry the chosen plan through sign-up (`/signup?plan=annual` →
+`/billing?plan=annual`).
+
+`applyBilling` (the sandbox event simulator) refuses every call in
+production mode on purpose — there is no authenticated write policy on
+`public.subscriptions`. The only writer is
 `app/api/webhooks/mercadopago/route.ts`, which:
 
 1. verifies the `x-signature` HMAC (manifest `id:{data.id};request-id:{x-request-id};ts:{ts};`, 10-minute replay window);
@@ -108,10 +136,18 @@ that creates the preapproval must set `external_reference` to the learner's
 user id so the first notification can be matched before
 `provider_reference` is on file.
 
-Still open for Hito C: the checkout/preapproval creation itself (needs the
-Owner's Mercado Pago account and plan prices), and the periodic
-reconciliation job against `/preapproval/search` that the Propuesta
-describes as a backstop for missed webhooks.
+Still open for Hito C: the Owner's live Mercado Pago credentials and plan
+ids (until they are set, the checkout button explains that payments are
+not enabled and the trial keeps working), and the periodic reconciliation
+job against `/preapproval/search` that the Propuesta describes as a
+backstop for missed webhooks.
+
+## Support queue
+
+A learner's "Report a problem" (term page or Account → Help) files a
+`support_tickets` row as well as the Alpha Inbox mail. The Owner console
+gets a **Support** tab (open / being looked at / resolved); the learner sees
+the status of their own reports under Account → Help → "Your reports".
 
 ## Tests
 
@@ -120,6 +156,9 @@ npm test          # node --test tests/*.test.mjs
 npm run typecheck
 ```
 
-`tests/billing-state.test.mjs` imports the real TypeScript modules (Node 22
-type stripping), so the payment state machine, the webhook signature check,
-the resource mapping and the audio filename convention are tested as shipped.
+The tests import the real TypeScript modules (Node 22 type stripping), so
+the payment state machine, the webhook signature check, the resource
+mapping, the access rules, the study-day aggregation behind accuracy and
+streaks, and the preference validation are tested as shipped.
+`tests/_ts-resolver-hooks.mjs` resolves the `@/` alias for modules that use
+it.

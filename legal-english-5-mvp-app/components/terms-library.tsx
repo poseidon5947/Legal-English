@@ -93,7 +93,14 @@ export function TermCard({
       <h2>
         <Link href={`/terms/${term.id}`}>{term.term}</Link>
       </h2>
-      <p>{term.definition}</p>
+      {term.definition ? (
+        <p>{term.definition}</p>
+      ) : (
+        // Locked payload (trial ended): the server sends titles only.
+        <p className="muted">
+          <Link href="/billing">{learnerText(locale, "lockedCard")}</Link>
+        </p>
+      )}
       <div className="terms-card-foot">
         <StatusBadge state={state} locale={locale} />
         {draft && <span className="terms-status draft">{learnerText(locale, "draft")}</span>}

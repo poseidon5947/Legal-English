@@ -1,7 +1,7 @@
 import * as alphaStore from "./store";
 import * as productionStore from "./store.supabase";
 import type { InsightEvent, InsightSummary } from "./insights";
-import type { Mail, Plan, Progress, PublicUser, Term } from "./types";
+import type { Mail, Plan, Progress, PublicUser, Term, StudyDay, SupportTicket, TicketStatus } from "./types";
 
 // "alpha" = local JSON file, no external services (default, matches
 // .env.example, always runnable with `npm run dev` and no credentials).
@@ -20,6 +20,8 @@ export interface Store {
   currentUserId(): Promise<string | null>;
   getUser(id: string): Promise<PublicUser | null>;
   authenticate(email: string, password: string): Promise<{ ok: true; user: PublicUser } | { ok: false; message: string }>;
+  /** End the current session on the backend (production: Supabase sign-out; alpha: cookie cleared by the route). */
+  signOut(): Promise<void>;
   register(
     name: string,
     email: string,
@@ -32,6 +34,7 @@ export interface Store {
   inboxFor(email: string): Promise<Mail[]>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateProfile(userId: string, name: string): Promise<any>;
+  updatePreferences(userId: string, patch: unknown): Promise<{ ok: true; user: PublicUser } | { ok: false; message: string }>;
   saveAvatar(userId: string, bytes: Buffer, extension: "webp" | "jpg" | "png"): Promise<{ ok: true; user: PublicUser } | { ok: false; message: string }>;
   removeAvatar(userId: string): Promise<{ ok: true; user: PublicUser } | { ok: false; message: string }>;
   changeOwnPassword(userId: string, currentPassword: string, nextPassword: string): Promise<{ ok: boolean; message?: string }>;
@@ -40,15 +43,25 @@ export interface Store {
   reactivateAccount(userId: string): Promise<{ ok: boolean; message?: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reportIssue(userId: string, summary: string, detail: string): Promise<any>;
+  listTickets(actorId: string): Promise<{ ok: true; tickets: SupportTicket[] } | { ok: false; message: string }>;
+  updateTicket(actorId: string, ticketId: string, status: TicketStatus): Promise<{ ok: true; tickets: SupportTicket[] } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bootstrap(userId: string | null): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  openTerm(userId: string, termId: string): Promise<any>;
-  toggleFavourite(userId: string, termId: string): Promise<Progress[]>;
+  openTerm(userId: string, termId: string, day?: unknown): Promise<any>;
+  toggleFavourite(userId: string, termId: string, day?: unknown): Promise<{ ok: true; progress: Progress[]; studyDays: StudyDay[] } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  submitQuiz(userId: string, termId: string, option: string): Promise<any>;
+  submitQuiz(userId: string, termId: string, option: string, day?: unknown): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   applyBilling(userId: string, event: string, plan?: Plan): Promise<any>;
+  /**
+   * Begin a subscription purchase. Alpha: the sandbox approves it at once and
+   * returns an in-app URL. Production: creates the Mercado Pago preapproval
+   * and returns the hosted checkout URL to redirect to (webhooks finish it).
+   */
+  startCheckout(userId: string, plan: Plan, origin: string): Promise<{ ok: true; url: string; external: boolean } | { ok: false; message: string }>;
+  /** Cancel at the provider; access continues until the paid period ends. */
+  cancelSubscription(userId: string): Promise<{ ok: true } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   grantAccess(actorId: string, targetId: string): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

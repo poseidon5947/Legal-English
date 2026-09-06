@@ -4,10 +4,13 @@ import { join } from "path";
 import { AUDIO_MIME, extensionOf, type AudioJurisdiction } from "./audio-naming";
 import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } from "./billing-state";
 import { ALPHA_SESSION_COOKIE, hashPassword, oneTimeCode, readSession, verifyPassword } from "./crypto";
+import { canLearn, canStudyTerm, termsForAccount } from "./access";
+import { normalizePreferences } from "./preferences";
+import { acceptDay, bumpStudyDay, type StudyDelta } from "./study-day";
 import { entitlementFor } from "./entitlement";
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
-import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User, BillingRecord } from "./types";
+import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User, BillingRecord, StudyDay, SupportTicket, TicketStatus } from "./types";
 
 type ImportRun = {
   id: string;
@@ -22,7 +25,7 @@ type ImportRun = {
   rolledBackAt: string | null;
 };
 
-type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
+type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; studyDays?: StudyDay[]; tickets?: SupportTicket[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
 
 function billingHistoryFor(data: StoreData, userId: string) {
   return (data.billingLog ?? []).filter((item) => item.userId === userId).sort((a, b) => b.at.localeCompare(a.at));
@@ -41,7 +44,7 @@ function trial(date = new Date()): Subscription {
 
 function publicUser(user: User): PublicUser {
   const { passwordHash: _omit, ...rest } = user;
-  return rest;
+  return { ...rest, preferences: normalizePreferences(user.preferences) };
 }
 
 function makeUser(
@@ -170,6 +173,10 @@ export async function authenticate(email: string, password: string) {
   return { ok: true as const, user: publicUser(user) };
 }
 
+export async function signOut() {
+  // Alpha sessions live only in the signed cookie, which the auth route clears.
+}
+
 export async function register(name: string, email: string, password: string, privacyAccepted: boolean) {
   if (!privacyAccepted) {
     return { ok: false as const, message: "You must accept the data processing notice to continue." };
@@ -260,6 +267,7 @@ export async function deleteAccount(userId: string) {
   }
   data.users = data.users.filter((item) => item.id !== userId);
   data.progress = data.progress.filter((item) => item.userId !== userId);
+  data.studyDays = (data.studyDays ?? []).filter((item) => item.userId !== userId);
   for (const file of avatarFilesFor(userId)) rmSync(file, { force: true });
   save(data);
   return { ok: true as const };
@@ -296,8 +304,44 @@ export async function reportIssue(userId: string, summary: string, detail: strin
     mail(data, owner.email, `Incidence · ${title}`, payload);
   }
   mail(data, user.email, `Copy of your report · ${title}`, "The Owner received this incidence. You will get a reply on this account email.");
+  // The ticket itself is what the Owner works from (Owner console → Support).
+  const now = new Date().toISOString();
+  data.tickets = [
+    ...(data.tickets ?? []),
+    { id: `ticket-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, reporterId: user.id, reporterName: user.name, reporterEmail: user.email, summary: title, detail: body, status: "open", createdAt: now, updatedAt: now },
+  ];
   save(data);
-  return { ok: true as const, inbox: await inboxFor(user.email) };
+  return { ok: true as const, inbox: await inboxFor(user.email), tickets: ticketsFor(data, user) };
+}
+
+function ticketsFor(data: StoreData, user: User): SupportTicket[] {
+  const all = data.tickets ?? [];
+  const mine = user.role === "admin" ? all : all.filter((ticket) => ticket.reporterId === user.id);
+  return [...mine].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function listTickets(actorId: string) {
+  const data = load();
+  const actor = data.users.find((item) => item.id === actorId);
+  if (!actor) return { ok: false as const, message: "Sign in required." };
+  return { ok: true as const, tickets: ticketsFor(data, actor) };
+}
+
+export async function updateTicket(actorId: string, ticketId: string, status: TicketStatus) {
+  const data = load();
+  const actor = data.users.find((item) => item.id === actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const ticket = (data.tickets ?? []).find((item) => item.id === ticketId);
+  if (!ticket) return { ok: false as const, message: "Ticket not found." };
+  ticket.status = status;
+  ticket.updatedAt = new Date().toISOString();
+  // Tell the reporter through the same alpha inbox their other notices use.
+  const reporter = data.users.find((item) => item.id === ticket.reporterId);
+  if (reporter && status !== "open") {
+    mail(data, reporter.email, `Your report · ${ticket.summary}`, status === "resolved" ? "The Owner marked this report as resolved. Reply on this email if the problem persists." : "The Owner has seen this report and is looking into it.");
+  }
+  save(data);
+  return { ok: true as const, tickets: ticketsFor(data, actor) };
 }
 
 export async function bootstrap(userId: string | null) {
@@ -305,12 +349,17 @@ export async function bootstrap(userId: string | null) {
   const user = userId ? data.users.find((item) => item.id === userId) ?? null : null;
   if (!user) return { session: null, terms: [], progress: [], users: [], inbox: [], entitlement: entitlementFor(trial()) };
   const isAdmin = user.role === "admin";
-  const terms = isAdmin ? data.terms : data.terms.filter((term) => term.published && !term.archived);
+  const visible = isAdmin ? data.terms : data.terms.filter((term) => term.published && !term.archived);
+  // An expired/deactivated learner gets titles only: the taught content, quiz
+  // answer keys and audio never leave the server without active access.
+  const terms = isAdmin ? visible : termsForAccount(user, visible);
   const progress = isAdmin ? data.progress : data.progress.filter((item) => item.userId === user.id);
   return {
     session: { user: publicUser(user), subscription: user.subscription },
     terms,
     progress,
+    studyDays: studyDaysFor(data, user.id),
+    tickets: ticketsFor(data, user),
     users: isAdmin ? data.users.map(publicUser) : [],
     inbox: await inboxFor(user.email),
     entitlement: entitlementFor(user.subscription),
@@ -318,40 +367,54 @@ export async function bootstrap(userId: string | null) {
   };
 }
 
-export async function openTerm(userId: string, termId: string) {
+function studyDaysFor(data: StoreData, userId: string) {
+  return (data.studyDays ?? []).filter((row) => row.userId === userId);
+}
+
+function recordStudy(data: StoreData, userId: string, day: unknown, delta: StudyDelta) {
+  data.studyDays = bumpStudyDay(data.studyDays ?? [], userId, acceptDay(day), delta);
+}
+
+export async function openTerm(userId: string, termId: string, day?: unknown) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
-  if (!user) return { ok: false as const, message: "Sign in required." };
-  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
-  if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
+  const access = canStudyTerm(user, data.terms.find((item) => item.id === termId));
+  if (!access.ok) return { ok: false as const, message: access.message };
   const existing = data.progress.find((item) => item.userId === userId && item.termId === termId);
   if (!existing) {
     data.progress.push({ userId, termId, favourite: false, state: "learning", attempts: 0, updatedAt: new Date().toISOString() });
-    save(data);
   } else if (existing.state === "new") {
     existing.state = "learning";
     existing.updatedAt = new Date().toISOString();
-    save(data);
   }
-  return { ok: true as const, progress: data.progress.filter((item) => item.userId === userId) };
-}
-
-export async function toggleFavourite(userId: string, termId: string) {
-  const data = load();
-  const current = data.progress.find((item) => item.userId === userId && item.termId === termId);
-  if (current) current.favourite = !current.favourite;
-  else data.progress.push({ userId, termId, favourite: true, state: "learning", attempts: 0, updatedAt: new Date().toISOString() });
+  recordStudy(data, userId, day, { opened: 1 });
   save(data);
-  return data.progress.filter((item) => item.userId === userId);
+  return { ok: true as const, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
 }
 
-export async function submitQuiz(userId: string, termId: string, option: string) {
+export async function toggleFavourite(userId: string, termId: string, day?: unknown) {
+  const data = load();
+  const user = data.users.find((item) => item.id === userId);
+  const access = canStudyTerm(user, data.terms.find((item) => item.id === termId));
+  if (!access.ok) return { ok: false as const, message: access.message };
+  const current = data.progress.find((item) => item.userId === userId && item.termId === termId);
+  const nowFavourite = !(current?.favourite ?? false);
+  if (current) {
+    current.favourite = nowFavourite;
+    current.updatedAt = new Date().toISOString();
+  } else data.progress.push({ userId, termId, favourite: true, state: "learning", attempts: 0, updatedAt: new Date().toISOString() });
+  if (nowFavourite) recordStudy(data, userId, day, { saved: 1 });
+  save(data);
+  return { ok: true as const, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
+}
+
+export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
   const term = data.terms.find((item) => item.id === termId);
+  const access = canStudyTerm(user, term);
+  if (!access.ok) return { ok: false as const, message: access.message };
   if (!user || !term?.quiz) return { ok: false as const, message: "Quiz unavailable." };
-  if (user.disabledAt) return { ok: false as const, message: "This account is deactivated." };
-  if (!entitlementFor(user.subscription).allowed && user.role !== "admin") return { ok: false as const, message: "Access is not active." };
   const correct = term.quiz.correctOption === option || term.quiz.options[term.quiz.correctOption.charCodeAt(0) - 65] === option;
   const current = data.progress.find((item) => item.userId === userId && item.termId === termId);
   const next: Progress = {
@@ -363,8 +426,22 @@ export async function submitQuiz(userId: string, termId: string, option: string)
     updatedAt: new Date().toISOString(),
   };
   data.progress = [...data.progress.filter((item) => !(item.userId === userId && item.termId === termId)), next];
+  recordStudy(data, userId, day, { attempts: 1, correct: correct ? 1 : 0 });
   save(data);
-  return { ok: true as const, correct, message: term.quiz.explanation, progress: data.progress.filter((item) => item.userId === userId) };
+  return { ok: true as const, correct, message: term.quiz.explanation, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
+}
+
+export async function startCheckout(userId: string, plan: Plan, _origin: string) {
+  // The alpha sandbox stands in for the hosted checkout: approve immediately
+  // through the same reducer the production webhook uses.
+  const result = await applyBilling(userId, "payment_approved", plan);
+  if (!result.ok) return result;
+  return { ok: true as const, url: `/billing?checkout=success&plan=${plan}`, external: false };
+}
+
+export async function cancelSubscription(userId: string) {
+  const result = await applyBilling(userId, "cancelled");
+  return result.ok ? { ok: true as const } : result;
 }
 
 export async function applyBilling(userId: string, event: string, plan?: Plan) {
@@ -595,6 +672,15 @@ export function avatarFile(userId: string) {
   if (!file) return null;
   const extension = file.slice(file.lastIndexOf(".") + 1).toLowerCase();
   return { path: file, contentType: AVATAR_MIME[extension] || "application/octet-stream" };
+}
+
+export async function updatePreferences(userId: string, patch: unknown) {
+  const data = load();
+  const user = data.users.find((item) => item.id === userId);
+  if (!user) return { ok: false as const, message: "Sign in required." };
+  user.preferences = normalizePreferences(user.preferences, patch);
+  save(data);
+  return { ok: true as const, user: publicUser(user) };
 }
 
 export async function saveAvatar(userId: string, bytes: Buffer, extension: keyof typeof AVATAR_MIME) {

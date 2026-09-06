@@ -1,7 +1,7 @@
 /** Placeholder layout shown while the session bootstraps; mirrors LearnerShell so nothing jumps. */
-export function WorkspaceSkeleton({ status }: { status: string }) {
+export function WorkspaceSkeleton({ status, error, onRetry }: { status: string; error?: string; onRetry?: () => void }) {
   return (
-    <main id="main" className="workspace-skeleton" aria-busy="true" aria-live="polite">
+    <main id="main" className="workspace-skeleton" aria-busy={!error} aria-live="polite">
       <aside className="sk-sidebar" aria-hidden="true">
         <div className="sk brand" />
         {Array.from({ length: 6 }, (_, i) => (
@@ -22,7 +22,16 @@ export function WorkspaceSkeleton({ status }: { status: string }) {
           <div className="sk card" />
           <div className="sk rail" />
         </div>
-        <p className="sk-status">{status}</p>
+        {error && onRetry ? (
+          <div className="sk-error" role="alert">
+            <p>{error}</p>
+            <button type="button" className="primary inline" onClick={onRetry}>
+              {status}
+            </button>
+          </div>
+        ) : (
+          <p className="sk-status">{status}</p>
+        )}
       </section>
     </main>
   );

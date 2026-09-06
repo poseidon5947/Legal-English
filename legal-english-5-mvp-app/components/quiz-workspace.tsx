@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
+import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { achievementsFor, categoryStats, countsFor, formatWhen, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
@@ -61,16 +62,17 @@ function quizOptions(term: Term) {
 }
 
 export function QuizWorkspace() {
-  const { terms, progress, progressRows, session, entitlement, submitQuiz } = useApp();
-  const { locale } = useLocale();
+  const { terms, progress, progressRows, studyDays, session, entitlement, submitQuiz } = useApp();
+  const { locale, t } = useLocale();
+  const { notify } = useToast();
   const params = useSearchParams();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
   const isOwner = session?.user.role === "admin";
   const canStudy = Boolean(session) && (isOwner || entitlement.allowed);
-  const counts = countsFor(visible, progress);
+  const counts = countsFor(visible, progress, studyDays);
   const byCategory = categoryStats(visible, progress);
-  const streak = streakFor(progressRows);
+  const streak = streakFor(progressRows, new Date(), studyDays);
   const achievements = achievementsFor(counts, streak, byCategory);
 
   // Queue: terms with a usable quiz, weakest first, optionally one category or one term.
@@ -115,14 +117,22 @@ export function QuizWorkspace() {
   function check() {
     if (!current || selected === null || busy || !canStudy || result) return;
     setBusy(true);
-    void submitQuiz(current.id, selected).then((response) => {
-      setBusy(false);
-      const correct = Boolean(response.correct);
-      setAnswered((value) => value + 1);
-      if (correct) setCorrectCount((value) => value + 1);
-      else setMissed((list) => (list.includes(current.id) ? list : [...list, current.id]));
-      setResult({ correct, message: response.message || "" });
-    });
+    void submitQuiz(current.id, selected)
+      .then((response) => {
+        // Only a successful, graded response counts as an answer. A failed
+        // request (offline, session expired) is reported and the learner's
+        // selection is kept so they can simply press Check again.
+        if (!response.ok) {
+          notify(response.message || t("couldNotContinue"), "error");
+          return;
+        }
+        const correct = Boolean(response.correct);
+        setAnswered((value) => value + 1);
+        if (correct) setCorrectCount((value) => value + 1);
+        else setMissed((list) => (list.includes(current.id) ? list : [...list, current.id]));
+        setResult({ correct, message: response.message || "" });
+      })
+      .finally(() => setBusy(false));
   }
 
   function restart() {

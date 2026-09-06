@@ -38,13 +38,13 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 }
 
 export default function AdminPage() {
-  const { session, terms, users, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio, uploadAudioBatch, removeAudio } = useApp();
+  const { session, terms, users, tickets, setTicketStatus, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio, uploadAudioBatch, removeAudio } = useApp();
   const { locale } = useLocale();
   const a = (key: Parameters<typeof adminText>[1], vars?: Record<string, string | number>) => adminText(locale, key, vars);
   const [audioBusy, setAudioBusy] = useState<"us" | "uk" | "batch" | null>(null);
   const [audioResults, setAudioResults] = useState<AudioUploadResult[]>([]);
   const [lastRun, setLastRun] = useState<{ importRunId: string; inserted?: number; updated?: number; missing?: string[]; rolledBack?: boolean } | null>(null);
-  const [tab, setTab] = useState<"overview" | "terms" | "users" | "import">("overview");
+  const [tab, setTab] = useState<"overview" | "terms" | "users" | "support" | "import">("overview");
   const [editing, setEditing] = useState<Term | null>(null);
   const [message, setMessage] = useState("");
   const [preview, setPreview] = useState<ImportPreview | null>(null);
@@ -68,8 +68,22 @@ export default function AdminPage() {
       .filter((term) => !needle || [term.id, term.term, term.spanishEquivalent, term.category, term.topic].join(" ").toLowerCase().includes(needle));
   }, [terms, termQuery, termCategory, termFilter]);
   const readyCount = terms.filter((term) => !term.archived && !term.published && canPublish(term)).length;
-  const blockedCount = terms.filter((term) => !term.archived && !term.published && !canPublish(term)).length;
+  const blockedTerms = terms.filter((term) => !term.archived && !term.published && !canPublish(term));
+  const blockedCount = blockedTerms.length;
+  // Name the most common blocker so the Owner knows what to fix (audio vs quiz vs other).
+  const blockerSummary = (() => {
+    const audio = blockedTerms.filter((term) => !term.audioUsPath).length;
+    const quiz = blockedTerms.filter((term) => term.audioUsPath && !term.quiz).length;
+    if (audio && audio >= quiz) return a("missingAudio");
+    if (quiz) return a("missingQuiz");
+    return a("missingOther");
+  })();
+  const openTickets = tickets.filter((ticket) => ticket.status !== "resolved").length;
   const archivedCount = terms.filter((term) => term.archived).length;
+
+  // Declared before the role check below: the session arrives after the first
+  // render, and a hook after an early return changes the hook order (#310).
+  const [saving, setSaving] = useState(false);
 
   if (session?.user.role !== "admin") {
     return (
@@ -81,8 +95,6 @@ export default function AdminPage() {
       </AppShell>
     );
   }
-
-  const [saving, setSaving] = useState(false);
 
   async function onSave(event: FormEvent) {
     event.preventDefault();
@@ -145,11 +157,13 @@ export default function AdminPage() {
             ["overview", a("tabOverview")],
             ["terms", a("tabTerms")],
             ["users", a("tabUsers")],
+            ["support", a("tabSupport")],
             ["import", a("tabImport")],
           ] as const
         ).map(([id, label]) => (
           <button key={id} className={tab === id ? "active" : ""} onClick={() => setTab(id)}>
             {label}
+            {id === "support" && openTickets > 0 && <span className="tab-badge">{openTickets}</span>}
           </button>
         ))}
       </div>
@@ -183,8 +197,11 @@ export default function AdminPage() {
               <span>{a("statQuizzes")}</span>
             </div>
           </div>
+          {/* Derived from the live catalogue, never hard-coded: what learners see, what is
+              ready to publish, what still blocks publication and the audio inventory. */}
           <p className="muted">
-            {a("learnersSee", { n: published })}
+            {a("learnersSee", { n: published })} {readyCount > 0 ? a("overviewReady", { n: readyCount }) : blockedCount === 0 ? a("overviewAllPublished") : ""}{" "}
+            {blockedCount > 0 && a("overviewBlocked", { n: blockedCount, missing: blockerSummary })} {a("overviewAudio", { us: terms.filter((term) => !term.archived && term.audioUsPath).length, total: terms.filter((term) => !term.archived).length })}
           </p>
           <AdminInsights />
           <div className="chart-grid">
@@ -252,6 +269,39 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
+      )}
+      {tab === "support" && (
+        <section className="import-panel support-queue">
+          <h2>
+            {a("supportTitle")} {openTickets > 0 && <span className="tab-badge">{a("supportOpenCount", { n: openTickets })}</span>}
+          </h2>
+          <p>{a("supportBody")}</p>
+          {tickets.length === 0 && <p className="muted">{a("supportEmpty")}</p>}
+          <div className="admin-list">
+            {tickets.map((ticket) => (
+              <div className={`admin-row ticket ${ticket.status}`} key={ticket.id}>
+                <div>
+                  <strong>{ticket.summary}</strong>
+                  <span>
+                    {ticket.reporterName || ticket.reporterId} {ticket.reporterEmail && `· ${ticket.reporterEmail}`} · {new Date(ticket.createdAt).toLocaleString(locale)}
+                  </span>
+                  <p className="ticket-detail">{ticket.detail}</p>
+                </div>
+                <div>
+                  <select
+                    aria-label={a("supportTitle")}
+                    value={ticket.status}
+                    onChange={(event) => void setTicketStatus(ticket.id, event.target.value as typeof ticket.status)}
+                  >
+                    <option value="open">{a("supportOpen")}</option>
+                    <option value="acknowledged">{a("supportAcknowledged")}</option>
+                    <option value="resolved">{a("supportResolved")}</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
       {tab === "import" && (
         <section className="import-panel">

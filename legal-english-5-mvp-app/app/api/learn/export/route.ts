@@ -22,6 +22,7 @@ export async function GET() {
     session: { user: unknown; subscription: unknown } | null;
     terms: Term[];
     progress: Progress[];
+    studyDays?: unknown[];
     billingHistory?: unknown[];
   };
   const titles = new Map(data.terms.map((term) => [term.id, term.term]));
@@ -56,12 +57,13 @@ export async function GET() {
 
   const payload = {
     format: "legal-english-5/learner-export",
-    version: 2,
+    version: 3,
     exportedAt: new Date().toISOString(),
     profile,
     profilePhoto,
     subscription: data.session?.subscription ?? null,
     progress: rows,
+    studyDays: data.studyDays ?? [],
     billingHistory: data.billingHistory ?? [],
     notes: {
       en: "This file contains every record Legal English 5 stores about your account. Shared course content (definitions, quizzes, audio) is not personal data and is not included.",

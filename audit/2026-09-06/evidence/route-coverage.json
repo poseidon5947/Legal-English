@@ -1,0 +1,782 @@
+[
+  {
+    "role": "guest",
+    "route": "/",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Master Legal Englishin 5-Minute Sessions."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/about",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "A glossary built from one source of truth"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/pricing",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Start free, keep what works"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/how-it-works",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/sample-terms",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/login",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/signup",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/privacy",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Data processing notice"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/terms-of-service",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Terms of service"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/status",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Is Legal English 5 up?"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/review",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "What to test in twelve minutes"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/not-a-page",
+    "width": 1440,
+    "status": 404,
+    "h1": [
+      "This page is not in the library."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Master Legal Englishin 5-Minute Sessions."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/about",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "A glossary built from one source of truth"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/pricing",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Start free, keep what works"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/how-it-works",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/sample-terms",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/login",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/signup",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/privacy",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Data processing notice"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "guest",
+    "route": "/terms-of-service",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Terms of service"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "empty",
+    "route": "/dashboard",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Good afternoon, Alex"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "empty",
+    "route": "/terms",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Terms Library"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "empty",
+    "route": "/quizzes",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/dashboard",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Good afternoon, Alex"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Terms Library"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/categories",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Categories"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/library",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "My Library"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/quizzes",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/quizzes/contracts",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/progress",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "My Progress"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/account",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "This page could not be opened."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": true
+  },
+  {
+    "role": "learner",
+    "route": "/account/settings",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Preferences"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/account/achievements",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Achievements"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/account/help",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Help & Support"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/billing",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Trial & subscription"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms/CON-001",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "agreement"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms/CON-001/quiz",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms/NO-SUCH-ID",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "This term is not available."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/dashboard",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Good afternoon, Alex"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Terms Library"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/categories",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Categories"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/library",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "My Library"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/quizzes",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/quizzes/contracts",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/progress",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "My Progress"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/account",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "This page could not be opened."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": true
+  },
+  {
+    "role": "learner",
+    "route": "/account/settings",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "This page could not be opened."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": true
+  },
+  {
+    "role": "learner",
+    "route": "/account/achievements",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Achievements"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/account/help",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Help & Support"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/billing",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Trial & subscription"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms/CON-001",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "agreement"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms/CON-001/quiz",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms/NO-SUCH-ID",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "This term is not available."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/terms",
+    "width": 768,
+    "status": 200,
+    "h1": [
+      "Terms Library"
+    ],
+    "scrollWidth": 758,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/quizzes",
+    "width": 768,
+    "status": 200,
+    "h1": [
+      "Quiz & Progress"
+    ],
+    "scrollWidth": 758,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "learner",
+    "route": "/account",
+    "width": 768,
+    "status": 200,
+    "h1": [
+      "This page could not be opened."
+    ],
+    "scrollWidth": 758,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": true
+  },
+  {
+    "role": "learner",
+    "route": "/billing",
+    "width": 768,
+    "status": 200,
+    "h1": [
+      "Trial & subscription"
+    ],
+    "scrollWidth": 758,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": false
+  },
+  {
+    "role": "owner",
+    "route": "/admin",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "This page could not be opened."
+    ],
+    "scrollWidth": 1430,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": true
+  },
+  {
+    "role": "owner",
+    "route": "/admin",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "This page could not be opened."
+    ],
+    "scrollWidth": 380,
+    "brokenImages": [],
+    "unlabelledInputs": [],
+    "errorBoundary": true
+  }
+]

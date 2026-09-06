@@ -55,7 +55,9 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link className={index === 1 ? "primary" : "ghost"} href="/login">
+              {/* New visitors go straight to Create Account; the chosen plan rides along
+                  (?plan=) so Billing can continue to checkout right after sign-up. */}
+              <Link className={index === 1 ? "primary" : "ghost"} href={index === 0 ? "/signup" : `/signup?plan=${index === 1 ? "monthly" : "annual"}`}>
                 {plan.cta}
               </Link>
             </article>
@@ -69,7 +71,7 @@ export default function PricingPage() {
           </div>
         </div>
         <div className="pricing-cta">
-          <Link className="primary" href="/login">
+          <Link className="primary" href="/signup">
             {t("pricingCta")}
           </Link>
         </div>

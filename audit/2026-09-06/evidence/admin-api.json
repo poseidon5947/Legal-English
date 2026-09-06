@@ -1,0 +1,39 @@
+{
+  "preview": {
+    "ok": true,
+    "counts": {
+      "terms": 30,
+      "useItWith": 117,
+      "inContext": 30,
+      "quizzes": 30,
+      "quizzesThreeOptions": 12,
+      "quizzesFourOptions": 18,
+      "variants": 8,
+      "published": 0
+    },
+    "canCommit": true,
+    "issues": []
+  },
+  "commit": {
+    "ok": true,
+    "inserted": 0,
+    "updated": 30
+  },
+  "rollback": {
+    "ok": true
+  },
+  "export": {
+    "status": 200
+  },
+  "badAudio": {
+    "ok": false,
+    "message": "0 audio file(s) stored, 1 rejected.",
+    "results": [
+      {
+        "file": "unknown.mp3",
+        "status": "rejected",
+        "message": "\"unknown.mp3\" does not follow {TermID}_US|UK.{ext} (example: CON-001_US.mp3)."
+      }
+    ]
+  }
+}

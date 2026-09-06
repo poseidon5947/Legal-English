@@ -85,7 +85,7 @@ export default function Home() {
           </h1>
           <p>{c.hero.lead}</p>
           <div className="home-ref-actions">
-            <Link className="primary" href="/login">
+            <Link className="primary" href="/signup">
               {c.hero.cta}
               <HomeIcon name="arrow-right" />
             </Link>
@@ -293,7 +293,7 @@ export default function Home() {
                   <li key={feature}>{feature}</li>
                 ))}
               </ul>
-              <Link className={index === 1 ? "primary" : "ghost"} href="/login">
+              <Link className={index === 1 ? "primary" : "ghost"} href={index === 0 ? "/signup" : `/signup?plan=${index === 1 ? "monthly" : "annual"}`}>
                 {plan.cta}
               </Link>
             </article>
@@ -313,7 +313,7 @@ export default function Home() {
           <h2>{c.cta.title}</h2>
           <p>{c.cta.lead}</p>
         </div>
-        <Link className="primary" href="/login">
+        <Link className="primary" href="/signup">
           {c.cta.button}
           <HomeIcon name="arrow-right" />
         </Link>

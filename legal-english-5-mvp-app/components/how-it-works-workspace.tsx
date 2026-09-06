@@ -42,13 +42,13 @@ const REASONS: ReadonlyArray<readonly [LearnerKey, LearnerKey, HowIconName, stri
  * number the learner cannot find elsewhere.
  */
 export function HowItWorksWorkspace() {
-  const { terms, progress, progressRows, session } = useApp();
+  const { terms, progress, progressRows, studyDays, session } = useApp();
   const { locale } = useLocale();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
 
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
-  const counts = countsFor(visible, progress);
-  const streak = streakFor(progressRows);
+  const counts = countsFor(visible, progress, studyDays);
+  const streak = streakFor(progressRows, new Date(), studyDays);
   const started = counts.studied > 0 || counts.attempts > 0;
 
   // The best term to open next: something in progress first, otherwise a new one.

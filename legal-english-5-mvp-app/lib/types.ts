@@ -1,3 +1,4 @@
+import type { Preferences } from "./preferences";
 export type Role = "admin" | "learner";
 export type SubscriptionStatus =
   | "trialing"
@@ -108,6 +109,8 @@ export type User = {
   privacyAcceptedAt: string | null;
   /** Profile photo. Alpha: `/api/account/avatar?v=<updatedAt>`; production: short-lived signed Storage URL. Null = initials. */
   avatarUrl?: string | null;
+  /** Account-scoped preferences (see lib/preferences.ts). Absent on legacy rows = defaults. */
+  preferences?: Preferences;
 };
 
 export type Progress = {
@@ -116,6 +119,35 @@ export type Progress = {
   favourite: boolean;
   state: ProgressState;
   attempts: number;
+  updatedAt: string;
+};
+
+/**
+ * One row per learner per calendar day (the learner's local day, "YYYY-MM-DD").
+ * Progress rows only keep their latest state, so streaks, weekly activity and
+ * answer accuracy are derived from these dated aggregates instead.
+ */
+export type StudyDay = {
+  userId: string;
+  day: string;
+  opened: number;
+  attempts: number;
+  correct: number;
+  saved: number;
+};
+
+export type TicketStatus = "open" | "acknowledged" | "resolved";
+
+/** A learner's support report. Owner sees every ticket; a learner sees their own with its status. */
+export type SupportTicket = {
+  id: string;
+  reporterId: string;
+  reporterName: string;
+  reporterEmail: string;
+  summary: string;
+  detail: string;
+  status: TicketStatus;
+  createdAt: string;
   updatedAt: string;
 };
 

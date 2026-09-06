@@ -1,5 +1,6 @@
 import { CATEGORIES } from "@/lib/types";
-import type { Progress, ProgressState, SessionPayload, Term } from "@/lib/types";
+import { localDay } from "@/lib/study-day";
+import type { Progress, ProgressState, SessionPayload, StudyDay, Term } from "@/lib/types";
 
 /**
  * Derived learner metrics. Everything here is computed from the server-owned
@@ -30,7 +31,12 @@ export type Counts = {
   accuracyPct: number;
 };
 
-export function countsFor(terms: Term[], progress: Record<string, Progress>): Counts {
+/**
+ * @param studyDays dated aggregates: when present, `accuracyPct` is real answer
+ * accuracy (correct ÷ attempts over every day). Without them it falls back to
+ * mastered ÷ quizzed, which is a mastery rate rather than accuracy.
+ */
+export function countsFor(terms: Term[], progress: Record<string, Progress>, studyDays: StudyDay[] = []): Counts {
   let newCount = 0;
   let learning = 0;
   let mastered = 0;
@@ -48,6 +54,9 @@ export function countsFor(terms: Term[], progress: Record<string, Progress>): Co
     if (row?.favourite) favourites += 1;
   }
   const total = terms.length;
+  const answered = studyDays.reduce((sum, day) => sum + day.attempts, 0);
+  const correct = studyDays.reduce((sum, day) => sum + day.correct, 0);
+  const accuracyPct = answered ? Math.round((correct / answered) * 100) : quizzed ? Math.round((mastered / quizzed) * 100) : 0;
   return {
     total,
     newCount,
@@ -58,7 +67,7 @@ export function countsFor(terms: Term[], progress: Record<string, Progress>): Co
     quizzed,
     favourites,
     masteryPct: total ? Math.round((mastered / total) * 100) : 0,
-    accuracyPct: quizzed ? Math.round((mastered / quizzed) * 100) : 0,
+    accuracyPct,
   };
 }
 
@@ -73,8 +82,14 @@ export function categoryStats(terms: Term[], progress: Record<string, Progress>)
   });
 }
 
+/** Local calendar day, "YYYY-MM-DD" — the same key the server stores in StudyDay.day. */
 function dayKey(date: Date) {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+  return localDay(date);
+}
+
+function dayToDate(key: string) {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y, m - 1, d);
 }
 
 function shiftDay(date: Date, days: number) {
@@ -85,29 +100,41 @@ function shiftDay(date: Date, days: number) {
 
 export type Streak = { current: number; longest: number; activeDays: Set<string>; week: { label: string; done: boolean; today: boolean }[] };
 
+function hadActivity(day: StudyDay) {
+  return day.opened + day.attempts + day.saved > 0;
+}
+
+/** Calendar-day difference (DST-safe: compares dates at noon, not raw millis). */
+function daysBetween(a: string, b: string) {
+  const noon = (key: string) => {
+    const date = dayToDate(key);
+    date.setHours(12, 0, 0, 0);
+    return date.getTime();
+  };
+  return Math.round((noon(b) - noon(a)) / 86_400_000);
+}
+
 /**
- * Day streak from the progress timestamps. A row only stores its latest
- * update, so this counts days with at least one recorded change; it can only
- * undercount, never invent activity.
+ * Day streak from dated study rows (one per local calendar day). Progress
+ * timestamps are merged in as a fallback for activity recorded before study
+ * days existed; they can only undercount, never invent activity.
  */
-export function streakFor(rows: Progress[], now = new Date()): Streak {
-  const activeDays = new Set(rows.filter((row) => row.state !== "new" || row.favourite).map((row) => dayKey(new Date(row.updatedAt))));
+export function streakFor(rows: Progress[], now = new Date(), studyDays: StudyDay[] = []): Streak {
+  const activeDays = new Set<string>([
+    ...studyDays.filter(hadActivity).map((day) => day.day),
+    ...rows.filter((row) => row.state !== "new" || row.favourite).map((row) => dayKey(new Date(row.updatedAt))),
+  ]);
   let current = 0;
   let cursor = activeDays.has(dayKey(now)) ? now : shiftDay(now, -1);
   while (activeDays.has(dayKey(cursor))) {
     current += 1;
     cursor = shiftDay(cursor, -1);
   }
-  const sorted = [...activeDays]
-    .map((key) => {
-      const [y, m, d] = key.split("-").map(Number);
-      return new Date(y, m, d).getTime();
-    })
-    .sort((a, b) => a - b);
+  const sorted = [...activeDays].sort();
   let longest = 0;
   let run = 0;
   for (let i = 0; i < sorted.length; i += 1) {
-    run = i > 0 && sorted[i] - sorted[i - 1] === 86_400_000 ? run + 1 : 1;
+    run = i > 0 && daysBetween(sorted[i - 1], sorted[i]) === 1 ? run + 1 : 1;
     longest = Math.max(longest, run);
   }
   // Monday-first week containing today.
@@ -140,14 +167,27 @@ export function recentActivity(terms: Term[], rows: Progress[], limit = 6): Acti
 
 export type WeekBucket = { start: Date; studied: number; attempts: number };
 
-/** Six weekly buckets ending this week, from row timestamps. */
-export function weeklyActivity(rows: Progress[], now = new Date(), weeks = 6): WeekBucket[] {
+/**
+ * Six weekly buckets ending this week. With study days each week shows the
+ * terms opened and answers given *in that week*; without them (legacy data)
+ * the row timestamps are used, which attribute a term to its latest update.
+ */
+export function weeklyActivity(rows: Progress[], now = new Date(), weeks = 6, studyDays: StudyDay[] = []): WeekBucket[] {
   const weekday = (now.getDay() + 6) % 7;
   const thisMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - weekday);
   const buckets: WeekBucket[] = Array.from({ length: weeks }, (_, i) => ({ start: shiftDay(thisMonday, -7 * (weeks - 1 - i)), studied: 0, attempts: 0 }));
+  const bucketFor = (at: number) => buckets.findIndex((bucket, i) => at >= bucket.start.getTime() && (i === buckets.length - 1 || at < buckets[i + 1].start.getTime()));
+  if (studyDays.length) {
+    for (const day of studyDays) {
+      const index = bucketFor(dayToDate(day.day).getTime());
+      if (index < 0) continue;
+      buckets[index].studied += day.opened;
+      buckets[index].attempts += day.attempts;
+    }
+    return buckets;
+  }
   for (const row of rows) {
-    const at = new Date(row.updatedAt).getTime();
-    const index = buckets.findIndex((bucket, i) => at >= bucket.start.getTime() && (i === buckets.length - 1 || at < buckets[i + 1].start.getTime()));
+    const index = bucketFor(new Date(row.updatedAt).getTime());
     if (index < 0) continue;
     if (row.state !== "new") buckets[index].studied += 1;
     if (row.attempts > 0) buckets[index].attempts += row.attempts;

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
@@ -9,16 +9,14 @@ import { Photo } from "@/components/photo";
 import { Icon } from "@/components/ui-icons";
 
 export default function HelpPage() {
-  const { inbox, reportIssue, session } = useApp();
+  const { inbox, tickets, reportIssue, session } = useApp();
   const { t } = useLocale();
   const [summary, setSummary] = useState("");
   const [detail, setDetail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [showInbox, setShowInbox] = useState(true);
-  useEffect(() => {
-    setShowInbox(window.localStorage.getItem("le5_help_notices") !== "off");
-  }, []);
+  // Account preference (Account → Notifications → Alpha Inbox notices).
+  const showInbox = session?.user.preferences?.inboxNotices ?? true;
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -106,6 +104,21 @@ export default function HelpPage() {
             </button>
           </form>
         </section>
+        {tickets.length > 0 && (
+          <section className="account-card">
+            <h2>{t("helpYourReports")}</h2>
+            <div className="inbox-list">
+              {tickets.slice(0, 6).map((ticket) => (
+                <article key={ticket.id} className={`ticket ${ticket.status}`}>
+                  <strong>
+                    {ticket.summary} <span className={`status ${ticket.status === "resolved" ? "active" : "blocked"}`}>{t(ticket.status === "open" ? "ticketOpen" : ticket.status === "acknowledged" ? "ticketAcknowledged" : "ticketResolved")}</span>
+                  </strong>
+                  <p>{new Date(ticket.createdAt).toLocaleString()}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
         {showInbox && inbox.length > 0 && (
           <section className="account-card">
             <h2>{t("helpInbox")}</h2>

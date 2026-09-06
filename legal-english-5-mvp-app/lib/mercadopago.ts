@@ -165,3 +165,63 @@ export async function fetchResource<T>(path: string, accessToken: string): Promi
   if (!response.ok) throw new Error(`Mercado Pago ${path} responded ${response.status}.`);
   return (await response.json()) as T;
 }
+
+// ---------------------------------------------------------------------
+// Checkout + cancellation (the two calls the app itself makes to MP).
+// A preapproval created against a plan returns an `init_point`: the hosted
+// Mercado Pago page where the learner enters a card. `external_reference`
+// carries our user id so the first webhook can find the subscription row
+// before `provider_reference` is on file (see the webhook handler).
+// ---------------------------------------------------------------------
+
+export type CheckoutInput = {
+  accessToken: string;
+  planId: string;
+  payerEmail: string;
+  externalReference: string;
+  reason: string;
+  backUrl: string;
+};
+
+export async function createPreapproval(input: CheckoutInput): Promise<{ id: string; initPoint: string }> {
+  const response = await fetch(`${MP_API}/preapproval`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${input.accessToken}`, "content-type": "application/json" },
+    cache: "no-store",
+    body: JSON.stringify({
+      preapproval_plan_id: input.planId,
+      payer_email: input.payerEmail,
+      external_reference: input.externalReference,
+      reason: input.reason,
+      back_url: input.backUrl,
+      status: "pending",
+    }),
+  });
+  const data = (await response.json().catch(() => ({}))) as { id?: string; init_point?: string; message?: string };
+  if (!response.ok || !data.id || !data.init_point) {
+    throw new Error(data.message || `Mercado Pago /preapproval responded ${response.status}.`);
+  }
+  return { id: String(data.id), initPoint: String(data.init_point) };
+}
+
+/** Cancels a subscription at the provider. Access continues until the paid period ends (reducer rule). */
+export async function cancelPreapproval(accessToken: string, preapprovalId: string): Promise<void> {
+  const response = await fetch(`${MP_API}/preapproval/${encodeURIComponent(preapprovalId)}`, {
+    method: "PUT",
+    headers: { authorization: `Bearer ${accessToken}`, "content-type": "application/json" },
+    cache: "no-store",
+    body: JSON.stringify({ status: "cancelled" }),
+  });
+  if (!response.ok) {
+    const data = (await response.json().catch(() => ({}))) as { message?: string };
+    throw new Error(data.message || `Mercado Pago cancellation responded ${response.status}.`);
+  }
+}
+
+/** Server-side configuration check shared by the checkout route and the health endpoint. */
+export function mercadoPagoConfig() {
+  const enabled = process.env.PAYMENT_PROVIDER === "mercadopago";
+  const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN ?? "";
+  const planIds: PlanIds = { monthly: process.env.MERCADOPAGO_PLAN_MONTHLY_ID, annual: process.env.MERCADOPAGO_PLAN_ANNUAL_ID };
+  return { enabled, accessToken, planIds, ready: enabled && Boolean(accessToken && process.env.MERCADOPAGO_WEBHOOK_SECRET && planIds.monthly && planIds.annual) };
+}

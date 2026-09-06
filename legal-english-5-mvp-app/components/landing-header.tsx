@@ -89,7 +89,7 @@ export function LandingHeader() {
             <Link href="/login" onClick={() => setOpen(false)}>
               {nav.signIn}
             </Link>
-            <Link className="primary inline" href="/login" onClick={() => setOpen(false)}>
+            <Link className="primary inline" href="/signup" onClick={() => setOpen(false)}>
               {nav.trial}
             </Link>
           </>

@@ -126,10 +126,18 @@ function AuthIcon({ name, className = "" }: { name: AuthIconName; className?: st
   return <img className={`auth-ref-icon ${className}`.trim()} src={`/auth-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-/** Safe in-app return path from ?next= (same-origin absolute paths only). */
+/**
+ * Where to go after signing in: ?next= (same-origin absolute paths only), or
+ * Billing with the plan chosen on the Pricing page (?plan=monthly|annual) so
+ * the purchase intent survives account creation, else the dashboard.
+ */
 function afterLogin() {
-  const next = new URLSearchParams(window.location.search).get("next") ?? "";
-  return next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/login") && !next.startsWith("/signup") ? next : "/dashboard";
+  const params = new URLSearchParams(window.location.search);
+  const next = params.get("next") ?? "";
+  if (next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/login") && !next.startsWith("/signup")) return next;
+  const plan = params.get("plan");
+  if (plan === "monthly" || plan === "annual") return `/billing?plan=${plan}`;
+  return "/dashboard";
 }
 
 export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Extract<AuthMode, "login" | "signup"> }) {
@@ -266,12 +274,20 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
       <section className="auth-reference-panel">
         <header className="auth-reference-top">
+          {/* Phones show the form first (hero moves below), so the brand needs a home up here. */}
+          <Link className="auth-reference-brand dark auth-reference-brand-mobile" href="/">
+            <AuthIcon name="logo-shield" />
+            <span>
+              <strong>LEGAL ENGLISH 5</strong>
+              <small>MPC LAW STUDIO</small>
+            </span>
+          </Link>
           <button type="button" onClick={() => setLocale(locale === "en" ? "es" : "en")} aria-label={t("langToggle")}>
             <AuthIcon name="language-globe" />
             {locale === "en" ? "English" : "Español"}
             <AuthIcon name="chevron-down" />
           </button>
-          <Link href="/account/help">{c.needHelp}</Link>
+          <Link href="/help">{c.needHelp}</Link>
         </header>
 
         <div className="auth-reference-card">

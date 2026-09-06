@@ -1,0 +1,65 @@
+{
+  "login": "passed",
+  "search": [
+    "agreement",
+    "party",
+    "contract",
+    "binding",
+    "employment agreement"
+  ],
+  "audio": {
+    "status": 200,
+    "type": "audio/mpeg",
+    "bytes": 17598
+  },
+  "modalFocus": {
+    "active": "<body><div hidden=\"\"><!--$--><!--/$--></div><a class=\"skip-link\" href=\"#main\">Skip to content</a><!--$--><!--/$--><!--$--><!--/$--><main id=\"main\" class=\"terms-reference-page learner-shell consideration-reference-page\"><header class=\"learner-mobile-b",
+    "inside": false
+  },
+  "modalTab": {
+    "active": "<a class=\"terms-notification\" aria-label=\"Notifications\" title=\"Notifications\" href=\"/account/help\"><img class=\"terms-library-icon\" alt=\"\" aria-hidden=\"true\" src=\"/terms-library-assets/icons/bell.png\"></a>",
+    "inside": false
+  },
+  "quizSuccess": "Correct! \u201cEntered into an agreement\u201d means that the companies formally agreed to do something.",
+  "quizNetwork": {
+    "disabled": true,
+    "feedback": 0,
+    "errors": [
+      "Failed to fetch"
+    ]
+  },
+  "quiz401": "Not quite. Sign in required.",
+  "bootstrapFailure": {
+    "url": "http://127.0.0.1:3217/dashboard",
+    "text": "Skip to content\n\nOpening your studio\u2026"
+  },
+  "drawerFocus": {
+    "active": "<button type=\"button\" class=\"learner-menu-toggle\" aria-label=\"Close menu\" aria-expanded=\"true\" aria-controls=\"learner-drawer\"><span></span><span></span><span></span></button>",
+    "inside": false
+  },
+  "guestHelp": {
+    "url": "http://127.0.0.1:3217/login",
+    "h1": [
+      "Master Legal English.Advance Your Career."
+    ]
+  },
+  "guestAdmin": 403,
+  "learnerAdmin": 403,
+  "expired": {
+    "allowed": false,
+    "terms": 30,
+    "definition": true,
+    "answer": "A",
+    "audioStatus": 403
+  },
+  "unpublishedQuiz": {
+    "ok": true,
+    "correct": true,
+    "message": "As a verb, \u201cbreach\u201d is followed directly by its object: \u201cbreach the contract.\u201d As a noun, use \u201cbreach of contract.\u201d"
+  },
+  "unknownOpen": {
+    "ok": true
+  },
+  "deactivatedAudio": 200,
+  "alphaLogout": null
+}
