@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "builds": [{ "src": "legal-english-5-mvp-app/package.json", "use": "@vercel/next" }]
+}

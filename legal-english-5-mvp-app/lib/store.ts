@@ -1,5 +1,6 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { accessSync, constants as FS, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { cookies } from "next/headers";
+import { tmpdir } from "os";
 import { join } from "path";
 import { AUDIO_MIME, extensionOf, type AudioJurisdiction } from "./audio-naming";
 import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } from "./billing-state";
@@ -31,8 +32,34 @@ function billingHistoryFor(data: StoreData, userId: string) {
   return (data.billingLog ?? []).filter((item) => item.userId === userId).sort((a, b) => b.at.localeCompare(a.at));
 }
 
-const DIR = join(process.cwd(), "data");
+// Two directories, because serverless hosts (Vercel) ship the repo read-only:
+//  - SEED_DIR: versioned with the app (data/mcd-seed.json, data/audio/**). Read only.
+//  - DIR:      mutable alpha state (alpha-store.json, avatars/, insights.json,
+//              uploaded audio). LE5_DATA_DIR wins; otherwise the project's data/
+//              folder when it is writable (dev, VPS); otherwise the OS temp dir,
+//              which on Vercel means the demo resets on every cold start.
+const SEED_DIR = join(process.cwd(), "data");
+const DIR = resolveStateDir();
 const FILE = join(DIR, "alpha-store.json");
+
+function writable(dir: string) {
+  try {
+    mkdirSync(dir, { recursive: true });
+    accessSync(dir, FS.W_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function resolveStateDir() {
+  const configured = process.env.LE5_DATA_DIR?.trim();
+  if (configured) return configured;
+  if (writable(SEED_DIR)) return SEED_DIR;
+  const fallback = join(tmpdir(), "legal-english-5-data");
+  console.warn(`[store] ${SEED_DIR} is read-only; alpha state lives in ${fallback} and resets on cold start. Set NEXT_PUBLIC_DATA_MODE=production (Supabase) for persistent data.`);
+  return fallback;
+}
 
 function plusDays(date: Date, days: number) {
   return new Date(date.getTime() + days * 86400000).toISOString();
@@ -93,7 +120,7 @@ function initial(): StoreData {
     role: "learner",
     password: "Andres#Alpha26",
   });
-  const seed = JSON.parse(readFileSync(join(DIR, "mcd-seed.json"), "utf8")) as { terms: Term[] };
+  const seed = JSON.parse(readFileSync(join(SEED_DIR, "mcd-seed.json"), "utf8")) as { terms: Term[] };
   // Approved static audio (AUDIO-PROD-01) lives in data/audio/{TermID}/us|uk.mp3 and is
   // versioned with the app, so a fresh alpha store re-associates it instead of starting silent.
   const terms = seed.terms.map((term) => ({
@@ -619,13 +646,22 @@ export async function listImportRuns(actorId: string) {
 // convention and the Term fields are identical.
 // ---------------------------------------------------------------------
 const AUDIO_DIR = join(DIR, "audio");
+const SEED_AUDIO_DIR = join(SEED_DIR, "audio");
 
-function audioFilesFor(termId: string, jurisdiction: AudioJurisdiction) {
-  const folder = join(AUDIO_DIR, termId);
+function audioFilesIn(root: string, termId: string, jurisdiction: AudioJurisdiction) {
+  const folder = join(root, termId);
   if (!existsSync(folder)) return [];
   return readdirSync(folder)
     .filter((name) => name.startsWith(`${jurisdiction}.`))
     .map((name) => join(folder, name));
+}
+
+// Owner uploads (writable dir) take precedence over the versioned AUDIO-PROD-01
+// files; on a writable host both roots are the same folder.
+function audioFilesFor(termId: string, jurisdiction: AudioJurisdiction) {
+  const uploaded = audioFilesIn(AUDIO_DIR, termId, jurisdiction);
+  if (uploaded.length || AUDIO_DIR === SEED_AUDIO_DIR) return uploaded;
+  return audioFilesIn(SEED_AUDIO_DIR, termId, jurisdiction);
 }
 
 export function audioFile(termId: string, jurisdiction: AudioJurisdiction) {
@@ -646,7 +682,7 @@ export async function saveAudio(actorId: string, termId: string, jurisdiction: A
   if (!term) return { ok: false as const, message: `TermID ${termId} does not exist; upload rejected.` };
   const folder = join(AUDIO_DIR, termId);
   mkdirSync(folder, { recursive: true });
-  for (const previous of audioFilesFor(termId, jurisdiction)) rmSync(previous, { force: true });
+  for (const previous of audioFilesIn(AUDIO_DIR, termId, jurisdiction)) rmSync(previous, { force: true });
   writeFileSync(join(folder, `${jurisdiction}.${extension}`), bytes);
   const url = mediaUrl(termId, jurisdiction);
   if (jurisdiction === "us") term.audioUsPath = url;
@@ -711,7 +747,7 @@ export async function removeAudio(actorId: string, termId: string, jurisdiction:
   if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
   const term = data.terms.find((item) => item.id === termId);
   if (!term) return { ok: false as const, message: "Term not found." };
-  for (const previous of audioFilesFor(termId, jurisdiction)) rmSync(previous, { force: true });
+  for (const previous of audioFilesIn(AUDIO_DIR, termId, jurisdiction)) rmSync(previous, { force: true });
   if (jurisdiction === "us") term.audioUsPath = "";
   else term.audioUkPath = "";
   // Losing the asset re-applies the publication gate; a published Term

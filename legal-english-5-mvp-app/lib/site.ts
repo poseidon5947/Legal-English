@@ -13,6 +13,9 @@ export function siteUrl(): URL {
       /* fall through to the local default */
     }
   }
+  // Vercel previews/production without NEXT_PUBLIC_SITE_URL: use the deployment host.
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercelHost) return new URL(`https://${vercelHost}`);
   return new URL(`http://localhost:${process.env.PORT || 3000}`);
 }
 

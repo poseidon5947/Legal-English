@@ -37,6 +37,17 @@ Server state lives in `data/alpha-store.json`. Reset it from the Owner overview 
 
 `npm run dev` compiles each page on first visit, so the first open of a route is slow by design. To judge real loading speed run the production build: `npm run build && npm start`.
 
+### Deploying to Vercel (client preview)
+
+The Next.js app is this folder, not the repository root. Two ways to tell Vercel:
+
+1. Project → Settings → Build and Deployment → **Root Directory** = `legal-english-5-mvp-app` (recommended). Redeploy.
+2. Leave the root as is: the repo-level `vercel.json` (`builds` → `legal-english-5-mvp-app/package.json`) points the Next.js builder at this folder. Vercel ignores that file once a Root Directory is set, so both can coexist.
+
+Without either, Vercel deploys the repository root as a static site and every URL returns Vercel's own `404: NOT_FOUND`.
+
+Alpha mode on Vercel: the filesystem is read-only, so `lib/store.ts` keeps `alpha-store.json`, avatars and insights in the OS temp dir (`LE5_DATA_DIR` overrides). The demo works, but state resets on each cold start and is not shared between regions. For a persistent preview set `NEXT_PUBLIC_DATA_MODE=production` with the Supabase variables below. Set `NEXT_PUBLIC_SITE_URL` to the final domain; until then canonical URLs fall back to the Vercel deployment host. `next.config.ts` traces `data/mcd-seed.json` and `data/audio/**` into the serverless functions so the seed and the AUDIO-PROD-01 files are available at runtime.
+
 ### Brand and design system
 
 The UI follows the client's **MPC LAW STUDIO Design System v2.3** (30 Aug

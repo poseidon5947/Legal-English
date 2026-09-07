@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
   // Dev-only: origins allowed to load /_next dev resources (HMR, RSC). Without
   // 127.0.0.1 here the app never hydrates when opened by IP instead of localhost.
   allowedDevOrigins: ["*.trycloudflare.com", "82.38.44.28", "127.0.0.1", "localhost"],
+  // The alpha store reads data/ with fs at runtime (process.cwd()), which the
+  // file tracer cannot see. Without this, serverless deploys (Vercel) ship the
+  // functions without the MCD seed and the AUDIO-PROD-01 files.
+  outputFileTracingIncludes: { "/**": ["./data/mcd-seed.json", "./data/audio/**"] },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
