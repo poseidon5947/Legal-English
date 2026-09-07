@@ -202,8 +202,14 @@ async function signAvatars(paths: (string | null)[]): Promise<Map<string, string
   return new Map((data ?? []).filter((entry) => entry.signedUrl).map((entry) => [String(entry.path), String(entry.signedUrl)]));
 }
 
-export async function getUser(id: string): Promise<PublicUser | null> {
-  const supabase = await getSupabaseServerClient();
+/**
+ * `asAdmin` bypasses RLS via the service-role client. Only for the moment right
+ * after signUp(): with "Confirm email" on, Supabase returns the new user but no
+ * session until the code is verified, so the cookie client cannot see the row
+ * the trigger just created (RLS "users read own profile" needs auth.uid()).
+ */
+export async function getUser(id: string, options: { asAdmin?: boolean } = {}): Promise<PublicUser | null> {
+  const supabase = options.asAdmin ? getSupabaseServiceRoleClient() : await getSupabaseServerClient();
   const { data: profile } = await supabase.from("users").select("*").eq("id", id).maybeSingle();
   if (!profile) return null;
   const { data: sub } = await supabase.from("subscriptions").select("*").eq("user_id", id).maybeSingle();
@@ -303,9 +309,11 @@ export async function register(name: string, email: string, password: string, pr
     options: { data: { full_name: name.trim(), privacy_accepted: true } },
   });
   if (error || !data.user) return { ok: false as const, message: mapAuthError(error?.message) };
-  const user = await getUser(data.user.id);
+  // No session yet (email confirmation pending), so the row must be read as admin.
+  const user = await getUser(data.user.id, { asAdmin: true });
   if (!user) return { ok: false as const, message: "Account was created but the profile row is missing. Check the on_auth_user_created trigger." };
-  return { ok: true as const, user, code: undefined as string | undefined };
+  // A session exists here only when "Confirm email" is disabled in Supabase Auth.
+  return { ok: true as const, user, code: undefined as string | undefined, sessionEstablished: Boolean(data.session) };
 }
 
 export async function verifyEmail(email: string, code: string) {
