@@ -155,10 +155,34 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  // Set when /auth/confirm exchanged a recovery link for a session: the reset
+  // form then needs only the new password, and the signed-in redirect waits.
+  const [linkRecovery, setLinkRecovery] = useState(false);
+
+  // Flags left by /auth/confirm (Supabase email-link flow) on arrival.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.toString()) return;
+    if (params.get("confirmed") === "1") {
+      setMode("login");
+      setNotice(t("emailConfirmedNotice"));
+    } else if (params.get("recovery") === "1") {
+      setLinkRecovery(true);
+      setMode("reset");
+      setNotice(t("recoveryLinkNotice"));
+    } else if (params.get("recovery") === "failed") {
+      setMode("forgot");
+      setError(t("recoveryLinkFailed"));
+    } else if (params.get("error")) {
+      setError(params.get("error") || "");
+    }
+    window.history.replaceState(null, "", window.location.pathname);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (ready && session) router.replace(afterLogin());
-  }, [ready, session, router]);
+    if (ready && session && !linkRecovery) router.replace(afterLogin());
+  }, [ready, session, router, linkRecovery]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -181,9 +205,13 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
       return;
     }
     if (mode === "reset") {
-      const result = await resetPassword(email, code, password);
+      const result = await resetPassword(email, linkRecovery ? "" : code, password);
       if (!result.ok) setError(result.message || t("couldNotReset"));
-      else {
+      else if (linkRecovery) {
+        // Already signed in through the recovery link; go straight to the app.
+        setLinkRecovery(false);
+        router.push(afterLogin());
+      } else {
         setNotice(t("passwordUpdated"));
         setMode("login");
       }
@@ -314,13 +342,15 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
               </label>
             )}
 
-            <label>
-              {c.email}
-              <span>
-                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={c.emailPh} required readOnly={mode === "confirm"} />
-                <AuthIcon name="email-envelope" />
-              </span>
-            </label>
+            {!(mode === "reset" && linkRecovery) && (
+              <label>
+                {c.email}
+                <span>
+                  <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={c.emailPh} required readOnly={mode === "confirm"} />
+                  <AuthIcon name="email-envelope" />
+                </span>
+              </label>
+            )}
 
             {mode !== "forgot" && mode !== "confirm" && (
               <label>
@@ -341,7 +371,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
               </label>
             )}
 
-            {(mode === "reset" || mode === "confirm") && (
+            {(mode === "confirm" || (mode === "reset" && !linkRecovery)) && (
               <label>
                 {c.code}
                 <span>

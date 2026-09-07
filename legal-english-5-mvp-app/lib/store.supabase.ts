@@ -7,6 +7,7 @@ import { cancelPreapproval, createPreapproval, mercadoPagoConfig } from "./merca
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
+import { siteUrl } from "./site";
 import type { Preferences } from "./preferences";
 import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, StudyDay, SupportTicket, TicketStatus, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
 
@@ -306,7 +307,10 @@ export async function register(name: string, email: string, password: string, pr
     // missing — the app-level check above is the one a user actually
     // sees; that trigger check is a backstop against calling Supabase
     // Auth directly and skipping this function.
-    options: { data: { full_name: name.trim(), privacy_accepted: true } },
+    // Free-tier Supabase with the default mailer cannot customise templates, so
+    // the email may carry a link ({{ .ConfirmationURL }}) instead of the code the
+    // UI asks for. Point that link at /auth/confirm, which finishes the flow.
+    options: { data: { full_name: name.trim(), privacy_accepted: true }, emailRedirectTo: authCallbackUrl("signup") },
   });
   if (error || !data.user) return { ok: false as const, message: mapAuthError(error?.message) };
   // No session yet (email confirmation pending), so the row must be read as admin.
@@ -323,16 +327,29 @@ export async function verifyEmail(email: string, code: string) {
   return { ok: true as const };
 }
 
+/** Where Supabase Auth email links land; the route handler there completes the flow. */
+function authCallbackUrl(type: "signup" | "recovery") {
+  return `${siteUrl().origin}/auth/confirm?type=${type}`;
+}
+
 export async function requestReset(email: string) {
   const supabase = await getSupabaseServerClient();
-  await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase());
+  await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), { redirectTo: authCallbackUrl("recovery") });
   return { ok: true as const };
 }
 
 export async function resetPassword(email: string, code: string, password: string) {
   const supabase = await getSupabaseServerClient();
-  const { error: otpError } = await supabase.auth.verifyOtp({ email: email.trim().toLowerCase(), token: code.trim(), type: "recovery" });
-  if (otpError) return { ok: false as const, message: mapAuthError(otpError.message) };
+  const token = String(code ?? "").trim();
+  if (token) {
+    const { error: otpError } = await supabase.auth.verifyOtp({ email: email.trim().toLowerCase(), token, type: "recovery" });
+    if (otpError) return { ok: false as const, message: mapAuthError(otpError.message) };
+  } else {
+    // Link-based recovery: /auth/confirm already exchanged the link for a
+    // session in this browser, so only the new password is needed.
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) return { ok: false as const, message: "The recovery link has expired. Request a new one." };
+  }
   const { error: updateError } = await supabase.auth.updateUser({ password });
   if (updateError) return { ok: false as const, message: mapAuthError(updateError.message) };
   return { ok: true as const };
