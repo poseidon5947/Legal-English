@@ -530,7 +530,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
           <section className="account-ref-panel account-ref-progress-card">
             <h2>{L("yourProgress")}</h2>
             <div className="account-ref-progress-body">
-              <div className="account-ref-ring" style={{ background: `conic-gradient(var(--account-blue) 0 ${counts.masteryPct}%, #e8eef7 ${counts.masteryPct}% 100%)` }}>
+              <div className="account-ref-ring" style={{ background: `conic-gradient(var(--account-blue) 0 ${counts.masteryPct}%, #e4e1ec ${counts.masteryPct}% 100%)` }}>
                 <strong>{counts.masteryPct}%</strong>
                 <span>{L("stateMastered")}</span>
               </div>

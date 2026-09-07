@@ -37,6 +37,38 @@ Server state lives in `data/alpha-store.json`. Reset it from the Owner overview 
 
 `npm run dev` compiles each page on first visit, so the first open of a route is slow by design. To judge real loading speed run the production build: `npm run build && npm start`.
 
+### Brand and design system
+
+The UI follows the client's **MPC LAW STUDIO Design System v2.3** (30 Aug
+2026). The approved palette lives as tokens at the top of `app/globals.css`
+and every role token (`--navy`, `--accent`, `--green`, …) is mapped onto it:
+
+| Token | Value | Use (v2.3 §2) |
+| --- | --- | --- |
+| `--brand-purple` | `#452B84` | primary buttons, navigation, headings, key brand elements |
+| `--brand-yellow` | `#F5E400` | highlights, achievements, selective accents — **never white text on yellow**; text on yellow is Brand Dark |
+| `--brand-dark` | `#1A171B` | primary text, dark logo treatment |
+| `--brand-gray` | `#707173` | secondary text (4.89:1 on white — do not lighten) |
+| `--surface` | `#F7F7FA` | cards and secondary surfaces |
+| `--success` / `--warning` / `--error` | `#2E7D32` / `#F9A825` / `#C62828` | semantic states, always paired with a label or icon |
+
+Also from the document: type-scale and 8-point spacing tokens (`--type-*`,
+`--space-*`), a 44×44 px touch-target floor on touch devices (`@media
+(pointer: coarse)` block at the end of the stylesheet), 13 px minimum for
+running text and 11 px for uppercase micro-labels, purple-outline secondary
+buttons, and the §10 lesson sequence on the term page: Term (with part of
+speech) → Pronunciation → Definition → Civil Law Equivalent (badged DIRECT
+TERMINOLOGICAL or FUNCTIONAL from the MCD's ComparativeLawNote) → Use It With
+→ In Context → Spanish-Speaker Alert → US/UK Variant → Quick Quiz. Optional
+cards are omitted when the MCD field is empty. Drafting Tip, Legalese Watch,
+Don't Confuse It With and Jurisdictional Note are not delivered by MCD
+v1.3.81, so they have no card yet.
+
+The icon packs under `public/*/icons`, the brand mark (`public/brand`,
+`app/icon.svg`) and the UI mockups in `public/generated` were recoloured to
+the same palette; category icons follow §6 (Contracts = document, Corporate
+= building, Employment Law = briefcase).
+
 ### Images
 
 Photos are rendered through `components/photo.tsx`, which serves pre-built WebP variants (160/480/800/1200 px) from a sibling `w/` folder and lets the browser pick the smallest one that fits. After adding or replacing a JPG under `public/home-assets/photos`, `public/home-assets/hero` or `public/auth-assets/backgrounds`, run:

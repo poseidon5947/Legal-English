@@ -68,12 +68,12 @@ function ActivityChart({ weeks, locale }: { weeks: { start: Date; studied: numbe
     <svg className="progress-activity-chart" viewBox="0 0 662 222" role="img" aria-label="Learning activity chart">
       <defs>
         <linearGradient id="termsArea" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#2e7de6" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#2e7de6" stopOpacity="0.02" />
+          <stop offset="0%" stopColor="#452b84" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#452b84" stopOpacity="0.02" />
         </linearGradient>
         <linearGradient id="quizArea" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#19a875" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="#19a875" stopOpacity="0.02" />
+          <stop offset="0%" stopColor="#2e7d32" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#2e7d32" stopOpacity="0.02" />
         </linearGradient>
       </defs>
       {ticks.map((tick) => (

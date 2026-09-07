@@ -224,7 +224,7 @@ export default function AdminPage() {
                         <b>{width}%</b>
                       </div>
                       <div className="bar-track">
-                        <i style={{ width: `${width}%`, background: item === "Contracts" ? "#006B5B" : item === "Corporate Law" ? "#D8A852" : "#1F6A8A" }} />
+                        <i style={{ width: `${width}%`, background: item === "Contracts" ? "#452b84" : item === "Corporate Law" ? "#f5e400" : "#2e7d32" }} />
                       </div>
                     </div>
                   );
@@ -716,8 +716,8 @@ function UsersGrowthChart({ createdAt, locale }: { createdAt: string[]; locale: 
   return (
     <>
       <svg viewBox={`0 0 ${width} ${height}`} className="chart-svg funnel" role="img" aria-label={label}>
-        <path d={`${line} L${width} ${height} L0 ${height} Z`} fill="#E0F1EB" />
-        <path d={line} fill="none" stroke="#006B5B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={`${line} L${width} ${height} L0 ${height} Z`} fill="#e8f3e9" />
+        <path d={line} fill="none" stroke="#2e7d32" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       <div className="admin-insights-axis" aria-hidden="true">
         <span>{locale === "es" ? "hace 30 días" : "30 days ago"}</span>

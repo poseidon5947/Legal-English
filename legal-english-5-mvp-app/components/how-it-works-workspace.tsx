@@ -75,7 +75,7 @@ export function HowItWorksWorkspace() {
     { title: "howStep5Title", body: "howStep5Body", cta: "howStep5Cta", icon: "mastery-award", tone: "blue", href: "/dashboard", done: counts.mastered > 0, stat: L("howStat5", { n: counts.mastered, total: counts.total }) },
   ];
 
-  const ring = `conic-gradient(var(--how-green) 0 ${counts.masteryPct}%, #e8eef7 ${counts.masteryPct}% 100%)`;
+  const ring = `conic-gradient(var(--how-green) 0 ${counts.masteryPct}%, #e4e1ec ${counts.masteryPct}% 100%)`;
 
   return (
     <LearnerShell pageClass="how-works-page">

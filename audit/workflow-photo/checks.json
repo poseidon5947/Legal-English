@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "tilted": "matrix3d(0.99957, 0.000450264, -0.0293139, 0, 0, 0.999882, 0.0153583, 0, 0.0293173, -0.0153517, 0.999452, 0, 0, 0, 0, 1)",
+  "captionStable": true,
+  "offset1": "-11.146px",
+  "offset2": "-13.75px",
+  "sizes": [
+    {
+      "width": 768,
+      "scroll": 758
+    },
+    {
+      "width": 390,
+      "scroll": 380
+    },
+    {
+      "width": 320,
+      "scroll": 316
+    }
+  ],
+  "checks": [
+    "desktop pointer tilt",
+    "steady caption",
+    "moving border",
+    "pause/resume",
+    "pointer exit reset",
+    "no mobile tilt",
+    "offscreen pause",
+    "reduced-motion static",
+    "no browser errors"
+  ]
+}

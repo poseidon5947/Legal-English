@@ -93,10 +93,10 @@ export function AdminInsights() {
               </div>
             </div>
             <svg viewBox={`0 0 ${width} ${height}`} className="chart-svg funnel" role="img" aria-label={a("insightsChartAlt", { n: summary?.views ?? 0, days })}>
-              {area && <path d={area} fill="#E0F1EB" />}
-              {line && <path d={line} fill="none" stroke="#006B5B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />}
+              {area && <path d={area} fill="#e8f3e9" />}
+              {line && <path d={line} fill="none" stroke="#2e7d32" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />}
               {points.map(([x, y], index) => (
-                <circle key={index} cx={x} cy={y} r="3" fill="#006B5B">
+                <circle key={index} cx={x} cy={y} r="3" fill="#2e7d32">
                   <title>
                     {formatDay(daily[index].day)}: {daily[index].views} {a("insightsViewsLabel").toLowerCase()}
                   </title>
@@ -147,7 +147,7 @@ export function AdminInsights() {
                     <b>{page.views}</b>
                   </div>
                   <div className="bar-track">
-                    <i style={{ width: `${Math.max(2, share)}%`, background: "#1F6A8A" }} />
+                    <i style={{ width: `${Math.max(2, share)}%`, background: "#452b84" }} />
                   </div>
                 </div>
               );

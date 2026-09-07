@@ -7,6 +7,8 @@ export const PLAN_PRICES = ["$0", "$9.99", "$79.99"] as const;
 export type LandingCopy = {
   nav: { home: string; library: string; how: string; pricing: string; about: string; signIn: string; trial: string; dashboard: string; signOut: string };
   hero: {
+    audience: string;
+    highlights: readonly [string, string, string];
     title1: string;
     title2: string;
     lead: string;
@@ -38,7 +40,7 @@ export type LandingCopy = {
   life: { eyebrow: string; title: string; lead: string; photos: readonly [string, string, string] };
   scenarios: { eyebrow: string; title: string; lead: string; termsLabel: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
   features: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]>; statusNew: string; statusLearning: string; statusMastered: string; statusPrefix: string; statusOr: string };
-  proof: { eyebrow: string; title: string; quotes: ReadonlyArray<readonly [string, string, string]>; stats: ReadonlyArray<readonly [string, string]> };
+  proof: { eyebrow: string; title: string; quoteEmphasis: string; quotes: ReadonlyArray<readonly [string, string, string]>; stats: ReadonlyArray<readonly [string, string]> };
   pricing: {
     eyebrow: string;
     title: string;
@@ -75,14 +77,16 @@ export type LandingCopy = {
 const en: LandingCopy = {
   nav: { home: "Home", library: "Terms Library", how: "How It Works", pricing: "Pricing", about: "About", signIn: "Sign In", trial: "Start 7-Day Free Trial", dashboard: "My dashboard", signOut: "Sign out" },
   hero: {
-    title1: "Master Legal English",
-    title2: "in 5-Minute Sessions.",
+    audience: "For lawyers & law students",
+    highlights: ["Real legal context", "Spanish guidance", "Track your progress"],
+    title1: "Legal English for real practice.",
+    title2: "Five minutes at a time.",
     lead:
-      "The microlearning platform built for Spanish-speaking lawyers and law students. Learn essential legal terminology through clear explanations, contextual usage, functional equivalents, and progress tracking.",
-    cta: "Start 7-Day Free Trial",
-    explore: "Explore Terms Library",
+      "Build your legal vocabulary with clear explanations, practical examples, and guidance for Spanish speakers.",
+    cta: "Start your free 7-day trial",
+    explore: "Explore the terms",
     benefits: ["5-Minute Lessons", "Built for legal professionals", "Track your progress", "No credit card required"],
-    reassurance: "No credit card · Cancel anytime · 30 terms at launch, more every month",
+    reassurance: "No credit card required",
     trust: [
       ["One source of truth", "Every term comes from a single Master Content Database"],
       ["Lawyer-reviewed", "Approved by a practising lawyer before publication"],
@@ -173,8 +177,9 @@ const en: LandingCopy = {
     ],
   },
   proof: {
-    eyebrow: "From the studio",
-    title: "Written by a lawyer who reads these documents every day",
+    eyebrow: "The people behind the terms",
+    title: "Legal expertise. Clear explanations.",
+    quoteEmphasis: "We answer it once, review it, and only then publish it.",
     quotes: [
       [
         "Every term in Legal English 5 started as a real question from a Spanish-speaking client or colleague: what does this clause actually mean, and what is the closest concept in our civil-law system? We answer it once, review it, and only then publish it. Nothing here is paraphrased by software.",
@@ -247,14 +252,16 @@ const en: LandingCopy = {
 const es: LandingCopy = {
   nav: { home: "Inicio", library: "Biblioteca de términos", how: "Cómo funciona", pricing: "Precios", about: "Nosotros", signIn: "Iniciar sesión", trial: "Prueba gratis de 7 días", dashboard: "Mi panel", signOut: "Cerrar sesión" },
   hero: {
-    title1: "Domina el inglés jurídico",
-    title2: "en sesiones de 5 minutos.",
+    audience: "Para abogados y estudiantes de derecho",
+    highlights: ["Contexto jurídico real", "Orientación en español", "Sigue tu progreso"],
+    title1: "Inglés jurídico para la práctica real.",
+    title2: "Cinco minutos a la vez.",
     lead:
-      "La plataforma de microaprendizaje creada para abogados y estudiantes de derecho hispanohablantes. Aprende la terminología jurídica esencial con explicaciones claras, uso en contexto, equivalentes funcionales y seguimiento del progreso.",
-    cta: "Empezar prueba gratis de 7 días",
-    explore: "Explorar la biblioteca",
+      "Amplía tu vocabulario jurídico con explicaciones claras, ejemplos prácticos y orientación para hispanohablantes.",
+    cta: "Empieza tu prueba gratis de 7 días",
+    explore: "Explora los términos",
     benefits: ["Lecciones de 5 minutos", "Hecho para profesionales del derecho", "Sigue tu progreso", "Sin tarjeta de crédito"],
-    reassurance: "Sin tarjeta · Cancela cuando quieras · 30 términos al lanzamiento y más cada mes",
+    reassurance: "No necesitas tarjeta de crédito",
     trust: [
       ["Una sola fuente de verdad", "Cada término proviene de una única Master Content Database"],
       ["Revisado por abogada", "Aprobado por una abogada en ejercicio antes de publicarse"],
@@ -345,8 +352,9 @@ const es: LandingCopy = {
     ],
   },
   proof: {
-    eyebrow: "Desde el estudio",
-    title: "Escrito por una abogada que lee estos documentos cada día",
+    eyebrow: "Las personas detrás de los términos",
+    title: "Experiencia jurídica. Explicaciones claras.",
+    quoteEmphasis: "La respondemos una vez, la revisamos y solo entonces la publicamos.",
     quotes: [
       [
         "Cada término de Legal English 5 nació de una pregunta real de un cliente o colega hispanohablante: ¿qué significa realmente esta cláusula y cuál es el concepto más cercano en nuestro sistema de derecho civil? La respondemos una vez, la revisamos y solo entonces la publicamos. Nada aquí está parafraseado por software.",

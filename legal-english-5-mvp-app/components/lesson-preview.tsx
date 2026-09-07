@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import type { Locale } from "@/lib/i18n";
 
@@ -78,6 +78,17 @@ const CORRECT_INDEX = 2;
 
 export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Copy; locale: Locale; tabIcons: readonly string[]; renderIcon: (props: IconProps) => ReactNode }) {
   const P = PANEL_COPY[locale];
+  const id = useId();
+  const tabButtons = useRef<(HTMLButtonElement | null)[]>([]);
+  const [compact, setCompact] = useState(false);
+  const es = locale === "es";
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 600px)");
+    const update = () => setCompact(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
   const [tab, setTab] = useState(0);
   const [speaking, setSpeaking] = useState(false);
   const [speechNote, setSpeechNote] = useState("");
@@ -117,7 +128,7 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
       case 1:
         return (
           <>
-            <p lang="es" className="home-ref-term-big">{P.spanish}</p>
+            <p lang="es" className="lesson-translation">{P.spanish}</p>
             <div>
               <strong>{P.spanishLabel}</strong>
               <span>consideration → contraprestación</span>
@@ -147,14 +158,14 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
       case 4:
         return (
           <>
-            <ul className="home-ref-term-chips" aria-label={P.useLabel}>
+            <ul className="lesson-collocations" aria-label={P.useLabel}>
               {P.useWith.map((phrase) => (
                 <li key={phrase}>{phrase}</li>
               ))}
             </ul>
             <div>
               <strong>{P.useLabel}</strong>
-              <span>{P.useWith.length} collocations · MCD v1.3.81</span>
+              <span>{P.useWith.length} {es ? "combinaciones frecuentes" : "common collocations"}</span>
             </div>
           </>
         );
@@ -183,78 +194,73 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
 
   const feedback = checked ? (choice === CORRECT_INDEX ? P.correct : P.wrong) : "";
 
+  function selectTab(next: number, focus = false) {
+    setTab(next);
+    if (focus) {
+      tabButtons.current[next]?.focus();
+      tabButtons.current[next]?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+    }
+  }
+
   return (
-    <div className="home-ref-lesson" data-reveal>
-      <aside role="tablist" aria-label={copy.tabs[0]}>
-        {copy.tabs.map((label, index) => (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={tab === index}
-            aria-controls="home-lesson-panel"
-            className={tab === index ? "active" : ""}
-            key={label}
-            onClick={() => setTab(index)}
-          >
-            {renderIcon({ name: tabIcons[index] })}
-            {label}
+    <div className="lesson-studio" data-reveal>
+      <header className="lesson-intro">
+        <div className="lesson-meta"><span>{es ? "Contratos" : "Contracts"}</span><i aria-hidden="true" /><small>{es ? "Vista previa de una lección" : "A look inside your lesson"}</small></div>
+        <div className="lesson-title-row">
+          <div><h3 lang="en">Consideration</h3><p className="lesson-pronunciation">{copy.pronunciation}</p></div>
+          <button type="button" className={`lesson-audio${speaking ? " speaking" : ""}`} aria-label={speaking ? P.playing : P.play} onClick={speak}>
+            {renderIcon({ name: "speaker" })}<span>{speaking ? P.playing : es ? "Escuchar" : "Listen"}</span>
           </button>
-        ))}
-      </aside>
-      <article className="home-ref-term" id="home-lesson-panel" role="tabpanel">
-        <h3>Consideration</h3>
-        <button type="button" className={speaking ? "speaking" : ""} aria-label={speaking ? P.playing : P.play} title={P.play} onClick={speak}>
-          {renderIcon({ name: "speaker" })}
-        </button>
-        <p className="home-ref-pronunciation">{copy.pronunciation}</p>
-        {speechNote && <p className="home-ref-speech-note" role="status">{speechNote}</p>}
-        {panel}
-      </article>
-      <article className="home-ref-quiz">
-        <div>
-          <strong>{copy.quickQuiz}</strong>
-          <span>{copy.quizCount}</span>
         </div>
-        <h3 id="home-quiz-question">{copy.question}</h3>
-        <div className="home-ref-quiz-options" role="radiogroup" aria-labelledby="home-quiz-question">
+        {speechNote && <p className="lesson-speech-note" role="status">{speechNote}</p>}
+      </header>
+      <aside className="lesson-nav">
+        <p className="lesson-nav-label">{es ? "Explora el término" : "Explore the term"}</p>
+        <div role="tablist" aria-label={es ? "Secciones de la lección" : "Lesson sections"} aria-orientation={compact ? "horizontal" : "vertical"}>
+          {copy.tabs.map((label, index) => (
+            <button type="button" role="tab" id={`${id}-tab-${index}`} aria-selected={tab === index} aria-controls={`${id}-panel`} tabIndex={tab === index ? 0 : -1} ref={(element) => { tabButtons.current[index] = element; }} key={index} onClick={() => selectTab(index)} onKeyDown={(event) => {
+              let next: number;
+              if (event.key === "Home") next = 0;
+              else if (event.key === "End") next = copy.tabs.length - 1;
+              else if (event.key === (compact ? "ArrowRight" : "ArrowDown")) next = (index + 1) % copy.tabs.length;
+              else if (event.key === (compact ? "ArrowLeft" : "ArrowUp")) next = (index + copy.tabs.length - 1) % copy.tabs.length;
+              else return;
+              event.preventDefault(); selectTab(next, true);
+            }}>
+              {renderIcon({ name: tabIcons[index] })}<span>{label}</span><i aria-hidden="true">›</i>
+            </button>
+          ))}
+        </div>
+      </aside>
+      <article className="lesson-reading" id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-tab-${tab}`} tabIndex={0}>
+        <div className="lesson-reading-body" key={tab}>
+          <div className="lesson-section-heading"><span aria-hidden="true">0{tab + 1}</span><h4>{copy.tabs[tab]}</h4></div>
+          <div className={`lesson-panel-copy panel-${tab}`}>{panel}</div>
+        </div>
+        <footer className="lesson-reading-footer"><span>0{tab + 1}<i> / 06</i></span><button type="button" onClick={() => selectTab((tab + 1) % copy.tabs.length, true)}>{tab === 5 ? (es ? "Volver a definición" : "Back to definition") : (es ? "Siguiente sección" : "Next section")}<span aria-hidden="true">→</span></button></footer>
+      </article>
+      <article className="lesson-practice" aria-labelledby={`${id}-quiz-title`}>
+        <div className="lesson-practice-heading"><span className="lesson-practice-icon">{renderIcon({ name: "contract-clipboard" })}</span><div><small>{es ? "Ponlo en práctica" : "Put it into practice"}</small><h3 id={`${id}-quiz-title`}>{copy.quickQuiz}</h3></div><span className="lesson-practice-number" aria-hidden="true">01</span></div>
+        <div className="lesson-practice-progress" aria-hidden="true"><i style={{ width: checked ? "100%" : choice === null ? "0%" : "50%" }} /></div>
+        <h4 id={`${id}-question`}>{copy.question}</h4>
+        <div className="lesson-answers" role="radiogroup" aria-labelledby={`${id}-question`}>
           {copy.options.map((label, index) => {
             const selected = choice === index;
-            const state = checked && selected ? (index === CORRECT_INDEX ? "correct" : "wrong") : checked && index === CORRECT_INDEX ? "reveal" : "";
+            const state = checked && index === CORRECT_INDEX ? "correct" : checked && selected ? "wrong" : "";
             return (
-              <label className={`${selected ? "selected" : ""} ${state}`.trim()} key={label}>
-                <input type="radio" name="home-quiz" checked={selected} disabled={checked} onChange={() => setChoice(index)} />
-                {label}
-                {(selected || state === "reveal") && renderIcon({ name: state === "wrong" ? "help" : "shield-badge" })}
+              <label className={`${selected ? "selected" : ""} ${state}`.trim()} key={index}>
+                <input className="sr-only" type="radio" name={`${id}-quiz`} checked={selected} disabled={checked} onChange={() => setChoice(index)} />
+                <span className="lesson-answer-letter" aria-hidden="true">{state === "correct" ? "✓" : state === "wrong" ? "×" : String.fromCharCode(65 + index)}</span>
+                <span className="lesson-answer-copy">{label}{state && <small>{state === "correct" ? (es ? "Respuesta correcta" : "Correct answer") : (es ? "Tu respuesta" : "Your answer")}</small>}</span>
               </label>
             );
           })}
         </div>
-        {feedback && (
-          <p className={`home-ref-quiz-feedback ${choice === CORRECT_INDEX ? "ok" : "bad"}`} role="status">
-            {feedback} <small>{P.explanation}</small>
-          </p>
-        )}
-        {!checked ? (
-          <button type="button" className="primary" onClick={check} disabled={choice === null} title={choice === null ? P.pick : undefined}>
-            {copy.check}
-          </button>
-        ) : choice === CORRECT_INDEX ? (
-          <Link className="primary" href="/signup">
-            {P.signup}
-          </Link>
-        ) : (
-          <button
-            type="button"
-            className="primary"
-            onClick={() => {
-              setChecked(false);
-              setChoice(null);
-            }}
-          >
-            {P.tryAgain}
-          </button>
-        )}
-        <Link href="/quizzes">{copy.viewFull}</Link>
+        {feedback && <p className={`lesson-feedback ${choice === CORRECT_INDEX ? "ok" : "bad"}`} role="status">{feedback}<small>{P.explanation}</small></p>}
+        {!checked ? <button type="button" className="lesson-check" onClick={check} disabled={choice === null}>{copy.check}<span aria-hidden="true">→</span></button>
+          : choice === CORRECT_INDEX ? <Link className="lesson-check" href="/signup">{P.signup}</Link>
+          : <button type="button" className="lesson-check" onClick={() => { setChecked(false); setChoice(null); }}>{P.tryAgain}<span aria-hidden="true">↻</span></button>}
+        <Link className="lesson-full-quiz" href="/quizzes">{copy.viewFull}</Link>
       </article>
     </div>
   );

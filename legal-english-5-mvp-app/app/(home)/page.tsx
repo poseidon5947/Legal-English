@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ScenarioSlider } from "@/components/scenario-slider";
+import { WorkflowPhoto } from "@/components/workflow-photo";
+import { LearningJourney } from "@/components/learning-journey";
 import { HeroImageFlow } from "@/components/hero-image-flow";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
@@ -52,20 +55,11 @@ const categoryIcons: readonly HomeIconName[] = ["category-contracts", "category-
 // Same order as landingCopy.categories.items; these are the canonical MCD category names.
 const categoryRoutes = ["Contracts", "Corporate Law", "Employment Law"] as const;
 const tabIcons: readonly HomeIconName[] = ["open-book", "globe", "legal-scales", "help", "contract-clipboard", "bookmark"];
-const workflowIcons: readonly HomeIconName[] = ["workflow-book", "workflow-chat", "workflow-quiz", "workflow-growth"];
 const featureIcons: readonly HomeIconName[] = ["feature-search", "feature-mobile", "feature-progress", "feature-timer"];
 const statIcons: readonly HomeIconName[] = ["contract-clipboard-stat", "legal-scales-stat", "shield-badge-stat", "user-avatar-stat"];
 // Photography: Unsplash, see public/home-assets/photos/CREDITS.txt
 const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
 const lifePhotos = ["/home-assets/photos/mosaic-documents.jpg", "/home-assets/photos/mosaic-portrait.jpg", "/home-assets/photos/mosaic-library.jpg"];
-// Real-practice scenarios, one per canonical category (same order as categoryRoutes); the
-// sample terms are real MCD entries so what the visitor sees is what the library teaches.
-const scenarioPhotos = ["/home-assets/photos/scenario-negotiation.jpg", "/home-assets/photos/scenario-boardroom.jpg", "/home-assets/photos/scenario-onboarding.jpg"];
-const scenarioTerms: ReadonlyArray<readonly string[]> = [
-  ["binding", "consideration", "breach"],
-  ["board of directors", "resolution", "share issuance"],
-  ["employment agreement", "overtime", "workplace harassment"],
-];
 const homePrices = PLAN_PRICES;
 const trustIcons: HomeIconName[] = ["open-book", "shield-badge", "globe", "lock"];
 
@@ -77,23 +71,18 @@ export default function Home() {
       <LandingHeader />
       <ScrollEffects />
       <section className="home-ref-hero">
-        <div className="home-ref-copy">
-          <h1>
-            {c.hero.title1}
-            <br />
-            {c.hero.title2}
-          </h1>
-          <p>{c.hero.lead}</p>
-          <div className="home-ref-actions">
-            <Link className="primary" href="/signup">
-              {c.hero.cta}
-              <HomeIcon name="arrow-right" />
-            </Link>
-            <Link className="ghost" href="/terms">
-              {c.hero.explore}
-            </Link>
+        <div className="home-ref-copy hero-editorial" lang={locale}>
+          <p className="hero-audience"><span aria-hidden="true" />{c.hero.audience}</p>
+          <h1><span className="hero-title-main">{c.hero.title1}</span><span className="hero-title-accent">{c.hero.title2}</span></h1>
+          <p className="hero-editorial-lead">{c.hero.lead}</p>
+          <ul className="hero-highlights">
+            {c.hero.highlights.map((benefit) => <li key={benefit}><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8 3 3 7-7" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>{benefit}</li>)}
+          </ul>
+          <div className="home-ref-actions hero-editorial-actions">
+            <Link className="primary" href="/signup">{c.hero.cta}<HomeIcon name="arrow-right" /></Link>
+            <Link className="hero-explore-link" href="/terms">{c.hero.explore}<span aria-hidden="true">↗</span></Link>
           </div>
-          <p className="home-ref-reassurance">{c.hero.reassurance}</p>
+          <p className="home-ref-reassurance hero-editorial-reassurance"><svg width="13" height="15" viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1 14 3v5c0 4-3 7-6 9C5 15 2 12 2 8V3Z" fill="none" stroke="currentColor" strokeWidth="1.2" /><path d="m5 8 2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg>{c.hero.reassurance}</p>
         </div>
         <div className="home-ref-product">
           <HeroImageFlow slides={c.hero.slides} />
@@ -152,25 +141,8 @@ export default function Home() {
           <h2>{c.workflow.title}</h2>
           <p>{c.workflow.lead}</p>
         </div>
-        <figure className="home-ref-workflow-photo" data-reveal="left">
-          <Photo src="/home-assets/photos/workflow-study.jpg" size="card" />
-          <figcaption>
-            <span>{c.workflow.photoTag}</span>
-            <strong>{c.workflow.photoCaption}</strong>
-          </figcaption>
-        </figure>
-        <div data-reveal="stagger">
-          {c.workflow.steps.map(([title, body], index) => (
-            <article key={title}>
-              <b>{index + 1}</b>
-              <span>
-                <HomeIcon name={workflowIcons[index]} />
-              </span>
-              <strong>{title}</strong>
-              <small>{body}</small>
-            </article>
-          ))}
-        </div>
+        <WorkflowPhoto tag={c.workflow.photoTag} caption={c.workflow.photoCaption} locale={locale} />
+        <LearningJourney steps={c.workflow.steps} label={c.workflow.title} locale={locale} />
       </section>
 
       <section className="home-ref-features">
@@ -205,31 +177,7 @@ export default function Home() {
           <h2 id="home-scenarios-title">{c.scenarios.title}</h2>
           <p>{c.scenarios.lead}</p>
         </div>
-        <div className="home-ref-scenario-grid" data-reveal="stagger">
-          {c.scenarios.items.map(([title, body], index) => (
-            <article className={`home-ref-scenario${index === 1 ? " reverse" : ""}`} key={title}>
-              <figure>
-                <Photo src={scenarioPhotos[index]} size="card" />
-                <figcaption>
-                  <HomeIcon name={categoryIcons[index]} />
-                  {c.categories.items[index][0]}
-                </figcaption>
-              </figure>
-              <div>
-                <span className="home-ref-scenario-index">0{index + 1}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-                <small>{c.scenarios.termsLabel}</small>
-                <ul>
-                  {scenarioTerms[index].map((term) => (
-                    <li key={term}>{term}</li>
-                  ))}
-                </ul>
-                <Link href={`/terms?category=${encodeURIComponent(categoryRoutes[index])}`}>{c.scenarios.explore}</Link>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ScenarioSlider copy={c.scenarios} locale={locale} />
       </section>
 
       <section className="home-ref-life">
@@ -248,27 +196,37 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-ref-proof">
+      <section className="home-ref-proof studio-proof" aria-labelledby="studio-proof-title" lang={locale}>
         <div className="home-ref-heading" data-reveal>
           <span className="eyebrow">{c.proof.eyebrow}</span>
-          <h2>{c.proof.title}</h2>
+          <h2 id="studio-proof-title">{c.proof.title}</h2>
         </div>
-        <div className="home-ref-proof-grid" data-reveal="stagger">
-          {c.proof.quotes.map(([quote, name, role]) => (
-            <article className={`home-ref-quote${c.proof.quotes.length === 1 ? " wide" : ""}`} key={name}>
-              <img src="/home-assets/icons/le5-shield.png" alt="" aria-hidden="true" />
-              <p>“{quote}”</p>
-              <strong>{name}</strong>
-              <small>{role}</small>
-            </article>
-          ))}
-          {c.proof.stats.map(([value, label], index) => (
-            <article className="home-ref-stat" key={label}>
-              <HomeIcon name={statIcons[index]} />
-              <strong data-count={value}>{value}</strong>
-              <small>{label}</small>
-            </article>
-          ))}
+        <div className="studio-proof-content" data-reveal>
+          {c.proof.quotes.map(([quote, name, role]) => {
+            const emphasisIndex = quote.indexOf(c.proof.quoteEmphasis);
+            return (
+              <figure className="studio-note" key={name}>
+                <figcaption className="studio-identity">
+                  <img src="/home-assets/icons/le5-shield.png" width="60" height="72" alt="" />
+                  <div><strong>{name}</strong><span>{role}</span></div>
+                  <span className="studio-identity-rule" aria-hidden="true" />
+                </figcaption>
+                <blockquote className="studio-quotation">
+                  <span className="studio-quote-mark" aria-hidden="true">“</span>
+                  <p>{emphasisIndex < 0 ? quote : <>{quote.slice(0, emphasisIndex)}<strong>{c.proof.quoteEmphasis}</strong>{quote.slice(emphasisIndex + c.proof.quoteEmphasis.length)}</>}</p>
+                </blockquote>
+              </figure>
+            );
+          })}
+          <dl className="studio-facts">
+            {c.proof.stats.map(([value, label], index) => (
+              <div className={`studio-fact${index > 1 ? " supporting" : ""}`} key={label}>
+                <HomeIcon name={statIcons[index]} />
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

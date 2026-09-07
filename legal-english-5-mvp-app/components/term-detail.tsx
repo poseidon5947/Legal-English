@@ -181,13 +181,23 @@ export function TermDetail({ id }: { id: string }) {
     );
   }
 
-  const sections: { key: LearnerKey; icon: DetailIcon; theme: string; body: string; badge?: LearnerKey }[] = [
-    { key: "definition", icon: "definition-book", theme: "blue", body: term.definition },
-    { key: "spanishEquivalent", icon: "spanish-globe", theme: "green", body: term.spanishEquivalent, badge: "commonTranslation" },
-    { key: "civilLaw", icon: "civil-scales", theme: "purple", body: term.civilLawEquivalent, badge: "legalSystemNote" },
-    { key: "speakerAlert", icon: "warning-triangle", theme: "orange", body: term.spanishSpeakerAlert },
-    { key: "useItWith", icon: "chain-link", theme: "indigo", body: term.useItWith.map((item) => item.expression).join(", ") },
-  ].filter((section) => section.body && section.body.trim()) as { key: LearnerKey; icon: DetailIcon; theme: string; body: string; badge?: LearnerKey }[];
+  // Lesson sequence per Design System v2.3 §10 (fields the MCD delivers):
+  // Term → Pronunciation → Definition → Civil Law Equivalent → Use It With →
+  // In Context → Spanish-Speaker Alert* → US/UK Variant* → Quick Quiz.
+  // Optional (*) cards are hidden when empty (§8 "hide optional sections").
+  const useItWith = term.useItWith.map((item) => item.expression).join(", ");
+  // The Editorial Knowledge Base classifies each Civil Law Equivalent as a
+  // DIRECT TERMINOLOGICAL or a FUNCTIONAL equivalent; the MCD carries that in
+  // ComparativeLawNote ("Direct terminological equivalent: …" / "Functional equivalent…").
+  const equivalence: LearnerKey | null = /^functional/i.test(term.comparativeLawNote) ? "functionalEquivalent" : /^direct/i.test(term.comparativeLawNote) ? "directEquivalent" : null;
+  const equivalenceNote = (() => {
+    let note = term.comparativeLawNote.replace(/^(direct terminological equivalent|functional equivalent)\s*[:.\-–—]?\s*/i, "").trim();
+    // The note usually restates the equivalent first ("documento de constitución. The U.S. …");
+    // the card already shows it as the body, so keep only the explanation.
+    const lead = term.civilLawEquivalent.trim();
+    if (lead && note.toLowerCase().startsWith(lead.toLowerCase())) note = note.slice(lead.length).replace(/^\s*[.;:,\-–—]\s*/, "").trim();
+    return note;
+  })();
 
   return (
     <LearnerShell pageClass="consideration-reference-page">
@@ -210,6 +220,7 @@ export function TermDetail({ id }: { id: string }) {
             <div>
               <div className="consideration-title-line">
                 <h1>{term.term}</h1>
+                {term.partOfSpeech && <em className="consideration-pos">{term.partOfSpeech}</em>}
                 <button
                   type="button"
                   className={row?.favourite ? "active" : ""}
@@ -267,20 +278,84 @@ export function TermDetail({ id }: { id: string }) {
           </div>
 
           <div className="consideration-detail-stack">
-            {sections.map((section) => (
-              <article className={`consideration-info-card ${section.theme}`} key={section.key}>
+            {term.definition.trim() && (
+              <article className="consideration-info-card blue">
                 <div className="consideration-info-icon">
-                  <DetailIcon name={section.icon} />
+                  <DetailIcon name="definition-book" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
-                    <h2>{L(section.key)}</h2>
-                    {section.badge && <span>{L(section.badge)}</span>}
+                    <h2>{L("definition")}</h2>
                   </div>
-                  <p>{section.body}</p>
+                  <p>{term.definition}</p>
                 </div>
               </article>
-            ))}
+            )}
+
+            {(term.civilLawEquivalent.trim() || term.spanishEquivalent.trim()) && (
+              <article className="consideration-info-card purple">
+                <div className="consideration-info-icon">
+                  <DetailIcon name="civil-scales" />
+                </div>
+                <div>
+                  <div className="consideration-info-heading">
+                    <h2>{L("civilLaw")}</h2>
+                    {equivalence && <span className={`equivalence ${equivalence === "directEquivalent" ? "direct" : "functional"}`}>{L(equivalence)}</span>}
+                  </div>
+                  <p>{term.civilLawEquivalent || term.spanishEquivalent}</p>
+                  {term.civilLawEquivalent.trim() && term.spanishEquivalent.trim() && term.spanishEquivalent.trim() !== term.civilLawEquivalent.trim() && (
+                    <p className="consideration-info-sub">
+                      <b>{L("commonTranslation")}:</b> {term.spanishEquivalent}
+                    </p>
+                  )}
+                  {equivalenceNote && equivalenceNote !== term.civilLawEquivalent.trim() && <p className="consideration-info-sub">{equivalenceNote}</p>}
+                </div>
+              </article>
+            )}
+
+            {useItWith.trim() && (
+              <article className="consideration-info-card indigo">
+                <div className="consideration-info-icon">
+                  <DetailIcon name="chain-link" />
+                </div>
+                <div>
+                  <div className="consideration-info-heading">
+                    <h2>{L("useItWith")}</h2>
+                  </div>
+                  <p>{useItWith}</p>
+                </div>
+              </article>
+            )}
+
+            {term.inContext && (
+              <article className="consideration-info-card quote">
+                <div className="consideration-info-icon">
+                  <DetailIcon name="quote-marks" />
+                </div>
+                <div>
+                  <h2>{L("inContext")}</h2>
+                  <p>{term.inContext.exampleText}</p>
+                  <span>
+                    {L("realWorld")}
+                    {term.inContext.jurisdiction ? ` · ${term.inContext.jurisdiction}` : ""}
+                  </span>
+                </div>
+              </article>
+            )}
+
+            {term.spanishSpeakerAlert.trim() && (
+              <article className="consideration-info-card orange">
+                <div className="consideration-info-icon">
+                  <DetailIcon name="warning-triangle" />
+                </div>
+                <div>
+                  <div className="consideration-info-heading">
+                    <h2>{L("speakerAlert")}</h2>
+                  </div>
+                  <p>{term.spanishSpeakerAlert}</p>
+                </div>
+              </article>
+            )}
 
             {(term.usVariant || term.ukVariant) && (
               <article className="consideration-info-card indigo">
@@ -306,22 +381,6 @@ export function TermDetail({ id }: { id: string }) {
                       <p>{term.ukVariant.definition}</p>
                     </>
                   )}
-                </div>
-              </article>
-            )}
-
-            {term.inContext && (
-              <article className="consideration-info-card quote">
-                <div className="consideration-info-icon">
-                  <DetailIcon name="quote-marks" />
-                </div>
-                <div>
-                  <h2>{L("inContext")}</h2>
-                  <p>{term.inContext.exampleText}</p>
-                  <span>
-                    {L("realWorld")}
-                    {term.inContext.jurisdiction ? ` · ${term.inContext.jurisdiction}` : ""}
-                  </span>
                 </div>
               </article>
             )}
@@ -456,7 +515,7 @@ export function TermDetail({ id }: { id: string }) {
           <section className="consideration-progress-card">
             <h2>{L("yourProgress")}</h2>
             <div className="consideration-progress-body">
-              <div className="consideration-ring" style={{ background: `conic-gradient(#2f73df 0 ${STATE_PCT[state]}%, #e8eef7 ${STATE_PCT[state]}% 100%)` }}>
+              <div className="consideration-ring" style={{ background: `conic-gradient(#452b84 0 ${STATE_PCT[state]}%, #e4e1ec ${STATE_PCT[state]}% 100%)` }}>
                 <strong>{STATE_PCT[state]}%</strong>
                 <span>{L("understanding")}</span>
               </div>
