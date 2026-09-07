@@ -46,6 +46,8 @@ The Next.js app is this folder, not the repository root. Two ways to tell Vercel
 
 Without either, Vercel deploys the repository root as a static site and every URL returns Vercel's own `404: NOT_FOUND`.
 
+`legal-english-5-mvp-app/vercel.json` pins `"framework": "nextjs"`. A project imported while the root pointed at the repository gets Framework Preset "Other" and keeps it after the Root Directory is corrected; Vercel then publishes only `public/` (assets 200, every page 404, no `next.config.ts` headers). The file overrides that setting so the Next.js builder always runs.
+
 Alpha mode on Vercel: the filesystem is read-only, so `lib/store.ts` keeps `alpha-store.json`, avatars and insights in the OS temp dir (`LE5_DATA_DIR` overrides). The demo works, but state resets on each cold start and is not shared between regions. For a persistent preview set `NEXT_PUBLIC_DATA_MODE=production` with the Supabase variables below. Set `NEXT_PUBLIC_SITE_URL` to the final domain; until then canonical URLs fall back to the Vercel deployment host. `next.config.ts` traces `data/mcd-seed.json` and `data/audio/**` into the serverless functions so the seed and the AUDIO-PROD-01 files are available at runtime.
 
 ### Brand and design system
