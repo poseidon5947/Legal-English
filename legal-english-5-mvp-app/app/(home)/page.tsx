@@ -1,9 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { ScenarioSlider } from "@/components/scenario-slider";
-import { WorkflowPhoto } from "@/components/workflow-photo";
-import { LearningJourney } from "@/components/learning-journey";
 import { HeroImageFlow } from "@/components/hero-image-flow";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
@@ -11,7 +8,18 @@ import { LessonPreview } from "@/components/lesson-preview";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { Photo } from "@/components/photo";
 import { useLocale } from "@/components/locale-provider";
-import { landingCopy, PLAN_PRICES } from "@/lib/landing-copy";
+import { landingCopy } from "@/lib/landing-copy";
+import { CtaDisclosure, PlanCards } from "@/components/plan-cards";
+import { trackAction } from "@/lib/track";
+
+/**
+ * Home page. Section order and English copy follow the Landing Page
+ * Implementation Brief v1.0 (7 Sep 2026) §3, sections 1–11:
+ * hero · problem · solution · what each term can include · product example ·
+ * launch content · built for legal professionals · pricing and free trial ·
+ * trust · FAQ · final CTA. One primary action per section; the CTA always
+ * goes to the Product-approved account/trial flow (/signup).
+ */
 
 type HomeIconName =
   | "arrow-right"
@@ -20,28 +28,21 @@ type HomeIconName =
   | "category-corporate"
   | "category-employment"
   | "contract-clipboard"
-  | "contract-clipboard-stat"
   | "courthouse"
   | "credit-card"
-  | "feature-mobile"
-  | "feature-progress"
   | "feature-search"
   | "feature-timer"
   | "flame-stopwatch"
   | "globe"
-  | "growth-chart"
   | "help"
   | "legal-scales"
-  | "legal-scales-stat"
   | "lock"
   | "open-book"
   | "people"
   | "search"
   | "shield-badge"
-  | "shield-badge-stat"
   | "speaker"
   | "user-avatar"
-  | "user-avatar-stat"
   | "workflow-book"
   | "workflow-chat"
   | "workflow-growth"
@@ -51,66 +52,102 @@ function HomeIcon({ name, className = "" }: { name: HomeIconName; className?: st
   return <img className={`icon home-generated-icon ${className}`.trim()} src={`/home-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-const categoryIcons: readonly HomeIconName[] = ["category-contracts", "category-corporate", "category-employment"];
-// Same order as landingCopy.categories.items; these are the canonical MCD category names.
+// Same order as landingCopy.launch.items; these are the canonical MCD category names.
 const categoryRoutes = ["Contracts", "Corporate Law", "Employment Law"] as const;
-const tabIcons: readonly HomeIconName[] = ["open-book", "globe", "legal-scales", "help", "contract-clipboard", "bookmark"];
-const featureIcons: readonly HomeIconName[] = ["feature-search", "feature-mobile", "feature-progress", "feature-timer"];
-const statIcons: readonly HomeIconName[] = ["contract-clipboard-stat", "legal-scales-stat", "shield-badge-stat", "user-avatar-stat"];
+const categoryIcons: readonly HomeIconName[] = ["category-contracts", "category-corporate", "category-employment"];
 // Photography: Unsplash, see public/home-assets/photos/CREDITS.txt
 const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
-const lifePhotos = ["/home-assets/photos/mosaic-documents.jpg", "/home-assets/photos/mosaic-portrait.jpg", "/home-assets/photos/mosaic-library.jpg"];
-const homePrices = PLAN_PRICES;
-const trustIcons: HomeIconName[] = ["open-book", "shield-badge", "globe", "lock"];
+const problemIcons: readonly HomeIconName[] = ["open-book", "workflow-chat", "globe"];
+const componentIcons: readonly HomeIconName[] = ["open-book", "speaker", "workflow-chat", "contract-clipboard", "workflow-quiz", "shield-badge", "legal-scales", "globe"];
+const builtForIcons: readonly HomeIconName[] = ["courthouse", "people", "flame-stopwatch"];
+const tabIcons: readonly HomeIconName[] = ["open-book", "globe", "legal-scales", "help", "contract-clipboard", "bookmark"];
 
 export default function Home() {
   const { locale } = useLocale();
   const c = landingCopy[locale];
   return (
-    <main id="main" className="landing home-reference">
+    <main id="main" className="landing home-reference home-brief">
       <LandingHeader />
       <ScrollEffects />
+
+      {/* 1 · Hero */}
       <section className="home-ref-hero">
         <div className="home-ref-copy hero-editorial" lang={locale}>
-          <p className="hero-audience"><span aria-hidden="true" />{c.hero.audience}</p>
-          <h1><span className="hero-title-main">{c.hero.title1}</span><span className="hero-title-accent">{c.hero.title2}</span></h1>
+          <p className="hero-audience hero-brand-line"><span aria-hidden="true" />{c.hero.brandLine}</p>
+          <h1><span className="hero-title-main">{c.hero.title}</span></h1>
           <p className="hero-editorial-lead">{c.hero.lead}</p>
-          <ul className="hero-highlights">
-            {c.hero.highlights.map((benefit) => <li key={benefit}><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8 3 3 7-7" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>{benefit}</li>)}
-          </ul>
           <div className="home-ref-actions hero-editorial-actions">
-            <Link className="primary" href="/signup">{c.hero.cta}<HomeIcon name="arrow-right" /></Link>
-            <Link className="hero-explore-link" href="/terms">{c.hero.explore}<span aria-hidden="true">↗</span></Link>
+            <Link className="primary" href="/signup" onClick={() => trackAction("cta", "hero")}>{c.hero.cta}<HomeIcon name="arrow-right" /></Link>
           </div>
-          <p className="home-ref-reassurance hero-editorial-reassurance"><svg width="13" height="15" viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1 14 3v5c0 4-3 7-6 9C5 15 2 12 2 8V3Z" fill="none" stroke="currentColor" strokeWidth="1.2" /><path d="m5 8 2 2 4-4" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg>{c.hero.reassurance}</p>
+          <CtaDisclosure>{c.hero.ctaNote}</CtaDisclosure>
         </div>
         <div className="home-ref-product">
           <HeroImageFlow slides={c.hero.slides} />
         </div>
       </section>
 
-      <section className="home-ref-trust" aria-label="Why Legal English 5">
-        <ul data-reveal="stagger">
-          {c.hero.trust.map(([title, body], index) => (
+      {/* 2 · The problem */}
+      <section className="brief-problem" aria-labelledby="brief-problem-title" lang={locale}>
+        <div className="home-ref-heading" data-reveal>
+          <h2 id="brief-problem-title">{c.problem.title}</h2>
+          <p>{c.problem.lead}</p>
+        </div>
+        <ul className="brief-problem-grid" data-reveal="stagger">
+          {c.problem.items.map(([title, body], index) => (
             <li key={title}>
-              <HomeIcon name={trustIcons[index]} />
+              <HomeIcon name={problemIcons[index]} />
+              <strong>{title}</strong>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* 3 · The solution */}
+      <section className="brief-solution" aria-labelledby="brief-solution-title" lang={locale} data-reveal>
+        <div>
+          <h2 id="brief-solution-title">{c.solution.title}</h2>
+          <p>{c.solution.lead}</p>
+        </div>
+      </section>
+
+      {/* 4 · What each term can include */}
+      <section className="brief-components" aria-labelledby="brief-components-title" lang={locale}>
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.components.eyebrow}</span>
+          <h2 id="brief-components-title">{c.components.title}</h2>
+        </div>
+        <ul className="brief-components-grid" data-reveal="stagger">
+          {c.components.items.map(([name, description], index) => (
+            <li key={name}>
+              <HomeIcon name={componentIcons[index]} />
               <div>
-                <strong>{title}</strong>
-                <small>{body}</small>
+                <strong lang="en">{name}</strong>
+                <small>{description}</small>
               </div>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="home-ref-categories">
+      {/* 5 · Product example (approved MCD content only) */}
+      <section className="home-ref-learn brief-example" id="how-it-works" aria-labelledby="brief-example-title" lang={locale}>
         <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.categories.eyebrow}</span>
-          <h2>{c.categories.title}</h2>
-          <p>{c.categories.lead}</p>
+          <span className="eyebrow">{c.example.eyebrow}</span>
+          <h2 id="brief-example-title">{c.example.title}</h2>
+          <p>{c.example.lead}</p>
+        </div>
+        <LessonPreview locale={locale} tabIcons={tabIcons} renderIcon={({ name }) => <HomeIcon name={name as HomeIconName} />} />
+      </section>
+
+      {/* 6 · Launch content */}
+      <section className="home-ref-categories brief-launch" aria-labelledby="brief-launch-title" lang={locale}>
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.launch.eyebrow}</span>
+          <h2 id="brief-launch-title">{c.launch.title}</h2>
         </div>
         <div className="home-ref-category-grid" data-reveal="stagger">
-          {c.categories.items.map(([title, body], index) => (
+          {c.launch.items.map((title, index) => (
             <Link href={`/terms?category=${encodeURIComponent(categoryRoutes[index])}`} key={title}>
               <Photo className="home-ref-category-photo" src={categoryPhotos[index]} size="card" />
               <div className="home-ref-category-body">
@@ -118,160 +155,87 @@ export default function Home() {
                   <HomeIcon name={categoryIcons[index]} />
                 </span>
                 <strong>{title}</strong>
-                <small>{body}</small>
-                <b>{c.categories.explore}</b>
+                <small className="brief-term-count">{c.launch.termsLabel}</small>
+                <b>{c.launch.explore}</b>
               </div>
             </Link>
           ))}
         </div>
+        <p className="brief-launch-note" data-reveal>{c.launch.note}</p>
       </section>
 
-      <section className="home-ref-learn" id="how-it-works">
-        <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.learn.eyebrow}</span>
-          <h2>{c.learn.title}</h2>
-          <p>{c.learn.lead}</p>
-        </div>
-        <LessonPreview copy={c.learn} locale={locale} tabIcons={tabIcons} renderIcon={({ name }) => <HomeIcon name={name as HomeIconName} />} />
-      </section>
-
-      <section className="home-ref-workflow">
-        <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.workflow.eyebrow}</span>
-          <h2>{c.workflow.title}</h2>
-          <p>{c.workflow.lead}</p>
-        </div>
-        <WorkflowPhoto tag={c.workflow.photoTag} caption={c.workflow.photoCaption} locale={locale} />
-        <LearningJourney steps={c.workflow.steps} label={c.workflow.title} locale={locale} />
-      </section>
-
-      <section className="home-ref-features">
-        <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.features.eyebrow}</span>
-          <h2>{c.features.title}</h2>
-        </div>
-        <div data-reveal="stagger">
-          {c.features.items.map(([title, body], index) => (
-            <article key={title}>
-              <HomeIcon name={featureIcons[index]} />
-              <strong>{title}</strong>
-              <small>
-                {index === 2 ? (
-                  <>
-                    {c.features.statusPrefix} <span className="dot-status new">{c.features.statusNew}</span>,{" "}
-                    <span className="dot-status learning">{c.features.statusLearning}</span> {c.features.statusOr}{" "}
-                    <span className="dot-status mastered">{c.features.statusMastered}</span>.
-                  </>
-                ) : (
-                  body
-                )}
-              </small>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="home-ref-scenarios" aria-labelledby="home-scenarios-title">
-        <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.scenarios.eyebrow}</span>
-          <h2 id="home-scenarios-title">{c.scenarios.title}</h2>
-          <p>{c.scenarios.lead}</p>
-        </div>
-        <ScenarioSlider copy={c.scenarios} locale={locale} />
-      </section>
-
-      <section className="home-ref-life">
-        <div className="home-ref-life-copy" data-reveal="left">
-          <span className="eyebrow">{c.life.eyebrow}</span>
-          <h2>{c.life.title}</h2>
-          <p>{c.life.lead}</p>
-        </div>
-        <div className="home-ref-life-mosaic" data-reveal="stagger">
-          {lifePhotos.map((src, index) => (
-            <figure key={src}>
-              <Photo src={src} size="card" />
-              <figcaption>{c.life.photos[index]}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      <section className="home-ref-proof studio-proof" aria-labelledby="studio-proof-title" lang={locale}>
-        <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.proof.eyebrow}</span>
-          <h2 id="studio-proof-title">{c.proof.title}</h2>
-        </div>
-        <div className="studio-proof-content" data-reveal>
-          {c.proof.quotes.map(([quote, name, role]) => {
-            const emphasisIndex = quote.indexOf(c.proof.quoteEmphasis);
-            return (
-              <figure className="studio-note" key={name}>
-                <figcaption className="studio-identity">
-                  <img src="/home-assets/icons/le5-shield.png" width="60" height="72" alt="" />
-                  <div><strong>{name}</strong><span>{role}</span></div>
-                  <span className="studio-identity-rule" aria-hidden="true" />
-                </figcaption>
-                <blockquote className="studio-quotation">
-                  <span className="studio-quote-mark" aria-hidden="true">“</span>
-                  <p>{emphasisIndex < 0 ? quote : <>{quote.slice(0, emphasisIndex)}<strong>{c.proof.quoteEmphasis}</strong>{quote.slice(emphasisIndex + c.proof.quoteEmphasis.length)}</>}</p>
-                </blockquote>
-              </figure>
-            );
-          })}
-          <dl className="studio-facts">
-            {c.proof.stats.map(([value, label], index) => (
-              <div className={`studio-fact${index > 1 ? " supporting" : ""}`} key={label}>
-                <HomeIcon name={statIcons[index]} />
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
+      {/* 7 · Built for legal professionals */}
+      <section className="brief-built" aria-labelledby="brief-built-title" lang={locale}>
+        <div className="brief-built-copy" data-reveal="left">
+          <span className="eyebrow">{c.builtFor.eyebrow}</span>
+          <h2 id="brief-built-title">{c.builtFor.title}</h2>
+          <ul>
+            {c.builtFor.items.map(([title, body], index) => (
+              <li key={title}>
+                <HomeIcon name={builtForIcons[index]} />
+                <div>
+                  <strong>{title}</strong>
+                  <p>{body}</p>
+                </div>
+              </li>
             ))}
-          </dl>
+          </ul>
         </div>
+        <figure className="brief-built-photo" data-reveal>
+          <Photo src="/home-assets/photos/practice-portrait.jpg" size="wide" sizes="(max-width: 900px) 100vw, 46vw" />
+          <figcaption><span>{c.builtFor.photoTag}</span><strong>{c.builtFor.photoCaption}</strong></figcaption>
+        </figure>
       </section>
 
-      <section className="home-ref-pricing" id="pricing">
+      {/* 8 · Pricing and free trial */}
+      <section className="home-ref-pricing brief-pricing" id="pricing" aria-labelledby="brief-pricing-title" lang={locale}>
         <div className="home-ref-heading" data-reveal>
           <span className="eyebrow">{c.pricing.eyebrow}</span>
-          <h2>{c.pricing.title}</h2>
-          <p>{c.pricing.lead}</p>
+          <h2 id="brief-pricing-title">{c.pricing.title}</h2>
         </div>
-        <div data-reveal="stagger">
-          {c.pricing.plans.map((plan, index) => (
-            <article className={index === 2 ? "best" : ""} key={plan.name}>
-              {index === 2 && <img className="best-value-badge" src="/home-assets/badges/best-value.png" alt={c.pricing.bestValue} />}
-              <h3>{plan.name}</h3>
-              <strong>
-                {homePrices[index]}
-                {index === 2 && <small>{c.pricing.perYear}</small>}
-                {index === 1 && <small>{c.pricing.perMonth}</small>}
-              </strong>
-              <ul>
-                {plan.features.slice(0, 3).map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-              <Link className={index === 1 ? "primary" : "ghost"} href={index === 0 ? "/signup" : `/signup?plan=${index === 1 ? "monthly" : "annual"}`}>
-                {plan.cta}
-              </Link>
-            </article>
-          ))}
-        </div>
+        <PlanCards locale={locale} placement="pricing" />
         <p className="home-ref-secure">
           <HomeIcon name="lock" />
-          {c.pricing.secure}
+          {c.pricing.secure} {c.pricing.rule}
         </p>
       </section>
 
-      <section className="home-ref-cta" data-reveal>
+      {/* 9 · Trust / brand authority */}
+      <section className="brief-trust" aria-labelledby="brief-trust-title" lang={locale} data-reveal>
+        <img src="/home-assets/icons/le5-shield.png" width="60" height="72" alt="" />
+        <div>
+          <span className="eyebrow">{c.trust.eyebrow}</span>
+          <h2 id="brief-trust-title">{c.trust.title}</h2>
+          <p>{c.trust.body}</p>
+        </div>
+      </section>
+
+      {/* 10 · FAQ */}
+      <section className="brief-faq" id="faq" aria-labelledby="brief-faq-title" lang={locale}>
+        <div className="home-ref-heading" data-reveal>
+          <span className="eyebrow">{c.faq.eyebrow}</span>
+          <h2 id="brief-faq-title">{c.faq.title}</h2>
+        </div>
+        <div className="faq-list" data-reveal>
+          {c.faq.items.map(([q, a]) => (
+            <details key={q}>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* 11 · Final CTA */}
+      <section className="home-ref-cta brief-final" data-reveal lang={locale}>
         <span>
           <HomeIcon name="legal-scales" />
         </span>
         <div>
           <h2>{c.cta.title}</h2>
-          <p>{c.cta.lead}</p>
+          <CtaDisclosure>{c.cta.note}</CtaDisclosure>
         </div>
-        <Link className="primary" href="/signup">
+        <Link className="primary" href="/signup" onClick={() => trackAction("cta", "final")}>
           {c.cta.button}
           <HomeIcon name="arrow-right" />
         </Link>

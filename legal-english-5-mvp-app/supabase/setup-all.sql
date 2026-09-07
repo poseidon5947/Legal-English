@@ -1,4 +1,4 @@
--- Legal English 5 · migrations 001–007 concatenated in order.
+-- Legal English 5 · migrations 001–008 concatenated in order.
 -- Paste the whole file into the Supabase SQL Editor and Run once on a fresh project.
 -- Regenerate after adding a migration: cat migrations/0*.sql
 
@@ -655,3 +655,17 @@ alter table public.users add column if not exists preferences jsonb not null def
 -- Support tickets: track when the Owner last changed the status (the queue
 -- in the Owner console sorts and labels on it).
 alter table public.support_tickets add column if not exists updated_at timestamptz not null default now();
+
+-- ===== migrations/008_insight_actions.sql =====
+-- Landing funnel events (Landing Page Brief v1.0 §5 "measurement hooks").
+-- Run after 007. Adds kind 'action' (name 'cta' | 'trial') and a short
+-- placement label so the Owner can distinguish landing visits, primary CTA
+-- clicks and trial starts. Still anonymous: no cookie, IP, UA or account id.
+
+alter table public.insights drop constraint if exists insights_kind_check;
+alter table public.insights add constraint insights_kind_check check (kind in ('view', 'vital', 'action'));
+
+alter table public.insights drop constraint if exists insights_name_check;
+alter table public.insights add constraint insights_name_check check (name in ('LCP', 'CLS', 'INP', 'TTFB', 'cta', 'trial'));
+
+alter table public.insights add column if not exists label text check (label is null or char_length(label) <= 32);

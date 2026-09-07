@@ -7,6 +7,7 @@ import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
 import { DEMO_ACCOUNTS } from "@/lib/types";
+import { trackAction } from "@/lib/track";
 
 const COPY = {
   en: {
@@ -230,7 +231,10 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
     try {
       const result = mode === "signup" ? await signUp(name, email, password, privacyAccepted) : await signIn(email, password);
       if (!result.ok) setError(result.message || t("couldNotContinue"));
-      else if (result.needsConfirmation) {
+      // Account created = trial started (the 7-day trial opens with the account).
+      else if (mode === "signup") trackAction("trial", result.needsConfirmation ? "pending-confirmation" : "active");
+      if (!result.ok) return;
+      if (result.needsConfirmation) {
         setNotice(t("confirmNotice"));
         setMode("confirm");
       } else router.push(afterLogin());

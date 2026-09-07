@@ -910,6 +910,7 @@ export async function recordInsights(events: InsightEvent[]) {
     sid: event.sid,
     name: event.name ?? null,
     value: event.value ?? null,
+    label: event.label ?? null,
     at: event.at,
   }));
   const { error } = await admin.from("insights").insert(rows);
@@ -925,7 +926,7 @@ export async function insightSummary(actorId: string, days = 14) {
   const { data: actor } = await admin.from("users").select("role").eq("id", actorId).maybeSingle();
   if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
   const since = new Date(Date.now() - days * 86_400_000).toISOString();
-  const { data, error } = await admin.from("insights").select("kind, path, locale, device, sid, name, value, at").gte("at", since).limit(50_000);
+  const { data, error } = await admin.from("insights").select("kind, path, locale, device, sid, name, value, label, at").gte("at", since).limit(50_000);
   if (error) return { ok: false as const, message: error.message };
   const events = (data ?? []).map((row) => ({
     kind: row.kind as InsightEvent["kind"],
@@ -935,6 +936,7 @@ export async function insightSummary(actorId: string, days = 14) {
     sid: String(row.sid),
     name: (row.name ?? undefined) as InsightEvent["name"],
     value: row.value === null ? undefined : Number(row.value),
+    label: row.label ? String(row.label) : undefined,
     at: new Date(String(row.at)).toISOString(),
   }));
   return { ok: true as const, summary: summarizeInsights(events, days) };

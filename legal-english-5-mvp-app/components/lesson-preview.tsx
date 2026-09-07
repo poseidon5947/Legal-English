@@ -4,84 +4,119 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import type { Locale } from "@/lib/i18n";
+import { LANDING_EXAMPLE } from "@/lib/landing-example";
+import { trackAction } from "@/lib/track";
 
 /**
- * Interactive "Inside a lesson" preview on the landing page. Real MCD content
- * for CON-005 (consideration): the six tabs switch the term panels, the
- * speaker button pronounces the term with the browser's speech engine (the
- * studio audio itself stays behind sign-in), and the quick quiz grades the
- * visitor's pick before inviting them to sign up.
+ * "See how a legal term works in context" — the one product example on the
+ * landing page. All term content comes from lib/landing-example.ts, which is
+ * pinned by test to the approved MCD entry (brief §3.5: no invented content).
+ * Only the UI labels are localized; the MCD text is shown verbatim in both
+ * languages, exactly as inside the app. The speaker button uses the browser's
+ * speech engine; the studio audio itself stays behind sign-in.
  */
-
-type Copy = {
-  tabs: readonly [string, string, string, string, string, string];
-  pronunciation: string;
-  definition: string;
-  exampleLabel: string;
-  example: string;
-  quickQuiz: string;
-  quizCount: string;
-  question: string;
-  options: readonly [string, string, string, string];
-  check: string;
-  viewFull: string;
-};
 
 type IconProps = { name: string };
 
-const PANEL_COPY: Record<Locale, { spanishLabel: string; civilLabel: string; alertLabel: string; useLabel: string; contextLabel: string; spanish: string; civil: string; alert: string; useWith: readonly string[]; context: string; play: string; playing: string; noSpeech: string; correct: string; wrong: string; pick: string; explanation: string; tryAgain: string; signup: string }> = {
+const T = LANDING_EXAMPLE;
+
+const UI: Record<
+  Locale,
+  {
+    tabs: readonly [string, string, string, string, string, string];
+    category: string;
+    preview: string;
+    explore: string;
+    sections: string;
+    pronunciation: string;
+    listen: string;
+    play: string;
+    playing: string;
+    noSpeech: string;
+    partOfSpeech: string;
+    equivalentNote: string;
+    collocations: string;
+    contextNote: string;
+    practice: string;
+    quickQuiz: string;
+    correct: string;
+    wrong: string;
+    correctAnswer: string;
+    yourAnswer: string;
+    inApp: string;
+    check: string;
+    tryAgain: string;
+    signup: string;
+    next: string;
+    back: string;
+    source: string;
+  }
+> = {
   en: {
-    spanishLabel: "SPANISH EQUIVALENT",
-    civilLabel: "CIVIL LAW EQUIVALENT",
-    alertLabel: "SPANISH-SPEAKER ALERT",
-    useLabel: "USE IT WITH",
-    contextLabel: "IN CONTEXT",
-    spanish: "contraprestación",
-    civil: "There is no exact functional equivalent in Colombian civil law. Consideration is a requirement specific to contracts under the common law.",
-    alert: "In contract law, “consideration” does not mean “consideración.” It generally means “contraprestación.”",
-    useWith: ["in consideration of", "sufficient consideration", "lack of consideration", "consideration for the agreement"],
-    context: "One company paid $1,000 in consideration for the services provided by the other company.",
+    tabs: ["Definition", "Spanish Equivalent", "Civil Law Equivalent", "Spanish-Speaker Alert", "Use It With", "In Context"],
+    category: "Contracts",
+    preview: "A look inside your lesson",
+    explore: "Explore the term",
+    sections: "Lesson sections",
+    pronunciation: "Audio pronunciation",
+    listen: "Listen",
     play: "Play pronunciation",
     playing: "Playing…",
     noSpeech: "Pronunciation audio plays inside the app after you sign in.",
-    correct: "Correct. Consideration is what each party gives or promises in exchange.",
-    wrong: "Not quite. Consideration is what each party gives or promises in exchange.",
-    pick: "Choose an answer first.",
-    explanation: "Inside the app every quiz explains the answer and updates your progress to Learning or Mastered.",
+    partOfSpeech: "noun",
+    equivalentNote: "Civil Law · Colombia",
+    collocations: "common collocations",
+    contextNote: "US · Contracts",
+    practice: "Put it into practice",
+    quickQuiz: "Quick Quiz",
+    correct: "Correct.",
+    wrong: "Not quite.",
+    correctAnswer: "Correct answer",
+    yourAnswer: "Your answer",
+    inApp: "Inside the app every quiz explains the answer and updates your progress.",
+    check: "Check answer",
     tryAgain: "Try again",
-    signup: "Start free trial →",
+    signup: "Start your 7-day free trial →",
+    next: "Next section",
+    back: "Back to definition",
+    source: "Approved content · Master Content Database",
   },
   es: {
-    spanishLabel: "EQUIVALENTE EN ESPAÑOL",
-    civilLabel: "EQUIVALENTE EN DERECHO CIVIL",
-    alertLabel: "ALERTA PARA HISPANOHABLANTES",
-    useLabel: "SE USA CON",
-    contextLabel: "EN CONTEXTO",
-    spanish: "contraprestación",
-    civil: "No existe un equivalente funcional exacto en el derecho civil colombiano. Consideration es un requisito característico de los contratos bajo el common law.",
-    alert: "En derecho contractual, “consideration” no significa “consideración”. Generalmente significa “contraprestación”.",
-    useWith: ["in consideration of", "sufficient consideration", "lack of consideration", "consideration for the agreement"],
-    context: "One company paid $1,000 in consideration for the services provided by the other company.",
+    tabs: ["Definición", "Equivalente en español", "Equivalente en derecho civil", "Alerta para hispanohablantes", "Use It With", "In Context"],
+    category: "Contratos",
+    preview: "Vista previa de una lección",
+    explore: "Explora el término",
+    sections: "Secciones de la lección",
+    pronunciation: "Pronunciación en audio",
+    listen: "Escuchar",
     play: "Reproducir pronunciación",
     playing: "Reproduciendo…",
     noSpeech: "El audio de pronunciación se reproduce dentro de la app al iniciar sesión.",
-    correct: "Correcto. La consideration es lo que cada parte da o promete a cambio.",
-    wrong: "No exactamente. La consideration es lo que cada parte da o promete a cambio.",
-    pick: "Elige primero una respuesta.",
-    explanation: "Dentro de la app cada quiz explica la respuesta y actualiza tu progreso a Aprendiendo o Dominado.",
+    partOfSpeech: "sustantivo",
+    equivalentNote: "Derecho civil · Colombia",
+    collocations: "combinaciones frecuentes",
+    contextNote: "EE. UU. · Contratos",
+    practice: "Ponlo en práctica",
+    quickQuiz: "Quick Quiz",
+    correct: "Correcto.",
+    wrong: "No exactamente.",
+    correctAnswer: "Respuesta correcta",
+    yourAnswer: "Tu respuesta",
+    inApp: "Dentro de la app cada quiz explica la respuesta y actualiza tu progreso.",
+    check: "Comprobar respuesta",
     tryAgain: "Intentar de nuevo",
-    signup: "Empezar prueba gratis →",
+    signup: "Empieza tu prueba gratis de 7 días →",
+    next: "Siguiente sección",
+    back: "Volver a la definición",
+    source: "Contenido aprobado · Master Content Database",
   },
 };
 
-const CORRECT_INDEX = 2;
-
-export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Copy; locale: Locale; tabIcons: readonly string[]; renderIcon: (props: IconProps) => ReactNode }) {
-  const P = PANEL_COPY[locale];
+export function LessonPreview({ locale, tabIcons, renderIcon }: { locale: Locale; tabIcons: readonly string[]; renderIcon: (props: IconProps) => ReactNode }) {
+  const P = UI[locale];
   const id = useId();
   const tabButtons = useRef<(HTMLButtonElement | null)[]>([]);
   const [compact, setCompact] = useState(false);
-  const es = locale === "es";
   useEffect(() => {
     const query = window.matchMedia("(max-width: 600px)");
     const update = () => setCompact(query.matches);
@@ -103,7 +138,7 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
       return;
     }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance("consideration");
+    const utterance = new SpeechSynthesisUtterance(T.term);
     utterance.lang = "en-US";
     utterance.rate = 0.9;
     const voice = window.speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith("en-us"));
@@ -118,81 +153,77 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
     window.speechSynthesis.speak(utterance);
   }
 
-  function check() {
-    if (choice === null) return;
-    setChecked(true);
-  }
-
   const panel: ReactNode = (() => {
     switch (tab) {
       case 1:
         return (
           <>
-            <p lang="es" className="lesson-translation">{P.spanish}</p>
+            <p lang="es" className="lesson-translation">{T.spanishEquivalent}</p>
             <div>
-              <strong>{P.spanishLabel}</strong>
-              <span>consideration → contraprestación</span>
+              <strong>{P.tabs[1]}</strong>
+              <span>{T.term} → {T.spanishEquivalent}</span>
             </div>
           </>
         );
       case 2:
         return (
           <>
-            <p>{P.civil}</p>
+            <p lang="es">{T.civilLawEquivalent}</p>
             <div>
-              <strong>{P.civilLabel}</strong>
-              <span>Colombia · Código Civil / Código de Comercio</span>
+              <strong>{P.tabs[2]}</strong>
+              <span>{P.equivalentNote}</span>
             </div>
           </>
         );
       case 3:
         return (
           <>
-            <p>{P.alert}</p>
+            <p lang="en">{T.spanishSpeakerAlert}</p>
             <div className="alert">
-              <strong>{P.alertLabel}</strong>
-              <span>consideration ≠ consideración</span>
+              <strong>{P.tabs[3]}</strong>
+              <span>{T.term} ≠ consideración</span>
             </div>
           </>
         );
       case 4:
         return (
           <>
-            <ul className="lesson-collocations" aria-label={P.useLabel}>
-              {P.useWith.map((phrase) => (
+            <ul className="lesson-collocations" aria-label={P.tabs[4]} lang="en">
+              {T.useItWith.map((phrase) => (
                 <li key={phrase}>{phrase}</li>
               ))}
             </ul>
             <div>
-              <strong>{P.useLabel}</strong>
-              <span>{P.useWith.length} {es ? "combinaciones frecuentes" : "common collocations"}</span>
+              <strong>{P.tabs[4]}</strong>
+              <span>{T.useItWith.length} {P.collocations}</span>
             </div>
           </>
         );
       case 5:
         return (
           <>
-            <p>{P.context}</p>
+            <p lang="en">{T.inContext}</p>
             <div>
-              <strong>{P.contextLabel}</strong>
-              <span>US · Contracts</span>
+              <strong>{P.tabs[5]}</strong>
+              <span>{P.contextNote}</span>
             </div>
           </>
         );
       default:
         return (
           <>
-            <p>{copy.definition}</p>
+            <p lang="en">{T.definition}</p>
             <div>
-              <strong>{copy.exampleLabel}</strong>
-              <span>{copy.example}</span>
+              <strong>{P.tabs[1]}</strong>
+              <span lang="es">{T.spanishEquivalent}</span>
             </div>
           </>
         );
     }
   })();
 
-  const feedback = checked ? (choice === CORRECT_INDEX ? P.correct : P.wrong) : "";
+  const correct = T.quiz.correctIndex;
+  const feedback = checked ? (choice === correct ? P.correct : P.wrong) : "";
 
   function selectTab(next: number, focus = false) {
     setTab(next);
@@ -205,25 +236,25 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
   return (
     <div className="lesson-studio" data-reveal>
       <header className="lesson-intro">
-        <div className="lesson-meta"><span>{es ? "Contratos" : "Contracts"}</span><i aria-hidden="true" /><small>{es ? "Vista previa de una lección" : "A look inside your lesson"}</small></div>
+        <div className="lesson-meta"><span>{P.category}</span><i aria-hidden="true" /><small>{P.preview}</small></div>
         <div className="lesson-title-row">
-          <div><h3 lang="en">Consideration</h3><p className="lesson-pronunciation">{copy.pronunciation}</p></div>
+          <div><h3 lang="en">{T.term}</h3><p className="lesson-pronunciation"><em>{P.partOfSpeech}</em> · {P.pronunciation}</p></div>
           <button type="button" className={`lesson-audio${speaking ? " speaking" : ""}`} aria-label={speaking ? P.playing : P.play} onClick={speak}>
-            {renderIcon({ name: "speaker" })}<span>{speaking ? P.playing : es ? "Escuchar" : "Listen"}</span>
+            {renderIcon({ name: "speaker" })}<span>{speaking ? P.playing : P.listen}</span>
           </button>
         </div>
         {speechNote && <p className="lesson-speech-note" role="status">{speechNote}</p>}
       </header>
       <aside className="lesson-nav">
-        <p className="lesson-nav-label">{es ? "Explora el término" : "Explore the term"}</p>
-        <div role="tablist" aria-label={es ? "Secciones de la lección" : "Lesson sections"} aria-orientation={compact ? "horizontal" : "vertical"}>
-          {copy.tabs.map((label, index) => (
+        <p className="lesson-nav-label">{P.explore}</p>
+        <div role="tablist" aria-label={P.sections} aria-orientation={compact ? "horizontal" : "vertical"}>
+          {P.tabs.map((label, index) => (
             <button type="button" role="tab" id={`${id}-tab-${index}`} aria-selected={tab === index} aria-controls={`${id}-panel`} tabIndex={tab === index ? 0 : -1} ref={(element) => { tabButtons.current[index] = element; }} key={index} onClick={() => selectTab(index)} onKeyDown={(event) => {
               let next: number;
               if (event.key === "Home") next = 0;
-              else if (event.key === "End") next = copy.tabs.length - 1;
-              else if (event.key === (compact ? "ArrowRight" : "ArrowDown")) next = (index + 1) % copy.tabs.length;
-              else if (event.key === (compact ? "ArrowLeft" : "ArrowUp")) next = (index + copy.tabs.length - 1) % copy.tabs.length;
+              else if (event.key === "End") next = P.tabs.length - 1;
+              else if (event.key === (compact ? "ArrowRight" : "ArrowDown")) next = (index + 1) % P.tabs.length;
+              else if (event.key === (compact ? "ArrowLeft" : "ArrowUp")) next = (index + P.tabs.length - 1) % P.tabs.length;
               else return;
               event.preventDefault(); selectTab(next, true);
             }}>
@@ -234,33 +265,33 @@ export function LessonPreview({ copy, locale, tabIcons, renderIcon }: { copy: Co
       </aside>
       <article className="lesson-reading" id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-tab-${tab}`} tabIndex={0}>
         <div className="lesson-reading-body" key={tab}>
-          <div className="lesson-section-heading"><span aria-hidden="true">0{tab + 1}</span><h4>{copy.tabs[tab]}</h4></div>
+          <div className="lesson-section-heading"><span aria-hidden="true">0{tab + 1}</span><h4>{P.tabs[tab]}</h4></div>
           <div className={`lesson-panel-copy panel-${tab}`}>{panel}</div>
         </div>
-        <footer className="lesson-reading-footer"><span>0{tab + 1}<i> / 06</i></span><button type="button" onClick={() => selectTab((tab + 1) % copy.tabs.length, true)}>{tab === 5 ? (es ? "Volver a definición" : "Back to definition") : (es ? "Siguiente sección" : "Next section")}<span aria-hidden="true">→</span></button></footer>
+        <footer className="lesson-reading-footer"><span>0{tab + 1}<i> / 06</i></span><button type="button" onClick={() => selectTab((tab + 1) % P.tabs.length, true)}>{tab === 5 ? P.back : P.next}<span aria-hidden="true">→</span></button></footer>
       </article>
       <article className="lesson-practice" aria-labelledby={`${id}-quiz-title`}>
-        <div className="lesson-practice-heading"><span className="lesson-practice-icon">{renderIcon({ name: "contract-clipboard" })}</span><div><small>{es ? "Ponlo en práctica" : "Put it into practice"}</small><h3 id={`${id}-quiz-title`}>{copy.quickQuiz}</h3></div><span className="lesson-practice-number" aria-hidden="true">01</span></div>
+        <div className="lesson-practice-heading"><span className="lesson-practice-icon">{renderIcon({ name: "contract-clipboard" })}</span><div><small>{P.practice}</small><h3 id={`${id}-quiz-title`}>{P.quickQuiz}</h3></div><span className="lesson-practice-number" aria-hidden="true">01</span></div>
         <div className="lesson-practice-progress" aria-hidden="true"><i style={{ width: checked ? "100%" : choice === null ? "0%" : "50%" }} /></div>
-        <h4 id={`${id}-question`}>{copy.question}</h4>
-        <div className="lesson-answers" role="radiogroup" aria-labelledby={`${id}-question`}>
-          {copy.options.map((label, index) => {
+        <h4 id={`${id}-question`} lang="en">{T.quiz.question}</h4>
+        <div className="lesson-answers" role="radiogroup" aria-labelledby={`${id}-question`} lang="en">
+          {T.quiz.options.map((label, index) => {
             const selected = choice === index;
-            const state = checked && index === CORRECT_INDEX ? "correct" : checked && selected ? "wrong" : "";
+            const state = checked && index === correct ? "correct" : checked && selected ? "wrong" : "";
             return (
               <label className={`${selected ? "selected" : ""} ${state}`.trim()} key={index}>
                 <input className="sr-only" type="radio" name={`${id}-quiz`} checked={selected} disabled={checked} onChange={() => setChoice(index)} />
                 <span className="lesson-answer-letter" aria-hidden="true">{state === "correct" ? "✓" : state === "wrong" ? "×" : String.fromCharCode(65 + index)}</span>
-                <span className="lesson-answer-copy">{label}{state && <small>{state === "correct" ? (es ? "Respuesta correcta" : "Correct answer") : (es ? "Tu respuesta" : "Your answer")}</small>}</span>
+                <span className="lesson-answer-copy">{label}{state && <small lang={locale}>{state === "correct" ? P.correctAnswer : P.yourAnswer}</small>}</span>
               </label>
             );
           })}
         </div>
-        {feedback && <p className={`lesson-feedback ${choice === CORRECT_INDEX ? "ok" : "bad"}`} role="status">{feedback}<small>{P.explanation}</small></p>}
-        {!checked ? <button type="button" className="lesson-check" onClick={check} disabled={choice === null}>{copy.check}<span aria-hidden="true">→</span></button>
-          : choice === CORRECT_INDEX ? <Link className="lesson-check" href="/signup">{P.signup}</Link>
+        {feedback && <p className={`lesson-feedback ${choice === correct ? "ok" : "bad"}`} role="status">{feedback} <span lang="en">{T.quiz.explanation}</span><small>{P.inApp}</small></p>}
+        {!checked ? <button type="button" className="lesson-check" onClick={() => choice !== null && setChecked(true)} disabled={choice === null}>{P.check}<span aria-hidden="true">→</span></button>
+          : choice === correct ? <Link className="lesson-check" href="/signup" onClick={() => trackAction("cta", "example")}>{P.signup}</Link>
           : <button type="button" className="lesson-check" onClick={() => { setChecked(false); setChoice(null); }}>{P.tryAgain}<span aria-hidden="true">↻</span></button>}
-        <Link className="lesson-full-quiz" href="/quizzes">{copy.viewFull}</Link>
+        <p className="lesson-source">{P.source} · {T.id} · {T.source.workbook}</p>
       </article>
     </div>
   );

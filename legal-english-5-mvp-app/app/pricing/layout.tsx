@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/json-ld";
-import { translate } from "@/lib/i18n";
+import { landingCopy } from "@/lib/landing-copy";
 import { serverLocale } from "@/lib/locale-server";
 import { faqJsonLd, pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "Pricing",
-  description: "Seven days free, then a monthly or annual plan through Mercado Pago. Cancel anytime.",
+  description: "Monthly plan COP $90,000/month with a 7-day free trial (credit card required), or COP $540,000/year — a 50% discount versus twelve monthly payments.",
   path: "/pricing",
   index: true,
 });
@@ -15,7 +15,7 @@ export const metadata: Metadata = pageMetadata({
 // differs between server and browser, which would trip a hydration warning.
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const locale = await serverLocale();
-  const faqs = ([1, 2, 3, 4] as const).map((n) => ({ q: translate(locale, `faqQ${n}`), a: translate(locale, `faqA${n}`) }));
+  const faqs = landingCopy[locale].faq.items.map(([q, a]) => ({ q, a }));
   return (
     <>
       <JsonLd data={faqJsonLd(faqs)} />

@@ -206,6 +206,15 @@
    900
   ]
  },
+ "/home-assets/photos/practice-portrait.jpg": {
+  "ar": 0.6667,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
  "/home-assets/photos/pricing-lecture.jpg": {
   "ar": 2.2222,
   "w": [

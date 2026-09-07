@@ -7,6 +7,7 @@ import { useApp } from "@/components/app-provider";
 import { BrandMark } from "@/components/brand-mark";
 import { useLocale } from "@/components/locale-provider";
 import { landingCopy } from "@/lib/landing-copy";
+import { trackAction } from "@/lib/track";
 
 export function LandingHeader() {
   const path = usePathname();
@@ -89,7 +90,7 @@ export function LandingHeader() {
             <Link href="/login" onClick={() => setOpen(false)}>
               {nav.signIn}
             </Link>
-            <Link className="primary inline" href="/signup" onClick={() => setOpen(false)}>
+            <Link className="primary inline" href="/signup" onClick={() => { setOpen(false); trackAction("cta", "nav"); }}>
               {nav.trial}
             </Link>
           </>

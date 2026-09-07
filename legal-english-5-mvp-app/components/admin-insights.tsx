@@ -157,6 +157,43 @@ export function AdminInsights() {
           <p className="admin-insights-empty">{state === "loading" ? a("insightsLoading") : a("insightsEmpty")}</p>
         )}
       </section>
+
+      <section className="chart-card">
+        <h2>{a("insightsFunnel")}</h2>
+        <p>{a("insightsFunnelBody")}</p>
+        {summary ? (
+          <div className="bar-chart admin-funnel">
+            {(
+              [
+                [a("insightsFunnelLanding"), summary.funnel.landingVisits],
+                [a("insightsFunnelCta"), summary.funnel.ctaVisits],
+                [a("insightsFunnelTrial"), summary.funnel.trialStarts],
+              ] as const
+            ).map(([label, count], index) => {
+              const base = Math.max(1, summary.funnel.landingVisits);
+              const share = Math.round((count / base) * 100);
+              return (
+                <div key={label}>
+                  <div className="bar-meta">
+                    <span>{label}</span>
+                    <b>{count}{index > 0 && <small> · {share}%</small>}</b>
+                  </div>
+                  <div className="bar-track">
+                    <i style={{ width: `${Math.max(2, Math.min(100, share))}%`, background: index === 2 ? "#27732a" : "#452b84" }} />
+                  </div>
+                </div>
+              );
+            })}
+            {summary.funnel.ctaByLabel.length > 0 && (
+              <p className="admin-funnel-labels">
+                {a("insightsFunnelByPlacement")}: {summary.funnel.ctaByLabel.map((item) => `${item.label} ${item.clicks}`).join(" · ")}
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className="admin-insights-empty">{state === "loading" ? a("insightsLoading") : a("insightsEmpty")}</p>
+        )}
+      </section>
     </div>
   );
 }

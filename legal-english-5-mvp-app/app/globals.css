@@ -26184,3 +26184,148 @@ a.accent:hover {
   color: var(--error);
   background: #fdecec;
 }
+
+/* =====================================================================
+   Landing Page Brief v1.0 (7 Sep 2026) — home page sections 1–11.
+   Palette per Design System v2.3: Primary Purple #452b84 (headings, primary
+   buttons), Brand Yellow #f5e400 (selective accents, Brand Dark text only),
+   Brand Dark #1a171b (text), Secondary Gray #707173 (supporting text),
+   Surface #f7f7fa (cards). One primary action per section; 44px targets.
+   ===================================================================== */
+.home-brief { --brief-purple: #452b84; --brief-yellow: #f5e400; --brief-dark: #1a171b; --brief-gray: #707173; --brief-surface: #f7f7fa; --brief-line: #e7e3f2; }
+.home-brief .home-ref-heading h2 { color: var(--brief-purple); font-size: clamp(1.45rem, 2.2vw, 1.9rem); line-height: 1.2; letter-spacing: -.015em; text-wrap: balance; }
+.home-brief .home-ref-heading p { max-width: 62ch; margin: 12px auto 0; color: var(--brief-gray); font-size: .92rem; line-height: 1.75; }
+.home-brief .home-ref-heading .eyebrow { color: var(--brief-purple); }
+
+/* 1 · Hero: brand line + one primary action + card disclosure. */
+.home-ref-copy.hero-editorial > .hero-brand-line { color: var(--brief-purple); }
+.home-brief .hero-audience > span { background: var(--brief-yellow); }
+.home-brief .home-ref-copy.hero-editorial > .hero-editorial-lead { margin: 22px 0 26px; max-width: 50ch; }
+.cta-disclosure { display: flex; align-items: flex-start; gap: 7px; margin: 12px 0 0; color: var(--brief-gray); font-size: .72rem; line-height: 1.6; max-width: 46ch; }
+.cta-disclosure svg { flex: 0 0 auto; margin-top: 3px; color: var(--brief-gray); }
+.home-ref-copy.hero-editorial > .cta-disclosure { margin-top: 14px; max-width: 48ch; color: var(--brief-gray); font-size: .78rem; line-height: 1.6; animation: none; }
+.home-brief .home-ref-copy.hero-editorial h1 { max-width: 560px; }
+
+/* Shared section rhythm. */
+.brief-problem, .brief-components, .brief-launch, .brief-built, .brief-faq, .brief-trust, .brief-example, .brief-pricing { max-width: var(--home-max); margin: 0 auto; padding: 64px 18px 0; }
+.home-brief .home-ref-learn.brief-example { padding-top: 64px; }
+.home-brief .home-ref-categories.brief-launch { padding-top: 64px; }
+
+/* 2 · The problem: three supporting cards. */
+.brief-problem-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 30px 0 0; padding: 0; list-style: none; }
+.brief-problem-grid li { display: grid; gap: 10px; align-content: start; padding: 24px 22px; border: 1px solid var(--brief-line); border-radius: 12px; background: var(--brief-surface); }
+.brief-problem-grid .icon { width: 44px; height: 44px; padding: 9px; border-radius: 12px; background: #fff; border: 1px solid var(--brief-line); }
+.brief-problem-grid strong { color: var(--brief-dark); font-size: 1rem; font-weight: 600; line-height: 1.3; }
+.brief-problem-grid p { margin: 0; color: var(--brief-gray); font-size: .86rem; line-height: 1.7; }
+
+/* 3 · The solution: single statement on purple. */
+.brief-solution { max-width: var(--home-max); margin: 56px auto 0; padding: 0 18px; }
+.brief-solution > div { padding: clamp(32px, 4vw, 52px) clamp(22px, 4vw, 64px); border-radius: 16px; background: var(--brief-purple); color: #fff; text-align: center; }
+.brief-solution h2 { max-width: 24ch; margin: 0 auto; color: #fff; font-size: clamp(1.5rem, 2.6vw, 2.15rem); line-height: 1.2; letter-spacing: -.015em; text-wrap: balance; }
+.brief-solution p { max-width: 64ch; margin: 16px auto 0; color: rgba(255, 255, 255, .86); font-size: .95rem; line-height: 1.75; }
+
+/* 4 · What each term can include: 8 labelled components (4 × 2). */
+.brief-components-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 28px 0 0; padding: 0; list-style: none; }
+.brief-components-grid li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; padding: 18px 18px 16px; border: 1px solid var(--brief-line); border-radius: 12px; background: #fff; box-shadow: 0 8px 18px rgba(26, 23, 27, .035); }
+.brief-components-grid .icon { width: 40px; height: 40px; padding: 8px; border-radius: 10px; background: var(--brief-surface); }
+.brief-components-grid strong { display: block; color: var(--brief-purple); font-size: .9rem; font-weight: 600; line-height: 1.3; }
+.brief-components-grid small { display: block; margin-top: 4px; color: var(--brief-gray); font-size: .78rem; line-height: 1.55; }
+
+/* 5 · Product example: MCD source line under the quiz. */
+.lesson-source { margin: 14px 0 0; color: var(--brief-gray); font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; }
+.lesson-pronunciation em { font-style: italic; color: var(--brief-gray); }
+
+/* 6 · Launch content: exactly 10 Terms per category. */
+.brief-term-count { display: inline-flex !important; align-items: center; gap: 6px; width: max-content; justify-self: start; margin: 6px 0 10px; padding: 4px 10px; border-radius: 999px; background: var(--brief-yellow); color: var(--brief-dark) !important; font-size: .72rem !important; font-weight: 600; line-height: 1.4; }
+.brief-launch-note { max-width: 62ch; margin: 22px auto 0; color: var(--brief-gray); font-size: .82rem; line-height: 1.6; text-align: center; }
+
+/* 7 · Built for legal professionals: copy + one photograph. */
+.brief-built { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+.brief-built-copy .eyebrow { color: var(--brief-purple); }
+.brief-built-copy h2 { max-width: 22ch; margin: 10px 0 24px; color: var(--brief-purple); font-size: clamp(1.45rem, 2.2vw, 1.9rem); line-height: 1.2; letter-spacing: -.015em; text-wrap: balance; }
+.brief-built-copy ul { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
+.brief-built-copy li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+.brief-built-copy .icon { width: 44px; height: 44px; padding: 9px; border-radius: 12px; background: var(--brief-surface); border: 1px solid var(--brief-line); }
+.brief-built-copy strong { display: block; color: var(--brief-dark); font-size: .98rem; font-weight: 600; line-height: 1.3; }
+.brief-built-copy p { margin: 4px 0 0; color: var(--brief-gray); font-size: .86rem; line-height: 1.7; }
+.brief-built-photo { position: relative; isolation: isolate; margin: 0; overflow: hidden; border-radius: 16px; background: var(--brief-purple); aspect-ratio: 4 / 5; max-height: 520px; box-shadow: 0 16px 32px -23px rgba(26, 23, 27, .5); }
+.brief-built-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
+.brief-built-photo::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent 55%, rgba(26, 23, 27, .12) 70%, rgba(26, 23, 27, .88) 100%); }
+.brief-built-photo figcaption { position: absolute; z-index: 2; left: 22px; right: 22px; bottom: 22px; color: #fff; }
+.brief-built-photo figcaption span { display: block; margin-bottom: 6px; color: var(--brief-yellow); font-size: .62rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.brief-built-photo figcaption strong { display: block; font-size: .95rem; font-weight: 500; line-height: 1.5; text-wrap: balance; }
+
+/* 8 · Pricing: two plans, one trial CTA, full disclosure. */
+.brief-plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 820px; margin: 30px auto 0; align-items: stretch; }
+.home-brief .home-ref-pricing > div:last-of-type { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 820px; align-items: stretch; }
+.brief-plan { position: relative; display: flex; flex-direction: column; gap: 10px; min-height: 0; padding: 28px 26px 24px; border: 2px solid var(--brief-line); border-radius: 14px; background: #fff; text-align: left; box-shadow: 0 8px 18px rgba(26, 23, 27, .035); }
+.brief-plan.brief-plan-monthly { border-color: var(--brief-purple); }
+.brief-plan h3 { margin: 0; color: var(--brief-dark); font-family: Poppins, Arial, sans-serif; font-size: .95rem; font-weight: 600; }
+.brief-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 4px 0 0; }
+.brief-price strong { display: inline; color: var(--brief-purple); font-size: clamp(1.7rem, 2.4vw, 2.1rem); font-weight: 600; line-height: 1; letter-spacing: -.02em; }
+.brief-price small { color: var(--brief-gray); font-family: Poppins, Arial, sans-serif; font-size: .78rem; font-weight: 500; }
+.brief-plan-trial { display: inline-flex; align-self: flex-start; align-items: center; margin: 2px 0 0; padding: 5px 11px; border-radius: 999px; background: var(--brief-yellow); color: var(--brief-dark); font-size: .74rem; font-weight: 600; line-height: 1.4; }
+.brief-plan-discount { background: var(--brief-surface); border: 1px solid var(--brief-line); }
+.brief-plan-terms { margin: 6px 0 0; color: var(--brief-gray); font-size: .82rem; line-height: 1.65; }
+.brief-plan-note { margin: auto 0 0; padding-top: 12px; border-top: 1px dashed var(--brief-line); color: var(--brief-gray); font-size: .78rem; line-height: 1.55; }
+.brief-plan .primary { width: 100%; min-height: 46px; margin-top: auto; border-radius: 8px; font-size: .8rem; }
+.brief-plan .cta-disclosure { margin-top: 8px; max-width: none; }
+.brief-pricing .home-ref-secure { justify-content: center; max-width: 62ch; margin: 24px auto 0; text-align: center; }
+.brief-pricing-page .brief-plans { margin-top: 34px; }
+.brief-pricing-page .home-ref-secure { display: flex; align-items: center; gap: 8px; color: var(--brief-gray); font-size: .78rem; }
+.pricing-cta { display: grid; justify-items: center; gap: 4px; margin-top: 32px; }
+.pricing-cta .cta-disclosure { justify-content: center; text-align: center; }
+
+/* 9 · Trust / brand authority. */
+.brief-trust { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; max-width: 880px; padding-top: 64px; }
+.brief-trust > img { width: 60px; height: 72px; object-fit: contain; }
+.brief-trust .eyebrow { color: var(--brief-purple); }
+.brief-trust h2 { margin: 8px 0 10px; color: var(--brief-purple); font-size: clamp(1.25rem, 1.9vw, 1.6rem); line-height: 1.25; letter-spacing: -.01em; }
+.brief-trust p { margin: 0; max-width: 70ch; color: var(--brief-gray); font-size: .9rem; line-height: 1.75; }
+
+/* 10 · FAQ: progressive disclosure. */
+.brief-faq .faq-list { margin-top: 26px; }
+.home-brief .faq-list details { border-color: var(--brief-line); background: #fff; }
+.home-brief .faq-list summary { min-height: 44px; color: var(--brief-dark); }
+.home-brief .faq-list summary:after { color: var(--brief-purple); }
+.home-brief .faq-list details p { color: var(--brief-gray); }
+.home-brief .faq-photo-card em { font-style: normal; }
+
+/* 11 · Final CTA. */
+.home-brief .home-ref-cta.brief-final { margin-top: 64px; padding: 22px 28px; }
+.home-brief .home-ref-cta.brief-final > span { border-color: var(--brief-yellow); }
+.home-brief .home-ref-cta.brief-final h2 { text-wrap: balance; }
+.home-brief .home-ref-cta.brief-final .cta-disclosure { margin-top: 6px; max-width: none; color: rgba(255, 255, 255, .8); }
+.home-brief .home-ref-cta.brief-final .cta-disclosure svg { color: rgba(255, 255, 255, .8); }
+
+@media (max-width: 960px) {
+  .brief-problem-grid { grid-template-columns: 1fr; gap: 12px; }
+  .brief-components-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .brief-built { grid-template-columns: 1fr; gap: 28px; }
+  .brief-built-photo { max-width: 560px; aspect-ratio: 5 / 4; }
+  .brief-plans, .home-brief .home-ref-pricing > div:last-of-type { grid-template-columns: 1fr; max-width: 520px; }
+  .brief-trust { grid-template-columns: 1fr; gap: 14px; text-align: left; }
+  .brief-problem, .brief-components, .brief-launch, .brief-built, .brief-faq, .brief-trust, .brief-example, .brief-pricing, .home-brief .home-ref-learn.brief-example, .home-brief .home-ref-categories.brief-launch { padding-top: 48px; }
+  .brief-solution { margin-top: 44px; }
+}
+@media (max-width: 640px) {
+  .brief-components-grid { grid-template-columns: 1fr; gap: 10px; }
+  .brief-components-grid li { padding: 14px 14px 12px; }
+  .brief-plan { padding: 22px 18px 20px; }
+  .brief-built-photo { aspect-ratio: 4 / 5; }
+  .home-brief .home-ref-cta.brief-final { padding: 20px 18px; }
+  .cta-disclosure { max-width: none; }
+}
+/* Plan cards override the older centered pricing-card rules. */
+.home-brief .brief-plan, .home-brief .brief-plan h3, .home-brief .brief-plan p { text-align: left; }
+.home-brief .brief-plan .brief-plan-trial { display: inline-flex; align-self: flex-start; width: max-content; max-width: 100%; }
+.home-brief .brief-plan .brief-price strong { display: inline; font-size: clamp(1.7rem, 2.4vw, 2.1rem); }
+.home-brief .brief-pricing .home-ref-secure { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 70ch; margin: 26px auto 0; color: var(--brief-gray); font-size: .78rem; line-height: 1.6; text-align: left; }
+.home-brief .brief-pricing .home-ref-secure .icon, .home-brief .brief-pricing .home-ref-secure svg { flex: 0 0 auto; width: 18px; height: 18px; }
+/* Design System v2.3 / brief §4: primary controls meet a 44×44 px touch target. */
+.hero-depth-dots button { width: 44px; height: 44px; margin: 0 -8px; }
+.home-brief .lesson-audio { min-height: 44px; }
+.home-brief .home-ref-cta .primary { min-height: 44px; }
+.home-brief .home-ref-actions.hero-editorial-actions > a.primary { min-height: 50px; }
+.home-brief .brief-plan .primary { min-height: 46px; }
+.home-reference .landing-nav .landing-nav-links .primary, .home-reference .landing-nav .landing-nav-links > a[href="/login"]:not(.primary), .home-reference .landing-nav .landing-nav-links .home-lang { display: inline-flex; align-items: center; height: auto; min-height: 44px; }

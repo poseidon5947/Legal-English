@@ -1,9 +1,11 @@
 /**
  * First-party visitor insights.
  *
- * The browser sends two kinds of anonymous events to POST /api/insights:
- *  - "view"  — a page was shown (path without query string, locale, device class);
- *  - "vital" — a Core Web Vital measured on that page (LCP, CLS, INP, TTFB).
+ * The browser sends three kinds of anonymous events to POST /api/insights:
+ *  - "view"   — a page was shown (path without query string, locale, device class);
+ *  - "vital"  — a Core Web Vital measured on that page (LCP, CLS, INP, TTFB);
+ *  - "action" — a funnel step: primary CTA click ("cta", with a placement
+ *               label such as hero/pricing/final) or a trial start ("trial").
  *
  * Nothing here identifies a person: no cookie, no IP, no user agent string,
  * no account id. The session id is a random value that lives in
@@ -14,17 +16,22 @@
 export const VITAL_NAMES = ["LCP", "CLS", "INP", "TTFB"] as const;
 export type VitalName = (typeof VITAL_NAMES)[number];
 
+export const ACTION_NAMES = ["cta", "trial"] as const;
+export type ActionName = (typeof ACTION_NAMES)[number];
+
 export type InsightEvent = {
-  kind: "view" | "vital";
+  kind: "view" | "vital" | "action";
   /** Pathname only; dynamic term ids are collapsed to /terms/[id]. */
   path: string;
   locale: "en" | "es";
   device: "mobile" | "desktop";
   /** Per-tab random id (sessionStorage), never a cookie. */
   sid: string;
-  /** Vital name + value; absent for views. */
-  name?: VitalName;
+  /** Vital name + value (kind "vital") or action name (kind "action"); absent for views. */
+  name?: VitalName | ActionName;
   value?: number;
+  /** Placement of an action, e.g. "hero" | "pricing" | "final" | "nav". */
+  label?: string;
   /** ISO timestamp, set by the server. */
   at: string;
 };
@@ -49,7 +56,7 @@ export function normalizePath(raw: string): string {
 export function parseInsightEvent(input: unknown, now = new Date()): InsightEvent | null {
   if (!input || typeof input !== "object") return null;
   const raw = input as Record<string, unknown>;
-  const kind = raw.kind === "view" || raw.kind === "vital" ? raw.kind : null;
+  const kind = raw.kind === "view" || raw.kind === "vital" || raw.kind === "action" ? raw.kind : null;
   if (!kind) return null;
   if (typeof raw.path !== "string" || !raw.path.startsWith("/")) return null;
   const locale = raw.locale === "es" ? "es" : "en";
@@ -65,6 +72,13 @@ export function parseInsightEvent(input: unknown, now = new Date()): InsightEven
     if ((name === "CLS" && value > 10) || (name !== "CLS" && value > 120_000)) return null;
     event.name = name;
     event.value = name === "CLS" ? Math.round(value * 1000) / 1000 : Math.round(value);
+  }
+  if (kind === "action") {
+    const name = ACTION_NAMES.find((candidate) => candidate === raw.name);
+    if (!name) return null;
+    event.name = name;
+    const label = typeof raw.label === "string" ? raw.label.replace(/[^a-z0-9_-]/gi, "").slice(0, 32) : "";
+    if (label) event.label = label;
   }
   return event;
 }
@@ -83,6 +97,18 @@ export type InsightSummary = {
   devices: { mobile: number; desktop: number };
   locales: { en: number; es: number };
   vitals: VitalSummary[];
+  /**
+   * Landing funnel (brief §5): visits that saw "/", visits that clicked a
+   * primary CTA (by placement), and visits that started a trial. Counted per
+   * visit (distinct sid), so a double-click is not two clicks.
+   */
+  funnel: {
+    landingVisits: number;
+    ctaClicks: number;
+    ctaVisits: number;
+    ctaByLabel: { label: string; clicks: number }[];
+    trialStarts: number;
+  };
 };
 
 // Google's Core Web Vitals thresholds ("good" / "poor" boundaries).
@@ -136,7 +162,21 @@ export function summarizeInsights(events: InsightEvent[], days: number, now = ne
     return { name, p75, samples: values.length, rating: p75 === null ? null : rateVital(name, p75) };
   });
 
+  const landingSids = new Set(views.filter((view) => view.path === "/").map((view) => view.sid));
+  const ctaEvents = recent.filter((event) => event.kind === "action" && event.name === "cta");
+  const ctaLabels = new Map<string, number>();
+  for (const event of ctaEvents) ctaLabels.set(event.label || "other", (ctaLabels.get(event.label || "other") ?? 0) + 1);
+  const trialSids = new Set(recent.filter((event) => event.kind === "action" && event.name === "trial").map((event) => event.sid));
+  const funnel = {
+    landingVisits: landingSids.size,
+    ctaClicks: ctaEvents.length,
+    ctaVisits: new Set(ctaEvents.map((event) => event.sid)).size,
+    ctaByLabel: Array.from(ctaLabels, ([label, clicks]) => ({ label, clicks })).sort((a, b) => b.clicks - a.clicks),
+    trialStarts: trialSids.size,
+  };
+
   return {
+    funnel,
     days,
     views: views.length,
     visits: sids.size,

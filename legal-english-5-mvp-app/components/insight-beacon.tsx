@@ -156,11 +156,22 @@ export function InsightBeacon() {
     };
     window.addEventListener("le5:route", onRoute);
 
+    // Funnel steps (lib/track.ts): CTA clicks and trial starts. Sent at once
+    // because a CTA click usually navigates away from the page.
+    const onAction = (event: Event) => {
+      const detail = (event as CustomEvent<{ name?: string; label?: string }>).detail ?? {};
+      if (!detail.name) return;
+      push({ kind: "action", name: detail.name, label: detail.label ?? "", path: currentPath() });
+      flush();
+    };
+    window.addEventListener("le5:action", onAction);
+
     return () => {
       window.clearTimeout(firstFlush);
       document.removeEventListener("visibilitychange", onHide);
       removeEventListener("pagehide", flushVitals);
       window.removeEventListener("le5:route", onRoute);
+      window.removeEventListener("le5:action", onAction);
       for (const observer of observers) observer.disconnect();
     };
   }, []);

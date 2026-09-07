@@ -9,19 +9,19 @@ import { RouteProgress } from "@/components/route-progress";
 import { SkipLink } from "@/components/skip-link";
 import { ToastProvider } from "@/components/toaster";
 import { JsonLd } from "@/components/json-ld";
-import { SITE_DESCRIPTION, SITE_NAME, siteJsonLd, siteUrl } from "@/lib/site";
+import { BRAND_OWNER, HOME_TITLE, OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, siteJsonLd, siteUrl } from "@/lib/site";
 import { serverLocale } from "@/lib/locale-server";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl(),
   title: {
-    default: `${SITE_NAME} — Legal English in five-minute sessions`,
+    default: HOME_TITLE,
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
-  keywords: ["legal English", "inglés jurídico", "abogados", "contracts", "corporate law", "employment law", "MPC Law Studio"],
-  authors: [{ name: "MPC Law Studio" }],
+  keywords: ["legal English", "inglés jurídico", "abogados", "contracts", "corporate law", "employment law", "MPC LAW STUDIO"],
+  authors: [{ name: BRAND_OWNER }],
   icons: {
     icon: "/home-assets/icons/le5-shield.png",
     apple: "/home-assets/icons/le5-shield.png",
@@ -29,17 +29,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — Legal English in five-minute sessions`,
+    title: HOME_TITLE,
     description: SITE_DESCRIPTION,
     locale: "en_US",
     alternateLocale: ["es_CO"],
-    images: [{ url: "/home-assets/og/og-default.jpg", width: 1200, height: 630, alt: "Legal English 5 — Master Legal English in 5-minute sessions" }],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — Legal English in five-minute sessions`,
+    title: HOME_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/home-assets/og/og-default.jpg"],
+    images: [OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
   manifest: "/manifest.webmanifest",

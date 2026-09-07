@@ -78,3 +78,28 @@ test("insights migration is Owner-read-only and stores no personal data", () => 
   assert.doesNotMatch(sql, /for insert/);
   for (const column of ["ip", "user_agent", "user_id", "email"]) assert.doesNotMatch(sql, new RegExp(`\\b${column}\\b`));
 });
+
+test("landing funnel: actions are validated and counted per visit", () => {
+  assert.equal(parseInsightEvent({ kind: "action", path: "/", name: "LCP", ...base }, NOW), null, "vital names are not actions");
+  const cta = parseInsightEvent({ kind: "action", path: "/?utm=x", name: "cta", label: "hero<b>", ...base }, NOW);
+  assert.equal(cta.path, "/");
+  assert.equal(cta.name, "cta");
+  assert.equal(cta.label, "herob", "labels are reduced to a safe token");
+
+  const at = NOW.toISOString();
+  const events = [
+    { kind: "view", path: "/", locale: "en", device: "desktop", sid: "visitA", at },
+    { kind: "view", path: "/", locale: "en", device: "desktop", sid: "visitB", at },
+    { kind: "view", path: "/pricing", locale: "en", device: "desktop", sid: "visitC", at },
+    { kind: "action", name: "cta", label: "hero", path: "/", locale: "en", device: "desktop", sid: "visitA", at },
+    { kind: "action", name: "cta", label: "hero", path: "/", locale: "en", device: "desktop", sid: "visitA", at },
+    { kind: "action", name: "cta", label: "pricing", path: "/", locale: "en", device: "desktop", sid: "visitB", at },
+    { kind: "action", name: "trial", label: "active", path: "/signup", locale: "en", device: "desktop", sid: "visitA", at },
+  ];
+  const { funnel } = summarizeInsights(events, 7, NOW);
+  assert.equal(funnel.landingVisits, 2);
+  assert.equal(funnel.ctaClicks, 3);
+  assert.equal(funnel.ctaVisits, 2, "a double-click is one converting visit");
+  assert.deepEqual(funnel.ctaByLabel, [{ label: "hero", clicks: 2 }, { label: "pricing", clicks: 1 }]);
+  assert.equal(funnel.trialStarts, 1);
+});

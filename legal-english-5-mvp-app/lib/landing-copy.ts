@@ -1,62 +1,56 @@
 import type { Locale } from "@/lib/i18n";
 
-/** Copy for the public landing pages (home, header, footer, pricing cards). */
-/** Display prices shared by the home cards and /pricing until the Owner sets COP prices (Propuesta, kickoff). */
-export const PLAN_PRICES = ["$0", "$9.99", "$79.99"] as const;
+/**
+ * Copy for the public landing pages (home, header, footer, pricing).
+ *
+ * The home page follows "Legal English 5 — Landing Page Implementation Brief
+ * for Carlos v1.0 (7 Sep 2026)": section order and English wording are the
+ * brief's, verbatim. Spanish is a faithful translation for the ES toggle.
+ * Marketing owns this copy; product claims must stay within the current MVP.
+ */
+
+/** Approved launch pricing (brief §3.8 / §5). Annual = 50% off twelve monthly payments. */
+export const PLAN_PRICES = {
+  currency: "COP",
+  monthly: 90_000,
+  annual: 540_000,
+  monthlyLabel: "COP $90,000",
+  annualLabel: "COP $540,000",
+  trialDays: 7,
+} as const;
+
+/** Launch scope (brief §3.6): exactly 30 Terms, ten per canonical category. */
+export const LAUNCH_TERMS = { total: 30, perCategory: 10 } as const;
 
 export type LandingCopy = {
   nav: { home: string; library: string; how: string; pricing: string; about: string; signIn: string; trial: string; dashboard: string; signOut: string };
   hero: {
-    audience: string;
-    highlights: readonly [string, string, string];
-    title1: string;
-    title2: string;
-    lead: string;
-    cta: string;
-    explore: string;
-    benefits: readonly [string, string, string, string];
-    slides: ReadonlyArray<{ caption: string; tag: string }>;
-    trust: ReadonlyArray<readonly [string, string]>;
-    reassurance: string;
-  };
-  categories: { eyebrow: string; title: string; lead: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
-  learn: {
-    eyebrow: string;
+    brandLine: string;
     title: string;
     lead: string;
-    tabs: readonly [string, string, string, string, string, string];
-    pronunciation: string;
-    definition: string;
-    exampleLabel: string;
-    example: string;
-    quickQuiz: string;
-    quizCount: string;
-    question: string;
-    options: readonly [string, string, string, string];
-    check: string;
-    viewFull: string;
+    cta: string;
+    ctaNote: string;
+    slides: ReadonlyArray<{ caption: string; tag: string }>;
   };
-  workflow: { eyebrow: string; title: string; lead: string; photoCaption: string; photoTag: string; steps: ReadonlyArray<readonly [string, string]> };
-  life: { eyebrow: string; title: string; lead: string; photos: readonly [string, string, string] };
-  scenarios: { eyebrow: string; title: string; lead: string; termsLabel: string; explore: string; items: ReadonlyArray<readonly [string, string]> };
-  features: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]>; statusNew: string; statusLearning: string; statusMastered: string; statusPrefix: string; statusOr: string };
-  proof: { eyebrow: string; title: string; quoteEmphasis: string; quotes: ReadonlyArray<readonly [string, string, string]>; stats: ReadonlyArray<readonly [string, string]> };
+  problem: { title: string; lead: string; items: readonly [readonly [string, string], readonly [string, string], readonly [string, string]] };
+  solution: { title: string; lead: string };
+  components: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]> };
+  example: { eyebrow: string; title: string; lead: string; source: string };
+  launch: { eyebrow: string; title: string; termsLabel: string; explore: string; note: string; items: readonly [string, string, string] };
+  builtFor: { eyebrow: string; title: string; photoTag: string; photoCaption: string; items: readonly [readonly [string, string], readonly [string, string], readonly [string, string]] };
   pricing: {
     eyebrow: string;
     title: string;
-    lead: string;
-    perYear: string;
     perMonth: string;
-    bestValue: string;
-    mostPopular: string;
+    perYear: string;
+    monthly: { name: string; trial: string; terms: string; cta: string; ctaNote: string };
+    annual: { name: string; discount: string; terms: string; note: string };
+    rule: string;
     secure: string;
-    plans: ReadonlyArray<{ name: string; body: string; period: string; features: readonly string[]; cta: string }>;
-    include: string;
-    includeItems: readonly [string, string, string, string];
-    guaranteeTitle: string;
-    guaranteeBody: string;
   };
-  cta: { title: string; lead: string; button: string };
+  trust: { eyebrow: string; title: string; body: string };
+  faq: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]> };
+  cta: { title: string; button: string; note: string };
   footer: {
     blurb: string;
     product: string;
@@ -75,151 +69,120 @@ export type LandingCopy = {
 };
 
 const en: LandingCopy = {
-  nav: { home: "Home", library: "Terms Library", how: "How It Works", pricing: "Pricing", about: "About", signIn: "Sign In", trial: "Start 7-Day Free Trial", dashboard: "My dashboard", signOut: "Sign out" },
+  nav: { home: "Home", library: "Terms Library", how: "How It Works", pricing: "Pricing", about: "About", signIn: "Sign In", trial: "Start your 7-day free trial", dashboard: "My dashboard", signOut: "Sign out" },
   hero: {
-    audience: "For lawyers & law students",
-    highlights: ["Real legal context", "Spanish guidance", "Track your progress"],
-    title1: "Legal English for real practice.",
-    title2: "Five minutes at a time.",
-    lead:
-      "Build your legal vocabulary with clear explanations, practical examples, and guidance for Spanish speakers.",
-    cta: "Start your free 7-day trial",
-    explore: "Explore the terms",
-    benefits: ["5-Minute Lessons", "Built for legal professionals", "Track your progress", "No credit card required"],
-    reassurance: "No credit card required",
-    trust: [
-      ["One source of truth", "Every term comes from a single Master Content Database"],
-      ["Lawyer-reviewed", "Approved by a practising lawyer before publication"],
-      ["Spanish-speaker notes", "Civil-law equivalents and false-friend alerts on every term"],
-      ["Secure checkout", "Subscriptions handled by Mercado Pago; cancel anytime"],
-    ],
+    brandLine: "Legal English 5 by MPC LAW STUDIO",
+    title: "Legal English for real legal work.",
+    lead: "Build practical Legal English vocabulary in context — designed for Spanish-speaking lawyers and legal professionals.",
+    cta: "Start your 7-day free trial",
+    ctaNote: "Credit card required. COP $90,000/month after the trial unless canceled before it ends.",
     slides: [
       { caption: "Reviewing a contract before signature", tag: "Contracts" },
       { caption: "Negotiating terms with the counterparty", tag: "Corporate Law" },
-      { caption: "Law students preparing a case in English", tag: "Study group" },
-      { caption: "A five-minute lesson between meetings", tag: "Microlearning" },
+      { caption: "Preparing a matter in English", tag: "Legal professionals" },
+      { caption: "A five-minute lesson between meetings", tag: "Five-minute learning" },
       { caption: "In-house team aligning on an employment matter", tag: "Employment Law" },
-      { caption: "One vocabulary, two legal systems", tag: "Civil law · Common law" },
+      { caption: "One vocabulary, two legal systems", tag: "Civil Law · Common Law" },
     ],
   },
-  categories: {
-    eyebrow: "Curriculum",
-    title: "Explore Our Launch Categories",
-    lead: "Focused learning paths designed for real legal practice.",
-    explore: "Explore Terms →",
+  problem: {
+    title: "Knowing English is not the same as using Legal English.",
+    lead: "Legal work depends on more than translating individual words. Lawyers need the right terminology, natural legal combinations, context and awareness of differences between legal systems.",
     items: [
-      ["Contracts", "Master essential contract terms and clauses used in everyday practice."],
-      ["Corporate Law", "Learn the language of companies, governance, and business transactions."],
-      ["Employment Law", "Build confidence with employment terms and workplace terminology."],
+      ["Legal terminology", "Learn what a term means in legal context, not only its dictionary translation."],
+      ["Legal collocations", "See the words lawyers naturally use together in professional legal English."],
+      ["Different legal systems", "Understand material Common Law / Civil Law and US / UK distinctions when relevant."],
     ],
   },
-  learn: {
-    eyebrow: "Inside a lesson",
-    title: "See How You’ll Learn",
-    lead: "Every term includes clear definitions, real-world context, and smart practice.",
-    tabs: ["Definition", "Spanish Equivalent", "Civil Law Equivalent", "Spanish-Speaker Alert", "Use It With", "In Context"],
-    pronunciation: "Pronunciation: /kənˌsɪdəˈreɪʃən/",
-    definition:
-      "Something of value exchanged between parties that induces each to enter into a contract. It is a fundamental element required for a valid, enforceable contract in common law.",
-    exampleLabel: "EXAMPLE",
-    example: "The promisor agreed to pay $10,000 as consideration for the sale of the equipment.",
-    quickQuiz: "Quick Quiz",
-    quizCount: "1 of 3",
-    question: "What is consideration in contract law?",
-    options: ["A legal duty imposed by statute", "A promise without any exchange", "Something of value exchanged between parties", "A contract term added later"],
-    check: "Check Answer",
-    viewFull: "View full quiz →",
+  solution: {
+    title: "Learn Legal English in legal context — not as isolated vocabulary.",
+    lead: "Legal English 5 is built around short, practical vocabulary learning with legally contextualized content for Spanish-speaking legal professionals.",
   },
-  workflow: {
-    eyebrow: "Method",
-    title: "How It Works",
-    lead: "Learn smarter in four simple steps.",
-    photoCaption: "Five minutes between classes or before a hearing is enough for one term.",
-    photoTag: "Study anywhere",
-    steps: [
-      ["Discover Terms", "Browse or search key legal terms by category or topic."],
-      ["Study in Context", "Review clear explanations, equivalents, and real-world examples."],
-      ["Take Quiz", "Reinforce your knowledge with short, focused quizzes."],
-      ["Track Mastery", "Monitor your progress and build lasting confidence."],
-    ],
-  },
-  features: {
-    eyebrow: "Platform",
-    title: "Everything You Need to Succeed",
+  components: {
+    eyebrow: "Term components",
+    title: "What each term can include",
     items: [
-      ["Smart Search & Filters", "Find terms quickly by keyword, category, or practice area."],
-      ["Learn Anywhere", "Responsive experience on desktop, tablet, and mobile."],
-      ["Personalized Progress", ""],
-      ["All-Access Subscription", "Unlimited access to all terms, quizzes, and new content."],
+      ["Definition", "Plain-English legal definition."],
+      ["Pronunciation", "Audio pronunciation."],
+      ["Use It With", "Authentic legal collocations and combinations."],
+      ["In Context", "Legal usage in context."],
+      ["Quick Quiz", "A focused knowledge check."],
+      ["Spanish-Speaker Alert", "Spanish-speaker-specific guidance when applicable."],
+      ["Civil Law Equivalent", "Comparative-law guidance when editorially applicable."],
+      ["US / UK distinctions", "Jurisdiction distinctions when relevant."],
     ],
-    statusPrefix: "Terms are marked as",
-    statusNew: "New",
-    statusLearning: "Learning",
-    statusOr: "or",
-    statusMastered: "Mastered",
   },
-  life: {
-    eyebrow: "Made for real practice",
-    title: "The vocabulary you meet in real files, not in textbooks",
-    lead: "Every term comes from documents lawyers actually draft, negotiate and litigate: share purchase agreements, board minutes, employment contracts. You learn the word the way you will use it.",
-    photos: ["Reading a closing checklist", "Corporate counsel before a board meeting", "Case law in the firm library"],
+  example: {
+    eyebrow: "Product example",
+    title: "See how a legal term works in context.",
+    lead: "One complete, learner-facing example from the approved Master Content Database.",
+    source: "Approved content · Master Content Database",
   },
-  scenarios: {
-    eyebrow: "Where you will use it",
-    title: "Three situations every Spanish-speaking lawyer meets in English",
-    lead: "The curriculum is organised around the three canonical categories of the Master Content Database, and each one maps to a moment in real practice.",
-    termsLabel: "Terms you will meet",
-    explore: "Open this category →",
+  launch: {
+    eyebrow: "Launch content",
+    title: "Start with focused Legal English for three core practice areas.",
+    termsLabel: "10 Terms",
+    explore: "Explore the terms →",
+    note: "Launch scope: 30 Terms — 10 Contracts, 10 Corporate Law and 10 Employment Law.",
+    items: ["Contracts", "Corporate Law", "Employment Law"],
+  },
+  builtFor: {
+    eyebrow: "Built for legal professionals",
+    title: "Built for legal professionals — not general English learners.",
+    photoTag: "Legal practice",
+    photoCaption: "Terminology, usage and comparative-law guidance for professional legal work.",
     items: [
-      ["Negotiating a cross-border contract", "Your client's counterpart drafts in English. You need to read every clause, spot what is binding and answer on the spot."],
-      ["Reporting to a board with foreign investors", "Minutes, resolutions and share issuances are discussed in English. Corporate vocabulary lets you follow and lead the conversation."],
-      ["Hiring for a multinational's Colombian office", "Employment agreements, overtime and anti-discrimination policies arrive from headquarters in English. You translate the law, not just the words."],
-    ],
-  },
-  proof: {
-    eyebrow: "The people behind the terms",
-    title: "Legal expertise. Clear explanations.",
-    quoteEmphasis: "We answer it once, review it, and only then publish it.",
-    quotes: [
-      [
-        "Every term in Legal English 5 started as a real question from a Spanish-speaking client or colleague: what does this clause actually mean, and what is the closest concept in our civil-law system? We answer it once, review it, and only then publish it. Nothing here is paraphrased by software.",
-        "MPC Law Studio",
-        "Editorial team · Colombia",
-      ],
-    ],
-    stats: [
-      ["30+", "Published Terms"],
-      ["3", "Legal Categories"],
-      ["7-Day", "Free Trial"],
-      ["For Lawyers", "& Law Students"],
+      ["Legal context", "Terminology is presented with professional legal usage in mind."],
+      ["Spanish-speaker perspective", "Guidance addresses recurring issues when moving between Spanish and English legal language."],
+      ["Short learning experience", "The product follows a five-minute learning philosophy designed to respect a professional’s limited time."],
     ],
   },
   pricing: {
-    eyebrow: "Plans",
-    title: "Simple, Transparent Pricing",
-    lead: "Full access to all terms, quizzes, and features.",
-    perYear: "/year",
-    perMonth: "/month",
-    bestValue: "Best Value",
-    mostPopular: "Most Popular",
-    secure: "Secure checkout. Cancel anytime. No hidden fees.",
-    plans: [
-      { name: "7-Day Free Trial", body: "Full access. No credit card.", period: "for 7 days", features: ["Access all lessons", "Practice quizzes", "Track your progress", "Cancel anytime"], cta: "Start Free Trial" },
-      { name: "Monthly Plan", body: "Cancel anytime.", period: "/month", features: ["Everything in Free Trial", "Full library access", "Personalized progress", "Priority support"], cta: "Start Monthly Plan" },
-      { name: "Annual Plan", body: "Best value. Save more.", period: "/year", features: ["Everything in Monthly", "Save over 30%", "Early access to new content", "Cancel anytime"], cta: "Start Annual Plan" },
+    eyebrow: "Pricing and free trial",
+    title: "Choose the plan that fits your learning routine.",
+    perMonth: "/ month",
+    perYear: "/ year",
+    monthly: {
+      name: "Monthly",
+      trial: "7-day free trial",
+      terms: "Credit card required at trial start. Unless canceled before the trial ends, the subscription automatically continues on the monthly paid plan.",
+      cta: "Start your 7-day free trial",
+      ctaNote: "Credit card required. Cancel before the trial ends to avoid the COP $90,000 monthly charge.",
+    },
+    annual: {
+      name: "Annual",
+      discount: "50% discount",
+      terms: "COP $540,000/year is a 50% discount versus twelve monthly payments (COP $1,080,000/year).",
+      note: "Available from your account once your trial is active.",
+    },
+    rule: "Prices in Colombian pesos (COP).",
+    secure: "Secure checkout through Mercado Pago. Cancel anytime from your account.",
+  },
+  trust: {
+    eyebrow: "Trust",
+    title: "Created by MPC LAW STUDIO — Legal English Training",
+    body: "MPC LAW STUDIO brings a specialized Legal English training perspective to a product designed for lawyers and legal professionals from Spanish-speaking Civil Law jurisdictions.",
+  },
+  faq: {
+    eyebrow: "FAQ",
+    title: "Frequently asked questions",
+    items: [
+      ["Who is Legal English 5 for?", "Spanish-speaking lawyers and legal professionals who need practical Legal English for professional legal work."],
+      ["Is this a general English course?", "No. Legal English 5 is a specialized Legal English learning product focused on legally contextualized vocabulary and professional usage."],
+      ["What is included at launch?", "The MVP launches with exactly 30 Terms: 10 Contracts, 10 Corporate Law and 10 Employment Law Terms."],
+      ["Does it include pronunciation?", "Yes. Pronunciation/audio is part of the approved learner-facing product proposition."],
+      ["Does it explain differences between legal systems?", "When editorially applicable, the product may include a Civil Law Equivalent and material US/UK distinctions."],
+      ["How does the free trial work?", "The free trial lasts 7 days and requires a valid credit card at trial start. Unless you cancel before the trial ends, the subscription automatically continues on the monthly paid plan at COP $90,000/month."],
+      ["How much does the annual plan cost?", "The approved annual price is COP $540,000/year, a 50% discount compared with twelve monthly payments."],
     ],
-    include: "All plans include:",
-    includeItems: ["Full access", "All lessons", "Cancel anytime", "Secure payment"],
-    guaranteeTitle: "30-Day Money-Back Guarantee",
-    guaranteeBody: "Not satisfied? Get a full refund within 30 days of purchase.",
   },
   cta: {
-    title: "Ready to Master Legal English?",
-    lead: "Built with a practising lawyer for Spanish-speaking professionals. Seven days free, no card required, cancel anytime.",
-    button: "Start Your 7-Day Free Trial",
+    title: "Build your Legal English five minutes at a time.",
+    button: "Start your 7-day free trial",
+    note: "Credit card required. COP $90,000/month after the trial unless canceled before it ends.",
   },
   footer: {
-    blurb: "The microlearning platform for Spanish-speaking lawyers and law students. Learn legal English in 5-minute sessions that fit your schedule.",
+    blurb: "Legal English 5 by MPC LAW STUDIO. Specialized, practical Legal English for Spanish-speaking legal professionals — five minutes at a time.",
     product: "Product",
     support: "Support",
     legal: "Legal",
@@ -240,9 +203,9 @@ const en: LandingCopy = {
       cookies: "Cookie Policy",
     },
     reply: "We typically reply within one business day.",
-    rights: "© 2026 Legal English 5. All rights reserved.",
-    trust: "Payments by Mercado Pago · Data hosted on Supabase · Content from MCD v1.3.81",
-    madeIn: "MPC Law Studio · Colombia",
+    rights: "© 2026 Legal English 5 by MPC LAW STUDIO. All rights reserved.",
+    trust: "Payments by Mercado Pago · Data hosted on Supabase · Content from the Master Content Database",
+    madeIn: "MPC LAW STUDIO · Colombia",
     cookieText: "We only use essential cookies to keep you signed in and remember your language. No advertising trackers.",
     cookieAccept: "Got it",
     cookieMore: "Privacy notice",
@@ -250,151 +213,120 @@ const en: LandingCopy = {
 };
 
 const es: LandingCopy = {
-  nav: { home: "Inicio", library: "Biblioteca de términos", how: "Cómo funciona", pricing: "Precios", about: "Nosotros", signIn: "Iniciar sesión", trial: "Prueba gratis de 7 días", dashboard: "Mi panel", signOut: "Cerrar sesión" },
+  nav: { home: "Inicio", library: "Biblioteca de términos", how: "Cómo funciona", pricing: "Precios", about: "Nosotros", signIn: "Iniciar sesión", trial: "Empieza tu prueba gratis de 7 días", dashboard: "Mi panel", signOut: "Cerrar sesión" },
   hero: {
-    audience: "Para abogados y estudiantes de derecho",
-    highlights: ["Contexto jurídico real", "Orientación en español", "Sigue tu progreso"],
-    title1: "Inglés jurídico para la práctica real.",
-    title2: "Cinco minutos a la vez.",
-    lead:
-      "Amplía tu vocabulario jurídico con explicaciones claras, ejemplos prácticos y orientación para hispanohablantes.",
+    brandLine: "Legal English 5 by MPC LAW STUDIO",
+    title: "Inglés jurídico para el trabajo legal real.",
+    lead: "Construye vocabulario práctico de inglés jurídico en contexto, diseñado para abogados y profesionales del derecho hispanohablantes.",
     cta: "Empieza tu prueba gratis de 7 días",
-    explore: "Explora los términos",
-    benefits: ["Lecciones de 5 minutos", "Hecho para profesionales del derecho", "Sigue tu progreso", "Sin tarjeta de crédito"],
-    reassurance: "No necesitas tarjeta de crédito",
-    trust: [
-      ["Una sola fuente de verdad", "Cada término proviene de una única Master Content Database"],
-      ["Revisado por abogada", "Aprobado por una abogada en ejercicio antes de publicarse"],
-      ["Notas para hispanohablantes", "Equivalentes de derecho civil y alertas de falsos amigos en cada término"],
-      ["Pago seguro", "Suscripciones gestionadas por Mercado Pago; cancela cuando quieras"],
-    ],
+    ctaNote: "Se requiere tarjeta de crédito. COP $90.000/mes después de la prueba, salvo que canceles antes de que termine.",
     slides: [
       { caption: "Revisando un contrato antes de firmar", tag: "Contratos" },
       { caption: "Negociando condiciones con la contraparte", tag: "Derecho corporativo" },
-      { caption: "Estudiantes de derecho preparando un caso en inglés", tag: "Grupo de estudio" },
-      { caption: "Una lección de cinco minutos entre reuniones", tag: "Microaprendizaje" },
+      { caption: "Preparando un asunto en inglés", tag: "Profesionales del derecho" },
+      { caption: "Una lección de cinco minutos entre reuniones", tag: "Aprendizaje de cinco minutos" },
       { caption: "Equipo interno alineado en un asunto laboral", tag: "Derecho laboral" },
-      { caption: "Un vocabulario, dos sistemas jurídicos", tag: "Civil law · Common law" },
+      { caption: "Un vocabulario, dos sistemas jurídicos", tag: "Civil Law · Common Law" },
     ],
   },
-  categories: {
-    eyebrow: "Plan de estudio",
-    title: "Explora las categorías de lanzamiento",
-    lead: "Rutas de aprendizaje enfocadas en la práctica jurídica real.",
-    explore: "Explorar términos →",
+  problem: {
+    title: "Saber inglés no es lo mismo que usar inglés jurídico.",
+    lead: "El trabajo legal exige más que traducir palabras sueltas. Los abogados necesitan la terminología correcta, combinaciones jurídicas naturales, contexto y conciencia de las diferencias entre sistemas jurídicos.",
     items: [
-      ["Contratos", "Domina los términos y cláusulas contractuales esenciales de la práctica diaria."],
-      ["Derecho corporativo", "Aprende el lenguaje de las sociedades, el gobierno corporativo y las transacciones."],
-      ["Derecho laboral", "Gana confianza con la terminología laboral y del entorno de trabajo."],
+      ["Terminología jurídica", "Aprende qué significa un término en contexto jurídico, no solo su traducción de diccionario."],
+      ["Colocaciones jurídicas", "Descubre las palabras que los abogados combinan de forma natural en inglés jurídico profesional."],
+      ["Sistemas jurídicos distintos", "Comprende las diferencias relevantes entre Common Law y Civil Law, y entre EE. UU. y Reino Unido, cuando aplican."],
     ],
   },
-  learn: {
-    eyebrow: "Dentro de una lección",
-    title: "Así aprenderás",
-    lead: "Cada término incluye definiciones claras, contexto real y práctica inteligente.",
-    tabs: ["Definición", "Equivalente en español", "Equivalente en derecho civil", "Alerta para hispanohablantes", "Se usa con", "En contexto"],
-    pronunciation: "Pronunciación: /kənˌsɪdəˈreɪʃən/",
-    definition:
-      "Algo de valor que las partes intercambian y que induce a cada una a celebrar el contrato. Es un elemento esencial para que un contrato sea válido y exigible en el common law.",
-    exampleLabel: "EJEMPLO",
-    example: "The promisor agreed to pay $10,000 as consideration for the sale of the equipment.",
-    quickQuiz: "Quiz rápido",
-    quizCount: "1 de 3",
-    question: "¿Qué es consideration en el derecho contractual?",
-    options: ["Un deber legal impuesto por ley", "Una promesa sin intercambio alguno", "Algo de valor intercambiado entre las partes", "Una cláusula añadida después"],
-    check: "Comprobar respuesta",
-    viewFull: "Ver el quiz completo →",
+  solution: {
+    title: "Aprende inglés jurídico en contexto legal, no como vocabulario aislado.",
+    lead: "Legal English 5 se basa en un aprendizaje de vocabulario breve y práctico, con contenido contextualizado jurídicamente para profesionales del derecho hispanohablantes.",
   },
-  workflow: {
-    eyebrow: "Método",
-    title: "Cómo funciona",
-    lead: "Aprende mejor en cuatro pasos sencillos.",
-    photoCaption: "Cinco minutos entre clases o antes de una audiencia bastan para un término.",
-    photoTag: "Estudia donde estés",
-    steps: [
-      ["Descubre términos", "Explora o busca términos jurídicos clave por categoría o tema."],
-      ["Estudia en contexto", "Revisa explicaciones claras, equivalentes y ejemplos reales."],
-      ["Haz el quiz", "Refuerza lo aprendido con quizzes breves y enfocados."],
-      ["Sigue tu dominio", "Mide tu progreso y gana confianza duradera."],
-    ],
-  },
-  features: {
-    eyebrow: "Plataforma",
-    title: "Todo lo que necesitas para avanzar",
+  components: {
+    eyebrow: "Componentes del término",
+    title: "Qué puede incluir cada término",
     items: [
-      ["Búsqueda y filtros inteligentes", "Encuentra términos rápidamente por palabra clave, categoría o área de práctica."],
-      ["Aprende donde quieras", "Experiencia adaptada a escritorio, tableta y móvil."],
-      ["Progreso personalizado", ""],
-      ["Suscripción con acceso total", "Acceso ilimitado a todos los términos, quizzes y contenido nuevo."],
+      ["Definición", "Definición jurídica en inglés claro."],
+      ["Pronunciación", "Pronunciación en audio."],
+      ["Use It With", "Colocaciones y combinaciones jurídicas auténticas."],
+      ["In Context", "Uso jurídico en contexto."],
+      ["Quick Quiz", "Una comprobación breve de conocimientos."],
+      ["Spanish-Speaker Alert", "Orientación específica para hispanohablantes cuando aplica."],
+      ["Civil Law Equivalent", "Orientación de derecho comparado cuando es editorialmente aplicable."],
+      ["Distinciones EE. UU. / Reino Unido", "Diferencias de jurisdicción cuando son relevantes."],
     ],
-    statusPrefix: "Los términos se marcan como",
-    statusNew: "Nuevo",
-    statusLearning: "Aprendiendo",
-    statusOr: "o",
-    statusMastered: "Dominado",
   },
-  life: {
-    eyebrow: "Hecho para la práctica real",
-    title: "El vocabulario que aparece en expedientes reales, no en manuales",
-    lead: "Cada término viene de documentos que los abogados redactan, negocian y litigan: contratos de compraventa de acciones, actas de junta, contratos laborales. Aprendes la palabra como la vas a usar.",
-    photos: ["Revisando un checklist de cierre", "Abogada corporativa antes de una junta", "Jurisprudencia en la biblioteca del despacho"],
+  example: {
+    eyebrow: "Ejemplo del producto",
+    title: "Mira cómo funciona un término jurídico en contexto.",
+    lead: "Un ejemplo completo, tal como lo ve el estudiante, tomado de la Master Content Database aprobada.",
+    source: "Contenido aprobado · Master Content Database",
   },
-  scenarios: {
-    eyebrow: "Dónde lo vas a usar",
-    title: "Tres situaciones que todo abogado hispanohablante enfrenta en inglés",
-    lead: "El currículo se organiza en las tres categorías canónicas de la Master Content Database, y cada una corresponde a un momento de la práctica real.",
-    termsLabel: "Términos que encontrarás",
-    explore: "Abrir esta categoría →",
+  launch: {
+    eyebrow: "Contenido de lanzamiento",
+    title: "Empieza con inglés jurídico enfocado en tres áreas de práctica esenciales.",
+    termsLabel: "10 términos",
+    explore: "Explora los términos →",
+    note: "Alcance de lanzamiento: 30 términos — 10 de Contratos, 10 de Derecho corporativo y 10 de Derecho laboral.",
+    items: ["Contratos", "Derecho corporativo", "Derecho laboral"],
+  },
+  builtFor: {
+    eyebrow: "Hecho para profesionales del derecho",
+    title: "Hecho para profesionales del derecho, no para estudiantes de inglés general.",
+    photoTag: "Práctica jurídica",
+    photoCaption: "Terminología, uso y orientación de derecho comparado para el trabajo legal profesional.",
     items: [
-      ["Negociar un contrato transfronterizo", "La contraparte de tu cliente redacta en inglés. Necesitas leer cada cláusula, identificar qué es vinculante y responder en el momento."],
-      ["Informar a una junta con inversionistas extranjeros", "Actas, resoluciones y emisiones de acciones se discuten en inglés. El vocabulario corporativo te permite seguir y liderar la conversación."],
-      ["Contratar para la oficina colombiana de una multinacional", "Contratos laborales, horas extra y políticas antidiscriminación llegan de la casa matriz en inglés. Traduces el derecho, no solo las palabras."],
-    ],
-  },
-  proof: {
-    eyebrow: "Las personas detrás de los términos",
-    title: "Experiencia jurídica. Explicaciones claras.",
-    quoteEmphasis: "La respondemos una vez, la revisamos y solo entonces la publicamos.",
-    quotes: [
-      [
-        "Cada término de Legal English 5 nació de una pregunta real de un cliente o colega hispanohablante: ¿qué significa realmente esta cláusula y cuál es el concepto más cercano en nuestro sistema de derecho civil? La respondemos una vez, la revisamos y solo entonces la publicamos. Nada aquí está parafraseado por software.",
-        "MPC Law Studio",
-        "Equipo editorial · Colombia",
-      ],
-    ],
-    stats: [
-      ["30+", "Términos publicados"],
-      ["3", "Categorías jurídicas"],
-      ["7 días", "de prueba gratis"],
-      ["Para abogados", "y estudiantes de derecho"],
+      ["Contexto jurídico", "La terminología se presenta pensando en su uso jurídico profesional."],
+      ["Perspectiva del hispanohablante", "La orientación aborda los problemas recurrentes al pasar del lenguaje jurídico en español al inglés."],
+      ["Experiencia de aprendizaje breve", "El producto sigue una filosofía de aprendizaje de cinco minutos, diseñada para respetar el tiempo limitado de un profesional."],
     ],
   },
   pricing: {
-    eyebrow: "Planes",
-    title: "Precios simples y transparentes",
-    lead: "Acceso completo a todos los términos, quizzes y funciones.",
-    perYear: "/año",
-    perMonth: "/mes",
-    bestValue: "Mejor valor",
-    mostPopular: "Más popular",
-    secure: "Pago seguro. Cancela cuando quieras. Sin cargos ocultos.",
-    plans: [
-      { name: "Prueba gratis de 7 días", body: "Acceso completo. Sin tarjeta.", period: "por 7 días", features: ["Acceso a todas las lecciones", "Quizzes de práctica", "Seguimiento del progreso", "Cancela cuando quieras"], cta: "Empezar prueba gratis" },
-      { name: "Plan mensual", body: "Cancela cuando quieras.", period: "/mes", features: ["Todo lo de la prueba gratis", "Acceso a toda la biblioteca", "Progreso personalizado", "Soporte prioritario"], cta: "Elegir plan mensual" },
-      { name: "Plan anual", body: "Mejor valor. Ahorra más.", period: "/año", features: ["Todo lo del plan mensual", "Ahorra más del 30 %", "Acceso anticipado a contenido nuevo", "Cancela cuando quieras"], cta: "Elegir plan anual" },
+    eyebrow: "Precios y prueba gratis",
+    title: "Elige el plan que se ajusta a tu rutina de aprendizaje.",
+    perMonth: "/ mes",
+    perYear: "/ año",
+    monthly: {
+      name: "Mensual",
+      trial: "Prueba gratis de 7 días",
+      terms: "Se requiere tarjeta de crédito al iniciar la prueba. Salvo que canceles antes de que termine, la suscripción continúa automáticamente en el plan mensual de pago.",
+      cta: "Empieza tu prueba gratis de 7 días",
+      ctaNote: "Se requiere tarjeta de crédito. Cancela antes de que termine la prueba para evitar el cobro mensual de COP $90.000.",
+    },
+    annual: {
+      name: "Anual",
+      discount: "50 % de descuento",
+      terms: "COP $540.000/año equivale a un 50 % de descuento frente a doce pagos mensuales (COP $1.080.000/año).",
+      note: "Disponible desde tu cuenta una vez activa la prueba.",
+    },
+    rule: "Precios en pesos colombianos (COP).",
+    secure: "Pago seguro a través de Mercado Pago. Cancela cuando quieras desde tu cuenta.",
+  },
+  trust: {
+    eyebrow: "Confianza",
+    title: "Creado por MPC LAW STUDIO — Legal English Training",
+    body: "MPC LAW STUDIO aporta una perspectiva especializada en formación de inglés jurídico a un producto diseñado para abogados y profesionales del derecho de jurisdicciones de Civil Law hispanohablantes.",
+  },
+  faq: {
+    eyebrow: "Preguntas frecuentes",
+    title: "Preguntas frecuentes",
+    items: [
+      ["¿Para quién es Legal English 5?", "Para abogados y profesionales del derecho hispanohablantes que necesitan inglés jurídico práctico para el trabajo legal profesional."],
+      ["¿Es un curso de inglés general?", "No. Legal English 5 es un producto especializado de aprendizaje de inglés jurídico, centrado en vocabulario contextualizado jurídicamente y en su uso profesional."],
+      ["¿Qué incluye el lanzamiento?", "El MVP se lanza con exactamente 30 términos: 10 de Contratos, 10 de Derecho corporativo y 10 de Derecho laboral."],
+      ["¿Incluye pronunciación?", "Sí. La pronunciación en audio forma parte de la propuesta aprobada del producto."],
+      ["¿Explica las diferencias entre sistemas jurídicos?", "Cuando es editorialmente aplicable, el producto puede incluir un equivalente de derecho civil y distinciones relevantes entre EE. UU. y Reino Unido."],
+      ["¿Cómo funciona la prueba gratis?", "La prueba gratis dura 7 días y requiere una tarjeta de crédito válida al inicio. Salvo que canceles antes de que termine, la suscripción continúa automáticamente en el plan mensual de pago de COP $90.000/mes."],
+      ["¿Cuánto cuesta el plan anual?", "El precio anual aprobado es COP $540.000/año, un 50 % de descuento frente a doce pagos mensuales."],
     ],
-    include: "Todos los planes incluyen:",
-    includeItems: ["Acceso completo", "Todas las lecciones", "Cancela cuando quieras", "Pago seguro"],
-    guaranteeTitle: "Garantía de devolución de 30 días",
-    guaranteeBody: "¿No te convence? Reembolso completo dentro de los 30 días posteriores a la compra.",
   },
   cta: {
-    title: "¿Listo para dominar el inglés jurídico?",
-    lead: "Creado con una abogada en ejercicio para profesionales hispanohablantes. Siete días gratis, sin tarjeta, cancela cuando quieras.",
+    title: "Construye tu inglés jurídico cinco minutos a la vez.",
     button: "Empieza tu prueba gratis de 7 días",
+    note: "Se requiere tarjeta de crédito. COP $90.000/mes después de la prueba, salvo que canceles antes de que termine.",
   },
   footer: {
-    blurb: "La plataforma de microaprendizaje para abogados y estudiantes de derecho hispanohablantes. Aprende inglés jurídico en sesiones de 5 minutos que se ajustan a tu agenda.",
+    blurb: "Legal English 5 by MPC LAW STUDIO. Inglés jurídico especializado y práctico para profesionales del derecho hispanohablantes, cinco minutos a la vez.",
     product: "Producto",
     support: "Soporte",
     legal: "Legal",
@@ -415,9 +347,9 @@ const es: LandingCopy = {
       cookies: "Política de cookies",
     },
     reply: "Normalmente respondemos en un día hábil.",
-    rights: "© 2026 Legal English 5. Todos los derechos reservados.",
-    trust: "Pagos con Mercado Pago · Datos alojados en Supabase · Contenido de la MCD v1.3.81",
-    madeIn: "MPC Law Studio · Colombia",
+    rights: "© 2026 Legal English 5 by MPC LAW STUDIO. Todos los derechos reservados.",
+    trust: "Pagos con Mercado Pago · Datos alojados en Supabase · Contenido de la Master Content Database",
+    madeIn: "MPC LAW STUDIO · Colombia",
     cookieText: "Solo usamos cookies esenciales para mantener tu sesión y recordar tu idioma. Sin rastreadores publicitarios.",
     cookieAccept: "Entendido",
     cookieMore: "Aviso de privacidad",
