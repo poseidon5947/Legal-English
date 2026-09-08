@@ -66,6 +66,7 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
   return (
     <div
       className="hero-flow hero-depth"
+      data-motion={paused || hidden ? "paused" : "running"}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setFocused(true)}
@@ -87,7 +88,7 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
           return (
             <div
               key={name}
-              className={`hero-depth-card ${layer}${outgoing === i ? " departing" : ""}`}
+              className={`hero-depth-card ${layer} hero-camera-${(i % 3) + 1}${outgoing === i ? " departing" : ""}`}
               aria-hidden={i !== index}
               role="group"
               aria-roledescription={spanish ? "diapositiva" : "slide"}

@@ -25612,6 +25612,42 @@ html[data-input="pointer"] .skip-link:focus-visible {
   height: 100%;
   object-fit: cover;
   filter: none;
+  transform: scale(1.015) translate3d(0, 0, 0);
+  will-change: transform;
+  animation-duration: 11s;
+  animation-timing-function: cubic-bezier(.42, 0, .28, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+}
+.hero-depth-card.hero-camera-1 img {
+  transform-origin: 36% 44%;
+  animation-name: hero-camera-drift-one;
+}
+.hero-depth-card.hero-camera-2 img {
+  transform-origin: 64% 42%;
+  animation-name: hero-camera-drift-two;
+  animation-duration: 12.5s;
+  animation-delay: -3.5s;
+}
+.hero-depth-card.hero-camera-3 img {
+  transform-origin: 50% 62%;
+  animation-name: hero-camera-drift-three;
+  animation-duration: 13.5s;
+  animation-delay: -7s;
+}
+.hero-depth[data-motion="paused"] .hero-depth-card img { animation-play-state: paused; }
+@keyframes hero-camera-drift-one {
+  0% { transform: scale(1.015) translate3d(-.35%, .2%, 0); }
+  100% { transform: scale(1.095) translate3d(1.15%, -.65%, 0); }
+}
+@keyframes hero-camera-drift-two {
+  0% { transform: scale(1.025) translate3d(.8%, -.35%, 0); }
+  100% { transform: scale(1.105) translate3d(-1.05%, .55%, 0); }
+}
+@keyframes hero-camera-drift-three {
+  0% { transform: scale(1.02) translate3d(0, .75%, 0); }
+  100% { transform: scale(1.1) translate3d(.45%, -.85%, 0); }
 }
 .hero-depth-card.front { z-index: 3; opacity: 1; transform: translate3d(0, 0, 0) rotateY(-3deg) rotateX(1deg); }
 .hero-depth-card.middle { z-index: 2; opacity: .8; transform: translate3d(24px, -23px, -85px) rotateY(-5deg) rotateZ(2deg); }
@@ -25660,6 +25696,7 @@ html[data-input="pointer"] .skip-link:focus-visible {
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-depth-card, .hero-depth-card.departing, .hero-depth .hero-flow-caption, .hero-depth-dots button span { animation: none; transition: none; }
+  .home-ref-product .hero-depth-card img { animation: none; transform: none; }
 }
 
 /* The learning journey: fine orbital rings and a signal following steps 01–04. */
