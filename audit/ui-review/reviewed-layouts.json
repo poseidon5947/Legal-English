@@ -1,0 +1,5380 @@
+[
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/",
+    "width": 1440,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.hero-title-main",
+        "text": "Legal English for real legal work.",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90,000",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540,000",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/",
+    "width": 1024,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/",
+    "width": 768,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.hero-title-main",
+        "text": "Legal English for real legal work.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/",
+    "width": 390,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "span.hero-title-main",
+        "text": "Legal English for real legal work.",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/",
+    "width": 320,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/about",
+    "width": 1440,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/about",
+    "width": 1024,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/about",
+    "width": 768,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/about",
+    "width": 390,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/about",
+    "width": 320,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 1440,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 1024,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 768,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 390,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 320,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 1440,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 1024,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 768,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 390,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540,000",
+        "delta": 6
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 320,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90,000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540,000",
+        "delta": 6
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 1440,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 1024,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 768,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 390,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 320,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/login",
+    "width": 1440,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/login",
+    "width": 1024,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/login",
+    "width": 768,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/login",
+    "width": 390,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/login",
+    "width": 320,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/signup",
+    "width": 1440,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/signup",
+    "width": 1024,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/signup",
+    "width": 768,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Master Legal English.Advance Your Career.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Advance Your Career.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/signup",
+    "width": 390,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/signup",
+    "width": 320,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 1440,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 1024,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 768,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 390,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 320,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 1440,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 1024,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 768,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 390,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 320,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/status",
+    "width": 1440,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/status",
+    "width": 1024,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/status",
+    "width": 768,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/status",
+    "width": 390,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "public",
+    "route": "/status",
+    "width": 320,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 1440,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "How It Works",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 1024,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "How It Works",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 768,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 390,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 320,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 1440,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 1024,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 768,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 390,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 320,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 1440,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 1024,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 768,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 390,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 320,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 1440,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 1024,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 768,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 390,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 320,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 1440,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 1024,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 768,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 390,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 320,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h2.",
+        "text": "Contracts",
+        "delta": 2
+      },
+      {
+        "kind": "text-box",
+        "el": "h2.",
+        "text": "Employment Law",
+        "delta": 2
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 1440,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 Day",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 1024,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 Day",
+        "delta": 5
+      },
+      {
+        "kind": "viewport",
+        "el": "strong.",
+        "text": "Mastered “incorporate / incorporation”"
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 768,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 Day",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 390,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 Day",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 320,
+    "url": "/progress",
+    "documentOverflow": true,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 Day",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 1440,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 1024,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 768,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 390,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 320,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 1440,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 1024,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 768,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 390,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 320,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/library",
+    "width": 1440,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/library",
+    "width": 1024,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/library",
+    "width": 768,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/library",
+    "width": 390,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/library",
+    "width": 320,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/review",
+    "width": 1440,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/review",
+    "width": 1024,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/review",
+    "width": 768,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/review",
+    "width": 390,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/review",
+    "width": 320,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account",
+    "width": 1440,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account",
+    "width": 1024,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account",
+    "width": 768,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account",
+    "width": 390,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account",
+    "width": 320,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 1440,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 1024,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 768,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 390,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 320,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 1440,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 1024,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 768,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 390,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 320,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 1440,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 1024,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 768,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 390,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 320,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/help",
+    "width": 1440,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/help",
+    "width": 1024,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/help",
+    "width": 768,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/help",
+    "width": 390,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/help",
+    "width": 320,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 1440,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 1024,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 768,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 390,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 320,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 1440,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 1024,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 768,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 390,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 320,
+    "url": "/terms/CORP-005",
+    "documentOverflow": true,
+    "issues": [
+      {
+        "kind": "viewport",
+        "el": "span.",
+        "text": "incorporate / incorporation"
+      },
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 1440,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 1024,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 768,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 390,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 320,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 1440,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 1024,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 768,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 390,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "en",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 320,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/",
+    "width": 1440,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.hero-title-main",
+        "text": "Inglés jurídico para el trabajo legal real.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90.000",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540.000",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/",
+    "width": 1024,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/",
+    "width": 768,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.hero-title-main",
+        "text": "Inglés jurídico para el trabajo legal real.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/",
+    "width": 390,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/",
+    "width": 320,
+    "url": "/",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/about",
+    "width": 1440,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/about",
+    "width": 1024,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/about",
+    "width": 768,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/about",
+    "width": 390,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/about",
+    "width": 320,
+    "url": "/about",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 1440,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 1024,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 768,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 390,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/how-it-works",
+    "width": 320,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "Al iniciar sesión aceptas nuestros Términos del servicio y la Política de privacidad.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 1440,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 1024,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 768,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 390,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540.000",
+        "delta": 6
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/pricing",
+    "width": 320,
+    "url": "/pricing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $90.000",
+        "delta": 6
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "COP $540.000",
+        "delta": 6
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 1440,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 1024,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 768,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 390,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/sample-terms",
+    "width": 320,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "Al iniciar sesión aceptas nuestros Términos del servicio y la Política de privacidad.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/login",
+    "width": 1440,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/login",
+    "width": 1024,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/login",
+    "width": 768,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/login",
+    "width": 390,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/login",
+    "width": 320,
+    "url": "/login",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "Al iniciar sesión aceptas nuestros Términos del servicio y la Política de privacidad.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/signup",
+    "width": 1440,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/signup",
+    "width": 1024,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/signup",
+    "width": 768,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Domina el inglés jurídico.Impulsa tu carrera.",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "Impulsa tu carrera.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/signup",
+    "width": 390,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/signup",
+    "width": 320,
+    "url": "/signup",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.auth-reference-terms",
+        "text": "Al iniciar sesión aceptas nuestros Términos del servicio y la Política de privacidad.",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 1440,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 1024,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 768,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 390,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/privacy",
+    "width": 320,
+    "url": "/privacy",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 1440,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 1024,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 768,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 390,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/terms-of-service",
+    "width": 320,
+    "url": "/terms-of-service",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/status",
+    "width": 1440,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/status",
+    "width": 1024,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/status",
+    "width": 768,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/status",
+    "width": 390,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "public",
+    "route": "/status",
+    "width": 320,
+    "url": "/status",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 1440,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Cómo funciona",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 1024,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "Cómo funciona",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 768,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 390,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/how-it-works",
+    "width": 320,
+    "url": "/how-it-works",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 1440,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 1024,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 768,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 390,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/sample-terms",
+    "width": 320,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 1440,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 1024,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 768,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 390,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/dashboard",
+    "width": 320,
+    "url": "/dashboard",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 1440,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 1024,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 768,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 390,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms",
+    "width": 320,
+    "url": "/terms",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 1440,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 1024,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 768,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 390,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/categories",
+    "width": 320,
+    "url": "/categories",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 1440,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 día",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 1024,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 día",
+        "delta": 5
+      },
+      {
+        "kind": "viewport",
+        "el": "strong.",
+        "text": "Dominaste “incorporate / incorporation”"
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 768,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 día",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 390,
+    "url": "/progress",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 día",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/progress",
+    "width": 320,
+    "url": "/progress",
+    "documentOverflow": true,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "1 día",
+        "delta": 5
+      },
+      {
+        "kind": "viewport",
+        "el": "strong.",
+        "text": "Dominaste “incorporate / incorporation”"
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 1440,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 1024,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 768,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 390,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes",
+    "width": 320,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 1440,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 1024,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 768,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 390,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/quizzes/contracts",
+    "width": 320,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/library",
+    "width": 1440,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/library",
+    "width": 1024,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/library",
+    "width": 768,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/library",
+    "width": 390,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/library",
+    "width": 320,
+    "url": "/library",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/review",
+    "width": 1440,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/review",
+    "width": 1024,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/review",
+    "width": 768,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/review",
+    "width": 390,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/review",
+    "width": 320,
+    "url": "/review",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account",
+    "width": 1440,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account",
+    "width": 1024,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account",
+    "width": 768,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account",
+    "width": 390,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account",
+    "width": 320,
+    "url": "/account",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 1440,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 1024,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 768,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 390,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/settings",
+    "width": 320,
+    "url": "/account/settings",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 1440,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 1024,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 768,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 390,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/achievements",
+    "width": 320,
+    "url": "/account/achievements",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 1440,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 1024,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 768,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 390,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/account/help",
+    "width": 320,
+    "url": "/account/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/help",
+    "width": 1440,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/help",
+    "width": 1024,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/help",
+    "width": 768,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/help",
+    "width": 390,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/help",
+    "width": 320,
+    "url": "/help",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "span.",
+        "text": "English 5",
+        "delta": 3
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 1440,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 1024,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 768,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 390,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/billing",
+    "width": 320,
+    "url": "/billing",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 1440,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 1024,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 768,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 5
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 390,
+    "url": "/terms/CORP-005",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "viewport",
+        "el": "span.",
+        "text": "incorporate / incorporation"
+      },
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005",
+    "width": 320,
+    "url": "/terms/CORP-005",
+    "documentOverflow": true,
+    "issues": [
+      {
+        "kind": "viewport",
+        "el": "span.",
+        "text": "incorporate / incorporation"
+      },
+      {
+        "kind": "text-box",
+        "el": "h1.",
+        "text": "incorporate / incorporation",
+        "delta": 4
+      },
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "100%",
+        "delta": 4
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 1440,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 1024,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 768,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 390,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "learner",
+    "route": "/terms/CORP-005/quiz",
+    "width": 320,
+    "url": "/quizzes",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "strong.",
+        "text": "3%",
+        "delta": 5
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 1440,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 1024,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 768,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 390,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [],
+    "brokenImages": [],
+    "errors": []
+  },
+  {
+    "lang": "es",
+    "mode": "admin",
+    "route": "/admin",
+    "width": 320,
+    "url": "/admin",
+    "documentOverflow": false,
+    "issues": [
+      {
+        "kind": "text-box",
+        "el": "p.muted.tiny",
+        "text": "Qué se recupera y quién lo hace: esta exportación permite restaurar contenido/usuarios/pro",
+        "delta": -1
+      }
+    ],
+    "brokenImages": [],
+    "errors": []
+  }
+]

@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   keywords: ["legal English", "inglés jurídico", "abogados", "contracts", "corporate law", "employment law", "MPC LAW STUDIO"],
   authors: [{ name: BRAND_OWNER }],
   icons: {
-    icon: "/home-assets/icons/le5-shield.png",
-    apple: "/home-assets/icons/le5-shield.png",
+    icon: "/brand/mpc-icon-512.png",
+    apple: "/brand/mpc-icon-512.png",
   },
   openGraph: {
     type: "website",

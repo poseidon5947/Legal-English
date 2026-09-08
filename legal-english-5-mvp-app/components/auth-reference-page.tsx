@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
+import { BrandMark } from "@/components/brand-mark";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
@@ -103,7 +104,6 @@ const COPY = {
 } as const;
 
 type AuthIconName =
-  | "logo-shield"
   | "feature-book"
   | "feature-chart"
   | "feature-trophy"
@@ -257,11 +257,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
         <div className="auth-reference-overlay" />
         <div className="auth-reference-hero-content">
           <Link className="auth-reference-brand light" href="/">
-            <AuthIcon name="logo-shield" />
-            <span>
-              <strong>LEGAL ENGLISH 5</strong>
-              <small>MPC LAW STUDIO</small>
-            </span>
+            <BrandMark className="light" />
           </Link>
 
           <div className="auth-reference-kicker">
@@ -308,11 +304,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
         <header className="auth-reference-top">
           {/* Phones show the form first (hero moves below), so the brand needs a home up here. */}
           <Link className="auth-reference-brand dark auth-reference-brand-mobile" href="/">
-            <AuthIcon name="logo-shield" />
-            <span>
-              <strong>LEGAL ENGLISH 5</strong>
-              <small>MPC LAW STUDIO</small>
-            </span>
+            <BrandMark />
           </Link>
           <button type="button" onClick={() => setLocale(locale === "en" ? "es" : "en")} aria-label={t("langToggle")}>
             <AuthIcon name="language-globe" />

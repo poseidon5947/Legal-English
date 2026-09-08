@@ -41,7 +41,7 @@ export function siteJsonLd() {
         name: BRAND_OWNER,
         alternateName: "MPC Law Studio",
         url: base,
-        logo: `${base}/home-assets/icons/le5-shield.png`,
+        logo: `${base}/brand/mpc-icon-512.png`,
         brand: { "@type": "Brand", name: SITE_NAME },
         areaServed: "CO",
         knowsLanguage: ["en", "es"],

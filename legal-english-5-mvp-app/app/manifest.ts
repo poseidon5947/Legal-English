@@ -12,9 +12,9 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#452b84",
     lang: "en",
     icons: [
-      { src: "/home-assets/icons/le5-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-      { src: "/home-assets/icons/le5-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-      { src: "/home-assets/icons/le5-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+      { src: "/brand/mpc-icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/brand/mpc-icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/brand/mpc-icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   };
 }

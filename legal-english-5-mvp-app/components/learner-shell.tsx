@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandMark } from "@/components/brand-mark";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
@@ -14,7 +15,6 @@ import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { stateOf, studyTerms } from "@/lib/learner-stats";
 
 type ShellIcon =
-  | "logo-shield"
   | "nav-home"
   | "nav-book"
   | "nav-categories"
@@ -219,10 +219,7 @@ export function LearnerShell({
           <span />
         </button>
         <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
-          <ShellIcon name="logo-shield" />
-          <span>
-            <strong>LEGAL ENGLISH 5</strong>
-          </span>
+          <BrandMark />
         </Link>
         <Link className="learner-mobile-avatar" href="/account" aria-label={L("navAccount")}>
           <Avatar name={session.user.name} src={session.user.avatarUrl} />
@@ -232,11 +229,7 @@ export function LearnerShell({
       <aside className={`terms-reference-sidebar${menuOpen ? " is-open" : ""}`} id="learner-drawer" ref={drawerRef} aria-modal={menuOpen || undefined} role={menuOpen ? "dialog" : undefined}>
         <div>
           <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
-            <ShellIcon name="logo-shield" />
-            <span>
-              <strong>LEGAL ENGLISH 5</strong>
-              <small>MPC LAW STUDIO</small>
-            </span>
+            <BrandMark />
           </Link>
           <nav className="terms-reference-nav" aria-label="Main navigation">
             {MAIN_NAV.map(([key, icon, href]) => (

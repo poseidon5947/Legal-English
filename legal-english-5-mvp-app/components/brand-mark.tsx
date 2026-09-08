@@ -1,13 +1,14 @@
+/** Extracted MPC artwork, with a reversed text version for dark surfaces. */
 export function BrandMark({ className = "" }: { className?: string }) {
+  const light = className.split(/\s+/).includes("light");
   return (
-    <span className={`wordmark ${className}`.trim()}>
-      <img src="/home-assets/icons/le5-shield.png" alt="" width={40} height={40} />
-      <span className="brand-text">
-        <span>Legal</span>
-        <span>
-          English <b>5</b>
-        </span>
-      </span>
+    <span className={`mpc-brand ${className}`.trim()}>
+      <img
+        src={`/brand/mpc-logo-extracted${light ? "-light" : ""}.png`}
+        alt="MPC Law Studio — Legal English Training"
+        width="1769"
+        height="489"
+      />
     </span>
   );
 }

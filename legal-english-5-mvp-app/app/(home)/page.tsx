@@ -202,7 +202,7 @@ export default function Home() {
 
       {/* 9 · Trust / brand authority */}
       <section className="brief-trust" aria-labelledby="brief-trust-title" lang={locale} data-reveal>
-        <img src="/home-assets/icons/le5-shield.png" width="60" height="72" alt="" />
+                  <img src="/brand/mpc-icon-extracted.png" width="60" height="60" alt="" />
         <div>
           <span className="eyebrow">{c.trust.eyebrow}</span>
           <h2 id="brief-trust-title">{c.trust.title}</h2>
