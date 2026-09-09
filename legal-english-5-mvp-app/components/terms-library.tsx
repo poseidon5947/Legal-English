@@ -11,7 +11,8 @@ import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
-import { categoryStats, stateOf, studyTerms } from "@/lib/learner-stats";
+import { areaRoute, categoryStats, stateOf, studyTerms } from "@/lib/learner-stats";
+import { AreaRouteCard } from "@/components/area-route";
 import { CATEGORIES } from "@/lib/types";
 import type { ProgressState, Term } from "@/lib/types";
 
@@ -371,6 +372,10 @@ export function TermsLibrary() {
             </article>
           ))}
         </section>
+
+        {category !== "All" && CATEGORIES.includes(category as (typeof CATEGORIES)[number]) && (
+          <AreaRouteCard route={areaRoute(visible, progress, category)} locale={locale} />
+        )}
 
         {visible.length === 0 ? (
           <div className="terms-empty">

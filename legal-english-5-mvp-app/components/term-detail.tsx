@@ -12,7 +12,7 @@ import { useLocale } from "@/components/locale-provider";
 import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
-import { formatDate, stateOf, studyTerms } from "@/lib/learner-stats";
+import { areaNeighbours, formatDate, stateOf, studyTerms } from "@/lib/learner-stats";
 import type { ProgressState } from "@/lib/types";
 
 type DetailIcon =
@@ -53,8 +53,10 @@ export function TermDetail({ id }: { id: string }) {
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
   const index = visible.findIndex((term) => term.id === id);
   const term = index >= 0 ? visible[index] : null;
-  const previous = index > 0 ? visible[index - 1] : null;
-  const next = index >= 0 && index < visible.length - 1 ? visible[index + 1] : null;
+  // Previous / Next stay inside the Term's area (Hito B: guided route per
+  // category by DisplayOrder); the last Term of an area has no Next Term.
+  const area = useMemo(() => areaNeighbours(visible, id), [visible, id]);
+  const { previous, next } = area;
   const row = term ? progress[term.id] : undefined;
   const state = term ? stateOf(progress, term.id) : "new";
   const isOwner = session?.user.role === "admin";
@@ -402,13 +404,23 @@ export function TermDetail({ id }: { id: string }) {
               <DetailIcon name="bookmark-outline" />
               {row?.favourite ? L("inMyLibrary") : L("addToLibrary")}
             </button>
-            {next && (
+            {next ? (
               <Link href={`/terms/${next.id}`}>
                 {L("nextTerm", { term: next.term })}
                 <DetailIcon name="arrow-right" />
               </Link>
+            ) : (
+              <Link href="/categories" className="area-end-link">
+                {L("areaEndChoose")}
+                <DetailIcon name="arrow-right" />
+              </Link>
             )}
           </div>
+          {area.last && (
+            <p className="area-end-note" role="status">
+              <strong>{L("areaEndTitle", { category: categoryLabel(locale, term.category) })}</strong> {L("areaEndBody")}
+            </p>
+          )}
         </section>
 
         <aside className="consideration-right-rail">
@@ -422,12 +434,12 @@ export function TermDetail({ id }: { id: string }) {
               <DetailIcon name="arrow-right" />
             </button>
           </div>
-          <div className="consideration-position" aria-label={L("termPosition", { i: index + 1, n: visible.length })}>
+          <div className="consideration-position" aria-label={L("termPositionArea", { i: area.position, n: area.total, category: categoryLabel(locale, term.category) })}>
             <div className="consideration-position-track">
-              <i style={{ width: `${((index + 1) / Math.max(1, visible.length)) * 100}%` }} />
+              <i style={{ width: `${(area.position / Math.max(1, area.total)) * 100}%` }} />
             </div>
             <span>
-              {L("termPosition", { i: index + 1, n: visible.length })} · <kbd>←</kbd> <kbd>→</kbd>
+              {L("termPositionArea", { i: area.position, n: area.total, category: categoryLabel(locale, term.category) })} · <kbd>←</kbd> <kbd>→</kbd>
             </span>
           </div>
 

@@ -18,6 +18,59 @@ export function studyTerms(terms: Term[], session: SessionPayload | null) {
   return [...visible].sort((a, b) => a.displayOrder - b.displayOrder || a.term.localeCompare(b.term));
 }
 
+/* ---- Guided route per area (Hito B clarification, 9 Sep 2026) ------------
+ * Each canonical category is a guided route: its Published Terms in the
+ * approved pedagogical order (DisplayOrder from the MCD delivery mapping).
+ * Next Term stays inside the area; Continue Learning resumes at the first
+ * Term of the area that is not yet Mastered, so a Term opened via Search
+ * never moves the route forward. Nothing is locked: any Published Term can
+ * be opened directly.
+ */
+
+/** Published Terms of one area in approved order (`visible` is already sorted by DisplayOrder). */
+export function areaTerms(visible: Term[], category: string) {
+  return visible.filter((term) => term.category === category);
+}
+
+export type AreaRoute = {
+  category: string;
+  /** "start": nothing studied yet · "continue": resume · "complete": every Term Mastered · "empty": no Published Terms. */
+  status: "start" | "continue" | "complete" | "empty";
+  /** The Term Start/Continue Learning opens (first non-Mastered by DisplayOrder). */
+  term: Term | null;
+  /** 1-based position of `term` inside the area. */
+  position: number;
+  total: number;
+  mastered: number;
+};
+
+export function areaRoute(visible: Term[], progress: Record<string, Progress>, category: string): AreaRoute {
+  const rows = areaTerms(visible, category);
+  const mastered = rows.filter((term) => stateOf(progress, term.id) === "mastered").length;
+  if (rows.length === 0) return { category, status: "empty", term: null, position: 0, total: 0, mastered: 0 };
+  const index = rows.findIndex((term) => stateOf(progress, term.id) !== "mastered");
+  if (index < 0) return { category, status: "complete", term: null, position: rows.length, total: rows.length, mastered };
+  const touched = rows.some((term) => progress[term.id] && (progress[term.id].state !== "new" || progress[term.id].attempts > 0));
+  return { category, status: touched ? "continue" : "start", term: rows[index], position: index + 1, total: rows.length, mastered };
+}
+
+export type AreaNeighbours = { previous: Term | null; next: Term | null; position: number; total: number; last: boolean };
+
+/** Previous / Next Term inside the same area by DisplayOrder (`next` is null on the area's last Term). */
+export function areaNeighbours(visible: Term[], termId: string): AreaNeighbours {
+  const current = visible.find((term) => term.id === termId);
+  if (!current) return { previous: null, next: null, position: 0, total: 0, last: false };
+  const rows = areaTerms(visible, current.category);
+  const index = rows.findIndex((term) => term.id === termId);
+  return {
+    previous: index > 0 ? rows[index - 1] : null,
+    next: index < rows.length - 1 ? rows[index + 1] : null,
+    position: index + 1,
+    total: rows.length,
+    last: index === rows.length - 1,
+  };
+}
+
 export type Counts = {
   total: number;
   newCount: number;

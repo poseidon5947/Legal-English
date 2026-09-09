@@ -7,7 +7,8 @@ import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
-import { categoryStats, stateOf, studyTerms } from "@/lib/learner-stats";
+import { areaRoute, categoryStats, stateOf, studyTerms } from "@/lib/learner-stats";
+import { routeLabel } from "@/components/area-route";
 import { CATEGORY_THEME, TermCard } from "@/components/terms-library";
 import { categoryPhoto, categoryPhotoAlt } from "@/lib/category-photos";
 import { Photo } from "@/components/photo";
@@ -54,7 +55,7 @@ export function CategoriesWorkspace() {
                 <small>
                   {item.mastered} {L("stateMastered").toLowerCase()} · {item.learning} {L("stateLearning").toLowerCase()} · {item.pct}%
                 </small>
-                <em>{L("browse")} →</em>
+                <em>{routeLabel(locale, areaRoute(visible, progress, item.category))} →</em>
               </div>
             </Link>
           ))}
@@ -71,9 +72,21 @@ export function CategoriesWorkspace() {
                   <h2>{categoryLabel(locale, item.category)}</h2>
                   <p>{item.total === 1 ? L("termsCountOne") : L("termsCount", { n: item.total })}</p>
                 </div>
-                <Link className="terms-category-more" href={`/terms?category=${encodeURIComponent(item.category)}`}>
-                  {L("browse")} →
-                </Link>
+                <div className="terms-category-actions">
+                  {(() => {
+                    const route = areaRoute(visible, progress, item.category);
+                    return route.term ? (
+                      <Link className="primary inline terms-category-route" href={`/terms/${route.term.id}`}>
+                        {routeLabel(locale, route)} →
+                      </Link>
+                    ) : (
+                      <span className="terms-category-route done">{routeLabel(locale, route)}</span>
+                    );
+                  })()}
+                  <Link className="terms-category-more" href={`/terms?category=${encodeURIComponent(item.category)}`}>
+                    {L("browse")} →
+                  </Link>
+                </div>
               </div>
               <div className="terms-card-grid list">
                 {rows.map((term) => (

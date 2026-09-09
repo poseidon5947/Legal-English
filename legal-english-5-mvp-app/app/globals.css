@@ -26498,3 +26498,23 @@ a.accent:hover {
  .home-reference .landing-nav .mpc-brand { width: 205px; }
  .auth-reference-brand-mobile .mpc-brand { width: 235px; }
 }
+
+/* Guided route per area (Hito B clarification): Start / Continue Learning, end of area. */
+.area-route { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, .8fr); gap: 18px 28px; align-items: center; margin: 18px 0 22px; padding: 22px 24px; border: 1px solid #e7e3f2; border-left: 4px solid #452b84; border-radius: 12px; background: #f7f7fa; }
+.area-route-copy small { display: block; color: #707173; font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.area-route-copy h2 { margin: 6px 0 6px; color: #452b84; font-family: Poppins, Arial, sans-serif; font-size: 1.15rem; font-weight: 600; line-height: 1.2; }
+.area-route-copy p { margin: 0 0 12px; color: #1a171b; font-size: .9rem; line-height: 1.6; }
+.area-route-copy .terms-progress-track { max-width: 360px; }
+.area-route-actions { display: grid; gap: 8px; justify-items: stretch; }
+.area-route-actions .primary, .area-route-actions .ghost { min-height: 46px; border-radius: 8px; font-size: .85rem; }
+.area-route-hint { margin: 0; color: #707173; font-size: .74rem; line-height: 1.5; }
+.terms-category-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-left: auto; }
+.terms-category-route { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 8px; font-size: .8rem; }
+.terms-category-route.done { color: #27732a; background: #eaf5ea; font-weight: 600; }
+.dashboard-category-route { display: block; margin-top: 6px; color: #452b84; font-size: .76rem; font-style: normal; font-weight: 600; }
+.area-end-note { margin: 12px 0 0; padding: 14px 16px; border: 1px solid #e7e3f2; border-radius: 10px; background: #f7f7fa; color: #707173; font-size: .86rem; line-height: 1.6; }
+.area-end-note strong { color: #1a171b; }
+@media (max-width: 760px) {
+  .area-route { grid-template-columns: 1fr; padding: 18px 16px; }
+  .terms-category-actions { width: 100%; margin-left: 0; }
+}

@@ -10,7 +10,8 @@ import { categoryPhoto, termPhoto } from "@/lib/category-photos";
 import { Photo } from "@/components/photo";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
-import { categoryStats, countsFor, formatWhen, recentActivity, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
+import { areaRoute, categoryStats, countsFor, formatWhen, recentActivity, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
+import { routeLabel } from "@/components/area-route";
 
 const SESSION_SIZE = 5;
 const CHECKLIST_KEY = "le5.dashboard.checklist.hidden";
@@ -217,6 +218,7 @@ export function LearnerDashboard() {
                   <i className="terms-progress-track">
                     <i style={{ width: `${item.pct}%` }} />
                   </i>
+                  <em className="dashboard-category-route">{routeLabel(locale, areaRoute(visible, progress, item.category))} →</em>
                 </span>
               </Link>
             ))}
