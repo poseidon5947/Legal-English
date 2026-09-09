@@ -10,6 +10,7 @@ import { entitlementDetail, entitlementLabel, subscriptionStatusLabel, type Mess
 import { Icon, IconName } from "@/components/ui-icons";
 import { Photo } from "@/components/photo";
 import type { Plan } from "@/lib/types";
+import { ANNUAL_HOWTO } from "@/lib/commercial";
 
 const HISTORY_KEY: Record<string, MessageKey> = {
   payment_approved: "historyPaymentApproved",
@@ -176,9 +177,15 @@ function BillingWorkspace() {
             </dl>
           )}
           {!active && (
-            <button className="ghost" onClick={() => void subscribe("monthly")} disabled={Boolean(busy)} aria-busy={busy === "monthly" || undefined}>
-              {busy === "monthly" ? t("billingRedirecting") : t("subscribeMonth")}
-            </button>
+            <>
+              <p className="muted tiny">{ANNUAL_HOWTO[locale]}</p>
+              <button className="ghost" onClick={() => void subscribe("monthly")} disabled={Boolean(busy)} aria-busy={busy === "monthly" || undefined}>
+                {busy === "monthly" ? t("billingRedirecting") : t("subscribeMonth")}
+              </button>
+              <button className="primary" onClick={() => void subscribe("annual")} disabled={Boolean(busy)} aria-busy={busy === "annual" || undefined}>
+                {busy === "annual" ? t("billingRedirecting") : t("subscribeYear")}
+              </button>
+            </>
           )}
         </section>
         <section className="billing-panel-card">

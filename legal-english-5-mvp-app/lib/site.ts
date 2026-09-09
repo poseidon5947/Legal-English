@@ -7,8 +7,11 @@ export const BRAND_LINE = `${SITE_NAME} by ${BRAND_OWNER}`;
 
 /** Browser/SEO copy from the Landing Page Brief v1.0 §7 (Marketing copy; no unverified product claims). */
 export const HOME_TITLE = "Legal English 5 | Practical Legal English for Spanish-Speaking Legal Professionals";
+export const HOME_TITLE_ES = "Legal English 5 | Inglés jurídico práctico para profesionales del derecho hispanohablantes";
 export const SITE_DESCRIPTION =
-  "Build practical Legal English vocabulary in context with pronunciation, authentic legal collocations, legal usage and guidance designed for Spanish-speaking legal professionals.";
+  "Build practical Legal English vocabulary in context with pronunciation, authentic legal collocations, legal usage and guidance. Designed for Spanish-speaking lawyers, law students, and other legal professionals.";
+export const SITE_DESCRIPTION_ES =
+  "Construye vocabulario práctico de inglés jurídico en contexto, con pronunciación, colocaciones jurídicas y orientación de uso. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.";
 
 export function siteUrl(): URL {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -60,21 +63,33 @@ export function siteJsonLd() {
 }
 
 /** The product as a Course (home page). Prices are the approved launch prices in COP (brief §3.8). */
-export function courseJsonLd(options: { monthly: number; annual: number; currency: string; termCount: number; trialDays: number }) {
+export function courseJsonLd(options: {
+  monthly: number;
+  annual: number;
+  currency: string;
+  trialDays: number;
+  locale?: "en" | "es";
+}) {
   const base = siteUrl().origin;
+  const spanish = options.locale === "es";
   return {
     "@context": "https://schema.org",
     "@type": "Course",
     "@id": `${base}/#course`,
-    name: `${BRAND_LINE} — Legal English for Spanish-speaking legal professionals`,
-    description: SITE_DESCRIPTION,
+    name: spanish ? `${SITE_NAME} — Inglés jurídico para profesionales del derecho hispanohablantes` : `${BRAND_LINE} — Legal English for Spanish-speaking legal professionals`,
+    description: spanish ? SITE_DESCRIPTION_ES : SITE_DESCRIPTION,
     url: base,
-    inLanguage: "en",
+    inLanguage: spanish ? "es" : "en",
     provider: { "@id": `${base}/${ORGANIZATION_ID}` },
     educationalLevel: "Professional",
-    audience: { "@type": "EducationalAudience", educationalRole: "professional", audienceType: "Spanish-speaking lawyers and legal professionals" },
+    audience: {
+      "@type": "EducationalAudience",
+      educationalRole: "professional",
+      audienceType: spanish
+        ? "Abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes"
+        : "Spanish-speaking lawyers, law students, and other legal professionals",
+    },
     teaches: ["Legal English vocabulary", "Contracts", "Corporate Law", "Employment Law"],
-    numberOfCredits: options.termCount,
     hasCourseInstance: {
       "@type": "CourseInstance",
       courseMode: "online",
@@ -84,13 +99,24 @@ export function courseJsonLd(options: { monthly: number; annual: number; currenc
     offers: [
       {
         "@type": "Offer",
-        name: "Monthly",
+        name: spanish ? "Mensual" : "Monthly",
         price: String(options.monthly),
         priceCurrency: options.currency,
         url: `${base}/pricing`,
-        description: `${options.trialDays}-day free trial; credit card required. Continues at ${options.currency} ${options.monthly.toLocaleString("en-US")}/month unless canceled before the trial ends.`,
+        description: spanish
+          ? "Prueba gratis durante 7 días. Se requiere una tarjeta de crédito válida al activar la prueba. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000."
+          : "7-day free trial. A valid credit card is required when you activate the trial. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan.",
       },
-      { "@type": "Offer", name: "Annual", price: String(options.annual), priceCurrency: options.currency, url: `${base}/pricing` },
+      {
+        "@type": "Offer",
+        name: spanish ? "Anual" : "Annual",
+        price: String(options.annual),
+        priceCurrency: options.currency,
+        url: `${base}/pricing`,
+        description: spanish
+          ? "COP $540.000 al año, equivalente a un descuento del 50 % frente a doce pagos mensuales."
+          : "COP $540,000 per year, a 50% discount versus twelve monthly payments.",
+      },
     ],
   };
 }
@@ -109,7 +135,7 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
 }
 
 /** Public routes worth indexing. Learner/owner pages are behind sign-in and stay out. */
-export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/help", "/login", "/signup", "/privacy", "/terms-of-service", "/status"] as const;
+export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/help", "/login", "/signup", "/privacy", "/terms-of-service", "/cookies", "/status"] as const;
 
 /**
  * Per-route metadata: own canonical URL (instead of inheriting the root "/")
@@ -119,21 +145,27 @@ export const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/help", "/login", "/si
  */
 export const OG_IMAGE = { url: "/home-assets/og/og-default.jpg", width: 1200, height: 630, alt: "Legal English 5 by MPC LAW STUDIO — Legal English for real legal work" };
 
-export function pageMetadata(options: { title: string; description: string; path: string; index?: boolean }) {
+export function pageMetadata(options: { title: string; description: string; path: string; index?: boolean; locale?: "en" | "es" }) {
   const index = options.index ?? false;
+  const locale = options.locale ?? "en";
   const full = `${options.title} · ${SITE_NAME}`;
-  // Nested metadata objects are replaced (not deep-merged) by Next, so the
-  // shared Open Graph fields are repeated here.
   return {
     title: options.title,
     description: options.description,
-    alternates: { canonical: options.path },
+    alternates: {
+      canonical: options.path,
+      languages: {
+        en: `${options.path === "/" ? "/" : options.path}?hl=en`,
+        es: `${options.path === "/" ? "/" : options.path}?hl=es`,
+        "x-default": options.path,
+      },
+    },
     robots: index ? { index: true, follow: true } : { index: false, follow: false },
     openGraph: {
       type: "website" as const,
       siteName: SITE_NAME,
-      locale: "en_US",
-      alternateLocale: ["es_CO"],
+      locale: locale === "es" ? "es_CO" : "en_US",
+      alternateLocale: locale === "es" ? ["en_US"] : ["es_CO"],
       title: full,
       description: options.description,
       url: options.path,

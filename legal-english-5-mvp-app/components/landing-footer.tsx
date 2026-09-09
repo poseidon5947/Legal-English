@@ -38,13 +38,13 @@ export function LandingFooter() {
             <span>{f.legal}</span>
             <Link href="/terms-of-service">{f.links.terms}</Link>
             <Link href="/privacy">{f.links.privacy}</Link>
-            <Link href="/privacy">{f.links.cookies}</Link>
+            <Link href="/cookies">{f.links.cookies}</Link>
           </div>
           <div className="footer-contact">
             <span>{f.contact}</span>
-            <a href="mailto:hello@legalenglish5.com">
+            <a href="mailto:support@legalenglish5.com">
               <img className="icon home-generated-icon" src="/home-assets/icons/mail.png" alt="" aria-hidden="true" />
-              hello@legalenglish5.com
+              support@legalenglish5.com
             </a>
             <p>{f.reply}</p>
           </div>

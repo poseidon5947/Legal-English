@@ -8,7 +8,46 @@ import type { Locale } from "./i18n";
 export type LegalSection = { title: string; body: string };
 
 /** Bump whenever either policy text changes; shown as "Last updated" on both pages. */
-export const LEGAL_UPDATED_AT = "2026-09-05";
+export const LEGAL_UPDATED_AT = "2026-09-09";
+
+export const COOKIE_SECTIONS: Record<Locale, LegalSection[]> = {
+  en: [
+    {
+      title: "Essential cookies only",
+      body: "Legal English 5 uses essential cookies to keep you signed in and to remember the language you chose (English or Spanish). We do not use advertising, analytics or social-media trackers.",
+    },
+    {
+      title: "What we store",
+      body: "A session cookie issued by the authentication provider (Supabase) so you stay signed in, and a first-party preference cookie (le5_locale) that stores EN or ES. Both stay on this site; they are not sold.",
+    },
+    {
+      title: "How long they last",
+      body: "The language cookie lasts up to one year or until you change language or clear cookies. The session cookie lasts for the signed-in session and is removed when you sign out.",
+    },
+    {
+      title: "Your choice",
+      body: "You can block cookies in your browser. If you do, sign-in and the language preference may not work. For personal data we process beyond cookies, see the Privacy Policy. Contact support@legalenglish5.com.",
+    },
+  ],
+  es: [
+    {
+      title: "Solo cookies esenciales",
+      body: "Legal English 5 usa cookies esenciales para mantenerte conectado y recordar el idioma que elegiste (inglés o español). No usamos rastreadores de publicidad, analítica ni redes sociales.",
+    },
+    {
+      title: "Qué guardamos",
+      body: "Una cookie de sesión del proveedor de autenticación (Supabase) para que sigas conectado, y una cookie propia (le5_locale) que guarda EN o ES. Ambas permanecen en este sitio; no se venden.",
+    },
+    {
+      title: "Cuánto duran",
+      body: "La cookie de idioma dura hasta un año o hasta que cambies el idioma o borres las cookies. La cookie de sesión dura mientras estés conectado y se elimina al cerrar sesión.",
+    },
+    {
+      title: "Tu elección",
+      body: "Puedes bloquear las cookies en el navegador. Si lo haces, el inicio de sesión y la preferencia de idioma pueden dejar de funcionar. Para los datos personales más allá de las cookies, consulta la Política de privacidad. Contacto: support@legalenglish5.com.",
+    },
+  ],
+};
 
 export const PRIVACY_SECTIONS: Record<Locale, LegalSection[]> = {
   en: [
@@ -26,7 +65,7 @@ export const PRIVACY_SECTIONS: Record<Locale, LegalSection[]> = {
     },
     {
       title: "Where it lives",
-      body: "Your data is stored in a managed Postgres database (Supabase), access-controlled so that only your own account can read or write your own progress — enforced by the database itself, not just by the app's interface.",
+      body: "We do not sell your personal data. We only share it with the providers needed to operate the service and process payments: Supabase (database, authentication and file storage) and Mercado Pago (payments). Your data is stored in a managed Postgres database (Supabase), access-controlled so that only your own account can read or write your own progress — enforced by the database itself, not just by the app's interface.",
     },
     {
       title: "Your rights",
@@ -52,7 +91,7 @@ export const PRIVACY_SECTIONS: Record<Locale, LegalSection[]> = {
     },
     {
       title: "Dónde vive",
-      body: "Tus datos se guardan en una base de datos Postgres administrada (Supabase), con control de acceso para que solo tu propia cuenta pueda leer o escribir tu propio progreso — aplicado por la base de datos misma, no solo por la interfaz de la aplicación.",
+      body: "No vendemos tus datos personales. Solo los compartimos con los proveedores necesarios para operar el servicio y procesar pagos: Supabase (base de datos, autenticación y archivos) y Mercado Pago (pagos). Tus datos se guardan en una base de datos Postgres administrada (Supabase), con control de acceso para que solo tu propia cuenta pueda leer o escribir tu propio progreso — aplicado por la base de datos misma, no solo por la interfaz de la aplicación.",
     },
     {
       title: "Tus derechos",
@@ -73,11 +112,11 @@ export const TERMS_SECTIONS: Record<Locale, LegalSection[]> = {
     },
     {
       title: "Your account",
-      body: "One account per person, with accurate registration details. You're responsible for your password and for activity under your account. A seven-day trial starts automatically at signup; it does not restart on refresh or re-login.",
+      body: "One account per person, with accurate registration details. You're responsible for your password and for activity under your account. 7-day free trial: a valid credit card is required when you activate the trial from Pricing or Sign up. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan. The trial dates do not restart on refresh or re-login.",
     },
     {
       title: "Subscription and billing",
-      body: "After the trial, continued access to protected content requires an active monthly or annual subscription through Mercado Pago. Cancelling keeps your access open until the end of the period you already paid for, then it stops. A failed charge does not immediately cut off access already granted — Mercado Pago's own retry policy applies first.",
+      body: "After the trial, continued access to protected content requires an active monthly (COP $90,000) or annual (COP $540,000) subscription through Mercado Pago. After you activate the trial, select annual billing from your account before the trial ends to avoid the monthly charge. Cancelling keeps your access open until the end of the period you already paid for, then it stops. A failed charge does not immediately cut off access already granted — Mercado Pago's own retry policy applies first.",
     },
     {
       title: "Content ownership",
@@ -107,11 +146,11 @@ export const TERMS_SECTIONS: Record<Locale, LegalSection[]> = {
     },
     {
       title: "Tu cuenta",
-      body: "Una cuenta por persona, con datos de registro correctos. Eres responsable de tu contraseña y de la actividad bajo tu cuenta. Una prueba de siete días empieza automáticamente al registrarte; no se reinicia al recargar la página ni al volver a entrar.",
+      body: "Una cuenta por persona, con datos de registro correctos. Eres responsable de tu contraseña y de la actividad bajo tu cuenta. Prueba gratis durante 7 días: se requiere una tarjeta de crédito válida al activar la prueba desde Precios o Registro. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000. Las fechas de la prueba no se reinician al recargar ni al volver a entrar.",
     },
     {
       title: "Suscripción y cobro",
-      body: "Después de la prueba, el acceso continuo al contenido protegido requiere una suscripción mensual o anual activa con Mercado Pago. Cancelar mantiene tu acceso abierto hasta el fin del periodo que ya pagaste; después se detiene. Un cobro fallido no corta de inmediato un acceso ya otorgado — primero aplica la política de reintentos propia de Mercado Pago.",
+      body: "Después de la prueba, el acceso continuo al contenido protegido requiere una suscripción mensual (COP $90.000) o anual (COP $540.000) activa con Mercado Pago. Después de activar la prueba, selecciona el plan anual desde tu cuenta antes de que finalice para evitar el cobro mensual. Cancelar mantiene tu acceso abierto hasta el fin del periodo que ya pagaste; después se detiene. Un cobro fallido no corta de inmediato un acceso ya otorgado — primero aplica la política de reintentos propia de Mercado Pago.",
     },
     {
       title: "Propiedad del contenido",

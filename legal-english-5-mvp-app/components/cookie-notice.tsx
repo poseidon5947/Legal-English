@@ -22,7 +22,7 @@ export function CookieNotice() {
     <div className="cookie-notice" role="region" aria-label={f.cookieMore}>
       <p>{f.cookieText}</p>
       <div>
-        <Link href="/privacy">{f.cookieMore}</Link>
+        <Link href="/cookies">{f.cookieMore}</Link>
         <button
           type="button"
           className="primary"

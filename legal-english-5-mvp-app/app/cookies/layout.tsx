@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About",
-  description: "Legal English 5 by Pilar Cruz — MPC LAW STUDIO. Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
-  path: "/about",
+  title: "Cookie Policy",
+  description: "Essential cookies Legal English 5 uses to keep you signed in and remember your language. No advertising trackers.",
+  path: "/cookies",
   index: true,
 });
 

@@ -94,7 +94,7 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
               aria-roledescription={spanish ? "diapositiva" : "slide"}
               aria-label={`${i + 1} / ${count}`}
             >
-              <Photo src={`/home-assets/hero/${name}.jpg`} size="wide" sizes="(max-width: 960px) 90vw, 43vw" priority={i === 0} loading={position <= 2 ? "eager" : "lazy"} />
+              <Photo src={`/home-assets/hero/${name}.jpg`} size="wide" sizes="(max-width: 960px) 90vw, 43vw" priority={i === 0} loading={i === 0 ? "eager" : "lazy"} />
               <div className="hero-flow-shade" />
               <div className="hero-flow-caption">
                 <span>{slides[i].tag}</span>

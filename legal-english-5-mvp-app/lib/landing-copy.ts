@@ -6,7 +6,8 @@ import type { Locale } from "@/lib/i18n";
  * The home page follows "Legal English 5 — Landing Page Implementation Brief
  * for Carlos v1.0 (7 Sep 2026)": section order and English wording are the
  * brief's, verbatim. Spanish is a faithful translation for the ES toggle.
- * Marketing owns this copy; product claims must stay within the current MVP.
+ * Marketing owns this copy; product claims must stay within the approved
+ * commercial model (change request v1.1, 9 Sep 2026).
  */
 
 /** Approved launch pricing (brief §3.8 / §5). Annual = 50% off twelve monthly payments. */
@@ -44,7 +45,7 @@ export type LandingCopy = {
     perMonth: string;
     perYear: string;
     monthly: { name: string; trial: string; terms: string; cta: string; ctaNote: string };
-    annual: { name: string; discount: string; terms: string; note: string };
+    annual: { name: string; discount: string; terms: string; note: string; cta: string };
     rule: string;
     secure: string;
   };
@@ -71,11 +72,11 @@ export type LandingCopy = {
 const en: LandingCopy = {
   nav: { home: "Home", library: "Terms Library", how: "How It Works", pricing: "Pricing", about: "About", signIn: "Sign In", trial: "Start your 7-day free trial", dashboard: "My dashboard", signOut: "Sign out" },
   hero: {
-    brandLine: "Legal English 5 by MPC LAW STUDIO",
+    brandLine: "Legal English 5",
     title: "Legal English for real legal work.",
-    lead: "Build practical Legal English vocabulary in context — designed for Spanish-speaking lawyers and legal professionals.",
+    lead: "Build practical Legal English vocabulary in context. Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
     cta: "Start your 7-day free trial",
-    ctaNote: "Credit card required. COP $90,000/month after the trial unless canceled before it ends.",
+    ctaNote: "7-day free trial. A valid credit card is required when you activate the trial. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan.",
     slides: [
       { caption: "Reviewing a contract before signature", tag: "Contracts" },
       { caption: "Negotiating terms with the counterparty", tag: "Corporate Law" },
@@ -96,7 +97,7 @@ const en: LandingCopy = {
   },
   solution: {
     title: "Learn Legal English in legal context — not as isolated vocabulary.",
-    lead: "Legal English 5 is built around short, practical vocabulary learning with legally contextualized content for Spanish-speaking legal professionals.",
+    lead: "Legal English 5 is built around short, practical vocabulary learning with legally contextualized content. Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
   },
   components: {
     eyebrow: "Term components",
@@ -115,15 +116,15 @@ const en: LandingCopy = {
   example: {
     eyebrow: "Product example",
     title: "See how a legal term works in context.",
-    lead: "One complete, learner-facing example from the approved Master Content Database.",
-    source: "Approved content · Master Content Database",
+    lead: "One complete, learner-facing example from the editorially reviewed content.",
+    source: "Editorially reviewed content",
   },
   launch: {
     eyebrow: "Launch content",
     title: "Start with focused Legal English for three core practice areas.",
-    termsLabel: "10 Terms",
+    termsLabel: "Practice area",
     explore: "Explore the terms →",
-    note: "Launch scope: 30 Terms — 10 Contracts, 10 Corporate Law and 10 Employment Law.",
+    note: "Your subscription keeps access to published terms, quizzes, saved progress and review for as long as it stays active.",
     items: ["Contracts", "Corporate Law", "Employment Law"],
   },
   builtFor: {
@@ -145,44 +146,45 @@ const en: LandingCopy = {
     monthly: {
       name: "Monthly",
       trial: "7-day free trial",
-      terms: "Credit card required at trial start. Unless canceled before the trial ends, the subscription automatically continues on the monthly paid plan.",
+      terms: "7-day free trial. A valid credit card is required when you activate the trial. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan.",
       cta: "Start your 7-day free trial",
-      ctaNote: "Credit card required. Cancel before the trial ends to avoid the COP $90,000 monthly charge.",
+      ctaNote: "Starting the trial on this form requires a valid credit card. Unless you cancel before the trial ends, the subscription continues on the COP $90,000 monthly plan.",
     },
     annual: {
       name: "Annual",
       discount: "50% discount",
       terms: "COP $540,000/year is a 50% discount versus twelve monthly payments (COP $1,080,000/year).",
-      note: "Available from your account once your trial is active.",
+      note: "After you activate the trial, select annual billing from your account before the trial ends to avoid the monthly charge.",
+      cta: "Choose annual billing",
     },
     rule: "Prices in Colombian pesos (COP).",
     secure: "Secure checkout through Mercado Pago. Cancel anytime from your account.",
   },
   trust: {
     eyebrow: "Trust",
-    title: "Created by MPC LAW STUDIO — Legal English Training",
-    body: "MPC LAW STUDIO brings a specialized Legal English training perspective to a product designed for lawyers and legal professionals from Spanish-speaking Civil Law jurisdictions.",
+    title: "Created by Pilar Cruz — MPC LAW STUDIO",
+    body: "Pilar Cruz, practising lawyer and Owner of MPC LAW STUDIO — Legal English Training, is responsible for the editorial quality of Legal English 5. Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
   },
   faq: {
     eyebrow: "FAQ",
     title: "Frequently asked questions",
     items: [
-      ["Who is Legal English 5 for?", "Spanish-speaking lawyers and legal professionals who need practical Legal English for professional legal work."],
+      ["Who is Legal English 5 for?", "Designed for Spanish-speaking lawyers, law students, and other legal professionals."],
       ["Is this a general English course?", "No. Legal English 5 is a specialized Legal English learning product focused on legally contextualized vocabulary and professional usage."],
-      ["What is included at launch?", "The MVP launches with exactly 30 Terms: 10 Contracts, 10 Corporate Law and 10 Employment Law Terms."],
-      ["Does it include pronunciation?", "Yes. Pronunciation/audio is part of the approved learner-facing product proposition."],
-      ["Does it explain differences between legal systems?", "When editorially applicable, the product may include a Civil Law Equivalent and material US/UK distinctions."],
-      ["How does the free trial work?", "The free trial lasts 7 days and requires a valid credit card at trial start. Unless you cancel before the trial ends, the subscription automatically continues on the monthly paid plan at COP $90,000/month."],
-      ["How much does the annual plan cost?", "The approved annual price is COP $540,000/year, a 50% discount compared with twelve monthly payments."],
+      ["What does the subscription include?", "Access to published terms, quizzes, saved progress (New / Learning / Mastered) and review for as long as the subscription stays active. The trial starts when you activate it from Pricing or Sign up — a valid credit card is required."],
+      ["Does it include pronunciation?", "Yes. Pronunciation audio is produced with approved voice technology and subject to editorial and technical quality control."],
+      ["Does it explain differences between legal systems?", "When editorially applicable, a term may include a Civil Law Equivalent and material US/UK distinctions. Those components are conditional, not present on every term."],
+      ["How does the free trial work?", "7-day free trial. A valid credit card is required when you activate the trial. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan."],
+      ["How much does the annual plan cost?", "COP $540,000 per year, a 50% discount versus twelve monthly payments. After you activate the trial, select annual billing from your account before the trial ends to avoid the monthly charge."],
     ],
   },
   cta: {
     title: "Build your Legal English five minutes at a time.",
     button: "Start your 7-day free trial",
-    note: "Credit card required. COP $90,000/month after the trial unless canceled before it ends.",
+    note: "7-day free trial. A valid credit card is required when you activate the trial. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan.",
   },
   footer: {
-    blurb: "Legal English 5 by MPC LAW STUDIO. Specialized, practical Legal English for Spanish-speaking legal professionals — five minutes at a time.",
+    blurb: "Legal English 5 by MPC LAW STUDIO. Designed for Spanish-speaking lawyers, law students, and other legal professionals — five minutes at a time.",
     product: "Product",
     support: "Support",
     legal: "Legal",
@@ -204,22 +206,22 @@ const en: LandingCopy = {
     },
     reply: "We typically reply within one business day.",
     rights: "© 2026 Legal English 5 by MPC LAW STUDIO. All rights reserved.",
-    trust: "Payments by Mercado Pago · Data hosted on Supabase · Content from the Master Content Database",
+    trust: "Payments by Mercado Pago · Data hosted on Supabase · We do not sell your personal data",
     madeIn: "MPC LAW STUDIO · Colombia",
     cookieText: "We only use essential cookies to keep you signed in and remember your language. No advertising trackers.",
     cookieAccept: "Got it",
-    cookieMore: "Privacy notice",
+    cookieMore: "Cookie Policy",
   },
 };
 
 const es: LandingCopy = {
   nav: { home: "Inicio", library: "Biblioteca de términos", how: "Cómo funciona", pricing: "Precios", about: "Nosotros", signIn: "Iniciar sesión", trial: "Empieza tu prueba gratis de 7 días", dashboard: "Mi panel", signOut: "Cerrar sesión" },
   hero: {
-    brandLine: "Legal English 5 by MPC LAW STUDIO",
+    brandLine: "Legal English 5",
     title: "Inglés jurídico para el trabajo legal real.",
-    lead: "Construye vocabulario práctico de inglés jurídico en contexto, diseñado para abogados y profesionales del derecho hispanohablantes.",
+    lead: "Construye vocabulario práctico de inglés jurídico en contexto. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
     cta: "Empieza tu prueba gratis de 7 días",
-    ctaNote: "Se requiere tarjeta de crédito. COP $90.000/mes después de la prueba, salvo que canceles antes de que termine.",
+    ctaNote: "Prueba gratis durante 7 días. Se requiere una tarjeta de crédito válida al activar la prueba. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000.",
     slides: [
       { caption: "Revisando un contrato antes de firmar", tag: "Contratos" },
       { caption: "Negociando condiciones con la contraparte", tag: "Derecho corporativo" },
@@ -240,7 +242,7 @@ const es: LandingCopy = {
   },
   solution: {
     title: "Aprende inglés jurídico en contexto legal, no como vocabulario aislado.",
-    lead: "Legal English 5 se basa en un aprendizaje de vocabulario breve y práctico, con contenido contextualizado jurídicamente para profesionales del derecho hispanohablantes.",
+    lead: "Legal English 5 se basa en un aprendizaje de vocabulario breve y práctico, con contenido contextualizado jurídicamente. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
   },
   components: {
     eyebrow: "Componentes del término",
@@ -259,15 +261,15 @@ const es: LandingCopy = {
   example: {
     eyebrow: "Ejemplo del producto",
     title: "Mira cómo funciona un término jurídico en contexto.",
-    lead: "Un ejemplo completo, tal como lo ve el estudiante, tomado de la Master Content Database aprobada.",
-    source: "Contenido aprobado · Master Content Database",
+    lead: "Un ejemplo completo, tal como lo ve el estudiante, tomado del contenido revisado editorialmente.",
+    source: "Contenido revisado editorialmente",
   },
   launch: {
     eyebrow: "Contenido de lanzamiento",
     title: "Empieza con inglés jurídico enfocado en tres áreas de práctica esenciales.",
-    termsLabel: "10 términos",
+    termsLabel: "Área de práctica",
     explore: "Explora los términos →",
-    note: "Alcance de lanzamiento: 30 términos — 10 de Contratos, 10 de Derecho corporativo y 10 de Derecho laboral.",
+    note: "La suscripción mantiene el acceso a los términos publicados, los quizzes, el progreso guardado y el repaso mientras permanezca activa.",
     items: ["Contratos", "Derecho corporativo", "Derecho laboral"],
   },
   builtFor: {
@@ -289,44 +291,45 @@ const es: LandingCopy = {
     monthly: {
       name: "Mensual",
       trial: "Prueba gratis de 7 días",
-      terms: "Se requiere tarjeta de crédito al iniciar la prueba. Salvo que canceles antes de que termine, la suscripción continúa automáticamente en el plan mensual de pago.",
+      terms: "Prueba gratis durante 7 días. Se requiere una tarjeta de crédito válida al activar la prueba. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000.",
       cta: "Empieza tu prueba gratis de 7 días",
-      ctaNote: "Se requiere tarjeta de crédito. Cancela antes de que termine la prueba para evitar el cobro mensual de COP $90.000.",
+      ctaNote: "Activar la prueba en este formulario requiere una tarjeta de crédito válida. Si no cancelas antes de que termine, la suscripción continúa en el plan mensual de COP $90.000.",
     },
     annual: {
       name: "Anual",
       discount: "50 % de descuento",
       terms: "COP $540.000/año equivale a un 50 % de descuento frente a doce pagos mensuales (COP $1.080.000/año).",
-      note: "Disponible desde tu cuenta una vez activa la prueba.",
+      note: "Después de activar la prueba, selecciona el plan anual desde tu cuenta antes de que finalice la prueba para evitar el cobro mensual.",
+      cta: "Elegir facturación anual",
     },
     rule: "Precios en pesos colombianos (COP).",
     secure: "Pago seguro a través de Mercado Pago. Cancela cuando quieras desde tu cuenta.",
   },
   trust: {
     eyebrow: "Confianza",
-    title: "Creado por MPC LAW STUDIO — Legal English Training",
-    body: "MPC LAW STUDIO aporta una perspectiva especializada en formación de inglés jurídico a un producto diseñado para abogados y profesionales del derecho de jurisdicciones de Civil Law hispanohablantes.",
+    title: "Creado por Pilar Cruz — MPC LAW STUDIO",
+    body: "Pilar Cruz, abogada en ejercicio y propietaria de MPC LAW STUDIO — Legal English Training, es responsable de la calidad editorial de Legal English 5. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
   },
   faq: {
     eyebrow: "Preguntas frecuentes",
     title: "Preguntas frecuentes",
     items: [
-      ["¿Para quién es Legal English 5?", "Para abogados y profesionales del derecho hispanohablantes que necesitan inglés jurídico práctico para el trabajo legal profesional."],
+      ["¿Para quién es Legal English 5?", "Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes."],
       ["¿Es un curso de inglés general?", "No. Legal English 5 es un producto especializado de aprendizaje de inglés jurídico, centrado en vocabulario contextualizado jurídicamente y en su uso profesional."],
-      ["¿Qué incluye el lanzamiento?", "El MVP se lanza con exactamente 30 términos: 10 de Contratos, 10 de Derecho corporativo y 10 de Derecho laboral."],
-      ["¿Incluye pronunciación?", "Sí. La pronunciación en audio forma parte de la propuesta aprobada del producto."],
-      ["¿Explica las diferencias entre sistemas jurídicos?", "Cuando es editorialmente aplicable, el producto puede incluir un equivalente de derecho civil y distinciones relevantes entre EE. UU. y Reino Unido."],
-      ["¿Cómo funciona la prueba gratis?", "La prueba gratis dura 7 días y requiere una tarjeta de crédito válida al inicio. Salvo que canceles antes de que termine, la suscripción continúa automáticamente en el plan mensual de pago de COP $90.000/mes."],
-      ["¿Cuánto cuesta el plan anual?", "El precio anual aprobado es COP $540.000/año, un 50 % de descuento frente a doce pagos mensuales."],
+      ["¿Qué incluye la suscripción?", "Acceso a los términos publicados, quizzes, progreso guardado (Nuevo / En curso / Dominado) y repaso mientras la suscripción esté activa. La prueba empieza cuando la activas desde Precios o Registro: se requiere una tarjeta de crédito válida."],
+      ["¿Incluye pronunciación?", "Sí. El audio de pronunciación se produce con tecnología de voz aprobada y control de calidad editorial y técnico."],
+      ["¿Explica las diferencias entre sistemas jurídicos?", "Cuando es editorialmente aplicable, un término puede incluir un equivalente de derecho civil y distinciones relevantes entre EE. UU. y Reino Unido. Esos componentes son condicionales: no aparecen en todos los términos."],
+      ["¿Cómo funciona la prueba gratis?", "Prueba gratis durante 7 días. Se requiere una tarjeta de crédito válida al activar la prueba. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000."],
+      ["¿Cuánto cuesta el plan anual?", "COP $540.000 al año, un 50 % de descuento frente a doce pagos mensuales. Después de activar la prueba, selecciona el plan anual desde tu cuenta antes de que finalice para evitar el cobro mensual."],
     ],
   },
   cta: {
     title: "Construye tu inglés jurídico cinco minutos a la vez.",
     button: "Empieza tu prueba gratis de 7 días",
-    note: "Se requiere tarjeta de crédito. COP $90.000/mes después de la prueba, salvo que canceles antes de que termine.",
+    note: "Prueba gratis durante 7 días. Se requiere una tarjeta de crédito válida al activar la prueba. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000.",
   },
   footer: {
-    blurb: "Legal English 5 by MPC LAW STUDIO. Inglés jurídico especializado y práctico para profesionales del derecho hispanohablantes, cinco minutos a la vez.",
+    blurb: "Legal English 5 by MPC LAW STUDIO. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes, cinco minutos a la vez.",
     product: "Producto",
     support: "Soporte",
     legal: "Legal",
@@ -348,11 +351,11 @@ const es: LandingCopy = {
     },
     reply: "Normalmente respondemos en un día hábil.",
     rights: "© 2026 Legal English 5 by MPC LAW STUDIO. Todos los derechos reservados.",
-    trust: "Pagos con Mercado Pago · Datos alojados en Supabase · Contenido de la Master Content Database",
+    trust: "Pagos con Mercado Pago · Datos alojados en Supabase · No vendemos tus datos personales",
     madeIn: "MPC LAW STUDIO · Colombia",
     cookieText: "Solo usamos cookies esenciales para mantener tu sesión y recordar tu idioma. Sin rastreadores publicitarios.",
     cookieAccept: "Entendido",
-    cookieMore: "Aviso de privacidad",
+    cookieMore: "Política de cookies",
   },
 };
 

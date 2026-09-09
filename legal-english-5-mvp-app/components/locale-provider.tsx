@@ -25,6 +25,13 @@ export function LocaleProvider({ children, initialLocale = "en" }: { children: R
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE);
     const hasCookie = document.cookie.split(";").some((part) => part.trim().startsWith(`${STORAGE}=`));
+    const hl = new URLSearchParams(window.location.search).get("hl");
+    if (hl === "en" || hl === "es") {
+      setLocaleState(hl);
+      window.localStorage.setItem(STORAGE, hl);
+      writeCookie(hl);
+      return;
+    }
     if (!hasCookie && (saved === "en" || saved === "es")) {
       setLocaleState(saved);
       writeCookie(saved);

@@ -9,42 +9,50 @@ import { RouteProgress } from "@/components/route-progress";
 import { SkipLink } from "@/components/skip-link";
 import { ToastProvider } from "@/components/toaster";
 import { JsonLd } from "@/components/json-ld";
-import { BRAND_OWNER, HOME_TITLE, OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, siteJsonLd, siteUrl } from "@/lib/site";
+import { BRAND_OWNER, HOME_TITLE, HOME_TITLE_ES, OG_IMAGE, SITE_DESCRIPTION, SITE_DESCRIPTION_ES, SITE_NAME, siteJsonLd, siteUrl } from "@/lib/site";
 import { serverLocale } from "@/lib/locale-server";
 
-export const metadata: Metadata = {
-  metadataBase: siteUrl(),
-  title: {
-    default: HOME_TITLE,
-    template: `%s · ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  applicationName: SITE_NAME,
-  keywords: ["legal English", "inglés jurídico", "abogados", "contracts", "corporate law", "employment law", "MPC LAW STUDIO"],
-  authors: [{ name: BRAND_OWNER }],
-  icons: {
-    icon: "/brand/mpc-icon-512.png",
-    apple: "/brand/mpc-icon-512.png",
-  },
-  openGraph: {
-    type: "website",
-    siteName: SITE_NAME,
-    title: HOME_TITLE,
-    description: SITE_DESCRIPTION,
-    locale: "en_US",
-    alternateLocale: ["es_CO"],
-    images: [OG_IMAGE],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: HOME_TITLE,
-    description: SITE_DESCRIPTION,
-    images: [OG_IMAGE.url],
-  },
-  robots: { index: true, follow: true },
-  manifest: "/manifest.webmanifest",
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await serverLocale();
+  const title = locale === "es" ? HOME_TITLE_ES : HOME_TITLE;
+  const description = locale === "es" ? SITE_DESCRIPTION_ES : SITE_DESCRIPTION;
+  return {
+    metadataBase: siteUrl(),
+    title: {
+      default: title,
+      template: `%s · ${SITE_NAME}`,
+    },
+    description,
+    applicationName: SITE_NAME,
+    keywords: ["legal English", "inglés jurídico", "abogados", "contracts", "corporate law", "employment law", "MPC LAW STUDIO"],
+    authors: [{ name: BRAND_OWNER }],
+    icons: {
+      icon: "/brand/mpc-icon-512.png",
+      apple: "/brand/mpc-icon-512.png",
+    },
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title,
+      description,
+      locale: locale === "es" ? "es_CO" : "en_US",
+      alternateLocale: locale === "es" ? ["en_US"] : ["es_CO"],
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE.url],
+    },
+    robots: { index: true, follow: true },
+    manifest: "/manifest.webmanifest",
+    alternates: {
+      canonical: "/",
+      languages: { en: "/?hl=en", es: "/?hl=es", "x-default": "/" },
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#452b84",

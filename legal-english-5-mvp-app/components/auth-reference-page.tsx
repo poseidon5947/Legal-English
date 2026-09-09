@@ -9,24 +9,25 @@ import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
 import { DEMO_ACCOUNTS } from "@/lib/types";
 import { trackAction } from "@/lib/track";
+import { SUPPORT_EMAIL, TRIAL_DISCLOSURE } from "@/lib/commercial";
 
 const COPY = {
   en: {
-    kicker: "Professional Legal English for Lawyers & Law Students",
+    kicker: "Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
     h1a: "Master Legal English.",
     h1b: "Advance Your Career.",
-    lead: "Learn essential legal terminology through short, focused lessons with clear explanations, real-world context, and intelligent progress tracking.",
+    lead: "Learn essential legal terminology through short, focused lessons with clear explanations and professional legal context.",
     features: [
-      ["Curated Legal Terms", "Study the most important terms across Contracts, Corporate Law, and Employment Law."],
-      ["Context That Matters", "See how terms are used in real legal documents and practical examples."],
-      ["Track & Achieve", "Monitor your progress, take quizzes, and master terms step by step."],
+      ["Legal terms in context", "Study Contracts, Corporate Law, and Employment Law with definitions and usage."],
+      ["Context that matters", "See how terms are used in professional legal English, with comparative notes when they apply."],
+      ["Track your progress", "Open a term, take the quiz, and move from New to Learning to Mastered."],
     ],
     secure: "Secure. Private. Built for legal professionals.",
     needHelp: "Need help?",
     titleSignup: "Create your account",
     titleRecover: "Recover access",
     titleLogin: "Welcome back",
-    subSignup: "Start your legal English learning journey.",
+    subSignup: "Create your account, then activate the 7-day free trial. A valid credit card is required to activate the trial.",
     subRecover: "Follow the steps below to continue.",
     subLogin: "Sign in to continue your learning journey.",
     signIn: "Sign In",
@@ -42,7 +43,7 @@ const COPY = {
     code: "Verification code",
     codePh: "Enter 6-digit code",
     forgot: "Forgot password?",
-    consent: "I agree to the Terms of Service and Privacy Policy.",
+    consent: "I agree to the Terms of Service, Privacy Policy, and Cookie Policy.",
     sendReset: "Send Reset Link",
     confirm: "Confirm Account",
     updatePassword: "Update Password",
@@ -50,28 +51,28 @@ const COPY = {
     demoOwner: "Owner",
     demoLearner: "Learner",
     secureTitle: "Your data is secure and private.",
-    secureBody: "We never share your information with third parties.",
+    secureBody: "We do not sell your personal data. We only share it with the providers needed to operate the service and process payments, as described in our Privacy Policy.",
     termsA: "By signing in, you agree to our ",
     termsB: " and ",
     tos: "Terms of Service",
     privacy: "Privacy Policy",
   },
   es: {
-    kicker: "Inglés jurídico profesional para abogados y estudiantes de Derecho",
+    kicker: "Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
     h1a: "Domina el inglés jurídico.",
     h1b: "Impulsa tu carrera.",
-    lead: "Aprende la terminología jurídica esencial con lecciones breves y enfocadas, explicaciones claras, contexto real y seguimiento inteligente de tu progreso.",
+    lead: "Aprende la terminología jurídica esencial con lecciones breves y enfocadas, explicaciones claras y contexto jurídico profesional.",
     features: [
-      ["Términos curados", "Estudia los términos más importantes de Contratos, Derecho corporativo y Derecho laboral."],
-      ["Contexto que importa", "Mira cómo se usan los términos en documentos jurídicos reales y ejemplos prácticos."],
-      ["Sigue y logra", "Controla tu progreso, haz quizzes y domina los términos paso a paso."],
+      ["Términos en contexto", "Estudia Contratos, Derecho corporativo y Derecho laboral con definiciones y uso profesional."],
+      ["Contexto que importa", "Mira cómo se usan los términos en inglés jurídico profesional, con notas comparadas cuando aplican."],
+      ["Sigue tu progreso", "Abre un término, responde el quiz y avanza de Nuevo a En curso y a Dominado."],
     ],
     secure: "Seguro. Privado. Hecho para profesionales del Derecho.",
     needHelp: "¿Necesitas ayuda?",
     titleSignup: "Crea tu cuenta",
     titleRecover: "Recuperar acceso",
     titleLogin: "Bienvenido de nuevo",
-    subSignup: "Empieza tu camino en el inglés jurídico.",
+    subSignup: "Crea tu cuenta y luego activa la prueba gratis de 7 días. Se requiere una tarjeta de crédito válida para activarla.",
     subRecover: "Sigue los pasos para continuar.",
     subLogin: "Inicia sesión para continuar aprendiendo.",
     signIn: "Iniciar sesión",
@@ -87,7 +88,7 @@ const COPY = {
     code: "Código de verificación",
     codePh: "Código de 6 dígitos",
     forgot: "¿Olvidaste tu contraseña?",
-    consent: "Acepto los Términos del servicio y la Política de privacidad.",
+    consent: "Acepto los Términos del servicio, la Política de privacidad y la Política de cookies.",
     sendReset: "Enviar enlace",
     confirm: "Confirmar cuenta",
     updatePassword: "Actualizar contraseña",
@@ -95,7 +96,7 @@ const COPY = {
     demoOwner: "Titular",
     demoLearner: "Alumno",
     secureTitle: "Tus datos están seguros y son privados.",
-    secureBody: "Nunca compartimos tu información con terceros.",
+    secureBody: "No vendemos tus datos personales. Solo los compartimos con los proveedores necesarios para operar el servicio y procesar pagos, conforme a nuestra Política de privacidad.",
     termsA: "Al iniciar sesión aceptas nuestros ",
     termsB: " y la ",
     tos: "Términos del servicio",
@@ -311,7 +312,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             {locale === "en" ? "English" : "Español"}
             <AuthIcon name="chevron-down" />
           </button>
-          <Link href="/help">{c.needHelp}</Link>
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{c.needHelp}</a>
         </header>
 
         <div className="auth-reference-card">
@@ -384,10 +385,20 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             )}
 
             {mode === "signup" && (
-              <label className="auth-reference-consent">
-                <input type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
-                <span>{c.consent}</span>
-              </label>
+              <>
+                <p className="cta-disclosure auth-trial-note">{TRIAL_DISCLOSURE[locale]}</p>
+                <label className="auth-reference-consent">
+                  <input type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
+                  <span>
+                    {c.consent}{" "}
+                    <Link href="/terms-of-service">{c.tos}</Link>
+                    {" · "}
+                    <Link href="/privacy">{c.privacy}</Link>
+                    {" · "}
+                    <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>
+                  </span>
+                </label>
+              </>
             )}
 
             {error && (
@@ -446,7 +457,9 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
           {c.termsA}
           <Link href="/terms-of-service">{c.tos}</Link>
           {c.termsB}
-          <Link href="/privacy">{c.privacy}</Link>.
+          <Link href="/privacy">{c.privacy}</Link>
+          {" · "}
+          <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>.
         </p>
       </section>
     </main>

@@ -6,7 +6,7 @@ import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
 import type { Locale } from "@/lib/i18n";
 
-const SUPPORT_EMAIL = "hello@legalenglish5.com";
+const SUPPORT_EMAIL = "support@legalenglish5.com";
 
 type Copy = {
   eyebrow: string;

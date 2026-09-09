@@ -49,6 +49,7 @@ export function PlanCards({ locale, placement }: { locale: Locale; placement: st
         <p className="brief-plan-trial brief-plan-discount">{c.annual.discount}</p>
         <p className="brief-plan-terms">{c.annual.terms}</p>
         <p className="brief-plan-note">{c.annual.note}</p>
+        <Link className="ghost" href="/signup?plan=annual" onClick={() => trackAction("cta", `${placement}-annual`)}>{c.annual.cta}</Link>
       </article>
     </div>
   );

@@ -1,5 +1,5 @@
 import { JsonLd } from "@/components/json-ld";
-import { landingCopy, LAUNCH_TERMS, PLAN_PRICES } from "@/lib/landing-copy";
+import { landingCopy, PLAN_PRICES } from "@/lib/landing-copy";
 import { serverLocale } from "@/lib/locale-server";
 import { courseJsonLd, faqJsonLd } from "@/lib/site";
 
@@ -11,7 +11,7 @@ export default async function HomeLayout({ children }: { children: React.ReactNo
   const faqs = landingCopy[locale].faq.items.map(([q, a]) => ({ q, a }));
   return (
     <>
-      <JsonLd data={courseJsonLd({ monthly: PLAN_PRICES.monthly, annual: PLAN_PRICES.annual, currency: PLAN_PRICES.currency, termCount: LAUNCH_TERMS.total, trialDays: PLAN_PRICES.trialDays })} />
+      <JsonLd data={courseJsonLd({ monthly: PLAN_PRICES.monthly, annual: PLAN_PRICES.annual, currency: PLAN_PRICES.currency, trialDays: PLAN_PRICES.trialDays, locale })} />
       <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
