@@ -4,6 +4,7 @@ import { tmpdir } from "os";
 import { join } from "path";
 import { AUDIO_MIME, extensionOf, type AudioJurisdiction } from "./audio-naming";
 import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } from "./billing-state";
+import { isOwnerEmail } from "./owners";
 import { ALPHA_SESSION_COOKIE, hashPassword, oneTimeCode, readSession, verifyPassword } from "./crypto";
 import { canLearn, canStudyTerm, termsForAccount } from "./access";
 import { normalizePreferences } from "./preferences";
@@ -191,7 +192,13 @@ export async function currentUserId() {
 }
 
 export async function getUser(id: string) {
-  return load().users.find((user) => user.id === id) ?? null;
+  const data = load();
+  const user = data.users.find((item) => item.id === id) ?? null;
+  if (user && isOwnerEmail(user.email) && user.role !== "admin") {
+    user.role = "admin";
+    save(data);
+  }
+  return user;
 }
 
 export async function authenticate(email: string, password: string) {
@@ -217,7 +224,7 @@ export async function register(name: string, email: string, password: string, pr
     id: `user-${Date.now()}`,
     name: name.trim(),
     email: email.trim().toLowerCase(),
-    role: "learner",
+    role: isOwnerEmail(email) ? "admin" : "learner",
     password,
     emailVerified: false,
     privacyAccepted: true,

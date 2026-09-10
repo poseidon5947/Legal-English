@@ -396,17 +396,17 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             {mode === "signup" && (
               <>
                 <p className="cta-disclosure auth-trial-note">{TRIAL_DISCLOSURE[locale]}</p>
-                <label className="auth-reference-consent">
-                  <input type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
+                <div className="auth-reference-consent">
+                  <input id="auth-privacy-consent" type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
                   <span>
-                    {c.consent}
+                    <label htmlFor="auth-privacy-consent">{c.consent}</label>{" "}
                     <Link href="/terms-of-service">{c.tos}</Link>
                     {", "}
                     <Link href="/privacy">{c.privacy}</Link>
                     {c.termsB}
                     <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>.
                   </span>
-                </label>
+                </div>
               </>
             )}
 

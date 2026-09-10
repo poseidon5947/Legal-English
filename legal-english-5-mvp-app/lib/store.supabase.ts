@@ -1,4 +1,5 @@
 import { applyBillingEvent, freshTrial } from "./billing-state";
+import { isOwnerEmail } from "./owners";
 import { canLearn, canStudyTerm, lockTerm } from "./access";
 import { normalizePreferences } from "./preferences";
 import { acceptDay, type StudyDelta } from "./study-day";
@@ -213,6 +214,13 @@ export async function getUser(id: string, options: { asAdmin?: boolean } = {}): 
   const supabase = options.asAdmin ? getSupabaseServiceRoleClient() : await getSupabaseServerClient();
   const { data: profile } = await supabase.from("users").select("*").eq("id", id).maybeSingle();
   if (!profile) return null;
+  // Designated Owner emails (pilarcruz640@gmail.com) stay admin even if the
+  // row was created as learner before the Owner list existed.
+  if (isOwnerEmail(String(profile.email ?? "")) && profile.role !== "admin") {
+    const admin = getSupabaseServiceRoleClient();
+    await admin.from("users").update({ role: "admin", updated_at: new Date().toISOString() }).eq("id", id);
+    profile.role = "admin";
+  }
   const { data: sub } = await supabase.from("subscriptions").select("*").eq("user_id", id).maybeSingle();
   const emailVerified = await lookupEmailVerified(id);
   const avatarPath = (profile.avatar_path as string | null) ?? null;

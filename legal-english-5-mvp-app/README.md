@@ -132,7 +132,8 @@ regardless of which mode is currently set elsewhere.
 6. Set `NEXT_PUBLIC_DATA_MODE=production`.
 7. Promote the Owner's own profile row to admin — the migration leaves this
    as a commented-out manual step on purpose (`update public.users set
-   role = 'admin' where email = '...'`), run once after her first sign-up.
+   role = 'admin' where email = 'pilarcruz640@gmail.com'`), or sign in after
+   deploy — designated Owner emails are promoted automatically.
 8. Seed content: `POST /api/admin` with the MCD Excel file (multipart) does
    preflight + commit through the existing importer, same as alpha mode.
 
