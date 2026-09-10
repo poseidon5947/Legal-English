@@ -147,6 +147,12 @@ function AuthIcon({ name, className = "" }: { name: AuthIconName; className?: st
  * Billing with the plan chosen on the Pricing page (?plan=monthly|annual) so
  * the purchase intent survives account creation, else the dashboard.
  */
+function authPath(mode: "login" | "signup") {
+  const params = new URLSearchParams(window.location.search);
+  const query = params.toString();
+  return `${mode === "signup" ? "/signup" : "/login"}${query ? `?${query}` : ""}`;
+}
+
 function afterLogin() {
   const params = new URLSearchParams(window.location.search);
   const next = params.get("next") ?? "";
@@ -342,10 +348,24 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
           </ol>}
 
           <div className="auth-reference-tabs">
-            <button className={mode === "login" ? "active" : ""} type="button" onClick={() => setMode("login")}>
+            <button
+              className={mode === "login" ? "active" : ""}
+              type="button"
+              onClick={() => {
+                setMode("login");
+                router.replace(authPath("login"));
+              }}
+            >
               {c.signIn}
             </button>
-            <button className={mode === "signup" ? "active" : ""} type="button" onClick={() => setMode("signup")}>
+            <button
+              className={mode === "signup" ? "active" : ""}
+              type="button"
+              onClick={() => {
+                setMode("signup");
+                router.replace(authPath("signup"));
+              }}
+            >
               {c.createAccount}
             </button>
           </div>
