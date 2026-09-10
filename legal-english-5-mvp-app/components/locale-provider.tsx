@@ -18,9 +18,9 @@ function writeCookie(locale: Locale) {
 }
 
 export function LocaleProvider({ children, initialLocale = "en" }: { children: React.ReactNode; initialLocale?: Locale }) {
-  // The server already picked the language (cookie, then Accept-Language), so
-  // the first paint is right. localStorage is only consulted for people who
-  // chose a language before the cookie existed; it then becomes the cookie.
+  // The server already picked the language (saved cookie, otherwise English).
+  // localStorage is only consulted for people who chose a language before the
+  // cookie existed; it then becomes the cookie. Browser Accept-Language is ignored.
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE);

@@ -102,8 +102,11 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [nextPassword, setNextPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNextPassword, setShowNextPassword] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState("");
   const [dangerMessage, setDangerMessage] = useState("");
+  const [deactivateOpen, setDeactivateOpen] = useState(false);
   // One in-flight save at a time: the submit button shows a spinner and a
   // second click cannot send a duplicate request.
   const [saving, setSaving] = useState<"profile" | "password" | null>(null);
@@ -442,23 +445,38 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                   <p>{L("changePasswordBody")}</p>
                   {passwordOpen && (
                     <form className="account-ref-inline-form" onSubmit={savePassword}>
-                      <input
-                        type="password"
-                        autoComplete="current-password"
-                        placeholder={L("currentPassword")}
-                        value={currentPassword}
-                        required
-                        onChange={(event) => setCurrentPassword(event.target.value)}
-                      />
-                      <input
-                        type="password"
-                        autoComplete="new-password"
-                        placeholder={L("newPassword")}
-                        value={nextPassword}
-                        minLength={8}
-                        required
-                        onChange={(event) => setNextPassword(event.target.value)}
-                      />
+                      <label className="account-password-field">
+                        <span>{L("currentPassword")}</span>
+                        <span className="account-password-input">
+                          <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            autoComplete="current-password"
+                            value={currentPassword}
+                            required
+                            onChange={(event) => setCurrentPassword(event.target.value)}
+                          />
+                          <button type="button" aria-label={showCurrentPassword ? L("hidePassword") : L("showPassword")} onClick={() => setShowCurrentPassword((value) => !value)}>
+                            {showCurrentPassword ? L("hidePassword") : L("showPassword")}
+                          </button>
+                        </span>
+                      </label>
+                      <label className="account-password-field">
+                        <span>{L("newPassword")}</span>
+                        <span className="account-password-input">
+                          <input
+                            type={showNextPassword ? "text" : "password"}
+                            autoComplete="new-password"
+                            value={nextPassword}
+                            minLength={8}
+                            required
+                            onChange={(event) => setNextPassword(event.target.value)}
+                          />
+                          <button type="button" aria-label={showNextPassword ? L("hidePassword") : L("showPassword")} onClick={() => setShowNextPassword((value) => !value)}>
+                            {showNextPassword ? L("hidePassword") : L("showPassword")}
+                          </button>
+                        </span>
+                        <small>{L("passwordHint")}</small>
+                      </label>
                       <button type="submit" className="primary inline" disabled={saving === "password"} aria-busy={saving === "password" || undefined}>
                         {L("saveProfile")}
                       </button>
@@ -480,18 +498,35 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                   <strong>{L("deactivate")}</strong>
                   <p>{L("deactivateBody")}</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    void deactivateAccount().then((result) => {
-                      if (!result.ok) setDangerMessage(result.message || t("couldNotContinue"));
-                    });
-                  }}
-                >
+                <button type="button" onClick={() => setDeactivateOpen(true)}>
                   {L("deactivateAction")}
                   <AccountIcon name="chevron-right" />
                 </button>
               </div>
+
+              {deactivateOpen && (
+                <div className="account-confirm" role="dialog" aria-modal="true" aria-labelledby="deactivate-title">
+                  <strong id="deactivate-title">{L("deactivateConfirmTitle")}</strong>
+                  <p>{L("deactivateConfirmBody")}</p>
+                  <div>
+                    <button type="button" onClick={() => setDeactivateOpen(false)}>
+                      {L("cancel")}
+                    </button>
+                    <button
+                      type="button"
+                      className="danger"
+                      onClick={() => {
+                        setDeactivateOpen(false);
+                        void deactivateAccount().then((result) => {
+                          if (!result.ok) setDangerMessage(result.message || t("couldNotContinue"));
+                        });
+                      }}
+                    >
+                      {L("deactivateAction")}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="account-ref-setting-row">
                 <span className="red">

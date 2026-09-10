@@ -107,6 +107,8 @@ export function LearnerShell({
   const [query, setQuery] = useState("");
   const [reactivateMessage, setReactivateMessage] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const [suggestOpen, setSuggestOpen] = useState(false);
   const [suggestIndex, setSuggestIndex] = useState(-1);
@@ -120,7 +122,25 @@ export function LearnerShell({
     }
   }, [ready, session, router]);
   // Mobile drawer: close on navigation and Escape; lock scroll while open.
-  useEffect(() => setMenuOpen(false), [path]);
+  useEffect(() => {
+    setMenuOpen(false);
+    setUserMenuOpen(false);
+  }, [path]);
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    const onClick = (event: MouseEvent) => {
+      if (!userMenuRef.current?.contains(event.target as Node)) setUserMenuOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setUserMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [userMenuOpen]);
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (event: KeyboardEvent) => {
@@ -375,14 +395,50 @@ export function LearnerShell({
               <ShellIcon name="bell" />
               {notificationCount > 0 && <span>{notificationCount}</span>}
             </Link>
-            <Link className="terms-user-pill" href="/account">
-              <Avatar name={session.user.name} src={session.user.avatarUrl} />
-              <span>
-                <strong>{session.user.name}</strong>
-                <small>{isOwner ? L("owner") : L("learner")}</small>
-              </span>
-              <ShellIcon name="chevron-down" />
-            </Link>
+            <div className="terms-user-menu" ref={userMenuRef}>
+              <button
+                type="button"
+                className="terms-user-pill"
+                aria-expanded={userMenuOpen}
+                aria-haspopup="menu"
+                onClick={() => setUserMenuOpen((open) => !open)}
+              >
+                <Avatar name={session.user.name} src={session.user.avatarUrl} />
+                <span>
+                  <strong>{session.user.name}</strong>
+                  <small>{isOwner ? L("owner") : L("learner")}</small>
+                </span>
+                <ShellIcon name="chevron-down" />
+              </button>
+              {userMenuOpen && (
+                <div className="terms-user-dropdown" role="menu">
+                  <Link href="/account" role="menuitem" onClick={() => setUserMenuOpen(false)}>
+                    {L("navAccount")}
+                  </Link>
+                  <Link href="/billing" role="menuitem" onClick={() => setUserMenuOpen(false)}>
+                    {L("navBilling")}
+                  </Link>
+                  <Link href="/account/help" role="menuitem" onClick={() => setUserMenuOpen(false)}>
+                    {L("navHelp")}
+                  </Link>
+                  {isOwner && (
+                    <Link href="/admin" role="menuitem" onClick={() => setUserMenuOpen(false)}>
+                      {L("navAdmin")}
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      void signOut();
+                    }}
+                  >
+                    {L("signOut")}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

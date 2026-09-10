@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AdminInsights } from "@/components/admin-insights";
 import { AppShell } from "@/components/app-shell";
 import { useLocale } from "@/components/locale-provider";
@@ -38,7 +39,8 @@ function withQuiz(term: Term, patch: Partial<Term["quiz"]> & { options?: string[
 }
 
 export default function AdminPage() {
-  const { session, terms, users, tickets, setTicketStatus, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio, uploadAudioBatch, removeAudio } = useApp();
+  const { ready, session, terms, users, tickets, setTicketStatus, saveTerm, setPublished, setArchived, deleteTerm, grantAccess, previewImport, commitImport, rollbackImport, resetDemo, uploadAudio, uploadAudioBatch, removeAudio } = useApp();
+  const router = useRouter();
   const { locale } = useLocale();
   const a = (key: Parameters<typeof adminText>[1], vars?: Record<string, string | number>) => adminText(locale, key, vars);
   const [audioBusy, setAudioBusy] = useState<"us" | "uk" | "batch" | null>(null);
@@ -85,7 +87,13 @@ export default function AdminPage() {
   // render, and a hook after an early return changes the hook order (#310).
   const [saving, setSaving] = useState(false);
 
-  if (session?.user.role !== "admin") {
+  useEffect(() => {
+    if (!ready) return;
+    if (!session) router.replace("/login?next=/admin");
+    else if (session.user.role !== "admin") router.replace("/dashboard");
+  }, [ready, session, router]);
+
+  if (!ready || !session || session.user.role !== "admin") {
     return (
       <AppShell>
         <div className="empty">

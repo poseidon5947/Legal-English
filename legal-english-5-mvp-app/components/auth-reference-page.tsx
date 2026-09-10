@@ -26,6 +26,7 @@ const COPY = {
     needHelp: "Need help?",
     titleSignup: "Create your account",
     titleRecover: "Recover access",
+    subRecoverReset: "Enter the code from your email and choose a new password.",
     titleLogin: "Welcome back",
     subSignup: "Create your account, then activate the 7-day free trial. A valid credit card is required to activate the trial.",
     subRecover: "Follow the steps below to continue.",
@@ -39,6 +40,10 @@ const COPY = {
     password: "Password",
     passwordPhNew: "Create a password",
     passwordPh: "Enter your password",
+    passwordPhReset: "Enter your new password",
+    passwordLabelReset: "New password",
+    passwordRules: "Use at least 8 characters.",
+    recoverHint: "Check your email for a 6-digit code or a reset link, then enter your new password below.",
     togglePassword: "Toggle password visibility",
     code: "Verification code",
     codePh: "Enter 6-digit code",
@@ -56,6 +61,8 @@ const COPY = {
     termsB: " and ",
     tos: "Terms of Service",
     privacy: "Privacy Policy",
+    cookies: "Cookie Policy",
+    forgotHint: "We will email a 6-digit code or a reset link. Then enter that code and choose a new password.",
   },
   es: {
     kicker: "Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
@@ -71,6 +78,7 @@ const COPY = {
     needHelp: "¿Necesitas ayuda?",
     titleSignup: "Crea tu cuenta",
     titleRecover: "Recuperar acceso",
+    subRecoverReset: "Escribe el código de tu correo y elige una contraseña nueva.",
     titleLogin: "Bienvenido de nuevo",
     subSignup: "Crea tu cuenta y luego activa la prueba gratis de 7 días. Se requiere una tarjeta de crédito válida para activarla.",
     subRecover: "Sigue los pasos para continuar.",
@@ -84,6 +92,10 @@ const COPY = {
     password: "Contraseña",
     passwordPhNew: "Crea una contraseña",
     passwordPh: "Escribe tu contraseña",
+    passwordPhReset: "Escribe tu nueva contraseña",
+    passwordLabelReset: "Nueva contraseña",
+    passwordRules: "Usa al menos 8 caracteres.",
+    recoverHint: "Revisa tu correo: trae un código de 6 dígitos o un enlace. Luego escribe tu nueva contraseña.",
     togglePassword: "Mostrar u ocultar contraseña",
     code: "Código de verificación",
     codePh: "Código de 6 dígitos",
@@ -101,6 +113,8 @@ const COPY = {
     termsB: " y la ",
     tos: "Términos del servicio",
     privacy: "Política de privacidad",
+    cookies: "Política de cookies",
+    forgotHint: "Te enviaremos un código de 6 dígitos o un enlace. Luego escribe ese código y elige una contraseña nueva.",
   },
 } as const;
 
@@ -251,7 +265,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   const isSignup = mode === "signup";
   const isRecovery = mode === "forgot" || mode === "reset" || mode === "confirm";
   const title = isSignup ? c.titleSignup : isRecovery ? c.titleRecover : c.titleLogin;
-  const subtitle = isSignup ? c.subSignup : isRecovery ? c.subRecover : c.subLogin;
+  const subtitle = isSignup ? c.subSignup : mode === "reset" ? c.subRecoverReset : isRecovery ? c.subRecover : c.subLogin;
   // Alpha only: the seeded review accounts. Production (Supabase) has no such users.
   const demoAccounts = process.env.NEXT_PUBLIC_DATA_MODE === "production" ? [] : DEMO_ACCOUNTS.filter((account) => account.role === "Owner" || account.email.startsWith("maria"));
 
@@ -359,14 +373,14 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
             {mode !== "forgot" && mode !== "confirm" && (
               <label>
-                {c.password}
+                {mode === "reset" ? c.passwordLabelReset : c.password}
                 <span>
                   <input
                     type={showPassword ? "text" : "password"}
                     autoComplete={isSignup || mode === "reset" ? "new-password" : "current-password"}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
-                    placeholder={isSignup ? c.passwordPhNew : c.passwordPh}
+                    placeholder={mode === "reset" ? c.passwordPhReset : isSignup ? c.passwordPhNew : c.passwordPh}
                     minLength={8}
                     required
                   />
@@ -374,8 +388,12 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                     <AuthIcon name={showPassword ? "lock-password" : "eye-visibility"} />
                   </button>
                 </span>
+                {(isSignup || mode === "reset") && <small className="auth-password-hint">{c.passwordRules}</small>}
               </label>
             )}
+
+            {mode === "forgot" && <p className="auth-recover-hint">{c.forgotHint}</p>}
+            {mode === "reset" && <p className="auth-recover-hint">{c.recoverHint}</p>}
 
             {(mode === "confirm" || (mode === "reset" && !linkRecovery)) && (
               <label>
@@ -400,11 +418,18 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                   <input id="auth-privacy-consent" type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
                   <span>
                     <label htmlFor="auth-privacy-consent">{c.consent}</label>{" "}
-                    <Link href="/terms-of-service">{c.tos}</Link>
+                    <a className="auth-legal-link" href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+                      {c.tos}
+                    </a>
                     {", "}
-                    <Link href="/privacy">{c.privacy}</Link>
+                    <a className="auth-legal-link" href="/privacy" target="_blank" rel="noopener noreferrer">
+                      {c.privacy}
+                    </a>
                     {c.termsB}
-                    <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>.
+                    <a className="auth-legal-link" href="/cookies" target="_blank" rel="noopener noreferrer">
+                      {c.cookies}
+                    </a>
+                    .
                   </span>
                 </div>
               </>
@@ -464,11 +489,18 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
         {mode === "login" && <p className="auth-reference-terms">
           {c.termsA}
-          <Link href="/terms-of-service">{c.tos}</Link>
+          <a className="auth-legal-link" href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+            {c.tos}
+          </a>
           {c.termsB}
-          <Link href="/privacy">{c.privacy}</Link>
+          <a className="auth-legal-link" href="/privacy" target="_blank" rel="noopener noreferrer">
+            {c.privacy}
+          </a>
           {" · "}
-          <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>.
+          <a className="auth-legal-link" href="/cookies" target="_blank" rel="noopener noreferrer">
+            {c.cookies}
+          </a>
+          .
         </p>}
       </section>
     </main>
