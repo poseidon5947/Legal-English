@@ -13,12 +13,9 @@ import { CtaDisclosure, PlanCards } from "@/components/plan-cards";
 import { trackAction } from "@/lib/track";
 
 /**
- * Home page. Section order and English copy follow the Landing Page
- * Implementation Brief v1.0 (7 Sep 2026) §3, sections 1–11:
- * hero · problem · solution · what each term can include · product example ·
- * launch content · built for legal professionals · pricing and free trial ·
- * trust · FAQ · final CTA. One primary action per section; the CTA always
- * goes to the Product-approved account/trial flow (/signup).
+ * Approved editorial and commercial copy, reorganized following the September
+ * design review: introduction, sample, practice areas, method, trust, pricing.
+ * Detailed component descriptions remain available in the method disclosure.
  */
 
 type HomeIconName =
@@ -59,14 +56,13 @@ const categoryIcons: readonly HomeIconName[] = ["category-contracts", "category-
 const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
 const problemIcons: readonly HomeIconName[] = ["open-book", "workflow-chat", "globe"];
 const componentIcons: readonly HomeIconName[] = ["open-book", "speaker", "workflow-chat", "contract-clipboard", "workflow-quiz", "shield-badge", "legal-scales", "globe"];
-const builtForIcons: readonly HomeIconName[] = ["courthouse", "people", "flame-stopwatch"];
 const tabIcons: readonly HomeIconName[] = ["open-book", "globe", "legal-scales", "help", "contract-clipboard", "bookmark"];
 
 export default function Home() {
   const { locale } = useLocale();
   const c = landingCopy[locale];
   return (
-    <main id="main" className="landing home-reference home-brief">
+    <main id="main" className="landing home-reference home-brief home-journey">
       <LandingHeader />
       <ScrollEffects />
 
@@ -78,6 +74,7 @@ export default function Home() {
           <p className="hero-editorial-lead">{c.hero.lead}</p>
           <div className="home-ref-actions hero-editorial-actions">
             <Link className="primary" href="/signup" onClick={() => trackAction("cta", "hero")}>{c.hero.cta}<HomeIcon name="arrow-right" /></Link>
+            <a className="hero-sample-link" href="#how-it-works" onClick={() => trackAction("cta", "hero-sample")}>{c.hero.sample}<HomeIcon name="arrow-right" /></a>
           </div>
           <CtaDisclosure>{c.hero.ctaNote}</CtaDisclosure>
         </div>
@@ -86,52 +83,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2 · The problem */}
-      <section className="brief-problem" aria-labelledby="brief-problem-title" lang={locale}>
-        <div className="home-ref-heading" data-reveal>
-          <h2 id="brief-problem-title">{c.problem.title}</h2>
-          <p>{c.problem.lead}</p>
-        </div>
-        <ul className="brief-problem-grid" data-reveal="stagger">
-          {c.problem.items.map(([title, body], index) => (
-            <li key={title}>
-              <HomeIcon name={problemIcons[index]} />
-              <strong>{title}</strong>
-              <p>{body}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* 3 · The solution */}
-      <section className="brief-solution" aria-labelledby="brief-solution-title" lang={locale} data-reveal>
-        <div>
-          <h2 id="brief-solution-title">{c.solution.title}</h2>
-          <p>{c.solution.lead}</p>
-        </div>
-      </section>
-
-      {/* 4 · What each term can include */}
-      <section className="brief-components" aria-labelledby="brief-components-title" lang={locale}>
-        <div className="home-ref-heading" data-reveal>
-          <span className="eyebrow">{c.components.eyebrow}</span>
-          <h2 id="brief-components-title">{c.components.title}</h2>
-        </div>
-        <ul className="brief-components-grid" data-reveal="stagger">
-          {c.components.items.map(([name, description], index) => (
-            <li key={name}>
-              <HomeIcon name={componentIcons[index]} />
-              <div>
-                <strong lang="en">{name}</strong>
-                <small>{description}</small>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* 5 · Product example (approved MCD content only) */}
-      <section className="home-ref-learn brief-example" id="how-it-works" aria-labelledby="brief-example-title" lang={locale}>
+      {/* Public lesson: experience the product directly after the introduction. */}
+      <section className="home-ref-learn brief-example" id="how-it-works" aria-labelledby="brief-example-title" lang={locale} tabIndex={-1}>
         <div className="home-ref-heading" data-reveal>
           <span className="eyebrow">{c.example.eyebrow}</span>
           <h2 id="brief-example-title">{c.example.title}</h2>
@@ -164,27 +117,31 @@ export default function Home() {
         <p className="brief-launch-note" data-reveal>{c.launch.note}</p>
       </section>
 
-      {/* 7 · Built for legal professionals */}
-      <section className="brief-built" aria-labelledby="brief-built-title" lang={locale}>
-        <div className="brief-built-copy" data-reveal="left">
+      {/* One concise method section replaces repeated problem/solution blocks. */}
+      <section className="brief-problem journey-method" aria-labelledby="brief-method-title" lang={locale}>
+        <div className="home-ref-heading" data-reveal>
           <span className="eyebrow">{c.builtFor.eyebrow}</span>
-          <h2 id="brief-built-title">{c.builtFor.title}</h2>
-          <ul>
-            {c.builtFor.items.map(([title, body], index) => (
-              <li key={title}>
-                <HomeIcon name={builtForIcons[index]} />
-                <div>
-                  <strong>{title}</strong>
-                  <p>{body}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <h2 id="brief-method-title">{c.solution.title}</h2>
         </div>
-        <figure className="brief-built-photo" data-reveal>
-          <Photo src="/home-assets/photos/practice-portrait.jpg" size="wide" sizes="(max-width: 900px) 100vw, 46vw" />
-          <figcaption><span>{c.builtFor.photoTag}</span><strong>{c.builtFor.photoCaption}</strong></figcaption>
-        </figure>
+        <ul className="brief-problem-grid" data-reveal="stagger">
+          {c.problem.items.map(([title, body], index) => <li key={title}><HomeIcon name={problemIcons[index]} /><strong>{title}</strong><p>{body}</p></li>)}
+        </ul>
+        <details className="journey-components">
+          <summary>{c.components.title}</summary>
+          <ul className="brief-components-grid">
+            {c.components.items.map(([name, description], index) => <li key={name}><HomeIcon name={componentIcons[index]} /><div><strong lang="en">{name}</strong><small>{description}</small></div></li>)}
+          </ul>
+        </details>
+      </section>
+
+      <section className="brief-trust" aria-labelledby="brief-trust-title" lang={locale} data-reveal>
+        <img src="/brand/mpc-icon-extracted.png" width="60" height="60" alt="" />
+        <div>
+          <span className="eyebrow">{c.trust.eyebrow}</span>
+          <h2 id="brief-trust-title">{c.trust.title}</h2>
+          <p>{c.trust.body}</p>
+          <Link href="/about">{locale === "es" ? "Conoce nuestro proceso editorial →" : "Meet the editor and explore our process →"}</Link>
+        </div>
       </section>
 
       {/* 8 · Pricing and free trial */}
@@ -198,16 +155,6 @@ export default function Home() {
           <HomeIcon name="lock" />
           {c.pricing.secure} {c.pricing.rule}
         </p>
-      </section>
-
-      {/* 9 · Trust / brand authority */}
-      <section className="brief-trust" aria-labelledby="brief-trust-title" lang={locale} data-reveal>
-                  <img src="/brand/mpc-icon-extracted.png" width="60" height="60" alt="" />
-        <div>
-          <span className="eyebrow">{c.trust.eyebrow}</span>
-          <h2 id="brief-trust-title">{c.trust.title}</h2>
-          <p>{c.trust.body}</p>
-        </div>
       </section>
 
       {/* 10 · FAQ */}

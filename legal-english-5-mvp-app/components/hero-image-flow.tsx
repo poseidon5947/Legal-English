@@ -20,6 +20,8 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [offscreen, setOffscreen] = useState(false);
+  const container = useRef<HTMLDivElement>(null);
   const [reducedMotion, setReducedMotion] = useState(true);
   const [warm, setWarm] = useState(false);
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -33,7 +35,10 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
     motion.addEventListener("change", updateMotion);
     document.addEventListener("visibilitychange", updateVisibility);
     const preload = window.setTimeout(() => setWarm(true), 600);
+    const observer = new IntersectionObserver(([entry]) => setOffscreen(!entry.isIntersecting));
+    if (container.current) observer.observe(container.current);
     return () => {
+      observer.disconnect();
       window.clearTimeout(preload);
       if (transitionTimer.current) clearTimeout(transitionTimer.current);
       motion.removeEventListener("change", updateMotion);
@@ -55,18 +60,19 @@ export function HeroImageFlow({ slides }: { slides: ReadonlyArray<Slide> }) {
   }
 
   useEffect(() => {
-    if (count < 2 || paused || hovered || focused || hidden || reducedMotion || outgoing !== null) return;
+    if (count < 2 || paused || hovered || focused || hidden || offscreen || reducedMotion || outgoing !== null) return;
     const timer = window.setTimeout(() => goTo((index + 1) % count), INTERVAL_MS);
     return () => window.clearTimeout(timer);
     // goTo uses the current index and motion preference, both dependencies below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, count, paused, hovered, focused, hidden, reducedMotion, outgoing]);
+  }, [index, count, paused, hovered, focused, hidden, offscreen, reducedMotion, outgoing]);
 
   if (!count) return null;
   return (
     <div
+      ref={container}
       className="hero-flow hero-depth"
-      data-motion={paused || hidden ? "paused" : "running"}
+      data-motion={paused || hovered || focused || hidden || offscreen || reducedMotion ? "paused" : "running"}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setFocused(true)}

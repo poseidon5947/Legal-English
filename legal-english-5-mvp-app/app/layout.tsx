@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { preload } from "react-dom";
 import "./fonts.css";
 import "./globals.css";
+import "./learning-flow.css";
+import "./marketing-flow.css";
 import { AppProvider } from "@/components/app-provider";
 import { InsightBeacon } from "@/components/insight-beacon";
 import { LocaleProvider } from "@/components/locale-provider";

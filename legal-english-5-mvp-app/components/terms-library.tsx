@@ -351,10 +351,14 @@ export function TermsLibrary() {
               className={`${CATEGORY_THEME[item.category]} with-photo${category === item.category ? " active" : ""}`}
               key={item.category}
               role="button"
+              aria-pressed={category === item.category}
               tabIndex={0}
               onClick={() => chooseCategory(category === item.category ? "All" : item.category)}
               onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") chooseCategory(category === item.category ? "All" : item.category);
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  chooseCategory(category === item.category ? "All" : item.category);
+                }
               }}
             >
               <div className="terms-category-icon-shell with-photo">
@@ -381,6 +385,7 @@ export function TermsLibrary() {
           <div className="terms-empty">
             <strong>{L("emptyLibraryTitle")}</strong>
             <p>{L("emptyLibraryBody")}</p>
+            <Link className="primary inline" href="/#how-it-works">{locale === "es" ? "Prueba una lección de muestra" : "Try a sample lesson"}</Link>
           </div>
         ) : sorted.length === 0 ? (
           <div className="terms-empty">

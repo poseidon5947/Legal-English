@@ -1,0 +1,77 @@
+
+> legal-english-5-mvp@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.2.6 (webpack)
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 11.7s
+  Running TypeScript ...
+  Finished TypeScript in 8.8s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/44) ...
+  Generating static pages using 7 workers (11/44) 
+  Generating static pages using 7 workers (22/44) 
+  Generating static pages using 7 workers (33/44) 
+✓ Generating static pages using 7 workers (44/44) in 420ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /about
+├ ƒ /account
+├ ƒ /account/achievements
+├ ƒ /account/help
+├ ƒ /account/settings
+├ ƒ /admin
+├ ƒ /api/account/avatar
+├ ƒ /api/admin
+├ ƒ /api/admin/audio
+├ ƒ /api/admin/export
+├ ƒ /api/admin/insights
+├ ƒ /api/auth
+├ ƒ /api/billing
+├ ƒ /api/bootstrap
+├ ƒ /api/health
+├ ƒ /api/insights
+├ ƒ /api/learn
+├ ƒ /api/learn/export
+├ ƒ /api/media/[termId]/[jurisdiction]
+├ ƒ /api/webhooks/mercadopago
+├ ○ /apple-icon.png
+├ ƒ /auth/confirm
+├ ƒ /billing
+├ ƒ /categories
+├ ƒ /cookies
+├ ƒ /dashboard
+├ ƒ /help
+├ ƒ /how-it-works
+├ ○ /icon.png
+├ ƒ /library
+├ ƒ /login
+├ ○ /manifest.webmanifest
+├ ƒ /pricing
+├ ƒ /privacy
+├ ƒ /progress
+├ ƒ /quizzes
+├ ƒ /quizzes/contracts
+├ ƒ /review
+├ ○ /robots.txt
+├ ƒ /sample-terms
+├ ƒ /signup
+├ ○ /sitemap.xml
+├ ƒ /status
+├ ƒ /terms
+├ ƒ /terms-of-service
+├ ƒ /terms/[id]
+└ ƒ /terms/[id]/quiz
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "en: annual intent survives auth",
+    "en: empty dashboard, terms, saved library, progress",
+    "en: expired lesson offers billing recovery",
+    "en: load error and retry recovery",
+    "en: loading state recovers",
+    "en: learner drawer keyboard containment and Escape",
+    "Auth return path retains category filter",
+    "es: annual intent survives auth",
+    "es: empty dashboard, terms, saved library, progress",
+    "es: expired lesson offers billing recovery",
+    "es: load error and retry recovery",
+    "es: loading state recovers",
+    "es: learner drawer keyboard containment and Escape",
+    "Auth return path retains category filter",
+    "Motion: hover/focus pauses images and slides; arrows change slides; offscreen pause; live reduced-motion change"
+  ],
+  "issues": []
+}

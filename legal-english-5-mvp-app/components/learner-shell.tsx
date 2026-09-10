@@ -274,9 +274,9 @@ export function LearnerShell({
 
       <nav className="learner-tabbar" aria-label="Main navigation">
         {MAIN_NAV.filter(([, , href]) => href !== "/library").map(([key, icon, href]) => (
-          <Link className={isActive(path, href) ? "active" : ""} href={href} key={href}>
+          <Link className={isActive(path, href) ? "active" : ""} href={href} key={href} aria-label={L(key)} aria-current={isActive(path, href) ? "page" : undefined} onFocus={(event) => event.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" })}>
             <ShellIcon name={icon} />
-            <span>{L(key)}</span>
+            <span>{href === "/terms" ? (locale === "es" ? "Términos" : "Terms") : href === "/categories" ? (locale === "es" ? "Áreas" : "Areas") : href === "/quizzes" ? "Quiz" : L(key)}</span>
           </Link>
         ))}
       </nav>

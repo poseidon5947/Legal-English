@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Sample wrong answer",
+    "text": "Not quite. “Consideration” is what the parties give or promise in exchange for what they receive.\nInside the app every quiz explains the answer and updates your progress."
+  },
+  {
+    "name": "Sample correct answer",
+    "text": "Correct. “Consideration” is what the parties give or promise in exchange for what they receive.\nInside the app every quiz explains the answer and updates your progress.",
+    "cta": "/signup"
+  },
+  {
+    "name": "Dashboard session continuity",
+    "picked": [
+      "agreement",
+      "articles of incorporation",
+      "shareholder / stockholder",
+      "board of directors",
+      "bylaws"
+    ],
+    "url": "http://127.0.0.1:3230/quizzes?category=Contracts",
+    "quiz": "Active Quiz\nQuestion 1 of 10"
+  },
+  {
+    "name": "Quiz feedback",
+    "text": "Correct! “Entered into an agreement” means that the companies formally agreed to do something."
+  },
+  {
+    "name": "Next quiz question",
+    "text": "Active Quiz\nQuestion 2 of 10"
+  }
+]

@@ -1,0 +1,109 @@
+[
+  {
+    "name": "Mobile menu keyboard containment",
+    "result": [
+      {
+        "text": "Home",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "Terms Library",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "How It Works",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "Pricing",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "About",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "EN/ES",
+        "tag": "BUTTON",
+        "inHeader": true
+      },
+      {
+        "text": "Sign In",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "Start your 7-day free trial",
+        "tag": "A",
+        "inHeader": true
+      },
+      {
+        "text": "",
+        "tag": "BUTTON",
+        "inHeader": true
+      },
+      {
+        "text": "Start your 7-day free trial",
+        "tag": "A",
+        "inHeader": false
+      },
+      {
+        "text": "",
+        "tag": "BUTTON",
+        "inHeader": false
+      },
+      {
+        "text": "",
+        "tag": "BUTTON",
+        "inHeader": false
+      }
+    ]
+  },
+  {
+    "name": "Public sample depth and tabs",
+    "result": {
+      "sampleTop": 2946.5625,
+      "selected": "true",
+      "panel": "03\nCivil Law Equivalent\n\nNo existe un equivalente funcional exacto en el derecho civil colombiano. Consideration es un requisito característico de los contratos bajo el common law.\n\nCivil Law Equivalent\nCivil Law · Colombia\n03 / 06\nNext section\n→"
+    }
+  },
+  {
+    "name": "Sample wrong-answer feedback",
+    "error": "locator.check: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.lesson-answers input').first()\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"radio\" class=\"sr-only\" name=\"_R_9qnubr5b_-quiz\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-hidden=\"true\" class="
+  },
+  {
+    "name": "Sample retry and correct feedback",
+    "error": "locator.click: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.lesson-check')\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" class=\"lesson-check\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - elemen"
+  },
+  {
+    "name": "Search and recover from no results",
+    "result": {
+      "empty": "No terms match your search.\n\nTry a shorter word, the Spanish equivalent, or remove a filter.\n\nClear filters",
+      "cards": 10
+    }
+  },
+  {
+    "name": "Bookmark survives reload",
+    "result": {
+      "before": "true",
+      "after": "false"
+    }
+  },
+  {
+    "name": "Library list view",
+    "result": "terms-card-grid list"
+  },
+  {
+    "name": "Quiz answer and feedback",
+    "error": "locator.check: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.quiz-active-card input[type=\"radio\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"radio\" class=\"sr-only\" name=\"quiz-CON-001\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-hidden=\"t"
+  },
+  {
+    "name": "Quiz mobile screenshot",
+    "result": "captured"
+  }
+]

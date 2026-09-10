@@ -1,0 +1,535 @@
+[
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/signup",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/pricing",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/about",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "lesson-audio",
+        "text": "Listen"
+      },
+      {
+        "class": "icon home-generated-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Spanish Equivalent›"
+      },
+      {
+        "class": "",
+        "text": "Spanish Equivalent"
+      },
+      {
+        "class": "",
+        "text": "Civil Law Equivalent›"
+      },
+      {
+        "class": "icon home-generated-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Civil Law Equivalent"
+      },
+      {
+        "class": "",
+        "text": "Spanish-Speaker Alert›"
+      },
+      {
+        "class": "icon home-generated-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Spanish-Speaker Alert"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/signup",
+    "scroll": 380,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/pricing",
+    "scroll": 380,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/about",
+    "scroll": 380,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/terms",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/terms/CON-001",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/progress",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/account/settings",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "path": "/quizzes",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/terms",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progress"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progress"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/terms/CON-001",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progress"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progress"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/progress",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "active",
+        "text": "Progress"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progress"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/account/settings",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progress"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progress"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "path": "/quizzes",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progress"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progress"
+      },
+      {
+        "class": "",
+        "text": "QuizAttemptsDateCategoryStatusincorporate / i"
+      },
+      {
+        "class": "",
+        "text": "QuizAttemptsDateCategoryStatus"
+      },
+      {
+        "class": "",
+        "text": "QuizAttemptsDateCategoryStatus"
+      },
+      {
+        "class": "",
+        "text": "Category"
+      },
+      {
+        "class": "",
+        "text": "Status"
+      },
+      {
+        "class": "",
+        "text": "incorporate / incorporation1Today, 4:35 PMCor"
+      },
+      {
+        "class": "",
+        "text": "incorporate / incorporation1Today, 4:35 PMCor"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/signup",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/pricing",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/about",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "lesson-audio",
+        "text": "Escuchar"
+      },
+      {
+        "class": "icon home-generated-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Equivalente en español›"
+      },
+      {
+        "class": "",
+        "text": "Equivalente en español"
+      },
+      {
+        "class": "",
+        "text": "Equivalente en derecho civil›"
+      },
+      {
+        "class": "icon home-generated-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Equivalente en derecho civil"
+      },
+      {
+        "class": "",
+        "text": "Alerta para hispanohablantes›"
+      },
+      {
+        "class": "icon home-generated-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Alerta para hispanohablantes"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/signup",
+    "scroll": 380,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/pricing",
+    "scroll": 380,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/about",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Solo usamos cookies esenciales para mantener "
+      },
+      {
+        "class": "",
+        "text": "Política de cookiesEntendido"
+      },
+      {
+        "class": "primary",
+        "text": "Entendido"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/terms",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/terms/CON-001",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/progress",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/account/settings",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 1440,
+    "path": "/quizzes",
+    "scroll": 1430,
+    "offenders": []
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/terms",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progreso"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progreso"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/terms/CON-001",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progreso"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progreso"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/progress",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "active",
+        "text": "Progreso"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progreso"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/account/settings",
+    "scroll": 380,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progreso"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progreso"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "path": "/quizzes",
+    "scroll": 390,
+    "offenders": [
+      {
+        "class": "",
+        "text": "Progreso"
+      },
+      {
+        "class": "terms-library-icon",
+        "text": ""
+      },
+      {
+        "class": "",
+        "text": "Progreso"
+      },
+      {
+        "class": "",
+        "text": "QuizIntentosFechaCategoríaEstadoprovision1Hoy"
+      },
+      {
+        "class": "",
+        "text": "QuizIntentosFechaCategoríaEstado"
+      },
+      {
+        "class": "",
+        "text": "QuizIntentosFechaCategoríaEstado"
+      },
+      {
+        "class": "",
+        "text": "Categoría"
+      },
+      {
+        "class": "",
+        "text": "Estado"
+      },
+      {
+        "class": "",
+        "text": "provision1Hoy, 22:09ContratosAprobadoobligati"
+      },
+      {
+        "class": "",
+        "text": "provision1Hoy, 22:09ContratosAprobado"
+      }
+    ]
+  }
+]

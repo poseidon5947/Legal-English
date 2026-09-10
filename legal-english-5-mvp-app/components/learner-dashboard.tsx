@@ -12,6 +12,7 @@ import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { areaRoute, categoryStats, countsFor, formatWhen, recentActivity, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
 import { routeLabel } from "@/components/area-route";
+import { sessionQuery } from "@/lib/learning-session";
 
 const SESSION_SIZE = 5;
 const CHECKLIST_KEY = "le5.dashboard.checklist.hidden";
@@ -60,7 +61,8 @@ export function LearnerDashboard() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "dashGoodMorning" : hour < 19 ? "dashGoodAfternoon" : "dashGoodEvening";
   const firstName = session?.user.name.split(" ")[0] ?? "";
-  const quizHref = today.length ? `/quizzes?category=${encodeURIComponent(today[0].category)}` : "/quizzes";
+  const selectedSession = sessionQuery(today);
+  const quizHref = today.length ? `/quizzes?${selectedSession}` : "/quizzes";
 
   return (
     <LearnerShell pageClass="dashboard-page">
@@ -73,7 +75,7 @@ export function LearnerDashboard() {
         </div>
 
         {showChecklist && (
-          <section className="dashboard-checklist" aria-labelledby="dash-check-title">
+          <section className={`dashboard-checklist${allDone ? " is-complete" : ""}`} aria-labelledby="dash-check-title">
             <div className="dashboard-checklist-head">
               <div>
                 <span className="eyebrow">{L("checkEyebrow")}</span>
@@ -95,7 +97,7 @@ export function LearnerDashboard() {
                 </button>
               )}
             </div>
-            <ol>
+            {!allDone && <ol>
               {steps.map((step) => (
                 <li key={step.id} className={step.done ? "done" : ""}>
                   {step.done ? (
@@ -111,7 +113,7 @@ export function LearnerDashboard() {
                   )}
                 </li>
               ))}
-            </ol>
+            </ol>}
           </section>
         )}
 
@@ -124,10 +126,18 @@ export function LearnerDashboard() {
             </div>
             {today.length > 0 && (
               <>
+                <div className="dashboard-session-actions">
+                  <Link className="primary inline" href={`/terms/${today[0].id}?${selectedSession}`}>
+                    {L("dashStartSession")}
+                  </Link>
+                  <Link className="ghost" href={quizHref}>
+                    {L("dashQuizThem")}
+                  </Link>
+                </div>
                 <ol className="dashboard-session-list">
                   {today.map((term, index) => (
                     <li key={term.id}>
-                      <Link href={`/terms/${term.id}`}>
+                      <Link href={`/terms/${term.id}?${selectedSession}`}>
                         <span className="dashboard-session-index">{index + 1}</span>
                         <span className="dashboard-session-body">
                           <strong>{term.term}</strong>
@@ -140,23 +150,15 @@ export function LearnerDashboard() {
                     </li>
                   ))}
                 </ol>
-                <div className="dashboard-session-actions">
-                  <Link className="primary inline" href={`/terms/${today[0].id}`}>
-                    {L("dashStartSession")}
-                  </Link>
-                  <Link className="ghost" href={quizHref}>
-                    {L("dashQuizThem")}
-                  </Link>
-                </div>
               </>
             )}
             {today.length === 0 && (
               <div className="dashboard-session-actions">
-                <Link className="primary inline" href="/terms">
-                  {L("navLibrary")}
+                <Link className="primary inline" href={visible.length ? "/terms" : "/#how-it-works"}>
+                  {visible.length ? L("navLibrary") : locale === "es" ? "Prueba una lección de muestra" : "Try a sample lesson"}
                 </Link>
-                <Link className="ghost" href="/quizzes">
-                  {L("navQuizzes")}
+                <Link className="ghost" href={visible.length ? "/quizzes" : "/account/help"}>
+                  {visible.length ? L("navQuizzes") : L("contactSupport")}
                 </Link>
               </div>
             )}

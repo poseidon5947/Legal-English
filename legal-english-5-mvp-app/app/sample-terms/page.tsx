@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-// The static library mock-up used to live here. The real, data-driven library is /terms.
+// A sample is public; the full, account-backed library stays at /terms.
 export default function SampleTermsPage() {
-  redirect("/terms");
+  redirect("/#how-it-works");
 }

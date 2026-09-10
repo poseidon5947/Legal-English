@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useFocusTrap } from "@/components/use-focus-trap";
 import { useApp } from "@/components/app-provider";
 import { BrandMark } from "@/components/brand-mark";
 import { useLocale } from "@/components/locale-provider";
@@ -16,6 +17,14 @@ export function LandingHeader() {
   const nav = landingCopy[locale].nav;
   const signedIn = ready && Boolean(session);
   const [open, setOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+  useFocusTrap(open, headerRef);
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 1100px)");
+    const closeOnDesktop = () => { if (!mobile.matches) setOpen(false); };
+    mobile.addEventListener("change", closeOnDesktop);
+    return () => mobile.removeEventListener("change", closeOnDesktop);
+  }, []);
   const links: ReadonlyArray<readonly [string, string]> = [
     ["/", nav.home],
     ["/terms", nav.library],
@@ -43,7 +52,7 @@ export function LandingHeader() {
   const menuLabel = locale === "es" ? (open ? "Cerrar menú" : "Abrir menú") : open ? "Close menu" : "Open menu";
 
   return (
-    <header className={`landing-nav${open ? " menu-open" : ""}`}>
+    <header ref={headerRef} className={`landing-nav${open ? " menu-open" : ""}`}>
       <Link href="/" onClick={() => setOpen(false)}>
         <BrandMark />
       </Link>

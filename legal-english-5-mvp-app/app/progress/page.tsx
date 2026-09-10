@@ -65,7 +65,8 @@ function ActivityChart({ weeks, locale }: { weeks: { start: Date; studied: numbe
   const area = (key: "studied" | "attempts") => `${line(key)} L${right} ${bottom} L${left} ${bottom} Z`;
   const ticks = [0, 0.25, 0.5, 0.75, 1];
   return (
-    <svg className="progress-activity-chart" viewBox="0 0 662 222" role="img" aria-label="Learning activity chart">
+    <svg className="progress-activity-chart" viewBox="0 0 662 222" role="img" aria-label={locale === "es" ? "Actividad de aprendizaje" : "Learning activity chart"}>
+      <desc>{weeks.map(week => `${week.start.toLocaleDateString(locale)}: ${week.studied} ${locale === "es" ? "términos" : "terms"}, ${week.attempts} ${locale === "es" ? "intentos" : "attempts"}`).join("; ")}</desc>
       <defs>
         <linearGradient id="termsArea" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="#452b84" stopOpacity="0.2" />
@@ -130,7 +131,12 @@ export default function ProgressPage() {
             </div>
           </div>
 
-          <section className="progress-ref-stats" aria-label="Progress statistics">
+          <section className="progress-next-step">
+            <div><h2>{locale === "es" ? "Tu próximo paso" : "Your next step"}</h2><p>{locale === "es" ? "Continúa con tu sesión de hoy o repasa lo que ya has aprendido." : "Continue today's session or review what you have learned."}</p></div>
+            <Link className="primary inline" href="/dashboard">{locale === "es" ? "Ir a mi sesión" : "Go to my session"} →</Link>
+          </section>
+
+          <section className="progress-ref-stats" aria-label={locale === "es" ? "Estadísticas de progreso" : "Progress statistics"}>
             <article className="green">
               <span>
                 <ProgressIcon name="stat-book" />
@@ -184,7 +190,7 @@ export default function ProgressPage() {
               <h2>{L("learningActivity")}</h2>
               <span className="progress-range">{L("lastWeeks")}</span>
             </div>
-            <div className="progress-chart-legend">
+            {weeks.some(week => week.studied || week.attempts) ? <><div className="progress-chart-legend">
               <span>
                 <i className="blue" />
                 {L("legendTerms")}
@@ -195,6 +201,7 @@ export default function ProgressPage() {
               </span>
             </div>
             <ActivityChart weeks={weeks} locale={locale} />
+            </> : <p className="progress-empty">{locale === "es" ? "Tu actividad aparecerá aquí cuando empieces a estudiar. Abre tu sesión para comenzar." : "Your activity will appear here when you start studying. Open your session to begin."}</p>}
           </section>
 
           <section className="progress-panel progress-category-panel">

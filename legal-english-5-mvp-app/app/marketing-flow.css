@@ -1,0 +1,51 @@
+/* Public journey and account-entry presentation. Legacy page rules stay scoped. */
+@media (min-width: 1101px) {
+  .home-reference .landing-nav .landing-nav-links { min-width: 0; flex-wrap: wrap; justify-content: flex-end; gap: 8px 20px; padding-block: 10px; }
+  .home-reference .landing-nav .landing-nav-links > :is(a, button) { white-space: normal; max-width: 100%; height: auto; padding-block: 10px; }
+}
+.home-reference .landing-footer .footer-top > *,
+.home-reference .landing-footer .footer-nav > div { min-width: 0; }
+.home-reference .landing-footer .footer-contact a { overflow-wrap: anywhere; }
+@media (min-width: 961px) and (max-width: 1100px) {
+  .home-reference .landing-footer .footer-top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .home-reference .landing-footer .footer-brand { grid-column: 1 / -1; }
+}
+.home-journey .journey-method { padding-bottom: 16px; }
+.journey-components { margin-top: 24px; border: 1px solid #ded6ef; border-radius: 14px; background: #fff; }
+.journey-components summary { padding: 18px 22px; color: #452b84; cursor: pointer; font-size: .9375rem; font-weight: 600; }
+.journey-components .brief-components-grid { margin: 0; padding: 0 18px 18px; }
+.journey-components .brief-components-grid li { box-shadow: none; border: 0; background: #f9f8fc; }
+.home-journey .brief-trust { max-width: var(--home-max); margin: 48px auto 0; padding: 28px; border-block: 1px solid #e5e0ef; background: #f9f8fc; }
+.home-journey .brief-trust > img { height: 60px; align-self: start; }
+.home-journey .brief-trust a { display: inline-block; margin-top: 12px; padding: 8px 0; font-size: .875rem; color: #452b84; text-underline-offset: 4px; }
+.home-journey .brief-trust h2 { font-size: clamp(1.6rem, 2.5vw, 2rem); }
+.home-journey .home-ref-category-photo { object-position: center 35%; }
+.home-brief .brief-plan { gap: 16px; border-radius: 16px; }
+.home-brief .brief-plan .brief-plan-disclosure { font-size: .8125rem; line-height: 1.75; border-top: 1px solid #e5e0ef; padding-top: 16px; }
+.home-brief .brief-plan > :is(.primary, .ghost) { min-height: 48px; font-size: .875rem; white-space: normal; text-align: center; }
+.home-brief .brief-plan-note { font-size: .875rem; line-height: 1.7; }
+.about-journey .about-showcase { align-items: center; }
+.about-journey .about-showcase h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.1; }
+.about-journey .about-showcase .primary { margin-top: 20px; }
+.about-journey .about-photo-card img { object-position: 50% 35%; }
+.signup-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; padding: 16px 0; margin: 16px 0; gap: 12px; border-block: 1px solid #e5e0ef; }
+.signup-steps li { display: grid; justify-items: start; gap: 8px; color: #676170; font-size: .75rem; line-height: 1.5; }
+.signup-steps li > span { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #f0edf7; font-weight: 600; }
+.signup-steps li[aria-current] { color: #452b84; font-weight: 600; }
+.signup-steps li[aria-current] > span { color: #fff; background: #452b84; }
+.auth-reference-form .auth-reference-consent { align-items: start; line-height: 1.7; }
+.auth-reference-form .auth-reference-consent input { flex: none; margin-top: 4px; }
+.auth-reference-form .auth-reference-consent span { font-size: .8125rem; line-height: 1.7; }
+.auth-reference-form .auth-reference-consent a { text-underline-offset: 3px; }
+.home-journey.reveal-ready [data-reveal] { transition-duration: .35s; }
+.home-journey.reveal-ready [data-reveal="stagger"] > * { transition-duration: .35s; }
+@media (max-width: 640px) {
+  .home-journey .brief-trust { margin: 32px 18px 0; padding: 22px; }
+  .home-journey .journey-components .brief-components-grid { grid-template-columns: minmax(0, 1fr); }
+  .home-journey .brief-problem-grid li { padding: 18px; }
+  .about-journey .about-photo-card { max-height: 300px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-depth .hero-depth-card, .hero-depth .hero-depth-card img { animation: none !important; transition: none !important; }
+  .home-journey.reveal-ready [data-reveal], .home-journey.reveal-ready [data-reveal] > * { opacity: 1; transform: none; transition: none; }
+}

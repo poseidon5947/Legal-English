@@ -30,6 +30,7 @@ export type LandingCopy = {
     title: string;
     lead: string;
     cta: string;
+    sample: string;
     ctaNote: string;
     slides: ReadonlyArray<{ caption: string; tag: string }>;
   };
@@ -76,6 +77,7 @@ const en: LandingCopy = {
     title: "Legal English for real legal work.",
     lead: "Build practical Legal English vocabulary in context. Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
     cta: "Start your 7-day free trial",
+    sample: "Try a sample lesson",
     ctaNote: "7-day free trial. A valid credit card is required when you activate the trial. Unless you cancel before the trial ends, your subscription will automatically continue on the COP $90,000 monthly plan.",
     slides: [
       { caption: "Reviewing a contract before signature", tag: "Contracts" },
@@ -221,6 +223,7 @@ const es: LandingCopy = {
     title: "Inglés jurídico para el trabajo legal real.",
     lead: "Construye vocabulario práctico de inglés jurídico en contexto. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
     cta: "Empieza tu prueba gratis de 7 días",
+    sample: "Prueba una lección de muestra",
     ctaNote: "Prueba gratis durante 7 días. Se requiere una tarjeta de crédito válida al activar la prueba. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000.",
     slides: [
       { caption: "Revisando un contrato antes de firmar", tag: "Contratos" },

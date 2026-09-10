@@ -5,9 +5,10 @@ import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
 import { Icon } from "@/components/ui-icons";
+import Link from "next/link";
 
 export default function AboutPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const steps = [
     { title: t("step1Title"), body: t("step1Body") },
     { title: t("step2Title"), body: t("step2Body") },
@@ -15,32 +16,22 @@ export default function AboutPage() {
     { title: t("step4Title"), body: t("step4Body") },
   ];
   return (
-    <main id="main" className="landing home-reference">
+    <main id="main" className="landing home-reference about-journey">
       <LandingHeader />
       <section className="landing-section">
         <div className="about-showcase">
           <div>
-            <span className="eyebrow">{t("aboutEyebrow")}</span>
-            <h1>{t("aboutTitle")}</h1>
-            <p>{t("aboutLead")}</p>
-            <p>{t("aboutBody2")}</p>
+            <span className="eyebrow">{t("aboutStudioEyebrow")}</span>
+            <h1>{t("aboutStudioTitle")}</h1>
+            <p>{t("aboutStudioBody")}</p>
+            <Link className="primary inline" href="/#how-it-works">{locale === "es" ? "Prueba una lección de muestra" : "Try a sample lesson"}</Link>
           </div>
           <figure className="about-photo-card">
             <Photo src="/home-assets/photos/about-library.jpg" size="card" priority />
             <figcaption>
               <strong>Legal English 5</strong>
-              <span>{t("aboutCardBody")}</span>
+              <span>{t("aboutStudioCaption")}</span>
             </figcaption>
-          </figure>
-        </div>
-        <div className="about-photo-strip">
-          <figure>
-            <Photo src="/home-assets/photos/about-desk.jpg" size="card" />
-            <figcaption>{t("aboutPhotoDesk")}</figcaption>
-          </figure>
-          <figure>
-            <Photo src="/home-assets/photos/about-gavel.jpg" size="card" />
-            <figcaption>{t("aboutPhotoGavel")}</figcaption>
           </figure>
         </div>
       </section>
@@ -50,9 +41,9 @@ export default function AboutPage() {
           <figcaption>{t("aboutStudioCaption")}</figcaption>
         </figure>
         <div>
-          <span className="eyebrow">{t("aboutStudioEyebrow")}</span>
-          <h2>{t("aboutStudioTitle")}</h2>
-          <p>{t("aboutStudioBody")}</p>
+          <span className="eyebrow">{t("aboutEyebrow")}</span>
+          <h2>{locale === "es" ? "Cómo revisamos el contenido" : "How we review content"}</h2>
+          <p>{t("aboutBody2")}</p>
           <ul className="about-studio-points">
             <li>
               <Icon name="shield" />

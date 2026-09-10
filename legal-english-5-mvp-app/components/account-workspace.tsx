@@ -7,7 +7,6 @@ import { useApp } from "@/components/app-provider";
 import { AvatarPicker } from "@/components/avatar-picker";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
-import { Photo } from "@/components/photo";
 import { categoryLabel, entitlementLabel, subscriptionStatusLabel, type Locale } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { normalizePreferences, type Preferences } from "@/lib/preferences";
@@ -160,13 +159,13 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
             <p>{L(active === "profile" ? "accountLead" : active === "preferences" ? "prefsLead" : active === "security" ? "securityLead" : "notificationsLead")}</p>
           </div>
 
-          <div className="account-ref-tabs" role="tablist" aria-label={L("accountTitle")}>
+          <nav className="account-ref-tabs" aria-label={L("accountTitle")}>
             {TABS.map((tab) => (
-              <Link className={tab === active ? "active" : ""} role="tab" aria-selected={tab === active} href={accountTabHref(tab)} key={tab} scroll={false}>
+              <Link className={tab === active ? "active" : ""} aria-current={tab === active ? "page" : undefined} href={accountTabHref(tab)} key={tab} scroll={false}>
                 {L(TAB_LABEL[tab])}
               </Link>
             ))}
-          </div>
+          </nav>
 
           {active === "preferences" && (
             <section className="account-ref-settings-card" id="preferences">
@@ -340,9 +339,6 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
 
           {active === "profile" && (
           <section className="account-ref-profile-card">
-            <div className="account-ref-cover" aria-hidden="true">
-              <Photo src="/home-assets/photos/account-cover.jpg" size="wide" priority />
-            </div>
             <div className="account-ref-card-heading">
               <h2>{L("profileInfo")}</h2>
               {editing ? (
@@ -527,7 +523,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
         </section>
 
         <aside className="account-ref-right-rail">
-          <section className="account-ref-panel account-ref-progress-card">
+          {active === "profile" && <section className="account-ref-panel account-ref-progress-card">
             <h2>{L("yourProgress")}</h2>
             <div className="account-ref-progress-body">
               <div className="account-ref-ring" style={{ background: `conic-gradient(var(--account-blue) 0 ${counts.masteryPct}%, #e4e1ec ${counts.masteryPct}% 100%)` }}>
@@ -557,7 +553,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
               <AccountIcon name="trend-chart" />
               {L("viewFullProgress")}
             </Link>
-          </section>
+          </section>}
 
           <section className="account-ref-panel account-ref-subscription-card">
             <div className="account-ref-rail-heading">
@@ -599,7 +595,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
             </Link>
           </section>
 
-          <section className="account-ref-panel account-ref-activity-card">
+          {active === "profile" && <section className="account-ref-panel account-ref-activity-card">
             <div className="account-ref-rail-heading">
               <h2>{L("recentActivity")}</h2>
               <Link href="/progress">{L("viewAll")}</Link>
@@ -621,7 +617,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                 </Link>
               ))}
             </div>
-          </section>
+          </section>}
         </aside>
       </div>
     </LearnerShell>

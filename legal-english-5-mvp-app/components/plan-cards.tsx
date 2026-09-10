@@ -39,9 +39,8 @@ export function PlanCards({ locale, placement }: { locale: Locale; placement: st
         <h3>{c.monthly.name}</h3>
         <p className="brief-price"><strong>{formatCop(PLAN_PRICES.monthly, locale)}</strong><small>{c.perMonth}</small></p>
         <p className="brief-plan-trial">{c.monthly.trial}</p>
-        <p className="brief-plan-terms">{c.monthly.terms}</p>
         <Link className="primary" href="/signup?plan=monthly" onClick={() => trackAction("cta", placement)}>{c.monthly.cta}</Link>
-        <p className="cta-disclosure"><CardIcon />{c.monthly.ctaNote}</p>
+        <p className="cta-disclosure brief-plan-disclosure"><CardIcon />{c.monthly.terms}</p>
       </article>
       <article className="brief-plan brief-plan-annual">
         <h3>{c.annual.name}</h3>

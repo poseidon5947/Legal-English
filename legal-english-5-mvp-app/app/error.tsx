@@ -11,7 +11,7 @@ const copy = {
   en: {
     eyebrow: "Something went wrong",
     title: "This page could not be opened.",
-    lead: "Nothing you did caused this, and your progress is safe on the server. Try again, or go back to the library.",
+    lead: "Try opening this page again. If the problem continues, return home or contact support.",
     retry: "Try again",
     home: "Back to home",
     help: "Report the problem",
@@ -20,7 +20,7 @@ const copy = {
   es: {
     eyebrow: "Algo salió mal",
     title: "No se pudo abrir esta página.",
-    lead: "No es culpa tuya y tu progreso está a salvo en el servidor. Inténtalo de nuevo o vuelve a la biblioteca.",
+    lead: "Intenta abrir esta página de nuevo. Si el problema continúa, vuelve al inicio o contacta con soporte.",
     retry: "Intentar de nuevo",
     home: "Volver al inicio",
     help: "Reportar el problema",

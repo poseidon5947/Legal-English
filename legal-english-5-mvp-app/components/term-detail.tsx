@@ -1,10 +1,7 @@
 "use client";
 
-import { termPhoto } from "@/lib/category-photos";
-import { Photo } from "@/components/photo";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
@@ -14,6 +11,7 @@ import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { areaNeighbours, formatDate, stateOf, studyTerms } from "@/lib/learner-stats";
 import type { ProgressState } from "@/lib/types";
+import { sessionTerms, sessionQuery } from "@/lib/learning-session";
 
 type DetailIcon =
   | "chevron-right"
@@ -37,7 +35,6 @@ function DetailIcon({ name, className = "" }: { name: DetailIcon; className?: st
 }
 
 const STATE_KEY: Record<ProgressState, LearnerKey> = { new: "stateNew", learning: "stateLearning", mastered: "stateMastered" };
-const STATE_PCT: Record<ProgressState, number> = { new: 10, learning: 60, mastered: 100 };
 
 /** Answer letters as the store expects them (A–D), from the option index. */
 function letter(index: number) {
@@ -49,14 +46,25 @@ export function TermDetail({ id }: { id: string }) {
   const { notify } = useToast();
   const { locale } = useLocale();
   const router = useRouter();
+  const params = useSearchParams();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
   const index = visible.findIndex((term) => term.id === id);
   const term = index >= 0 ? visible[index] : null;
-  // Previous / Next stay inside the Term's area (Hito B: guided route per
-  // category by DisplayOrder); the last Term of an area has no Next Term.
+  // Normal browsing follows the area curriculum. A dashboard session instead
+  // follows its explicit selection, even when that selection spans areas.
   const area = useMemo(() => areaNeighbours(visible, id), [visible, id]);
-  const { previous, next } = area;
+  const selectedSession = sessionTerms(visible, params.get("session"));
+  const sessionIndex = selectedSession.findIndex((item) => item.id === id);
+  const inSession = sessionIndex >= 0;
+  const sessionSuffix = inSession ? `?${sessionQuery(selectedSession)}` : "";
+  const previous = inSession ? selectedSession[sessionIndex - 1] : area.previous;
+  const next = inSession ? selectedSession[sessionIndex + 1] : area.next;
+  const position = inSession ? sessionIndex + 1 : area.position;
+  const total = inSession ? selectedSession.length : area.total;
+  const positionLabel = inSession
+    ? (locale === "es" ? `Término ${position} de ${total} de tu sesión` : `Term ${position} of ${total} in your session`)
+    : L("termPositionArea", { i: position, n: total, category: term ? categoryLabel(locale, term.category) : "" });
   const row = term ? progress[term.id] : undefined;
   const state = term ? stateOf(progress, term.id) : "new";
   const isOwner = session?.user.role === "admin";
@@ -76,13 +84,13 @@ export function TermDetail({ id }: { id: string }) {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (event.key === "ArrowLeft" && previous) router.push(`/terms/${previous.id}`);
-      else if (event.key === "ArrowRight" && next) router.push(`/terms/${next.id}`);
+      if (event.key === "ArrowLeft" && previous) router.push(`/terms/${previous.id}${sessionSuffix}`);
+      else if (event.key === "ArrowRight" && next) router.push(`/terms/${next.id}${sessionSuffix}`);
       else if ((event.key === "s" || event.key === "S") && term && canStudy) void toggleFavourite(term.id);
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [previous, next, term, canStudy, router, toggleFavourite]);
+  }, [previous, next, term, canStudy, router, toggleFavourite, sessionSuffix]);
 
   // "Report a problem" — the warranty channel promised in the Propuesta, one click from the term.
   const [reportOpen, setReportOpen] = useState(false);
@@ -206,10 +214,6 @@ export function TermDetail({ id }: { id: string }) {
       <audio ref={audioRef} onEnded={() => setPlaying(null)} onError={() => void onAudioError()} preload="none" />
       <div className="consideration-content">
         <section className="consideration-main-column">
-          <div className="consideration-photo-band" aria-hidden="true">
-            <Photo src={termPhoto(term, terms)} size="wide" priority />
-            <span>{categoryLabel(locale, term.category)}</span>
-          </div>
           <nav className="consideration-breadcrumb" aria-label="Breadcrumb">
             <Link href="/terms">{L("breadcrumbLibrary")}</Link>
             <DetailIcon name="chevron-right" />
@@ -265,10 +269,6 @@ export function TermDetail({ id }: { id: string }) {
               </div>
             </div>
             <div className="consideration-term-actions">
-              <Link className="consideration-category-chip" href={`/terms?category=${encodeURIComponent(term.category)}`}>
-                <DetailIcon name="contract-document" />
-                {categoryLabel(locale, term.category)}
-              </Link>
               <label className="consideration-status-select">
                 <span>{L("learningStatus")}</span>
                 <button type="button" className={`state-${state}`} disabled>
@@ -395,7 +395,11 @@ export function TermDetail({ id }: { id: string }) {
                 {L("masteredDone")}
               </button>
             ) : (
-              <button type="button" onClick={() => document.getElementById("quick-quiz")?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+              <button type="button" onClick={() => {
+                const quiz = document.getElementById("quick-quiz");
+                quiz?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+                quiz?.focus({ preventScroll: true });
+              }}>
                 <DetailIcon name="mastered-check" />
                 {L("takeQuizToMaster")}
               </button>
@@ -405,9 +409,13 @@ export function TermDetail({ id }: { id: string }) {
               {row?.favourite ? L("inMyLibrary") : L("addToLibrary")}
             </button>
             {next ? (
-              <Link href={`/terms/${next.id}`}>
+              <Link href={`/terms/${next.id}${sessionSuffix}`}>
                 {L("nextTerm", { term: next.term })}
                 <DetailIcon name="arrow-right" />
+              </Link>
+            ) : inSession ? (
+              <Link href={`/quizzes${sessionSuffix}`}>
+                {L("dashQuizThem")} <DetailIcon name="arrow-right" />
               </Link>
             ) : (
               <Link href="/categories" className="area-end-link">
@@ -416,7 +424,7 @@ export function TermDetail({ id }: { id: string }) {
               </Link>
             )}
           </div>
-          {area.last && (
+          {area.last && !inSession && (
             <p className="area-end-note" role="status">
               <strong>{L("areaEndTitle", { category: categoryLabel(locale, term.category) })}</strong> {L("areaEndBody")}
             </p>
@@ -425,25 +433,25 @@ export function TermDetail({ id }: { id: string }) {
 
         <aside className="consideration-right-rail">
           <div className="consideration-term-nav">
-            <button type="button" disabled={!previous} title={previous ? `← ${previous.term}` : undefined} onClick={() => previous && router.push(`/terms/${previous.id}`)}>
+            <button type="button" disabled={!previous} title={previous ? `← ${previous.term}` : undefined} onClick={() => previous && router.push(`/terms/${previous.id}${sessionSuffix}`)}>
               <DetailIcon name="arrow-left" />
               {L("previousTerm")}
             </button>
-            <button type="button" disabled={!next} title={next ? `${next.term} →` : undefined} onClick={() => next && router.push(`/terms/${next.id}`)}>
+            <button type="button" disabled={!next} title={next ? `${next.term} →` : undefined} onClick={() => next && router.push(`/terms/${next.id}${sessionSuffix}`)}>
               {L("nextTermShort")}
               <DetailIcon name="arrow-right" />
             </button>
           </div>
-          <div className="consideration-position" aria-label={L("termPositionArea", { i: area.position, n: area.total, category: categoryLabel(locale, term.category) })}>
+          <div className="consideration-position" aria-label={positionLabel}>
             <div className="consideration-position-track">
-              <i style={{ width: `${(area.position / Math.max(1, area.total)) * 100}%` }} />
+              <i style={{ width: `${(position / Math.max(1, total)) * 100}%` }} />
             </div>
             <span>
-              {L("termPositionArea", { i: area.position, n: area.total, category: categoryLabel(locale, term.category) })} · <kbd>←</kbd> <kbd>→</kbd>
+              {positionLabel} · <kbd>←</kbd> <kbd>→</kbd>
             </span>
           </div>
 
-          <section className="consideration-quiz-card" id="quick-quiz">
+          <section className="consideration-quiz-card" id="quick-quiz" tabIndex={-1}>
             <div className="consideration-rail-heading">
               <h2>
                 <DetailIcon name="nav-quiz" />
@@ -526,18 +534,15 @@ export function TermDetail({ id }: { id: string }) {
 
           <section className="consideration-progress-card">
             <h2>{L("yourProgress")}</h2>
-            <div className="consideration-progress-body">
-              <div className="consideration-ring" style={{ background: `conic-gradient(#452b84 0 ${STATE_PCT[state]}%, #e4e1ec ${STATE_PCT[state]}% 100%)` }}>
-                <strong>{STATE_PCT[state]}%</strong>
-                <span>{L("understanding")}</span>
-              </div>
-              <p>{state === "new" ? L("progressNew") : state === "learning" ? L("progressLearning") : L("progressMastered", { n: row?.attempts ?? 0 })}</p>
-            </div>
-            <div className={`consideration-progress-scale state-${state}`}>
-              <span>{L("stateNew")}</span>
-              <span>{L("stateLearning")}</span>
-              <span>{L("stateMastered")}</span>
-            </div>
+            <ol className="lesson-state-steps" aria-label={L("learningStatus")}>
+              {(["new", "learning", "mastered"] as const).map((step, i) => (
+                <li key={step} aria-current={state === step ? "step" : undefined}>
+                  <span aria-hidden="true">{i + 1}</span>
+                  <strong>{L(STATE_KEY[step])}</strong>
+                </li>
+              ))}
+            </ol>
+            <p className="lesson-state-explanation">{state === "new" ? L("progressNew") : state === "learning" ? L("progressLearning") : L("progressMastered", { n: row?.attempts ?? 0 })}</p>
           </section>
 
           <section className="consideration-related-card">
@@ -624,13 +629,6 @@ export function TermDetail({ id }: { id: string }) {
             </div>
           </section>
 
-          <Link className="learner-photo-card compact" href="/quizzes">
-            <Photo src="/home-assets/photos/workflow-study.jpg" size="card" />
-            <span>
-              <small>{L("detailPhotoTag")}</small>
-              <strong>{L("detailPhotoTitle")}</strong>
-            </span>
-          </Link>
         </aside>
       </div>
     </LearnerShell>

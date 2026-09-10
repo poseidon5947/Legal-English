@@ -43,7 +43,7 @@ const COPY = {
     code: "Verification code",
     codePh: "Enter 6-digit code",
     forgot: "Forgot password?",
-    consent: "I agree to the Terms of Service, Privacy Policy, and Cookie Policy.",
+    consent: "I agree to the ",
     sendReset: "Send Reset Link",
     confirm: "Confirm Account",
     updatePassword: "Update Password",
@@ -88,7 +88,7 @@ const COPY = {
     code: "Código de verificación",
     codePh: "Código de 6 dígitos",
     forgot: "¿Olvidaste tu contraseña?",
-    consent: "Acepto los Términos del servicio, la Política de privacidad y la Política de cookies.",
+    consent: "Acepto los ",
     sendReset: "Enviar enlace",
     confirm: "Confirmar cuenta",
     updatePassword: "Actualizar contraseña",
@@ -178,7 +178,9 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
     } else if (params.get("error")) {
       setError(params.get("error") || "");
     }
-    window.history.replaceState(null, "", window.location.pathname);
+    // Keep the chosen plan / return path through account creation and sign-in.
+    for (const key of ["confirmed", "recovery", "error"]) params.delete(key);
+    window.history.replaceState(null, "", `${window.location.pathname}${params.size ? `?${params}` : ""}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -192,6 +194,8 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
     setBusy(true);
     try {
       await run();
+    } catch {
+      setError(t("couldNotContinue"));
     } finally {
       setBusy(false);
     }
@@ -319,6 +323,10 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
           <h2>{title}</h2>
           <p>{subtitle}</p>
 
+          {isSignup && <ol className="signup-steps" aria-label={locale === "es" ? "Cómo empezar" : "Getting started"}>
+            {(locale === "es" ? ["Crea tu cuenta", "Activa la prueba", "Empieza a aprender"] : ["Create account", "Activate trial", "Start learning"]).map((step, i) => <li key={step} aria-current={i === 0 ? "step" : undefined}><span>{i + 1}</span>{step}</li>)}
+          </ol>}
+
           <div className="auth-reference-tabs">
             <button className={mode === "login" ? "active" : ""} type="button" onClick={() => setMode("login")}>
               {c.signIn}
@@ -333,7 +341,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
               <label>
                 {c.fullName}
                 <span>
-                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder={c.fullNamePh} required />
+                  <input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} placeholder={c.fullNamePh} required />
                   <AuthIcon name="user-name" />
                 </span>
               </label>
@@ -343,7 +351,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
               <label>
                 {c.email}
                 <span>
-                  <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={c.emailPh} required readOnly={mode === "confirm"} />
+                  <input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={c.emailPh} required readOnly={mode === "confirm"} />
                   <AuthIcon name="email-envelope" />
                 </span>
               </label>
@@ -355,6 +363,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                 <span>
                   <input
                     type={showPassword ? "text" : "password"}
+                    autoComplete={isSignup || mode === "reset" ? "new-password" : "current-password"}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     placeholder={isSignup ? c.passwordPhNew : c.passwordPh}
@@ -390,12 +399,12 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                 <label className="auth-reference-consent">
                   <input type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
                   <span>
-                    {c.consent}{" "}
+                    {c.consent}
                     <Link href="/terms-of-service">{c.tos}</Link>
-                    {" · "}
+                    {", "}
                     <Link href="/privacy">{c.privacy}</Link>
-                    {" · "}
-                    <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>
+                    {c.termsB}
+                    <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>.
                   </span>
                 </label>
               </>
@@ -406,7 +415,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                 {error}
               </p>
             )}
-            {notice && <p className="auth-reference-notice">{notice}</p>}
+            {notice && <p className="auth-reference-notice" role="status">{notice}</p>}
 
             <button className="auth-reference-submit" type="submit" disabled={busy} aria-busy={busy || undefined}>
               {mode === "login" ? c.signIn : mode === "signup" ? c.createAccount : mode === "forgot" ? c.sendReset : mode === "confirm" ? c.confirm : c.updatePassword}
@@ -453,14 +462,14 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
           </div>
         </div>
 
-        <p className="auth-reference-terms">
+        {mode === "login" && <p className="auth-reference-terms">
           {c.termsA}
           <Link href="/terms-of-service">{c.tos}</Link>
           {c.termsB}
           <Link href="/privacy">{c.privacy}</Link>
           {" · "}
           <Link href="/cookies">{locale === "es" ? "Política de cookies" : "Cookie Policy"}</Link>.
-        </p>
+        </p>}
       </section>
     </main>
   );

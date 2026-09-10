@@ -13,6 +13,7 @@ import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { achievementsFor, categoryStats, countsFor, formatWhen, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
 import type { Term } from "@/lib/types";
+import { sessionTerms, sessionQuery } from "@/lib/learning-session";
 
 type QuizIcon =
   | "target-accuracy"
@@ -78,6 +79,8 @@ export function QuizWorkspace() {
   // Queue: terms with a usable quiz, weakest first, optionally one category or one term.
   const [category, setCategory] = useState<string>(params.get("category") || "All");
   const focusTerm = params.get("term");
+  const selectedSession = params.get("session");
+  const inSession = selectedSession !== null;
   useEffect(() => {
     const next = params.get("category");
     if (next) setCategory(next);
@@ -94,6 +97,7 @@ export function QuizWorkspace() {
 
   function buildQueue(scope: string, onlyTerm?: string | null) {
     const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption);
+    if (inSession) return sessionTerms(pool, selectedSession).map((term) => term.id);
     const scoped = onlyTerm ? pool.filter((term) => term.id === onlyTerm) : scope === "All" ? pool : pool.filter((term) => term.category === scope);
     const weight = (term: Term) => (stateOf(progress, term.id) === "mastered" ? 2 : stateOf(progress, term.id) === "learning" ? 0 : 1);
     return [...scoped].sort((a, b) => weight(a) - weight(b) || a.displayOrder - b.displayOrder).map((term) => term.id);
@@ -109,7 +113,7 @@ export function QuizWorkspace() {
     setMissed([]);
     setAnswered(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible.length, category, focusTerm]);
+  }, [visible.length, category, focusTerm, selectedSession]);
 
   const current = queue.length ? visible.find((term) => term.id === queue[position]) : undefined;
   const options = current ? quizOptions(current) : [];
@@ -205,51 +209,6 @@ export function QuizWorkspace() {
             </div>
           </div>
 
-          <section className="quiz-ref-stat-grid" aria-label="Quiz statistics">
-            <article className="green">
-              <span>
-                <QuizIcon name="target-accuracy" />
-              </span>
-              <div>
-                <p>{L("quizAccuracy")}</p>
-                <strong>{counts.accuracyPct}%</strong>
-                <small>{L("ofQuizzed")}</small>
-              </div>
-            </article>
-            <article className="blue">
-              <span>
-                <QuizIcon name="clipboard-quizzes" />
-              </span>
-              <div>
-                <p>{L("quizzesCompleted")}</p>
-                <strong>{counts.attempts}</strong>
-                <small>{L("totalAttempts")}</small>
-              </div>
-            </article>
-            <article className="gold">
-              <span>
-                <QuizIcon name="flame-streak" />
-              </span>
-              <div>
-                <p>{L("currentStreak")}</p>
-                <strong>
-                  {streak.current} {streak.current === 1 ? L("day") : L("days")}
-                </strong>
-                <small>{L("best", { n: streak.longest })}</small>
-              </div>
-            </article>
-            <article className="purple">
-              <span>
-                <QuizIcon name="graduation-cap" />
-              </span>
-              <div>
-                <p>{L("termsMastered")}</p>
-                <strong>{counts.mastered}</strong>
-                <small>{L("ofTotal", { n: counts.total })}</small>
-              </div>
-            </article>
-          </section>
-
           <section className="quiz-active-card">
             <div className="quiz-active-topline">
               <span>{L("activeQuiz")}</span>
@@ -260,13 +219,19 @@ export function QuizWorkspace() {
                 <i style={{ width: `${((position + (result ? 1 : 0)) / queue.length) * 100}%` }} />
               </div>
             )}
-            <div className="quiz-scope">
+            {inSession ? (
+              <div className="session-scope">
+                <strong>{locale === "es" ? "Tu sesión de práctica" : "Your practice session"}</strong>
+                <span>{locale === "es" ? "Los términos que elegiste, en el mismo orden." : "Your selected terms, in the same order."}</span>
+                <Link href={queue[0] ? `/terms/${queue[0]}?${sessionQuery(sessionTerms(visible, selectedSession))}` : "/dashboard"}>{locale === "es" ? "Volver a estudiar" : "Back to studying"}</Link>
+              </div>
+            ) : <div className="quiz-scope">
               {["All", "Contracts", "Corporate Law", "Employment Law"].map((item) => (
                 <button key={item} type="button" className={category === item ? "active" : ""} onClick={() => setCategory(item)}>
                   {item === "All" ? L("allQuiz") : categoryLabel(locale, item)}
                 </button>
               ))}
-            </div>
+            </div>}
             {queue.length === 0 ? (
               <p>{L("noQuizzes")}</p>
             ) : finished ? (
@@ -289,7 +254,7 @@ export function QuizWorkspace() {
                         if (!term) return null;
                         return (
                           <li key={id}>
-                            <Link href={`/terms/${id}`}>
+                            <Link href={`/terms/${id}${inSession ? `?${sessionQuery(sessionTerms(visible, selectedSession))}` : ""}`}>
                               <b>{term.term}</b>
                               <small>{categoryLabel(locale, term.category)}</small>
                             </Link>
@@ -300,8 +265,9 @@ export function QuizWorkspace() {
                   </div>
                 )}
                 <div className="quiz-active-actions">
+                  {inSession && <Link className="primary inline" href="/dashboard">{locale === "es" ? "Continuar aprendiendo" : "Continue learning"}</Link>}
                   <Link href="/progress">{L("viewAll")}</Link>
-                  <button type="button" className="primary inline" onClick={restart}>
+                  <button type="button" className={inSession ? "ghost" : "primary inline"} onClick={restart}>
                     {L("startAgain")}
                   </button>
                 </div>
@@ -309,7 +275,7 @@ export function QuizWorkspace() {
             ) : current ? (
               <>
                 <h2>
-                  <Link href={`/terms/${current.id}`}>{current.term}</Link> · {categoryLabel(locale, current.category)}
+                  <Link href={`/terms/${current.id}${inSession ? `?${sessionQuery(sessionTerms(visible, selectedSession))}` : ""}`}>{current.term}</Link> · {categoryLabel(locale, current.category)}
                 </h2>
                 <p>{current.quiz?.question}</p>
                 <div className="quiz-active-options" role="radiogroup">
@@ -366,6 +332,51 @@ export function QuizWorkspace() {
                 </p>
               </>
             ) : null}
+          </section>
+
+          <section className="quiz-ref-stat-grid" aria-label="Quiz statistics">
+            <article className="green">
+              <span>
+                <QuizIcon name="target-accuracy" />
+              </span>
+              <div>
+                <p>{L("quizAccuracy")}</p>
+                <strong>{counts.accuracyPct}%</strong>
+                <small>{L("ofQuizzed")}</small>
+              </div>
+            </article>
+            <article className="blue">
+              <span>
+                <QuizIcon name="clipboard-quizzes" />
+              </span>
+              <div>
+                <p>{L("quizzesCompleted")}</p>
+                <strong>{counts.attempts}</strong>
+                <small>{L("totalAttempts")}</small>
+              </div>
+            </article>
+            <article className="gold">
+              <span>
+                <QuizIcon name="flame-streak" />
+              </span>
+              <div>
+                <p>{L("currentStreak")}</p>
+                <strong>
+                  {streak.current} {streak.current === 1 ? L("day") : L("days")}
+                </strong>
+                <small>{L("best", { n: streak.longest })}</small>
+              </div>
+            </article>
+            <article className="purple">
+              <span>
+                <QuizIcon name="graduation-cap" />
+              </span>
+              <div>
+                <p>{L("termsMastered")}</p>
+                <strong>{counts.mastered}</strong>
+                <small>{L("ofTotal", { n: counts.total })}</small>
+              </div>
+            </article>
           </section>
 
           <section className="quiz-history-card">
