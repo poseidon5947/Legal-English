@@ -191,21 +191,26 @@ export function TermDetail({ id }: { id: string }) {
     );
   }
 
-  // Lesson sequence per Design System v2.3 §10 (fields the MCD delivers):
-  // Term → Pronunciation → Definition → Civil Law Equivalent → Use It With →
-  // In Context → Spanish-Speaker Alert* → US/UK Variant* → Quick Quiz.
-  // Optional (*) cards are hidden when empty (§8 "hide optional sections").
+  // Lesson sequence (Product Bible Term Detail / MCD-DEC-09):
+  // Term → Pronunciation → Definition → Spanish Equivalent → Civil Law
+  // Equivalent* → Use It With → In Context → Spanish-Speaker Alert* →
+  // US/UK Variant* → Quick Quiz. Optional (*) cards are hidden when empty.
+  // SpanishEquivalent and CivilLawEquivalent are separate fields: one never
+  // substitutes for the other, even when the text coincides (EKB-DEC-18).
   const useItWith = term.useItWith.map((item) => item.expression).join(", ");
-  // The Editorial Knowledge Base classifies each Civil Law Equivalent as a
-  // DIRECT TERMINOLOGICAL or a FUNCTIONAL equivalent; the MCD carries that in
-  // ComparativeLawNote ("Direct terminological equivalent: …" / "Functional equivalent…").
-  const equivalence: LearnerKey | null = /^functional/i.test(term.comparativeLawNote) ? "functionalEquivalent" : /^direct/i.test(term.comparativeLawNote) ? "directEquivalent" : null;
+  const spanishEquivalent = term.spanishEquivalent.trim();
+  const civilLawEquivalent = term.civilLawEquivalent.trim();
+  // ComparativeLawNote belongs to the Civil Law Equivalent card only.
+  const equivalence: LearnerKey | null = /^functional/i.test(term.comparativeLawNote)
+    ? "functionalEquivalent"
+    : /^direct/i.test(term.comparativeLawNote)
+      ? "directEquivalent"
+      : null;
   const equivalenceNote = (() => {
     let note = term.comparativeLawNote.replace(/^(direct terminological equivalent|functional equivalent)\s*[:.\-–—]?\s*/i, "").trim();
-    // The note usually restates the equivalent first ("documento de constitución. The U.S. …");
-    // the card already shows it as the body, so keep only the explanation.
-    const lead = term.civilLawEquivalent.trim();
-    if (lead && note.toLowerCase().startsWith(lead.toLowerCase())) note = note.slice(lead.length).replace(/^\s*[.;:,\-–—]\s*/, "").trim();
+    if (civilLawEquivalent && note.toLowerCase().startsWith(civilLawEquivalent.toLowerCase())) {
+      note = note.slice(civilLawEquivalent.length).replace(/^\s*[.;:,\-–—]\s*/, "").trim();
+    }
     return note;
   })();
 
@@ -294,7 +299,21 @@ export function TermDetail({ id }: { id: string }) {
               </article>
             )}
 
-            {(term.civilLawEquivalent.trim() || term.spanishEquivalent.trim()) && (
+            {spanishEquivalent && (
+              <article className="consideration-info-card green">
+                <div className="consideration-info-icon">
+                  <DetailIcon name="civil-scales" />
+                </div>
+                <div>
+                  <div className="consideration-info-heading">
+                    <h2>{L("spanishEquivalent")}</h2>
+                  </div>
+                  <p lang="es">{spanishEquivalent}</p>
+                </div>
+              </article>
+            )}
+
+            {civilLawEquivalent && (
               <article className="consideration-info-card purple">
                 <div className="consideration-info-icon">
                   <DetailIcon name="civil-scales" />
@@ -304,13 +323,8 @@ export function TermDetail({ id }: { id: string }) {
                     <h2>{L("civilLaw")}</h2>
                     {equivalence && <span className={`equivalence ${equivalence === "directEquivalent" ? "direct" : "functional"}`}>{L(equivalence)}</span>}
                   </div>
-                  <p>{term.civilLawEquivalent || term.spanishEquivalent}</p>
-                  {term.civilLawEquivalent.trim() && term.spanishEquivalent.trim() && term.spanishEquivalent.trim() !== term.civilLawEquivalent.trim() && (
-                    <p className="consideration-info-sub">
-                      <b>{L("commonTranslation")}:</b> {term.spanishEquivalent}
-                    </p>
-                  )}
-                  {equivalenceNote && equivalenceNote !== term.civilLawEquivalent.trim() && <p className="consideration-info-sub">{equivalenceNote}</p>}
+                  <p lang="es">{civilLawEquivalent}</p>
+                  {equivalenceNote && equivalenceNote !== civilLawEquivalent && <p className="consideration-info-sub">{equivalenceNote}</p>}
                 </div>
               </article>
             )}

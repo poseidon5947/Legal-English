@@ -271,7 +271,24 @@ export function formatWhen(iso: string, locale: string, labels: { today: string;
   return date.toLocaleDateString(locale, { month: "short", day: "numeric", year: date.getFullYear() === now.getFullYear() ? undefined : "numeric" });
 }
 
+/**
+ * Format a date for display. MCD LastReviewedAt values are calendar days
+ * (`YYYY-MM-DD`). Parsing those with `new Date("YYYY-MM-DD")` treats them as
+ * UTC midnight, so `toLocaleDateString` in America/Bogotá (and similar zones)
+ * shows the previous calendar day. Date-only strings are therefore formatted
+ * from the stored year/month/day without a timezone shift.
+ */
 export function formatDate(iso: string | null | undefined, locale: string) {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
+  const trimmed = iso.trim();
+  const calendar = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
+  if (calendar) {
+    const year = Number(calendar[1]);
+    const month = Number(calendar[2]);
+    const day = Number(calendar[3]);
+    // Noon local avoids DST edge cases when only the calendar day is needed.
+    const date = new Date(year, month - 1, day, 12, 0, 0);
+    return date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
+  }
+  return new Date(trimmed).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
 }
