@@ -5,11 +5,11 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 /**
- * P03 / A-06 isolation evidence (Hallazgos Hito A, 10 Sep 2026).
- * Environment: node:test against the production schema and learn API in this repo.
- * Date: 11 September 2026.
- * Term: CON-004 binding (Contracts) — the only term the Owner authorized to publish.
- * Actors: two Learners (Berta, María). Neither is admin.
+ * P03 / A-06 — schema and API contract checks only (Hallazgos Hito A).
+ * These cases do not run SELECT/INSERT/UPDATE against Supabase with two
+ * Learner sessions. The live dual-session test is pending and postponed
+ * until milestone close; it must not be marked Cumple / fulfilled.
+ * Term of the functional check: CON-004 binding (Contracts).
  */
 const CASE = "P03-A06-2026-09-11";
 const TERM = "CON-004";
