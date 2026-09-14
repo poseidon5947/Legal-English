@@ -39,6 +39,13 @@
 .auth-reference-form .auth-reference-consent a { text-underline-offset: 3px; }
 .home-journey.reveal-ready [data-reveal] { transition-duration: .35s; }
 .home-journey.reveal-ready [data-reveal="stagger"] > * { transition-duration: .35s; }
+@media (min-width: 961px) {
+  .home-journey .lesson-studio { grid-template-columns: 210px minmax(0, 1fr) 338px; }
+  .home-journey .lesson-nav [role="tab"] > span { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (max-width: 960px) {
+  .home-journey .lesson-nav [role="tab"] { flex: 0 0 max-content; min-width: max-content; }
+}
 @media (max-width: 640px) {
   .home-journey .brief-trust { margin: 32px 18px 0; padding: 22px; }
   .home-journey .journey-components .brief-components-grid { grid-template-columns: minmax(0, 1fr); }

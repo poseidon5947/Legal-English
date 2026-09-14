@@ -53,10 +53,29 @@
 .learner-shell .account-ref-tabs a { font-size: .8125rem; min-height: 44px; white-space: normal; }
 .learner-shell .account-ref-profile-card { padding-top: 20px; }
 @media (max-width: 860px) {
+  html:has(.learner-shell),
+  body:has(.learner-shell) { overflow-x: clip; }
+  .learner-shell .terms-reference-sidebar { overflow-x: hidden; contain: inline-size; }
+  .learner-shell .terms-reference-sidebar .terms-reference-nav :is(a, button) {
+    height: auto;
+    min-height: 46px;
+    white-space: normal;
+    line-height: 1.45;
+  }
   .learner-shell .learner-mobile-bar { height: auto; min-height: 60px; padding-block: 8px; }
-  .learner-shell .learner-tabbar { display: flex; overflow-x: auto; gap: 4px; }
-  .learner-shell .learner-tabbar a { flex: 1 0 auto; width: auto; max-width: none; padding-inline: 8px; }
-  .learner-shell .learner-tabbar a span { white-space: nowrap; max-width: none; }
+  .learner-shell .learner-tabbar {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .learner-shell .learner-tabbar a { width: auto; min-width: 0; padding-inline: 4px; }
+  .learner-shell .learner-tabbar a span {
+    max-width: 100%;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+    white-space: normal;
+  }
   .learner-shell .consideration-title-row { grid-template-columns: minmax(0, 1fr); }
   .learner-shell .consideration-term-actions { align-items: start; }
   .learner-shell .consideration-status-select { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
@@ -223,7 +242,7 @@
   .learner-shell .terms-reference-content .terms-category-progress:not(.large) small { grid-column: 2; grid-row: 1 / 3; align-self: center; font-size: 12px; }
   .learner-shell .terms-reference-content .terms-category-progress:not(.large) article[aria-pressed="true"] { border-color: #452b84; background: #f7f5fc; }
   .learner-shell .learner-tabbar a { letter-spacing: 0; font-size: 11px; min-width: 0; }
-  .learner-shell .learner-tabbar a span { overflow: visible; text-overflow: clip; white-space: nowrap; line-height: 1.4; }
+  .learner-shell .learner-tabbar a span { overflow: visible; text-overflow: clip; white-space: normal; line-height: 1.4; }
 }
 @media (max-width: 640px) {
   .home-ref-actions.hero-editorial-actions { gap: 10px; }
