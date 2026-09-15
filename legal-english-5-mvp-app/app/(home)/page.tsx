@@ -53,7 +53,7 @@ function HomeIcon({ name, className = "" }: { name: HomeIconName; className?: st
 const categoryRoutes = ["Contracts", "Corporate Law", "Employment Law"] as const;
 // Approved Area icons (Design Freeze Pack I02) and photography (P02 / P03 / P04, frozen crops).
 const categoryIcons = ["areas/contracts", "areas/corporate-law", "areas/employment-law"] as const satisfies readonly Le5IconName[];
-const categoryPhotos = ["/home-assets/photos/category-contracts.jpg", "/home-assets/photos/category-corporate.jpg", "/home-assets/photos/category-employment.jpg"];
+const categoryPhotos = ["/home-assets/photos/area-contracts.jpg", "/home-assets/photos/area-corporate.jpg", "/home-assets/photos/area-employment.jpg"];
 const categoryPhotoAlts = {
   en: [
     "A legal professional reviews and marks a commercial contract at a desk.",

@@ -12,9 +12,9 @@
 const P = "/home-assets/photos/";
 
 export const CATEGORY_PHOTO: Record<string, string> = {
-  Contracts: `${P}category-contracts.jpg`,
-  "Corporate Law": `${P}category-corporate.jpg`,
-  "Employment Law": `${P}category-employment.jpg`,
+  Contracts: `${P}area-contracts.jpg`,
+  "Corporate Law": `${P}area-corporate.jpg`,
+  "Employment Law": `${P}area-employment.jpg`,
 };
 
 export const CATEGORY_PHOTO_ALT: Record<string, string> = {
@@ -31,7 +31,7 @@ const TERM_PHOTOS: Record<string, string[]> = {
     `${P}term-contracts-checklist.jpg`,
     `${P}tos-signature.jpg`,
     `${P}term-contracts-paperwork.jpg`,
-    `${P}category-contracts.jpg`,
+    `${P}area-contracts.jpg`,
     `${P}mosaic-documents.jpg`,
   ],
   "Corporate Law": [
@@ -41,7 +41,7 @@ const TERM_PHOTOS: Record<string, string[]> = {
     `${P}studio-boardroom.jpg`,
     `${P}term-corporate-press.jpg`,
     `${P}term-corporate-workspace.jpg`,
-    `${P}category-corporate.jpg`,
+    `${P}area-corporate.jpg`,
     `${P}term-corporate-boardroom.jpg`,
   ],
   "Employment Law": [
@@ -51,7 +51,7 @@ const TERM_PHOTOS: Record<string, string[]> = {
     `${P}term-employment-portrait.jpg`,
     `${P}term-employment-colleagues.jpg`,
     `${P}term-employment-manager.jpg`,
-    `${P}category-employment.jpg`,
+    `${P}area-employment.jpg`,
     `${P}help-support.jpg`,
   ],
 };
