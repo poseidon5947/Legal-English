@@ -107,11 +107,21 @@ export type User = {
   subscription: Subscription;
   disabledAt: string | null;
   privacyAcceptedAt: string | null;
+  /** Separate consents recorded at registration (migration 011). Null on rows created before it. */
+  termsAcceptedAt?: string | null;
+  marketingOptInAt?: string | null;
   /** Profile photo. Alpha: `/api/account/avatar?v=<updatedAt>`; production: short-lived signed Storage URL. Null = initials. */
   avatarUrl?: string | null;
   /** Account-scoped preferences (see lib/preferences.ts). Absent on legacy rows = defaults. */
   preferences?: Preferences;
 };
+
+/**
+ * Registration consents (Textos Web IMP-13 / IMP-18): two required checkboxes
+ * (Terms of Service, personal data processing) and one optional (marketing).
+ * All start unchecked; each is stored with its own timestamp.
+ */
+export type Consents = { terms: boolean; data: boolean; marketing: boolean };
 
 export type Progress = {
   userId: string;
@@ -120,7 +130,19 @@ export type Progress = {
   state: ProgressState;
   attempts: number;
   updatedAt: string;
+  /** Audit fields (migration 010). Optional so rows written before it still type-check. */
+  openedAt?: string | null;
+  quizCompleted?: boolean;
+  quizCorrect?: boolean;
+  masteredAt?: string | null;
+  lastActivityAt?: string | null;
 };
+
+/** Where a Quick Quiz answer was submitted from (kept in the quiz_attempts ledger). */
+export type QuizSource = "term" | "runner" | "session";
+
+/** Optional metadata sent with a quiz answer: an idempotency key per Check Answer press and the page it came from. */
+export type QuizSubmission = { clientKey?: string; source?: QuizSource };
 
 /**
  * One row per learner per calendar day (the learner's local day, "YYYY-MM-DD").

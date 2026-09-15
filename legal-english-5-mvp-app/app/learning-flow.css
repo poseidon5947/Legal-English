@@ -30,7 +30,7 @@
 .learner-shell .terms-empty { display: grid; justify-items: start; gap: 16px; padding: 28px; border-radius: var(--learning-radius); }
 .learner-shell .terms-empty p { margin: 0; font-size: .9375rem; line-height: 1.7; }
 .learner-shell .progress-next-step { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: var(--learning-space); margin: 20px 0; background: white; border: 1px solid var(--learning-line); border-radius: var(--learning-radius); }
-.progress-next-step h2 { margin: 0 0 6px; font: 600 1rem/1.5 Poppins, Arial, sans-serif; color: #452b84; }
+.progress-next-step h2 { margin: 0 0 6px; font: 600 1rem/1.5 Inter, Arial, sans-serif; color: #452b84; }
 .progress-next-step p { margin: 0; max-width: 60ch; color: #585460; font-size: .875rem; line-height: 1.7; }
 .progress-next-step a { min-height: 44px; }
 .learner-shell .progress-next-step > *,
@@ -95,7 +95,7 @@
   box-shadow: 0 6px 18px -12px #452b8426;
 }
 .learner-shell .terms-card-grid:not(.list) .terms-card h2 {
-  font-family: Poppins, Arial, sans-serif;
+  font-family: Inter, Arial, sans-serif;
   font-size: 17px;
   font-weight: 600;
   line-height: 1.5;
@@ -112,7 +112,7 @@
 .dashboard-checklist.is-complete { padding: 14px 20px; margin-bottom: 20px; background: #f6faf6; border-color: #dcebdc; }
 .dashboard-checklist.is-complete .dashboard-checklist-head { margin-bottom: 0; }
 .dashboard-checklist.is-complete .eyebrow { display: none; }
-.dashboard-checklist.is-complete h2 { font-family: Poppins, Arial, sans-serif; font-size: 14px; }
+.dashboard-checklist.is-complete h2 { font-family: Inter, Arial, sans-serif; font-size: 14px; }
 .dashboard-session .dashboard-session-actions { margin: 8px 0 22px; }
 .dashboard-session .dashboard-session-actions .primary { min-height: 48px; }
 .dashboard-session-list a { min-height: 74px; }
@@ -191,7 +191,7 @@
   background: #f0edf7;
   font-size: 12px;
 }
-.lesson-state-steps strong { font: 600 13px/1.5 Poppins, Arial, sans-serif; }
+.lesson-state-steps strong { font: 600 13px/1.5 Inter, Arial, sans-serif; }
 .lesson-state-steps li[aria-current="step"] { color: #452b84; background: #f7f5fc; border-color: #dcd5ec; }
 .lesson-state-steps li[aria-current="step"] > span { color: white; background: #452b84; }
 .consideration-progress-card .lesson-state-explanation { margin: 0; font-size: 13px; line-height: 1.7; color: #45484b; }

@@ -55,7 +55,7 @@ const UI: Record<
   en: {
     tabs: ["Definition", "Spanish Equivalent", "Civil Law Equivalent", "Spanish-Speaker Alert", "Use It With", "In Context"],
     category: "Contracts",
-    preview: "A look inside your lesson",
+    preview: "A look inside a term",
     explore: "Explore the term",
     sections: "Lesson sections",
     pronunciation: "Audio pronunciation",
@@ -79,12 +79,12 @@ const UI: Record<
     signup: "Start your 7-day free trial →",
     next: "Next section",
     back: "Back to definition",
-    source: "Approved content · Master Content Database",
+    source: "Editorially reviewed by MPC LAW STUDIO.",
   },
   es: {
     tabs: ["Definición", "Equivalente en español", "Equivalente en derecho civil", "Alerta para hispanohablantes", "Use It With", "In Context"],
-    category: "Contratos",
-    preview: "Vista previa de una lección",
+    category: "Contracts",
+    preview: "Vista previa de un término",
     explore: "Explora el término",
     sections: "Secciones de la lección",
     pronunciation: "Pronunciación en audio",
@@ -108,7 +108,7 @@ const UI: Record<
     signup: "Empieza tu prueba gratis de 7 días →",
     next: "Siguiente sección",
     back: "Volver a la definición",
-    source: "Contenido aprobado · Master Content Database",
+    source: "Revisado editorialmente por MPC LAW STUDIO.",
   },
 };
 
@@ -291,7 +291,7 @@ export function LessonPreview({ locale, tabIcons, renderIcon }: { locale: Locale
         {!checked ? <button type="button" className="lesson-check" onClick={() => choice !== null && setChecked(true)} disabled={choice === null}>{P.check}<span aria-hidden="true">→</span></button>
           : choice === correct ? <Link className="lesson-check" href="/signup" onClick={() => trackAction("cta", "example")}>{P.signup}</Link>
           : <button type="button" className="lesson-check" onClick={() => { setChecked(false); setChoice(null); }}>{P.tryAgain}<span aria-hidden="true">↻</span></button>}
-        <p className="lesson-source">{P.source} · {T.id} · {T.source.workbook}</p>
+        <p className="lesson-source">{P.source}</p>
       </article>
     </div>
   );

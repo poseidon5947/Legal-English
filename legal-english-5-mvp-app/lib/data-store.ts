@@ -1,7 +1,7 @@
 import * as alphaStore from "./store";
 import * as productionStore from "./store.supabase";
 import type { InsightEvent, InsightSummary } from "./insights";
-import type { Mail, Plan, Progress, PublicUser, Term, StudyDay, SupportTicket, TicketStatus } from "./types";
+import type { Consents, Mail, Plan, Progress, PublicUser, QuizSubmission, Term, StudyDay, SupportTicket, TicketStatus } from "./types";
 
 // "alpha" = local JSON file, no external services (default, matches
 // .env.example, always runnable with `npm run dev` and no credentials).
@@ -26,7 +26,7 @@ export interface Store {
     name: string,
     email: string,
     password: string,
-    privacyAccepted: boolean
+    consents: Consents
   ): Promise<{ ok: true; user: PublicUser; code?: string; sessionEstablished: boolean } | { ok: false; message: string }>;
   verifyEmail(email: string, code: string): Promise<{ ok: boolean; message?: string }>;
   requestReset(email: string): Promise<{ ok: true }>;
@@ -51,7 +51,7 @@ export interface Store {
   openTerm(userId: string, termId: string, day?: unknown): Promise<any>;
   toggleFavourite(userId: string, termId: string, day?: unknown): Promise<{ ok: true; progress: Progress[]; studyDays: StudyDay[] } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  submitQuiz(userId: string, termId: string, option: string, day?: unknown): Promise<any>;
+  submitQuiz(userId: string, termId: string, option: string, day?: unknown, meta?: QuizSubmission): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   applyBilling(userId: string, event: string, plan?: Plan): Promise<any>;
   /**

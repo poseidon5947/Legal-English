@@ -1,4 +1,4 @@
--- Legal English 5 · migrations 001–008 concatenated in order.
+-- Legal English 5 · migrations 001–011 concatenated in order.
 -- Paste the whole file into the Supabase SQL Editor and Run once on a fresh project.
 -- Regenerate after adding a migration: cat migrations/0*.sql
 
@@ -709,3 +709,147 @@ update public.users
 set role = 'admin', updated_at = now()
 where lower(email) in ('pilarcruz640@gmail.com', 'pilar@mpclaw.studio')
   and role is distinct from 'admin';
+
+-- ===== migrations/010_quiz_attempts.sql =====
+-- Hito B — progress-state audit trail (client finding "Inconsistencia grave en
+-- los estados de progreso", 14 Sep 2026).
+--
+-- Until now user_term_progress kept ONE mutable row per (user, term): state,
+-- an attempts counter and updated_at. That is enough to render the UI but it
+-- cannot answer "who answered what, when, from which page" — which is exactly
+-- what the Owner needed when the Learner account showed 30 Mastered terms and
+-- 45 attempts she did not recognise. This migration makes every future
+-- Mastered state and every attempt traceable and non-repudiable:
+--
+--  1. quiz_attempts — an append-only ledger with one row per graded answer
+--     (option chosen, correct or not, page it came from, client key). RLS lets
+--     a learner INSERT and SELECT only her own rows; nobody but the service
+--     role can UPDATE or DELETE, so the history cannot be rewritten from the app.
+--  2. user_term_progress gains the fields the Owner asked to see per Term:
+--     opened_at, quiz_completed, quiz_correct, mastered_at, last_activity_at.
+--     They are written only by the server on real learner actions.
+--
+-- Nothing here changes existing rows' state or attempts: the current data is
+-- preserved as evidence. The new columns are back-filled from what the old
+-- row can prove (attempts > 0 ⇒ quiz_completed; state = mastered ⇒ quiz_correct
+-- and mastered_at = updated_at) so the audit columns are never NULL for an
+-- old row, and are exact from this migration onwards.
+
+create table if not exists public.quiz_attempts (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references public.users(id) on delete cascade,
+  term_id text not null references public.terms(id) on delete cascade,
+  option text not null check (option in ('A', 'B', 'C', 'D')),
+  correct boolean not null,
+  -- Where the answer was submitted: the Term Detail Quick Quiz ("term"), the
+  -- global quiz runner ("runner") or a dashboard session ("session").
+  source text not null default 'term' check (source in ('term', 'runner', 'session')),
+  -- Opaque id minted by the browser for each Check Answer press. A retried or
+  -- duplicated request carrying the same key is a no-op instead of a second
+  -- attempt (unique index below).
+  client_key text,
+  answered_at timestamptz not null default now()
+);
+
+create unique index if not exists quiz_attempts_client_key_idx on public.quiz_attempts (user_id, client_key) where client_key is not null;
+create index if not exists quiz_attempts_user_term_idx on public.quiz_attempts (user_id, term_id, answered_at desc);
+create index if not exists quiz_attempts_answered_idx on public.quiz_attempts (answered_at desc);
+
+alter table public.quiz_attempts enable row level security;
+
+create policy "users read own attempts" on public.quiz_attempts for select to authenticated
+using ((select auth.uid()) = user_id or public.is_admin());
+create policy "users append own attempts" on public.quiz_attempts for insert to authenticated
+with check ((select auth.uid()) = user_id);
+-- No UPDATE / DELETE policy on purpose: the ledger is append-only for the app.
+
+grant select, insert on public.quiz_attempts to authenticated;
+
+alter table public.user_term_progress
+  add column if not exists opened_at timestamptz,
+  add column if not exists quiz_completed boolean not null default false,
+  add column if not exists quiz_correct boolean not null default false,
+  add column if not exists mastered_at timestamptz,
+  add column if not exists last_activity_at timestamptz;
+
+-- Back-fill from the only facts the legacy row can prove. Evidence rows are
+-- not otherwise modified (state / attempts / updated_at stay as captured).
+update public.user_term_progress
+set quiz_completed = attempts > 0,
+    quiz_correct = state = 'mastered',
+    mastered_at = case when state = 'mastered' then updated_at end,
+    last_activity_at = updated_at,
+    opened_at = case when state <> 'new' then updated_at end
+where last_activity_at is null;
+
+-- Invariant the Owner asked for: a Term can only be Mastered when a correct
+-- answer was actually recorded for it. Enforced by the database, not just the
+-- app, so no code path (present or future) can set Mastered on its own.
+alter table public.user_term_progress
+  drop constraint if exists progress_mastered_requires_correct_quiz;
+-- NOT VALID: enforced for every row written from now on; legacy evidence rows
+-- are left untouched rather than made to fail the migration.
+alter table public.user_term_progress
+  add constraint progress_mastered_requires_correct_quiz
+  check (state <> 'mastered' or (quiz_completed and quiz_correct and attempts > 0 and mastered_at is not null)) not valid;
+
+comment on table public.quiz_attempts is 'Append-only ledger: one row per graded Quick Quiz answer. Source of truth for QuizCompleted / QuizCorrect / MasteredAt.';
+comment on column public.user_term_progress.opened_at is 'First time the learner opened the Term (New → Learning).';
+comment on column public.user_term_progress.quiz_completed is 'At least one answer was submitted for this Term.';
+comment on column public.user_term_progress.quiz_correct is 'The most recent submitted answer was correct.';
+comment on column public.user_term_progress.mastered_at is 'When the first correct answer moved the Term to Mastered.';
+comment on column public.user_term_progress.last_activity_at is 'Last open, save or answer on this Term.';
+
+-- ===== migrations/011_registration_consents.sql =====
+-- Separate registration consents (Textos Web e Instrucciones de Implementación,
+-- 14 Sep 2026, IMP-13 / IMP-18). The signup form now has three unchecked
+-- boxes — Terms of Service (required), personal data processing (required)
+-- and marketing (optional) — and each acceptance is kept with its own
+-- timestamp so the account holds a durable record of what was agreed and when.
+--
+-- privacy_accepted_at (migration 003) keeps recording the data-processing
+-- authorization. terms_accepted_at and marketing_opt_in_at are new.
+
+alter table public.users
+  add column if not exists terms_accepted_at timestamptz,
+  add column if not exists marketing_opt_in_at timestamptz;
+
+grant update (full_name, disabled_at, privacy_accepted_at, terms_accepted_at, marketing_opt_in_at, updated_at) on public.users to authenticated;
+
+-- Same trigger as 009 (Owner e-mails, trial row) plus the two new stamps read
+-- from the signup metadata written by lib/store.supabase.ts register().
+create or replace function public.handle_new_auth_user()
+returns trigger language plpgsql security definer set search_path = public as $$
+declare
+  assigned_role public.app_role := 'learner';
+begin
+  if coalesce((new.raw_user_meta_data ->> 'privacy_accepted')::boolean, false) is not true then
+    raise exception 'Registration requires accepting the personal data processing authorization.' using errcode = '23514';
+  end if;
+
+  if lower(coalesce(new.email, '')) in ('pilarcruz640@gmail.com', 'pilar@mpclaw.studio') then
+    assigned_role := 'admin';
+  end if;
+
+  insert into public.users (id, email, full_name, role, privacy_accepted_at, terms_accepted_at, marketing_opt_in_at)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data ->> 'full_name', split_part(new.email, '@', 1)),
+    assigned_role,
+    now(),
+    case when coalesce((new.raw_user_meta_data ->> 'terms_accepted')::boolean, false) then now() end,
+    case when coalesce((new.raw_user_meta_data ->> 'marketing_opt_in')::boolean, false) then now() end
+  )
+  on conflict (id) do update
+    set role = excluded.role
+    where public.users.role is distinct from excluded.role
+      and excluded.role = 'admin';
+
+  insert into public.subscriptions (user_id, status, trial_started_at, trial_ends_at, provider)
+  values (new.id, 'trialing', now(), now() + interval '7 days', 'mercadopago')
+  on conflict (user_id) do nothing;
+
+  return new;
+end;
+$$;

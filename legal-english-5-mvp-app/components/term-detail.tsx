@@ -9,7 +9,8 @@ import { useLocale } from "@/components/locale-provider";
 import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
-import { areaNeighbours, formatDate, stateOf, studyTerms } from "@/lib/learner-stats";
+import { areaNeighbours, stateOf, studyTerms } from "@/lib/learner-stats";
+import { quizClientKey } from "@/lib/quiz-grading";
 import type { ProgressState } from "@/lib/types";
 import { sessionTerms, sessionQuery } from "@/lib/learning-session";
 
@@ -121,10 +122,38 @@ export function TermDetail({ id }: { id: string }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [result, setResult] = useState<{ correct: boolean; message: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  // Synchronous re-entry guard (state updates are async; a double tap in the
+  // same tick must not produce two attempts). One client key per press lets
+  // the server drop a duplicated request as well.
+  const inFlight = useRef(false);
   useEffect(() => {
     setSelected(null);
     setResult(null);
   }, [id]);
+  async function checkAnswer() {
+    if (!term || selected === null || inFlight.current || busy || result || !canStudy) return;
+    inFlight.current = true;
+    setBusy(true);
+    const clientKey = quizClientKey();
+    try {
+      let response = await submitQuiz(term.id, selected, { clientKey, source: "term" });
+      if (!response.ok && response.code === "not-opened") {
+        // The open request from mount has not landed yet (slow network): record
+        // the open, then grade the same press once with the same key.
+        await openTerm(term.id);
+        response = await submitQuiz(term.id, selected, { clientKey, source: "term" });
+      }
+      // A failed request is not a wrong answer: report it and keep the selection.
+      if (!response.ok) {
+        notify(response.message || L("reportFailed"), "error");
+        return;
+      }
+      setResult({ correct: Boolean(response.correct), message: response.message || "" });
+    } finally {
+      inFlight.current = false;
+      setBusy(false);
+    }
+  }
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState<"us" | "uk" | null>(null);
@@ -255,13 +284,13 @@ export function TermDetail({ id }: { id: string }) {
                   <DetailIcon name="speaker" />
                 </button>
                 <span>US</span>
-                {term.jurisdictionUK && (
+                {/* M-01: a UK control appears only when an approved AudioUK recording exists (EMP-009). */}
+                {term.audioUkPath && (
                   <>
                     <button
                       type="button"
                       aria-label={L("playUk")}
-                      title={term.audioUkPath ? L("playUk") : L("audioPending")}
-                      disabled={!term.audioUkPath}
+                      title={L("playUk")}
                       className={playing === "uk" ? "playing" : ""}
                       onClick={() => play("uk")}
                     >
@@ -324,7 +353,23 @@ export function TermDetail({ id }: { id: string }) {
                     {equivalence && <span className={`equivalence ${equivalence === "directEquivalent" ? "direct" : "functional"}`}>{L(equivalence)}</span>}
                   </div>
                   <p lang="es">{civilLawEquivalent}</p>
-                  {equivalenceNote && equivalenceNote !== civilLawEquivalent && <p className="consideration-info-sub">{equivalenceNote}</p>}
+                </div>
+              </article>
+            )}
+
+            {/* H-04: the approved Comparative Law Note is its own component, so it
+                is shown whether or not the Term also has a Civil Law Equivalent
+                (CON-008 / CON-009 / CON-010 have a note and no equivalent). */}
+            {equivalenceNote && equivalenceNote !== civilLawEquivalent && (
+              <article className="consideration-info-card purple comparative-note">
+                <div className="consideration-info-icon">
+                  <DetailIcon name="civil-scales" />
+                </div>
+                <div>
+                  <div className="consideration-info-heading">
+                    <h2>{L("comparativeLawNote")}</h2>
+                  </div>
+                  <p>{equivalenceNote}</p>
                 </div>
               </article>
             )}
@@ -422,47 +467,61 @@ export function TermDetail({ id }: { id: string }) {
               <DetailIcon name="bookmark-outline" />
               {row?.favourite ? L("inMyLibrary") : L("addToLibrary")}
             </button>
+          </div>
+
+          {/* H-01 / MOB-UI-05: the one and only Previous / Next control. Previous
+              is the secondary action (disabled on the first Term); Next Term is
+              the primary action and is disabled on the last Term of the area,
+              where "Choose another area" takes over. Stacks on narrow screens. */}
+          <nav className="consideration-term-nav consideration-term-nav-main" aria-label={L("termNavigation")}>
+            {previous ? (
+              <Link className="secondary" href={`/terms/${previous.id}${sessionSuffix}`} title={previous.term}>
+                <DetailIcon name="arrow-left" />
+                {L("previousTerm")}
+              </Link>
+            ) : (
+              <button type="button" className="secondary" disabled>
+                <DetailIcon name="arrow-left" />
+                {L("previousTerm")}
+              </button>
+            )}
             {next ? (
-              <Link href={`/terms/${next.id}${sessionSuffix}`}>
+              <Link className="primary" href={`/terms/${next.id}${sessionSuffix}`}>
                 {L("nextTerm", { term: next.term })}
                 <DetailIcon name="arrow-right" />
               </Link>
-            ) : inSession ? (
-              <Link href={`/quizzes${sessionSuffix}`}>
+            ) : (
+              <button type="button" className="primary" disabled>
+                {L("nextTermShort")}
+                <DetailIcon name="arrow-right" />
+              </button>
+            )}
+          </nav>
+          {!next && inSession && (
+            <p className="area-end-note" role="status">
+              <Link href={`/quizzes${sessionSuffix}`} className="area-end-link">
                 {L("dashQuizThem")} <DetailIcon name="arrow-right" />
               </Link>
-            ) : (
+            </p>
+          )}
+          {area.last && !inSession && (
+            <p className="area-end-note" role="status">
+              <strong>{L("areaEndTitle", { category: categoryLabel(locale, term.category) })}</strong> {L("areaEndBody")}
               <Link href="/categories" className="area-end-link">
                 {L("areaEndChoose")}
                 <DetailIcon name="arrow-right" />
               </Link>
-            )}
-          </div>
-          {area.last && !inSession && (
-            <p className="area-end-note" role="status">
-              <strong>{L("areaEndTitle", { category: categoryLabel(locale, term.category) })}</strong> {L("areaEndBody")}
             </p>
           )}
         </section>
 
         <aside className="consideration-right-rail">
-          <div className="consideration-term-nav">
-            <button type="button" disabled={!previous} title={previous ? `← ${previous.term}` : undefined} onClick={() => previous && router.push(`/terms/${previous.id}${sessionSuffix}`)}>
-              <DetailIcon name="arrow-left" />
-              {L("previousTerm")}
-            </button>
-            <button type="button" disabled={!next} title={next ? `${next.term} →` : undefined} onClick={() => next && router.push(`/terms/${next.id}${sessionSuffix}`)}>
-              {L("nextTermShort")}
-              <DetailIcon name="arrow-right" />
-            </button>
-          </div>
           <div className="consideration-position" aria-label={positionLabel}>
             <div className="consideration-position-track">
               <i style={{ width: `${(position / Math.max(1, total)) * 100}%` }} />
             </div>
-            <span>
-              {positionLabel} · <kbd>←</kbd> <kbd>→</kbd>
-            </span>
+            {/* Position only — the keyboard hint looked like a second Previous/Next control (MOB-UI-05). */}
+            <span>{positionLabel}</span>
           </div>
 
           <section className="consideration-quiz-card" id="quick-quiz" tabIndex={-1}>
@@ -522,20 +581,7 @@ export function TermDetail({ id }: { id: string }) {
                     className="consideration-primary"
                     type="button"
                     disabled={selected === null || busy || !canStudy}
-                    onClick={() => {
-                      if (selected === null) return;
-                      setBusy(true);
-                      void submitQuiz(term.id, selected)
-                        .then((response) => {
-                          // A failed request is not a wrong answer: report it and keep the selection.
-                          if (!response.ok) {
-                            notify(response.message || L("reportFailed"), "error");
-                            return;
-                          }
-                          setResult({ correct: Boolean(response.correct), message: response.message || "" });
-                        })
-                        .finally(() => setBusy(false));
-                    }}
+                    onClick={() => void checkAnswer()}
                   >
                     {L("checkAnswer")}
                   </button>
@@ -556,53 +602,34 @@ export function TermDetail({ id }: { id: string }) {
                 </li>
               ))}
             </ol>
-            <p className="lesson-state-explanation">{state === "new" ? L("progressNew") : state === "learning" ? L("progressLearning") : L("progressMastered", { n: row?.attempts ?? 0 })}</p>
+            <p className="lesson-state-explanation">{state === "new" ? L("progressNew") : state === "learning" ? L("progressLearning") : L("progressMastered")}</p>
           </section>
 
-          <section className="consideration-related-card">
-            <div className="consideration-rail-heading">
-              <h2>{L("relatedTerms")}</h2>
-              <Link href={`/terms?category=${encodeURIComponent(term.category)}`}>{L("viewAllIn", { category: categoryLabel(locale, term.category) })}</Link>
-            </div>
-            <div>
-              {related.map((item) => (
-                <Link href={`/terms/${item.id}`} key={item.id}>
-                  {item.term}
-                </Link>
-              ))}
-            </div>
-          </section>
+          {/* MOB-UI-02: the card exists only when there is at least one other published Term in the area. */}
+          {related.length > 0 && (
+            <section className="consideration-related-card">
+              <div className="consideration-rail-heading">
+                <h2>{L("relatedTerms")}</h2>
+                <Link href={`/terms?category=${encodeURIComponent(term.category)}`}>{L("viewAllIn", { category: categoryLabel(locale, term.category) })}</Link>
+              </div>
+              <div>
+                {related.map((item) => (
+                  <Link href={`/terms/${item.id}`} key={item.id}>
+                    {item.term}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
+          {/* H-03 / MOB-UI-03 / IMP-02: no source-of-truth block, Term id, workbook,
+              editorial version, status or attempt counters in the learner UI. Only
+              the feedback channel stays. */}
           <section className="consideration-notes-card">
             <div className="consideration-rail-heading">
-              <h2>{L("source")}</h2>
-              <span>{term.id}</span>
+              <h2>{L("feedbackTitle")}</h2>
             </div>
-            <div>
-              <DetailIcon name="notes-page" />
-              <dl className="consideration-source">
-                <div>
-                  <dt>{L("sourceMcd")}</dt>
-                  <dd>{term.sourceWorkbookVersion.split(/\s[–—-]\s/)[0] || "—"}</dd>
-                </div>
-                <div>
-                  <dt>{L("sourceEditorial")}</dt>
-                  <dd>{term.sourceEditorialVersion || "—"}</dd>
-                </div>
-                <div>
-                  <dt>{L("sourceReviewed")}</dt>
-                  <dd>{formatDate(term.sourceLastReviewedAt, locale)}</dd>
-                </div>
-                <div>
-                  <dt>{L("sourceStatus")}</dt>
-                  <dd>{term.mcdStatus || "—"}</dd>
-                </div>
-                <div>
-                  <dt>{L("attempts")}</dt>
-                  <dd>{row?.attempts ?? 0}</dd>
-                </div>
-              </dl>
-            </div>
+            <p className="consideration-feedback-lead">{L("feedbackLead")}</p>
             <div className="consideration-report">
               {reportOpen ? (
                 <form

@@ -7,22 +7,22 @@ import { useRouter } from "next/navigation";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
-import { DEMO_ACCOUNTS } from "@/lib/types";
+import { DEMO_ACCOUNTS, type Consents } from "@/lib/types";
 import { trackAction } from "@/lib/track";
-import { SUPPORT_EMAIL, TRIAL_DISCLOSURE } from "@/lib/commercial";
+import { SUPPORT_EMAIL } from "@/lib/commercial";
 
 const COPY = {
   en: {
     kicker: "Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
-    h1a: "Master Legal English.",
-    h1b: "Advance Your Career.",
-    lead: "Learn essential legal terminology through short, focused lessons with clear explanations and professional legal context.",
+    h1a: "Legal English for professional legal practice.",
+    h1b: "",
+    lead: "Study essential legal terminology through focused lessons with clear explanations, professional legal context and guidance for Spanish-speaking legal professionals.",
     features: [
-      ["Legal terms in context", "Study Contracts, Corporate Law, and Employment Law with definitions and usage."],
-      ["Context that matters", "See how terms are used in professional legal English, with comparative notes when they apply."],
-      ["Track your progress", "Open a term, take the quiz, and move from New to Learning to Mastered."],
+      ["Legal terms in context", "Study Contracts, Corporate Law and Employment Law with clear definitions and professional usage."],
+      ["Guidance that matters", "Learn legal collocations and review comparative notes when they are relevant."],
+      ["Saved progress", "Return to terms, focused quizzes and your saved learning status."],
     ],
-    secure: "Secure. Private. Built for legal professionals.",
+    secure: "We use reasonable safeguards to protect your personal data and do not sell it. See our Privacy Policy for details.",
     needHelp: "Need help?",
     titleSignup: "Create your account",
     titleRecover: "Recover access",
@@ -30,7 +30,7 @@ const COPY = {
     titleLogin: "Welcome back",
     subSignup: "Create your account, then activate the 7-day free trial. A valid credit card is required to activate the trial.",
     subRecover: "Follow the steps below to continue.",
-    subLogin: "Sign in to continue your learning journey.",
+    subLogin: "Sign in to continue from your saved progress.",
     signIn: "Sign In",
     createAccount: "Create Account",
     fullName: "Full name",
@@ -48,17 +48,22 @@ const COPY = {
     code: "Verification code",
     codePh: "Enter 6-digit code",
     forgot: "Forgot password?",
-    consent: "I agree to the ",
+    consentTerms: "I accept the Legal English 5 ",
+    consentTermsLink: "Terms of Service",
+    consentData: "I authorize MPC LAW STUDIO to process my personal data to create and administer my account, provide the service, save my progress, manage support, security, the trial, subscriptions and payments, as described in the ",
+    consentDataLink: "Personal Data Processing and Privacy Policy",
+    consentDataEnd: ". I understand my rights and how to exercise them.",
+    consentMarketing: "I would like to receive news, educational content and offers from Legal English 5. I can withdraw this authorization at any time.",
+    consentRequired: "Accept the Terms of Service and the personal data processing authorization to create your account.",
+    optional: "Optional",
     sendReset: "Send Reset Link",
     confirm: "Confirm Account",
     updatePassword: "Update Password",
     demoDivider: "or try an alpha demo account",
     demoOwner: "Owner",
     demoLearner: "Learner",
-    secureTitle: "Your data is secure and private.",
-    secureBody: "We do not sell your personal data. We only share it with the providers needed to operate the service and process payments, as described in our Privacy Policy.",
-    termsA: "By signing in, you agree to our ",
-    termsB: " and ",
+    secureTitle: "Privacy",
+    secureBody: "We use reasonable safeguards to protect your personal data and do not sell it. See our Privacy Policy for details.",
     tos: "Terms of Service",
     privacy: "Privacy Policy",
     cookies: "Cookie Policy",
@@ -66,15 +71,15 @@ const COPY = {
   },
   es: {
     kicker: "Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.",
-    h1a: "Domina el inglés jurídico.",
-    h1b: "Impulsa tu carrera.",
-    lead: "Aprende la terminología jurídica esencial con lecciones breves y enfocadas, explicaciones claras y contexto jurídico profesional.",
+    h1a: "Legal English para la práctica jurídica profesional.",
+    h1b: "",
+    lead: "Estudia terminología jurídica esencial mediante lecciones enfocadas, explicaciones claras, contexto jurídico profesional y orientación para profesionales jurídicos hispanohablantes.",
     features: [
-      ["Términos en contexto", "Estudia Contratos, Derecho corporativo y Derecho laboral con definiciones y uso profesional."],
-      ["Contexto que importa", "Mira cómo se usan los términos en inglés jurídico profesional, con notas comparadas cuando aplican."],
-      ["Sigue tu progreso", "Abre un término, responde el quiz y avanza de Nuevo a En curso y a Dominado."],
+      ["Términos jurídicos en contexto", "Estudia Contracts, Corporate Law y Employment Law con definiciones claras y uso profesional."],
+      ["Orientación relevante", "Aprende colocaciones jurídicas y revisa notas comparadas cuando correspondan."],
+      ["Progreso guardado", "Vuelve a los términos, los quizzes breves y tu estado de aprendizaje."],
     ],
-    secure: "Seguro. Privado. Hecho para profesionales del Derecho.",
+    secure: "Aplicamos medidas razonables para proteger tus datos personales y no los vendemos. Consulta la Política de Tratamiento de Datos Personales y Privacidad.",
     needHelp: "¿Necesitas ayuda?",
     titleSignup: "Crea tu cuenta",
     titleRecover: "Recuperar acceso",
@@ -82,7 +87,7 @@ const COPY = {
     titleLogin: "Bienvenido de nuevo",
     subSignup: "Crea tu cuenta y luego activa la prueba gratis de 7 días. Se requiere una tarjeta de crédito válida para activarla.",
     subRecover: "Sigue los pasos para continuar.",
-    subLogin: "Inicia sesión para continuar aprendiendo.",
+    subLogin: "Inicia sesión para continuar desde tu progreso guardado.",
     signIn: "Iniciar sesión",
     createAccount: "Crear cuenta",
     fullName: "Nombre completo",
@@ -100,20 +105,25 @@ const COPY = {
     code: "Código de verificación",
     codePh: "Código de 6 dígitos",
     forgot: "¿Olvidaste tu contraseña?",
-    consent: "Acepto los ",
+    consentTerms: "Acepto los ",
+    consentTermsLink: "Términos del Servicio de Legal English 5",
+    consentData: "Autorizo a MPC LAW STUDIO a tratar mis datos personales para crear y administrar mi cuenta, prestar el servicio, guardar mi progreso, gestionar soporte, seguridad, prueba, suscripción y pagos, conforme a la ",
+    consentDataLink: "Política de Tratamiento de Datos Personales y Privacidad",
+    consentDataEnd: ". Conozco mis derechos y los canales para ejercerlos.",
+    consentMarketing: "Quiero recibir novedades, contenidos y ofertas de Legal English 5. Puedo retirar esta autorización en cualquier momento.",
+    consentRequired: "Acepta los Términos del Servicio y la autorización de tratamiento de datos personales para crear tu cuenta.",
+    optional: "Opcional",
     sendReset: "Enviar enlace",
     confirm: "Confirmar cuenta",
     updatePassword: "Actualizar contraseña",
     demoDivider: "o prueba una cuenta demo del alpha",
     demoOwner: "Titular",
     demoLearner: "Alumno",
-    secureTitle: "Tus datos están seguros y son privados.",
-    secureBody: "No vendemos tus datos personales. Solo los compartimos con los proveedores necesarios para operar el servicio y procesar pagos, conforme a nuestra Política de privacidad.",
-    termsA: "Al iniciar sesión aceptas nuestros ",
-    termsB: " y la ",
-    tos: "Términos del servicio",
-    privacy: "Política de privacidad",
-    cookies: "Política de cookies",
+    secureTitle: "Privacidad",
+    secureBody: "Aplicamos medidas razonables para proteger tus datos personales y no los vendemos. Consulta la Política de Tratamiento de Datos Personales y Privacidad.",
+    tos: "Términos del Servicio",
+    privacy: "Política de Tratamiento de Datos Personales y Privacidad",
+    cookies: "Política de Cookies",
     forgotHint: "Te enviaremos un código de 6 dígitos o un enlace. Luego escribe ese código y elige una contraseña nueva.",
   },
 } as const;
@@ -172,7 +182,9 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  // IMP-13: three separate consents, all unchecked by default.
+  const [consents, setConsents] = useState<Consents>({ terms: false, data: false, marketing: false });
+  const toggleConsent = (key: keyof Consents) => (event: React.ChangeEvent<HTMLInputElement>) => setConsents((current) => ({ ...current, [key]: event.target.checked }));
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -249,12 +261,12 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
       else router.push(afterLogin());
       return;
     }
-    if (mode === "signup" && !privacyAccepted) {
-      setError(t("privacyRequired"));
+    if (mode === "signup" && !(consents.terms && consents.data)) {
+      setError(c.consentRequired);
       return;
     }
     try {
-      const result = mode === "signup" ? await signUp(name, email, password, privacyAccepted) : await signIn(email, password);
+      const result = mode === "signup" ? await signUp(name, email, password, consents) : await signIn(email, password);
       if (!result.ok) setError(result.message || t("couldNotContinue"));
       // Account created = trial started (the 7-day trial opens with the account).
       else if (mode === "signup") trackAction("trial", result.needsConfirmation ? "pending-confirmation" : "active");
@@ -290,10 +302,7 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             <span>{c.kicker}</span>
           </div>
 
-          <h1>
-            {c.h1a}
-            <span>{c.h1b}</span>
-          </h1>
+          <h1>{c.h1a}</h1>
 
           <i />
 
@@ -432,27 +441,30 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
             )}
 
             {mode === "signup" && (
-              <>
-                <p className="cta-disclosure auth-trial-note">{TRIAL_DISCLOSURE[locale]}</p>
+              <fieldset className="auth-consents">
+                <legend className="sr-only">{locale === "es" ? "Consentimientos" : "Consents"}</legend>
                 <div className="auth-reference-consent">
-                  <input id="auth-privacy-consent" type="checkbox" checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} />
-                  <span>
-                    <label htmlFor="auth-privacy-consent">{c.consent}</label>{" "}
-                    <a className="auth-legal-link" href="/terms-of-service" target="_blank" rel="noopener noreferrer">
-                      {c.tos}
-                    </a>
-                    {", "}
-                    <a className="auth-legal-link" href="/privacy" target="_blank" rel="noopener noreferrer">
-                      {c.privacy}
-                    </a>
-                    {c.termsB}
-                    <a className="auth-legal-link" href="/cookies" target="_blank" rel="noopener noreferrer">
-                      {c.cookies}
-                    </a>
-                    .
-                  </span>
+                  <input id="auth-consent-terms" type="checkbox" checked={consents.terms} onChange={toggleConsent("terms")} required />
+                  <label htmlFor="auth-consent-terms">
+                    {c.consentTerms}
+                    <a className="auth-legal-link" href="/terms-of-service" target="_blank" rel="noopener noreferrer">{c.consentTermsLink}</a>.
+                  </label>
                 </div>
-              </>
+                <div className="auth-reference-consent">
+                  <input id="auth-consent-data" type="checkbox" checked={consents.data} onChange={toggleConsent("data")} required />
+                  <label htmlFor="auth-consent-data">
+                    {c.consentData}
+                    <a className="auth-legal-link" href="/privacy" target="_blank" rel="noopener noreferrer">{c.consentDataLink}</a>
+                    {c.consentDataEnd}
+                  </label>
+                </div>
+                <div className="auth-reference-consent optional">
+                  <input id="auth-consent-marketing" type="checkbox" checked={consents.marketing} onChange={toggleConsent("marketing")} />
+                  <label htmlFor="auth-consent-marketing">
+                    <small>{c.optional}</small> {c.consentMarketing}
+                  </label>
+                </div>
+              </fieldset>
             )}
 
             {error && (
@@ -507,21 +519,13 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
           </div>
         </div>
 
-        {mode === "login" && <p className="auth-reference-terms">
-          {c.termsA}
-          <a className="auth-legal-link" href="/terms-of-service" target="_blank" rel="noopener noreferrer">
-            {c.tos}
-          </a>
-          {c.termsB}
-          <a className="auth-legal-link" href="/privacy" target="_blank" rel="noopener noreferrer">
-            {c.privacy}
-          </a>
+        <p className="auth-reference-terms" aria-label={locale === "es" ? "Enlaces legales" : "Legal links"}>
+          <a className="auth-legal-link" href="/terms-of-service" target="_blank" rel="noopener noreferrer">{c.tos}</a>
           {" · "}
-          <a className="auth-legal-link" href="/cookies" target="_blank" rel="noopener noreferrer">
-            {c.cookies}
-          </a>
-          .
-        </p>}
+          <a className="auth-legal-link" href="/privacy" target="_blank" rel="noopener noreferrer">{c.privacy}</a>
+          {" · "}
+          <a className="auth-legal-link" href="/cookies" target="_blank" rel="noopener noreferrer">{c.cookies}</a>
+        </p>
       </section>
     </main>
   );

@@ -1,0 +1,45 @@
+/* Generated from the approved Design Freeze Pack v1.0 (03_ICONOGRAPHY_SVG_APPROVED, 15 Sep 2026).
+ * Do not edit by hand: the geometry is frozen. Regenerate from public/icons/le5/** if the pack changes.
+ * Every icon: 24×24 viewBox, 1.75 px stroke, currentColor geometry, #F5E400 accents. */
+
+export const LE5_ICON_PATHS = {
+  "content/civil-law-equivalent": "<path class=\"icon\" d=\"M5 5h5v14H5zM14 5h5v14h-5z\"/><path class=\"icon\" d=\"M10 9h4M10 15h4\"/><path class=\"icon\" d=\"M11.5 7.5 10 9l1.5 1.5M12.5 13.5 14 15l-1.5 1.5\"/>",
+  "content/comparative-law-note": "<path class=\"icon\" d=\"M4 5h6v14H4zM14 5h6v14h-6z\"/><path class=\"icon\" d=\"M10 9h4M10 15h4\"/><path class=\"icon\" d=\"m11.5 7.5-1.5 1.5 1.5 1.5M12.5 13.5 14 15l-1.5 1.5\"/>",
+  "content/definition": "<path class=\"icon\" d=\"M6 3.5h8l4 4V20.5H6z\"/><path class=\"icon\" d=\"M14 3.5v4h4\"/><path class=\"icon\" d=\"M9 11h6M9 14h6M9 17h4\"/>",
+  "content/do-not-confuse-with": "<path class=\"icon\" d=\"M4 7h7v5H4zM13 12h7v5h-7z\"/><path class=\"icon\" d=\"M8.5 12v3h4M15.5 9V6h-4\"/>",
+  "content/in-context": "<path class=\"icon\" d=\"M5 4h14v16H5z\"/><path class=\"icon\" d=\"M8 9h3v3H8zM13 9h3v3h-3z\"/><path class=\"icon\" d=\"M9.5 12v2M14.5 12v2\"/>",
+  "content/legalese-watch": "<path class=\"icon\" d=\"M5 3.5h9l4 4v13H5z\"/><path class=\"icon\" d=\"M14 3.5v4h4\"/><path class=\"icon\" d=\"M7.5 14c1.6-2.1 3.1-3.1 4.5-3.1s2.9 1 4.5 3.1c-1.6 2.1-3.1 3.1-4.5 3.1S9.1 16.1 7.5 14z\"/><circle class=\"icon\" cx=\"12\" cy=\"14\" r=\"1.5\"/>",
+  "content/pronunciation": "<path class=\"icon\" d=\"M4.5 10h3l4-3.5v11L7.5 14h-3z\"/><path class=\"icon\" d=\"M14.5 9.2c1.4 1.4 1.4 4.2 0 5.6M17.2 6.8c2.8 2.8 2.8 7.6 0 10.4\"/>",
+  "content/quick-quiz": "<path class=\"icon\" d=\"M5 4h14v16H5z\"/><path class=\"icon\" d=\"M8 9h1.5M12 9h4M8 13h1.5M12 13h4\"/><path class=\"accent-stroke\" d=\"m8 17 1.2 1.2 2.3-2.7\"/>",
+  "content/spanish-equivalent": "<path class=\"icon\" d=\"M5 5h14v10H10l-4 4v-4H5z\"/><path class=\"icon\" d=\"M8.5 9h2M13.5 9h2M8.5 12h7\"/>",
+  "content/spanish-speaker-alert": "<path class=\"icon\" d=\"M4.5 5.5h15v10h-9l-4 4v-4h-2z\"/><path class=\"accent-stroke\" d=\"M12 8v4\"/><circle class=\"accent-fill\" cx=\"12\" cy=\"14\" r=\"1\"/>",
+  "content/use-it-with": "<path class=\"icon\" d=\"M9.5 14.5 7.8 16.2a3 3 0 1 1-4.2-4.2l3-3a3 3 0 0 1 4.2 0\"/><path class=\"icon\" d=\"m14.5 9.5 1.7-1.7a3 3 0 1 1 4.2 4.2l-3 3a3 3 0 0 1-4.2 0\"/><path class=\"icon\" d=\"m9 15 6-6\"/>",
+  "areas/contracts": "<path class=\"icon\" d=\"M5 3.5h9l4 4v13H5z\"/><path class=\"icon\" d=\"M14 3.5v4h4\"/><path class=\"icon\" d=\"M8 16c1.5-2 2.5-2 4 0s2.5 2 4 0\"/>",
+  "areas/corporate-law": "<path class=\"icon\" d=\"M4 20h16M6 20V9h3V5h6v4h3v11\"/><path class=\"icon\" d=\"M9 12h1M9 15h1M14 9h1M14 12h1M14 15h1\"/>",
+  "areas/employment-law": "<circle class=\"icon\" cx=\"12\" cy=\"7\" r=\"2.5\"/><circle class=\"icon\" cx=\"6\" cy=\"9\" r=\"2\"/><circle class=\"icon\" cx=\"18\" cy=\"9\" r=\"2\"/><path class=\"icon\" d=\"M8 19v-3a4 4 0 0 1 8 0v3M2.5 18v-2a3.5 3.5 0 0 1 4-3.5M21.5 18v-2a3.5 3.5 0 0 0-4-3.5\"/>",
+  "navigation/account": "<circle class=\"icon\" cx=\"12\" cy=\"8\" r=\"3\"/><path class=\"icon\" d=\"M5 20v-1a7 7 0 0 1 14 0v1\"/><circle class=\"accent-fill\" cx=\"12\" cy=\"8\" r=\"1.6\"/>",
+  "navigation/areas": "<rect class=\"icon\" x=\"5\" y=\"5\" width=\"5\" height=\"5\" rx=\"1\"/><rect class=\"icon\" x=\"14\" y=\"5\" width=\"5\" height=\"5\" rx=\"1\"/><rect class=\"icon\" x=\"5\" y=\"14\" width=\"5\" height=\"5\" rx=\"1\"/><rect class=\"icon\" x=\"14\" y=\"14\" width=\"5\" height=\"5\" rx=\"1\"/><rect class=\"accent-fill\" x=\"5.7\" y=\"5.7\" width=\"3.6\" height=\"3.6\" rx=\".7\"/>",
+  "navigation/billing": "<rect class=\"icon\" x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"2\"/><path class=\"icon\" d=\"M4 10h16M8 15h4\"/><circle class=\"accent-fill\" cx=\"17\" cy=\"15\" r=\"1.2\"/>",
+  "navigation/help": "<circle class=\"icon\" cx=\"12\" cy=\"12\" r=\"8\"/><path class=\"accent-stroke\" d=\"M9.8 9.5a2.4 2.4 0 1 1 4 1.8c-1 .8-1.8 1.2-1.8 2.7\"/><circle class=\"accent-fill\" cx=\"12\" cy=\"16.8\" r=\"1\"/>",
+  "navigation/home": "<path class=\"icon\" d=\"m3.5 11 8.5-7 8.5 7\"/><path class=\"icon\" d=\"M5.5 10v10h13V10M9.5 20v-6h5v6\"/>",
+  "navigation/how-it-works": "<circle class=\"icon\" cx=\"12\" cy=\"12\" r=\"8\"/><path class=\"accent-stroke\" d=\"M12 10v6\"/><circle class=\"accent-fill\" cx=\"12\" cy=\"7.4\" r=\"1\"/>",
+  "navigation/progress": "<path class=\"icon\" d=\"M5 19v-5h3v5M10.5 19V9h3v10M16 19V5h3v14\"/><path class=\"accent-fill\" d=\"M16.6 5.6h1.8v12.8h-1.8z\"/>",
+  "navigation/quiz": "<path class=\"icon\" d=\"M5 4h14v16H5z\"/><path class=\"icon\" d=\"M8 9h5M8 13h5\"/><path class=\"accent-stroke\" d=\"m14.5 15 1.7 1.7 3-3.7\"/>",
+  "navigation/saved-terms": "<path class=\"icon\" d=\"M7 4h10v16l-5-3-5 3z\"/><path class=\"accent-fill\" d=\"M8 5h8v11l-4-2.4L8 16z\" opacity=\".9\"/>",
+  "navigation/settings": "<path class=\"icon\" d=\"M9.8 3.8h4.4l.7 2a7 7 0 0 1 1.3.8l2.1-.4 2.2 3.8-1.4 1.6a7 7 0 0 1 0 1.5l1.4 1.6-2.2 3.8-2.1-.4a7 7 0 0 1-1.3.8l-.7 2H9.8l-.7-2a7 7 0 0 1-1.3-.8l-2.1.4-2.2-3.8 1.4-1.6a7 7 0 0 1 0-1.5L3.5 10l2.2-3.8 2.1.4a7 7 0 0 1 1.3-.8z\"/><circle class=\"accent-fill\" cx=\"12\" cy=\"12\" r=\"2\"/>",
+  "navigation/sign-out": "<path class=\"icon\" d=\"M10 5H5v14h5\"/><path class=\"accent-stroke\" d=\"M12 12h8M17 8l4 4-4 4\"/>",
+  "navigation/terms-library": "<path class=\"icon\" d=\"M7 5h10v15H7z\"/><path class=\"icon\" d=\"M4 8h3M4 8v11h3\"/><path class=\"icon\" d=\"M10 9h4M10 12h4M10 15h3\"/><path class=\"accent-fill\" d=\"M15.5 5h1.5v1.5z\"/>",
+  "utility/bookmark": "<path class=\"icon\" d=\"M7 4h10v16l-5-3-5 3z\"/><path class=\"accent-stroke\" d=\"M12 8v5\"/>",
+  "utility/chevron": "<path class=\"icon\" d=\"m9 5 7 7-7 7\"/><path class=\"accent-stroke\" d=\"m12 5 7 7-7 7\"/>",
+  "utility/close": "<path class=\"icon\" d=\"m6 6 12 12M18 6 6 18\"/><path class=\"accent-stroke\" d=\"m7.5 16.5 9-9\"/>",
+  "utility/completion": "<circle class=\"icon\" cx=\"12\" cy=\"12\" r=\"8\"/><path class=\"accent-stroke\" d=\"m8.5 12.5 2.3 2.3 4.7-5.3\"/>",
+  "utility/external-link": "<path class=\"icon\" d=\"M13 5H5v14h14v-8\"/><path class=\"accent-stroke\" d=\"M13 4h7v7M20 4l-9 9\"/>",
+  "utility/language": "<circle class=\"icon\" cx=\"12\" cy=\"12\" r=\"8\"/><path class=\"icon\" d=\"M4 12h16M12 4a13 13 0 0 1 0 16M12 4a13 13 0 0 0 0 16\"/><circle class=\"accent-fill\" cx=\"18\" cy=\"16.5\" r=\"2\"/>",
+  "utility/menu": "<path class=\"icon\" d=\"M5 7h14M5 12h14M5 17h14\"/><path class=\"accent-stroke\" d=\"M7 12h10\"/>",
+  "utility/notifications": "<path class=\"icon\" d=\"M7 10a5 5 0 0 1 10 0v4l2 2H5l2-2z\"/><path class=\"icon\" d=\"M10 19h4\"/><circle class=\"accent-fill\" cx=\"18.5\" cy=\"6\" r=\"2\"/>",
+  "utility/pause": "<path class=\"icon\" d=\"M8 5v14M16 5v14\"/><path class=\"accent-stroke\" d=\"M10 6v12M14 6v12\"/>",
+  "utility/play": "<path class=\"icon\" d=\"M7 5v14l11-7z\"/><path class=\"accent-fill\" d=\"M9 8.5v7l5.5-3.5z\"/>",
+  "utility/search": "<circle class=\"icon\" cx=\"10.5\" cy=\"10.5\" r=\"5.5\"/><path class=\"icon\" d=\"m15 15 5 5\"/><path class=\"accent-stroke\" d=\"M8 9.5a3 3 0 0 1 2.5-2.5\"/>",
+} as const;
+
+export type Le5IconName = keyof typeof LE5_ICON_PATHS;

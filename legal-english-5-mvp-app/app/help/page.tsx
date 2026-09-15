@@ -22,78 +22,79 @@ type Copy = {
   signedInCta: string;
 };
 
+/* Approved copy "Ayuda" (Textos Web, Part III / IMP-15), verbatim in both languages. */
 const COPY: Record<Locale, Copy> = {
   en: {
-    eyebrow: "Help & support",
-    title: "Stuck signing in? Start here.",
-    lead: "This page is public on purpose: you do not need an account to reach us. The most common sign-in, recovery and billing questions are answered below.",
+    eyebrow: "HELP AND SUPPORT",
+    title: "Help with access, billing or your account",
+    lead: "You do not need to sign in to contact us. Start with the answers below or email support@legalenglish5.com.",
     topics: [
       {
         title: "I forgot my password",
-        body: "Open the sign-in page, choose “Forgot password?” and enter your email. We send a six-digit code; enter it with your new password. The code expires after a short time, so request a fresh one if it stops working.",
+        body: "Open Sign In, select Forgot password?, and enter your email address. Enter the six-digit code with your new password. If the code expires, request a new one.",
         cta: { label: "Reset your password", href: "/login" },
       },
       {
-        title: "I never received the verification code",
-        body: "Check spam and promotions folders first. Codes come from the Legal English 5 address; adding it to your contacts helps. If nothing arrives within a few minutes, sign in again and request a new code — only the most recent one is valid.",
+        title: "I did not receive the verification code",
+        body: "Check your spam and promotions folders. If the code does not arrive within a few minutes, request a new one. Only the most recent code is valid.",
       },
       {
         title: "My trial ended and I cannot open the lessons",
-        body: "Term titles stay visible, but the definitions, examples, quizzes and audio need an active trial or subscription. Subscribe from the Billing page inside your account; access returns the moment the payment is confirmed.",
+        body: "Protected lesson content requires an active trial or subscription. Open Billing in your account to select a plan. Access returns after payment is confirmed.",
         cta: { label: "See plans", href: "/pricing" },
       },
       {
         title: "I want to cancel or change my plan",
-        body: "Cancel any time from Account → Billing. You keep access until the end of the period you already paid for. To change plans, cancel the current one and subscribe to the other when it ends.",
+        body: "Open Account, then Billing. You keep access until the end of the paid period after cancellation. Follow the instructions in Billing to choose another available plan.",
       },
       {
-        title: "I want a copy of my data, or to delete my account",
-        body: "Both are self-service under Account → Preferences (download everything we store about you) and Account → Security (deactivate or delete). Deletion removes your profile, progress and photo permanently.",
+        title: "I want a copy of my data or want to delete my account",
+        body: "Use Account Preferences to request a copy of available account data. Use Account Security to deactivate or delete the account. Account deletion is separate from subscription cancellation and may permanently remove your profile and learning progress.",
       },
     ],
-    contactTitle: "Still need a person?",
-    contactBody: "Write to us with the email address on your account and, if you can, the page where the problem happened. We read every message.",
+    contactTitle: "Still need help?",
+    contactBody: "Email us from the address associated with your account and identify the page where the problem occurred.",
     contactCta: "Email support",
-    reply: "We reply within one business day (Colombia time).",
+    reply: "We typically reply within one business day, Colombia time.",
     signedInTitle: "Already signed in?",
-    signedInBody: "The in-app Help page lets you send a report attached to your account, so we can look straight at what happened.",
-    signedInCta: "Open in-app Help",
+    signedInBody: "The Help page inside your account lets you send a report linked to your account.",
+    signedInCta: "Open Help in your account",
   },
   es: {
-    eyebrow: "Ayuda y soporte",
-    title: "¿Problemas para entrar? Empieza aquí.",
-    lead: "Esta página es pública a propósito: no necesitas una cuenta para contactarnos. Abajo están las dudas más comunes de acceso, recuperación y facturación.",
+    eyebrow: "AYUDA Y SOPORTE",
+    title: "Ayuda con el acceso, la facturación o tu cuenta",
+    lead: "No necesitas iniciar sesión para contactarnos. Consulta las respuestas siguientes o escribe a support@legalenglish5.com.",
     topics: [
       {
         title: "Olvidé mi contraseña",
-        body: "Abre la página de inicio de sesión, elige “¿Olvidaste tu contraseña?” y escribe tu correo. Enviamos un código de seis dígitos; ingrésalo junto con tu nueva contraseña. El código caduca pronto, así que pide uno nuevo si deja de funcionar.",
+        body: "Abre Iniciar sesión, selecciona ¿Olvidaste tu contraseña? y escribe tu correo. Ingresa el código de seis dígitos junto con tu nueva contraseña. Si el código caduca, solicita uno nuevo.",
         cta: { label: "Restablecer contraseña", href: "/login" },
       },
       {
         title: "No recibí el código de verificación",
-        body: "Revisa primero las carpetas de spam y promociones. Los códigos llegan desde la dirección de Legal English 5; agregarla a tus contactos ayuda. Si no llega nada en unos minutos, inicia sesión otra vez y pide un código nuevo: solo el más reciente es válido.",
+        body: "Revisa las carpetas de spam y promociones. Si no llega en unos minutos, solicita un código nuevo. Solo el código más reciente es válido.",
       },
       {
         title: "Terminó mi prueba y no puedo abrir las lecciones",
-        body: "Los títulos de los términos siguen visibles, pero las definiciones, ejemplos, quizzes y audio requieren una prueba o suscripción activa. Suscríbete desde Facturación dentro de tu cuenta; el acceso vuelve en cuanto se confirma el pago.",
+        body: "El contenido protegido requiere una prueba o suscripción activa. Abre Facturación en tu cuenta para elegir un plan. El acceso regresa después de confirmarse el pago.",
         cta: { label: "Ver planes", href: "/pricing" },
       },
       {
-        title: "Quiero cancelar o cambiar de plan",
-        body: "Cancela cuando quieras desde Cuenta → Facturación. Conservas el acceso hasta el fin del periodo ya pagado. Para cambiar de plan, cancela el actual y suscríbete al otro cuando termine.",
+        title: "Quiero cancelar o cambiar mi plan",
+        body: "Abre Cuenta y luego Facturación. Después de cancelar, conservas el acceso hasta el final del periodo pagado. Sigue las instrucciones de Facturación para elegir otro plan disponible.",
       },
       {
-        title: "Quiero una copia de mis datos o borrar mi cuenta",
-        body: "Ambas opciones son autogestionadas en Cuenta → Preferencias (descargar todo lo que guardamos sobre ti) y Cuenta → Seguridad (desactivar o eliminar). La eliminación borra tu perfil, progreso y foto de forma permanente.",
+        title: "Quiero una copia de mis datos o eliminar mi cuenta",
+        body: "Utiliza Preferencias de la cuenta para solicitar una copia de los datos disponibles. Utiliza Seguridad de la cuenta para desactivar o eliminar la cuenta. La eliminación de la cuenta es distinta de la cancelación de la suscripción y puede borrar permanentemente tu perfil y progreso.",
       },
     ],
-    contactTitle: "¿Aún necesitas hablar con alguien?",
-    contactBody: "Escríbenos desde el correo de tu cuenta y, si puedes, indica la página donde ocurrió el problema. Leemos todos los mensajes.",
+    contactTitle: "¿Aún necesitas ayuda?",
+    contactBody: "Escríbenos desde el correo asociado a tu cuenta e identifica la página donde ocurrió el problema.",
     contactCta: "Escribir a soporte",
-    reply: "Respondemos en un día hábil (hora de Colombia).",
+    reply: "Normalmente respondemos en un día hábil, hora de Colombia.",
     signedInTitle: "¿Ya iniciaste sesión?",
-    signedInBody: "La página de Ayuda dentro de la app permite enviar un reporte vinculado a tu cuenta, para revisar directamente lo que pasó.",
-    signedInCta: "Abrir Ayuda en la app",
+    signedInBody: "La página de Ayuda dentro de tu cuenta permite enviar un reporte vinculado a tu cuenta.",
+    signedInCta: "Abrir Ayuda en tu cuenta",
   },
 };
 

@@ -50,7 +50,6 @@ export function AreaRouteCard({ route, locale }: { route: AreaRoute; locale: Loc
             {L("areaEndChoose")} <span aria-hidden="true">→</span>
           </Link>
         )}
-        <p className="area-route-hint">{L("routeHint")}</p>
       </div>
     </section>
   );

@@ -5,15 +5,16 @@ import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
 import { Photo } from "@/components/photo";
-import { CtaDisclosure, PlanCards } from "@/components/plan-cards";
+import { PlanCards } from "@/components/plan-cards";
 import { landingCopy } from "@/lib/landing-copy";
 import { trackAction } from "@/lib/track";
 import { Icon } from "@/components/ui-icons";
 
 /**
- * /pricing repeats the approved pricing section of the landing page (brief
- * §3.8), the trust copy (§3.9) and the FAQ (§3.10). Numbers and disclosures
- * come from the same PlanCards component as the home page.
+ * /pricing — approved copy "Precios en Inglés / en español" (Textos Web, Part
+ * III). The trial conditions live here (and only here, IMP-05): monthly card
+ * terms, the annual selection note, payment information and the eight FAQs.
+ * Prices and routes come from the same PlanCards component as the home page.
  */
 export default function PricingPage() {
   const { locale } = useLocale();
@@ -25,15 +26,16 @@ export default function PricingPage() {
         <div className="landing-section-heading">
           <span className="eyebrow">{c.pricing.eyebrow}</span>
           <h1 id="pricing-title">{c.pricing.title}</h1>
+          <p>{c.pricing.intro}</p>
         </div>
         <PlanCards locale={locale} placement="pricing-page" />
         <p className="home-ref-secure">
           <Icon name="shield" />
-          {c.pricing.secure} {c.pricing.rule}
+          {c.pricing.payment}
         </p>
       </section>
       <section className="pricing-photo-band" aria-labelledby="pricing-trust-title" lang={locale}>
-        <Photo src="/home-assets/photos/pricing-lecture.jpg" size="full" />
+        <Photo src="/home-assets/photos/editorial-process.jpg" size="full" alt="" />
         <div>
           <span className="eyebrow">{c.trust.eyebrow}</span>
           <h2 id="pricing-trust-title">{c.trust.title}</h2>
@@ -55,11 +57,11 @@ export default function PricingPage() {
             ))}
           </div>
           <Link className="faq-photo-card" href="/signup" onClick={() => trackAction("cta", "pricing-faq")}>
-            <Photo src="/home-assets/photos/pricing-students.jpg" size="card" />
+            <Photo src="/home-assets/photos/common-civil.jpg" size="card" alt="" />
             <span>
               <small>{c.pricing.monthly.trial}</small>
               <strong>{c.cta.button}</strong>
-              <em>{c.cta.note}</em>
+              <em>{c.pricing.monthly.terms}</em>
             </span>
           </Link>
         </div>
@@ -67,7 +69,7 @@ export default function PricingPage() {
           <Link className="primary" href="/signup" onClick={() => trackAction("cta", "pricing-final")}>
             {c.cta.button}
           </Link>
-          <CtaDisclosure>{c.cta.note}</CtaDisclosure>
+          <p className="cta-disclosure">{c.pricing.monthly.terms}</p>
         </div>
       </section>
       <LandingFooter />

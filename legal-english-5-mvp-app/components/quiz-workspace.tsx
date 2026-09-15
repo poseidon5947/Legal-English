@@ -4,7 +4,7 @@ import { categoryPhoto } from "@/lib/category-photos";
 import { Photo } from "@/components/photo";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
@@ -12,6 +12,7 @@ import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { achievementsFor, categoryStats, countsFor, formatWhen, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
+import { quizClientKey } from "@/lib/quiz-grading";
 import type { Term } from "@/lib/types";
 import { sessionTerms, sessionQuery } from "@/lib/learning-session";
 
@@ -91,12 +92,19 @@ export function QuizWorkspace() {
   const [result, setResult] = useState<{ correct: boolean; message: string } | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [busy, setBusy] = useState(false);
+  // Synchronous re-entry guard: React state updates are async, so two events
+  // in the same tick (key + click) could both pass the `busy` check. The ref
+  // flips immediately and is what actually blocks a second submission.
+  const inFlight = useRef(false);
   const [finished, setFinished] = useState(false);
   const [missed, setMissed] = useState<string[]>([]);
   const [answered, setAnswered] = useState(0);
 
   function buildQueue(scope: string, onlyTerm?: string | null) {
-    const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption);
+    // Only Terms the learner has already opened (Learning / Mastered) can be
+    // quizzed: a Term never read cannot become Mastered from this page. The
+    // server enforces the same rule; this keeps the queue honest up front.
+    const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption && stateOf(progress, term.id) !== "new");
     if (inSession) return sessionTerms(pool, selectedSession).map((term) => term.id);
     const scoped = onlyTerm ? pool.filter((term) => term.id === onlyTerm) : scope === "All" ? pool : pool.filter((term) => term.category === scope);
     const weight = (term: Term) => (stateOf(progress, term.id) === "mastered" ? 2 : stateOf(progress, term.id) === "learning" ? 0 : 1);
@@ -119,9 +127,10 @@ export function QuizWorkspace() {
   const options = current ? quizOptions(current) : [];
 
   function check() {
-    if (!current || selected === null || busy || !canStudy || result) return;
+    if (!current || selected === null || busy || inFlight.current || !canStudy || result) return;
+    inFlight.current = true;
     setBusy(true);
-    void submitQuiz(current.id, selected)
+    void submitQuiz(current.id, selected, { clientKey: quizClientKey(), source: inSession ? "session" : "runner" })
       .then((response) => {
         // Only a successful, graded response counts as an answer. A failed
         // request (offline, session expired) is reported and the learner's
@@ -136,7 +145,10 @@ export function QuizWorkspace() {
         else setMissed((list) => (list.includes(current.id) ? list : [...list, current.id]));
         setResult({ correct, message: response.message || "" });
       })
-      .finally(() => setBusy(false));
+      .finally(() => {
+        inFlight.current = false;
+        setBusy(false);
+      });
   }
 
   function restart() {
@@ -233,7 +245,12 @@ export function QuizWorkspace() {
               ))}
             </div>}
             {queue.length === 0 ? (
-              <p>{L("noQuizzes")}</p>
+              <div className="quiz-empty">
+                <p>{visible.some((term) => quizOptions(term).length >= 3) ? L("noOpenedForQuiz") : L("noQuizzes")}</p>
+                <Link className="primary inline" href={category === "All" ? "/terms" : `/terms?category=${encodeURIComponent(category)}`}>
+                  {L("openTermsFirst")}
+                </Link>
+              </div>
             ) : finished ? (
               <>
                 <div className="quiz-done">

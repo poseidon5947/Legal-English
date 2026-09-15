@@ -12,10 +12,11 @@ import { routeLabel } from "@/components/area-route";
 import { CATEGORY_THEME, TermCard } from "@/components/terms-library";
 import { categoryPhoto, categoryPhotoAlt } from "@/lib/category-photos";
 import { Photo } from "@/components/photo";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 
-const ICON: Record<string, string> = { Contracts: "category-contract", "Corporate Law": "category-corporate", "Employment Law": "category-employment" };
+const AREA_ICON: Record<string, Le5IconName> = { Contracts: "areas/contracts", "Corporate Law": "areas/corporate-law", "Employment Law": "areas/employment-law" };
 
-/** The three canonical MCD categories with live counts and mastery, linking into the filtered library. */
+/** The three Areas with live counts and mastery, linking into the filtered library. */
 export function CategoriesWorkspace() {
   const { terms, progress, session, toggleFavourite } = useApp();
   const { locale } = useLocale();
@@ -26,25 +27,21 @@ export function CategoriesWorkspace() {
   return (
     <LearnerShell>
       <div className="terms-reference-content">
-        <div className="terms-reference-heading">
+        {/* Approved Areas heading (Textos Web IMP-10; comp D01.3): eyebrow, H1, intro, support line. Area cards carry the approved photos P02–P04. */}
+        <div className="terms-reference-heading areas-heading">
           <div>
+            <span className="eyebrow">{L("categoriesHeroTag")}</span>
             <h1>{L("categoriesTitle")}</h1>
             <p>{L("categoriesLead")}</p>
+            <p className="areas-support">{L("categoriesHeroTitle")}</p>
           </div>
         </div>
-        <figure className="learner-photo-banner with-caption" aria-hidden="true">
-          <Photo src="/home-assets/photos/categories-hero.jpg" size="wide" priority />
-          <figcaption>
-            <small>{L("categoriesHeroTag")}</small>
-            <strong>{L("categoriesHeroTitle")}</strong>
-          </figcaption>
-        </figure>
         <section className="terms-category-progress large" aria-label={L("categoriesTitle")}>
           {stats.map((item) => (
             <Link className={`${CATEGORY_THEME[item.category]} terms-category-link with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
               <Photo className="terms-category-photo" src={categoryPhoto(item.category)} size="card" />
               <div className="terms-category-icon-shell">
-                <img className="terms-library-icon" src={`/terms-library-assets/icons/${ICON[item.category]}.png`} alt="" aria-hidden="true" />
+                <Le5Icon name={AREA_ICON[item.category]} size={28} className="terms-library-icon home-area-icon" />
               </div>
               <div>
                 <strong>{categoryLabel(locale, item.category)}</strong>

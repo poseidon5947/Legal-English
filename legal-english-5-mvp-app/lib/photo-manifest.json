@@ -89,6 +89,24 @@
    1000
   ]
  },
+ "/home-assets/photos/about-pilar-portrait.jpg": {
+  "ar": 0.8,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/about-pilar.jpg": {
+  "ar": 1.6667,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
  "/home-assets/photos/account-cover.jpg": {
   "ar": 3.0769,
   "w": [
@@ -126,7 +144,7 @@
   ]
  },
  "/home-assets/photos/category-contracts.jpg": {
-  "ar": 1.5,
+  "ar": 1.7778,
   "w": [
    160,
    480,
@@ -135,7 +153,7 @@
   ]
  },
  "/home-assets/photos/category-corporate.jpg": {
-  "ar": 1.5,
+  "ar": 1.7778,
   "w": [
    160,
    480,
@@ -144,7 +162,16 @@
   ]
  },
  "/home-assets/photos/category-employment.jpg": {
-  "ar": 1.5,
+  "ar": 1.7778,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/common-civil.jpg": {
+  "ar": 1.6667,
   "w": [
    160,
    480,
@@ -161,8 +188,35 @@
    1200
   ]
  },
+ "/home-assets/photos/editorial-process.jpg": {
+  "ar": 1.6667,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
  "/home-assets/photos/help-support.jpg": {
   "ar": 1.5,
+  "w": [
+   160,
+   480,
+   800,
+   1200
+  ]
+ },
+ "/home-assets/photos/hero-le5-mobile.jpg": {
+  "ar": 0.8,
+  "w": [
+   160,
+   480,
+   800,
+   1080
+  ]
+ },
+ "/home-assets/photos/hero-le5.jpg": {
+  "ar": 1.6,
   "w": [
    160,
    480,

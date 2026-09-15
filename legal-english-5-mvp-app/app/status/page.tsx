@@ -6,75 +6,75 @@ import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
 
+/**
+ * Public status page — approved copy "Estado del Sistema" (Textos Web, Part
+ * III / IMP-16). Learner-relevant service labels only: no provider names,
+ * environment labels, version strings, response times or raw JSON links.
+ * /api/health still exposes the detailed payload for monitors.
+ */
+
 type State = "operational" | "degraded" | "down" | "sandbox";
 type Health = {
   ok: boolean;
   status: State;
-  mode: "alpha" | "production";
-  version: string;
   time: string;
-  durationMs: number;
-  checks: Array<{ id: string; state: State; latencyMs?: number; note?: string }>;
+  checks: Array<{ id: string; state: State }>;
 };
 
 const copy = {
   en: {
-    eyebrow: "System status",
-    title: "Is Legal English 5 up?",
-    lead: "Live checks against the services behind the product. This page refreshes itself every minute.",
+    eyebrow: "SYSTEM STATUS",
+    title: "Legal English 5 service status",
+    lead: "Current availability of the services used by the website and learner workspace. This page refreshes every minute.",
     overall: {
       operational: "All systems operational",
-      degraded: "Partial degradation",
-      down: "Service disruption",
+      degraded: "Some systems affected",
+      down: "Service interruption",
       sandbox: "All systems operational",
       loading: "Checking…",
-      unreachable: "The status API is not responding",
+      unreachable: "Status information is temporarily unavailable",
     },
-    state: { operational: "Operational", degraded: "Degraded", down: "Down", sandbox: "Sandbox" },
+    state: { operational: "Operational", degraded: "Affected", down: "Interrupted", sandbox: "Operational" },
     components: {
-      app: ["Web application", "Pages, sign-in screens and the learner workspace."],
-      database: ["Database", "Terms, quizzes and your progress."],
-      auth: ["Sign-in", "Sessions, email verification and password recovery."],
-      email: ["Email delivery", "Verification codes and recovery messages."],
-      billing: ["Billing", "Trials, subscriptions and payment webhooks."],
-      media: ["Audio & media", "Pronunciation files for each term."],
+      app: ["Website", "Public pages and learner workspace"],
+      database: ["Content and progress", "Terms, quizzes and saved progress"],
+      auth: ["Account access", "Sign-in, email verification and password recovery"],
+      email: ["Email service", "Verification and recovery messages"],
+      billing: ["Billing", "Trials, subscriptions and payments"],
+      media: ["Audio", "Pronunciation files"],
     } as Record<string, [string, string]>,
     checked: "Last checked",
-    latency: "response",
-    mode: { alpha: "Alpha environment: external services run in sandbox mode.", production: "Production environment." },
     refresh: "Refresh now",
     report: "Report a problem",
-    api: "Raw JSON for monitors",
   },
   es: {
-    eyebrow: "Estado del sistema",
-    title: "¿Legal English 5 está en línea?",
-    lead: "Verificaciones en vivo de los servicios detrás del producto. Esta página se actualiza cada minuto.",
+    eyebrow: "ESTADO DEL SISTEMA",
+    title: "Estado del servicio de Legal English 5",
+    lead: "Disponibilidad actual de los servicios utilizados por el sitio web y el espacio del estudiante. Esta página se actualiza cada minuto.",
     overall: {
       operational: "Todos los sistemas operativos",
-      degraded: "Degradación parcial",
+      degraded: "Algunos sistemas afectados",
       down: "Interrupción del servicio",
       sandbox: "Todos los sistemas operativos",
       loading: "Verificando…",
-      unreachable: "La API de estado no responde",
+      unreachable: "La información de estado no está disponible temporalmente",
     },
-    state: { operational: "Operativo", degraded: "Degradado", down: "Caído", sandbox: "Sandbox" },
+    state: { operational: "Operativo", degraded: "Afectado", down: "Interrumpido", sandbox: "Operativo" },
     components: {
-      app: ["Aplicación web", "Páginas, pantallas de acceso y el espacio del estudiante."],
-      database: ["Base de datos", "Términos, quizzes y tu progreso."],
-      auth: ["Inicio de sesión", "Sesiones, verificación de correo y recuperación de contraseña."],
-      email: ["Envío de correos", "Códigos de verificación y mensajes de recuperación."],
-      billing: ["Facturación", "Pruebas, suscripciones y webhooks de pago."],
-      media: ["Audio y medios", "Archivos de pronunciación de cada término."],
+      app: ["Sitio web", "Páginas públicas y espacio del estudiante"],
+      database: ["Contenido y progreso", "Términos, quizzes y progreso guardado"],
+      auth: ["Acceso a la cuenta", "Inicio de sesión, verificación de correo y recuperación de contraseña"],
+      email: ["Servicio de correo", "Mensajes de verificación y recuperación"],
+      billing: ["Facturación", "Pruebas, suscripciones y pagos"],
+      media: ["Audio", "Archivos de pronunciación"],
     } as Record<string, [string, string]>,
     checked: "Última verificación",
-    latency: "respuesta",
-    mode: { alpha: "Entorno alfa: los servicios externos funcionan en modo sandbox.", production: "Entorno de producción." },
     refresh: "Actualizar ahora",
     report: "Reportar un problema",
-    api: "JSON para monitores",
   },
 } as const;
+
+const ORDER = ["app", "database", "auth", "email", "billing", "media"];
 
 export default function StatusPage() {
   const { locale } = useLocale();
@@ -104,9 +104,10 @@ export default function StatusPage() {
 
   const overall: State | "loading" | "unreachable" = failed ? "unreachable" : health ? health.status : "loading";
   const tone = overall === "operational" || overall === "sandbox" ? "ok" : overall === "degraded" ? "warn" : overall === "loading" ? "idle" : "bad";
+  const checks = ORDER.map((id) => health?.checks.find((check) => check.id === id) ?? { id, state: "operational" as State });
 
   return (
-    <main id="main" className="landing home-reference">
+    <main id="main" className="landing home-reference" lang={locale}>
       <LandingHeader />
       <section className="landing-section status-page">
         <div className="landing-section-heading">
@@ -121,7 +122,7 @@ export default function StatusPage() {
             <strong>{c.overall[overall]}</strong>
             {health && (
               <small>
-                {c.checked}: {new Date(health.time).toLocaleString(locale, { dateStyle: "medium", timeStyle: "short" })} · {health.durationMs} ms · v{health.version}
+                {c.checked}: {new Date(health.time).toLocaleString(locale, { dateStyle: "medium", timeStyle: "short" })}
               </small>
             )}
           </div>
@@ -131,34 +132,28 @@ export default function StatusPage() {
         </div>
 
         <ul className="status-list">
-          {(health?.checks ?? Object.keys(c.components).map((id): Health["checks"][number] => ({ id, state: "operational" }))).map((check) => {
+          {checks.map((check) => {
             const [name, detail] = c.components[check.id] ?? [check.id, ""];
-            const stateTone = check.state === "operational" ? "ok" : check.state === "sandbox" ? "sandbox" : check.state === "degraded" ? "warn" : "bad";
+            const stateTone = check.state === "operational" || check.state === "sandbox" ? "ok" : check.state === "degraded" ? "warn" : "bad";
             return (
               <li key={check.id} className={health ? "" : "pending"}>
                 <div>
                   <strong>{name}</strong>
                   <p>{detail}</p>
-                  {check.note && <small>{check.note}</small>}
                 </div>
                 <span className={`status-pill ${health ? stateTone : "idle"}`}>
                   <i aria-hidden="true" />
                   {health ? c.state[check.state] : "…"}
-                  {health && typeof check.latencyMs === "number" && <em>{check.latencyMs} ms</em>}
                 </span>
               </li>
             );
           })}
         </ul>
 
-        <p className="status-mode">{health ? c.mode[health.mode] : ""}</p>
         <div className="status-actions">
-          <Link className="primary inline" href="/account/help">
+          <Link className="primary inline" href="/help">
             {c.report}
           </Link>
-          <a href="/api/health" target="_blank" rel="noreferrer">
-            {c.api} ↗
-          </a>
         </div>
       </section>
       <LandingFooter />

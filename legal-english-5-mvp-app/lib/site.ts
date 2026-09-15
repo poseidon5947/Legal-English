@@ -5,13 +5,60 @@ export const SITE_NAME = "Legal English 5";
 export const BRAND_OWNER = "MPC LAW STUDIO";
 export const BRAND_LINE = `${SITE_NAME} by ${BRAND_OWNER}`;
 
-/** Browser/SEO copy from the Landing Page Brief v1.0 §7 (Marketing copy; no unverified product claims). */
-export const HOME_TITLE = "Legal English 5 | Practical Legal English for Spanish-Speaking Legal Professionals";
-export const HOME_TITLE_ES = "Legal English 5 | Inglés jurídico práctico para profesionales del derecho hispanohablantes";
+/** Browser/SEO copy — "Textos Web e Instrucciones de Implementación" (14 Sep 2026), Part III SEO table (IMP-19). */
+export const HOME_TITLE = "Legal English 5 | Professional Legal English in Context";
+export const HOME_TITLE_ES = "Legal English 5 | Legal English profesional en contexto";
 export const SITE_DESCRIPTION =
-  "Build practical Legal English vocabulary in context with pronunciation, authentic legal collocations, legal usage and guidance. Designed for Spanish-speaking lawyers, law students, and other legal professionals.";
+  "Build accurate, practical Legal English through focused lessons for Spanish-speaking lawyers, law students and legal professionals.";
 export const SITE_DESCRIPTION_ES =
-  "Construye vocabulario práctico de inglés jurídico en contexto, con pronunciación, colocaciones jurídicas y orientación de uso. Diseñado para abogados, estudiantes de Derecho y otros profesionales jurídicos hispanohablantes.";
+  "Desarrolla un Legal English preciso y práctico mediante lecciones enfocadas para abogados, estudiantes de Derecho y profesionales jurídicos hispanohablantes.";
+
+/**
+ * Approved page titles and meta descriptions (Part III SEO, EN verbatim; ES
+ * equivalents). Titles are complete — they already carry the brand — so the
+ * layouts pass them with `absolute`.
+ */
+export const SEO: Record<string, Record<"en" | "es", { title: string; description: string }>> = {
+  "/terms": {
+    en: { title: "Terms Library | Legal English 5", description: "Browse published Legal English terms across Contracts, Corporate Law and Employment Law." },
+    es: { title: "Biblioteca de términos | Legal English 5", description: "Explora los términos de Legal English publicados en Contracts, Corporate Law y Employment Law." },
+  },
+  "/categories": {
+    en: { title: "Legal English Areas | Legal English 5", description: "Explore Legal English terms in Contracts, Corporate Law and Employment Law." },
+    es: { title: "Áreas de Legal English | Legal English 5", description: "Explora términos de Legal English en Contracts, Corporate Law y Employment Law." },
+  },
+  "/pricing": {
+    en: { title: "Pricing and Free Trial | Legal English 5", description: "Compare monthly and annual Legal English 5 plans and review the 7-day free-trial terms." },
+    es: { title: "Precios y prueba gratis | Legal English 5", description: "Compara los planes mensual y anual de Legal English 5 y revisa las condiciones de la prueba gratis de 7 días." },
+  },
+  "/about": {
+    en: { title: "About Legal English 5 | MPC LAW STUDIO", description: "Learn how Legal English 5 content is developed and editorially reviewed for Spanish-speaking legal professionals." },
+    es: { title: "Nosotros | Legal English 5 by MPC LAW STUDIO", description: "Conoce cómo se desarrolla y revisa editorialmente el contenido de Legal English 5 para profesionales jurídicos hispanohablantes." },
+  },
+  "/help": {
+    en: { title: "Help and Support | Legal English 5", description: "Get help with sign-in, account access, billing, data requests and subscriptions." },
+    es: { title: "Ayuda y soporte | Legal English 5", description: "Obtén ayuda con el inicio de sesión, el acceso a tu cuenta, la facturación, las solicitudes de datos y las suscripciones." },
+  },
+  "/status": {
+    en: { title: "Service Status | Legal English 5", description: "Check the current availability of Legal English 5 services." },
+    es: { title: "Estado del servicio | Legal English 5", description: "Consulta la disponibilidad actual de los servicios de Legal English 5." },
+  },
+  "/login": {
+    en: { title: "Sign In | Legal English 5", description: "Sign in to continue from your saved Legal English 5 progress." },
+    es: { title: "Iniciar sesión | Legal English 5", description: "Inicia sesión para continuar desde tu progreso guardado en Legal English 5." },
+  },
+  "/signup": {
+    en: { title: "Create Account | Legal English 5", description: "Create a Legal English 5 account, then activate the 7-day free trial." },
+    es: { title: "Crear cuenta | Legal English 5", description: "Crea una cuenta de Legal English 5 y luego activa la prueba gratis de 7 días." },
+  },
+};
+
+/** Metadata for a public page from the approved SEO table, in the visitor's language. */
+export function seoMetadata(path: keyof typeof SEO, locale: "en" | "es", index = true) {
+  const entry = SEO[path][locale];
+  const base = pageMetadata({ title: entry.title, description: entry.description, path, index, locale });
+  return { ...base, title: { absolute: entry.title }, openGraph: { ...base.openGraph, title: entry.title }, twitter: { ...base.twitter, title: entry.title } };
+}
 
 export function siteUrl(): URL {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -44,7 +91,7 @@ export function siteJsonLd() {
         name: BRAND_OWNER,
         alternateName: "MPC Law Studio",
         url: base,
-        logo: `${base}/brand/mpc-icon-512.png`,
+        logo: `${base}/brand/le5-social-avatar-1200.png`,
         brand: { "@type": "Brand", name: SITE_NAME },
         areaServed: "CO",
         knowsLanguage: ["en", "es"],

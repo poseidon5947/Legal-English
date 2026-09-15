@@ -12,7 +12,8 @@ import { acceptDay, bumpStudyDay, type StudyDelta } from "./study-day";
 import { entitlementFor } from "./entitlement";
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
-import type { Mail, Plan, Progress, PublicUser, Subscription, Term, User, BillingRecord, StudyDay, SupportTicket, TicketStatus } from "./types";
+import { gradeAnswer } from "./quiz-grading";
+import type { Consents, Mail, Plan, Progress, PublicUser, QuizSource, QuizSubmission, Subscription, Term, User, BillingRecord, StudyDay, SupportTicket, TicketStatus } from "./types";
 
 type ImportRun = {
   id: string;
@@ -27,7 +28,10 @@ type ImportRun = {
   rolledBackAt: string | null;
 };
 
-type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; studyDays?: StudyDay[]; tickets?: SupportTicket[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
+/** One graded Quick Quiz answer (alpha counterpart of the quiz_attempts ledger, migration 010). */
+type QuizAttempt = { userId: string; termId: string; option: string; correct: boolean; source: QuizSource; clientKey: string | null; answeredAt: string };
+
+type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; studyDays?: StudyDay[]; quizAttempts?: QuizAttempt[]; tickets?: SupportTicket[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
 
 function billingHistoryFor(data: StoreData, userId: string) {
   return (data.billingLog ?? []).filter((item) => item.userId === userId).sort((a, b) => b.at.localeCompare(a.at));
@@ -81,6 +85,7 @@ function makeUser(
     subscription?: Subscription;
     emailVerified?: boolean;
     privacyAccepted?: boolean;
+    consents?: Consents;
   }
 ): User {
   return {
@@ -93,7 +98,9 @@ function makeUser(
     createdAt: new Date().toISOString(),
     subscription: partial.subscription ?? trial(),
     disabledAt: null,
-    privacyAcceptedAt: partial.privacyAccepted ? new Date().toISOString() : null,
+    privacyAcceptedAt: partial.privacyAccepted || partial.consents?.data ? new Date().toISOString() : null,
+    termsAcceptedAt: partial.consents?.terms ? new Date().toISOString() : null,
+    marketingOptInAt: partial.consents?.marketing ? new Date().toISOString() : null,
   };
 }
 
@@ -211,9 +218,9 @@ export async function signOut() {
   // Alpha sessions live only in the signed cookie, which the auth route clears.
 }
 
-export async function register(name: string, email: string, password: string, privacyAccepted: boolean) {
-  if (!privacyAccepted) {
-    return { ok: false as const, message: "You must accept the data processing notice to continue." };
+export async function register(name: string, email: string, password: string, consents: Consents) {
+  if (!consents.terms || !consents.data) {
+    return { ok: false as const, message: "You must accept the Terms of Service and the personal data processing authorization to continue." };
   }
   const data = load();
   if (data.users.some((user) => user.email.toLowerCase() === email.trim().toLowerCase())) {
@@ -227,7 +234,7 @@ export async function register(name: string, email: string, password: string, pr
     role: isOwnerEmail(email) ? "admin" : "learner",
     password,
     emailVerified: false,
-    privacyAccepted: true,
+    consents,
   });
   data.users.push(user);
   mail(data, user.email, "Verify your Legal English 5 account", `Your verification code is ${code}. The seven-day trial has already started.`, code);
@@ -415,11 +422,17 @@ export async function openTerm(userId: string, termId: string, day?: unknown) {
   const access = canStudyTerm(user, data.terms.find((item) => item.id === termId));
   if (!access.ok) return { ok: false as const, message: access.message };
   const existing = data.progress.find((item) => item.userId === userId && item.termId === termId);
+  const now = new Date().toISOString();
   if (!existing) {
-    data.progress.push({ userId, termId, favourite: false, state: "learning", attempts: 0, updatedAt: new Date().toISOString() });
+    data.progress.push({ userId, termId, favourite: false, state: "learning", attempts: 0, updatedAt: now, openedAt: now, lastActivityAt: now });
   } else if (existing.state === "new") {
     existing.state = "learning";
-    existing.updatedAt = new Date().toISOString();
+    existing.openedAt = existing.openedAt ?? now;
+    existing.lastActivityAt = now;
+    existing.updatedAt = now;
+  } else if (!existing.openedAt) {
+    existing.openedAt = now;
+    existing.lastActivityAt = now;
   }
   recordStudy(data, userId, day, { opened: 1 });
   save(data);
@@ -442,22 +455,40 @@ export async function toggleFavourite(userId: string, termId: string, day?: unkn
   return { ok: true as const, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
 }
 
-export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown) {
+/** Same contract as the production store (see lib/store.supabase.ts submitQuiz): opened-first, graded option, idempotent per client key, ledgered. */
+export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown, meta: QuizSubmission = {}) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
   const term = data.terms.find((item) => item.id === termId);
   const access = canStudyTerm(user, term);
   if (!access.ok) return { ok: false as const, message: access.message };
   if (!user || !term?.quiz) return { ok: false as const, message: "Quiz unavailable." };
-  const correct = term.quiz.correctOption === option || term.quiz.options[term.quiz.correctOption.charCodeAt(0) - 65] === option;
+  const graded = gradeAnswer(term, option);
+  if (!graded) return { ok: false as const, message: "That answer is not one of this quiz's options." };
+  const { letter, correct } = graded;
   const current = data.progress.find((item) => item.userId === userId && item.termId === termId);
+  if (!current || current.state === "new") {
+    return { ok: false as const, code: "not-opened" as const, message: "Open and read this Term before taking its quiz." };
+  }
+  const now = new Date().toISOString();
+  const clientKey = typeof meta.clientKey === "string" && meta.clientKey.trim() ? meta.clientKey.trim().slice(0, 80) : null;
+  data.quizAttempts = data.quizAttempts ?? [];
+  if (clientKey && data.quizAttempts.some((row) => row.userId === userId && row.clientKey === clientKey)) {
+    return { ok: true as const, correct, duplicate: true as const, message: term.quiz.explanation, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
+  }
+  const source: QuizSource = meta.source === "runner" || meta.source === "session" ? meta.source : "term";
+  data.quizAttempts.push({ userId, termId, option: letter, correct, source, clientKey, answeredAt: now });
+  const wasMastered = current.state === "mastered";
   const next: Progress = {
-    userId,
-    termId,
-    favourite: current?.favourite ?? false,
+    ...current,
     state: correct ? "mastered" : "learning",
-    attempts: (current?.attempts ?? 0) + 1,
-    updatedAt: new Date().toISOString(),
+    attempts: (current.attempts ?? 0) + 1,
+    updatedAt: now,
+    openedAt: current.openedAt ?? current.updatedAt,
+    quizCompleted: true,
+    quizCorrect: correct,
+    masteredAt: correct ? (wasMastered && current.masteredAt ? current.masteredAt : now) : null,
+    lastActivityAt: now,
   };
   data.progress = [...data.progress.filter((item) => !(item.userId === userId && item.termId === termId)), next];
   recordStudy(data, userId, day, { attempts: 1, correct: correct ? 1 : 0 });

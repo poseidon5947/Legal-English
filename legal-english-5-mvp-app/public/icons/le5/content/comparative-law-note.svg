@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Comparative Law Note</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<path class="icon" d="M4 5h6v14H4zM14 5h6v14h-6z"/><path class="icon" d="M10 9h4M10 15h4"/><path class="icon" d="m11.5 7.5-1.5 1.5 1.5 1.5M12.5 13.5 14 15l-1.5 1.5"/>
+</svg>

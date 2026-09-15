@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "@/components/use-focus-trap";
 import { useApp } from "@/components/app-provider";
 import { BrandMark } from "@/components/brand-mark";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { useLocale } from "@/components/locale-provider";
 import { landingCopy } from "@/lib/landing-copy";
 import { trackAction } from "@/lib/track";
@@ -25,12 +26,14 @@ export function LandingHeader() {
     mobile.addEventListener("change", closeOnDesktop);
     return () => mobile.removeEventListener("change", closeOnDesktop);
   }, []);
-  const links: ReadonlyArray<readonly [string, string]> = [
-    ["/", nav.home],
-    ["/terms", nav.library],
-    ["/#how-it-works", nav.how],
-    ["/pricing", nav.pricing],
-    ["/about", nav.about],
+  // Approved main navigation (Part III): Home | Terms Library | Areas | How It Works | Pricing | About.
+  const links: ReadonlyArray<readonly [string, string, Le5IconName]> = [
+    ["/", nav.home, "navigation/home"],
+    ["/terms", nav.library, "navigation/terms-library"],
+    ["/categories", nav.areas, "navigation/areas"],
+    ["/#how-it-works", nav.how, "navigation/how-it-works"],
+    ["/pricing", nav.pricing, "navigation/billing"],
+    ["/about", nav.about, "navigation/account"],
   ];
 
   // Close the mobile menu on navigation, on Escape, and lock body scroll while open.
@@ -56,6 +59,32 @@ export function LandingHeader() {
       <Link href="/" onClick={() => setOpen(false)}>
         <BrandMark />
       </Link>
+      {/* MOB-UI-06: on small screens the nav links live in the slide-down panel,
+          so Sign In used to be invisible until the menu was opened. This quick
+          group is rendered on the server with the rest of the header — no
+          hydration, session or breakpoint gating — and CSS shows it only on
+          mobile: Sign In (or My Dashboard once the session is known) + EN/ES. */}
+      <div className={`landing-nav-quick${open ? " menu-open" : ""}`}>
+        {signedIn ? (
+          <Link href="/dashboard" className="landing-quick-signin" onClick={() => setOpen(false)}>
+            {nav.dashboard}
+          </Link>
+        ) : (
+          <Link href="/login" className="landing-quick-signin" onClick={() => setOpen(false)}>
+            {nav.signIn}
+          </Link>
+        )}
+        <button
+          type="button"
+          className="home-lang"
+          aria-label={t("langToggle")}
+          onClick={() => setLocale(locale === "en" ? "es" : "en")}
+        >
+          <b className={locale === "en" ? "on" : ""}>EN</b>
+          <i>/</i>
+          <b className={locale === "es" ? "on" : ""}>ES</b>
+        </button>
+      </div>
       <button
         type="button"
         className="landing-menu-toggle"
@@ -69,22 +98,15 @@ export function LandingHeader() {
         <span />
       </button>
       <div className="landing-nav-links" id="landing-menu">
-        {links.map(([href, label]) => (
+        <span className="landing-menu-title" aria-hidden="true">{nav.menu}</span>
+        {links.map(([href, label, icon]) => (
           <Link key={href} href={href} className={(href === "/" ? path === href : path === href) ? "active" : ""} onClick={() => setOpen(false)}>
-            {label}
+            <Le5Icon name={icon} size={22} className="landing-menu-icon" />
+            <span>{label}</span>
+            <Le5Icon name="utility/chevron" size={18} className="landing-menu-chevron" />
           </Link>
         ))}
-        <button
-          type="button"
-          className="home-lang"
-          aria-label={t("langToggle")}
-          onClick={() => setLocale(locale === "en" ? "es" : "en")}
-        >
-          <img src="/home-assets/icons/globe.png" alt="" aria-hidden="true" />
-          <b className={locale === "en" ? "on" : ""}>EN</b>
-          <i>/</i>
-          <b className={locale === "es" ? "on" : ""}>ES</b>
-        </button>
+        <span className="landing-menu-group" aria-hidden="true">{nav.account}</span>
         {signedIn ? (
           <>
             <button type="button" className="landing-signout" onClick={() => void signOut().then(() => setOpen(false))}>
@@ -104,6 +126,18 @@ export function LandingHeader() {
             </Link>
           </>
         )}
+        <span className="landing-menu-group" aria-hidden="true">{nav.language}</span>
+        <button
+          type="button"
+          className="home-lang"
+          aria-label={t("langToggle")}
+          onClick={() => setLocale(locale === "en" ? "es" : "en")}
+        >
+          <Le5Icon name="utility/language" size={18} className="landing-lang-icon" />
+          <b className={locale === "en" ? "on" : ""}>EN</b>
+          <i>/</i>
+          <b className={locale === "es" ? "on" : ""}>ES</b>
+        </button>
       </div>
       {open && <button type="button" className="landing-menu-backdrop" aria-label={menuLabel} onClick={() => setOpen(false)} />}
     </header>

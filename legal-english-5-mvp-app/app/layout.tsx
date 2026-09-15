@@ -28,9 +28,14 @@ export async function generateMetadata(): Promise<Metadata> {
     applicationName: SITE_NAME,
     keywords: ["legal English", "inglés jurídico", "abogados", "contracts", "corporate law", "employment law", "MPC LAW STUDIO"],
     authors: [{ name: BRAND_OWNER }],
+    // Approved favicon package (Design Freeze Pack L06), used as supplied.
     icons: {
-      icon: "/brand/mpc-icon-512.png",
-      apple: "/brand/mpc-icon-512.png",
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      ],
+      apple: "/apple-touch-icon.png",
     },
     openGraph: {
       type: "website",
@@ -82,9 +87,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang={locale} data-scroll-behavior="smooth" data-input="pointer" suppressHydrationWarning>
       <head>
         {/* Fonts are self-hosted (public/fonts) so no request leaves for Google; preload the three faces above the fold. */}
-        <link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/inter-variable-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/source-serif-4-variable-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <JsonLd data={siteJsonLd()} />
         {/* Focus-ring modality (see globals.css "Focus rings only for keyboard users").
             Inline and first in <head> so it is active before React hydrates: a click that

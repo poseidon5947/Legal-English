@@ -7,7 +7,8 @@ import type { BillingEventType } from "@/lib/billing-state";
 import { normalizePreferences, type Preferences } from "@/lib/preferences";
 import { localDay } from "@/lib/study-day";
 import { learnerText } from "@/lib/learner-copy";
-import type { BillingRecord, Entitlement, Mail, Plan, Progress, PublicUser, SessionPayload, SubscriptionStatus, Term, StudyDay, SupportTicket, TicketStatus } from "@/lib/types";
+import { quizClientKey } from "@/lib/quiz-grading";
+import type { BillingRecord, Consents, Entitlement, Mail, Plan, Progress, PublicUser, QuizSubmission, SessionPayload, SubscriptionStatus, Term, StudyDay, SupportTicket, TicketStatus } from "@/lib/types";
 
 export type AudioUploadResult = { file: string; termId?: string; jurisdiction?: "us" | "uk"; status: "stored" | "rejected"; message: string };
 
@@ -42,14 +43,14 @@ type Ctx = {
   entitlement: Entitlement;
   billingHistory: BillingRecord[];
   signIn: (email: string, password: string) => Promise<Result>;
-  signUp: (name: string, email: string, password: string, privacyAccepted: boolean) => Promise<Result>;
+  signUp: (name: string, email: string, password: string, consents: Consents) => Promise<Result>;
   signOut: () => Promise<void>;
   verify: (email: string, code: string) => Promise<Result>;
   forgot: (email: string) => Promise<Result>;
   resetPassword: (email: string, code: string, password: string) => Promise<Result>;
   openTerm: (id: string) => Promise<void>;
   toggleFavourite: (id: string) => Promise<void>;
-  submitQuiz: (id: string, option: string) => Promise<Result>;
+  submitQuiz: (id: string, option: string, meta?: QuizSubmission) => Promise<Result>;
   applyBilling: (event: BillingEventType, plan?: Plan) => Promise<Result>;
   /** Start a purchase; resolves with the URL to continue at (external = hosted Mercado Pago page). */
   startCheckout: (plan: Plan) => Promise<Result & { url?: string; external?: boolean }>;
@@ -205,8 +206,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (data.ok && data.session?.user?.name) notify(T("toastWelcome", { name: String(data.session.user.name).split(" ")[0] }));
       return data;
     },
-    async signUp(name, email, password, privacyAccepted) {
-      const data = await post("/api/auth", { action: "signup", name, email, password, privacyAccepted });
+    async signUp(name, email, password, consents) {
+      const data = await post("/api/auth", {
+        action: "signup",
+        name,
+        email,
+        password,
+        termsAccepted: consents.terms,
+        privacyAccepted: consents.data,
+        marketingOptIn: consents.marketing,
+      });
       if (data.ok && data.session) applyBootstrap(data);
       else if (data.ok) await hydrate();
       return data;
@@ -242,8 +251,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         notify(data.message, "error");
       }
     },
-    async submitQuiz(id, option) {
-      const data = await post("/api/learn", { action: "quiz", termId: id, option, day: localDay() });
+    async submitQuiz(id, option, meta) {
+      const data = await post("/api/learn", { action: "quiz", termId: id, option, day: localDay(), clientKey: meta?.clientKey ?? quizClientKey(), source: meta?.source ?? "term" });
       if (data.progress) setProgressList(data.progress);
       if (data.studyDays) setStudyDays(data.studyDays);
       return data;

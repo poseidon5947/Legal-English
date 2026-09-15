@@ -7,10 +7,11 @@ import { entitlementFor } from "./entitlement";
 import { cancelPreapproval, createPreapproval, mercadoPagoConfig } from "./mercadopago";
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
+import { gradeAnswer } from "./quiz-grading";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
 import { siteUrl } from "./site";
 import type { Preferences } from "./preferences";
-import type { InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, StudyDay, SupportTicket, TicketStatus, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
+import type { Consents, InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, QuizSource, QuizSubmission, StudyDay, SupportTicket, TicketStatus, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
 
 // Production data layer: Supabase Auth for identity, Postgres + RLS for
 // everything else. Every exported function here has the exact name/shape as
@@ -236,6 +237,8 @@ export async function getUser(id: string, options: { asAdmin?: boolean } = {}): 
     subscription: rowToSubscription(sub),
     disabledAt: (profile.disabled_at as string | null) ?? null,
     privacyAcceptedAt: (profile.privacy_accepted_at as string | null) ?? null,
+    termsAcceptedAt: (profile.terms_accepted_at as string | null) ?? null,
+    marketingOptInAt: (profile.marketing_opt_in_at as string | null) ?? null,
     preferences: normalizePreferences(profile.preferences as Partial<Preferences> | null),
   };
 }
@@ -274,6 +277,8 @@ async function listUsers(): Promise<PublicUser[]> {
     subscription: rowToSubscription(subById.get(String(profile.id))),
     disabledAt: (profile.disabled_at as string | null) ?? null,
     privacyAcceptedAt: (profile.privacy_accepted_at as string | null) ?? null,
+    termsAcceptedAt: (profile.terms_accepted_at as string | null) ?? null,
+    marketingOptInAt: (profile.marketing_opt_in_at as string | null) ?? null,
     preferences: normalizePreferences(profile.preferences as Partial<Preferences> | null),
   }));
 }
@@ -301,9 +306,9 @@ export async function signOut() {
   await supabase.auth.signOut();
 }
 
-export async function register(name: string, email: string, password: string, privacyAccepted: boolean) {
-  if (!privacyAccepted) {
-    return { ok: false as const, message: "You must accept the data processing notice to continue." };
+export async function register(name: string, email: string, password: string, consents: Consents) {
+  if (!consents.terms || !consents.data) {
+    return { ok: false as const, message: "You must accept the Terms of Service and the personal data processing authorization to continue." };
   }
   const supabase = await getSupabaseServerClient();
   const { data, error } = await supabase.auth.signUp({
@@ -318,7 +323,12 @@ export async function register(name: string, email: string, password: string, pr
     // Free-tier Supabase with the default mailer cannot customise templates, so
     // the email may carry a link ({{ .ConfirmationURL }}) instead of the code the
     // UI asks for. Point that link at /auth/confirm, which finishes the flow.
-    options: { data: { full_name: name.trim(), privacy_accepted: true }, emailRedirectTo: authCallbackUrl("signup") },
+    // Migration 011 also stamps terms_accepted_at / marketing_opt_in_at from
+    // this metadata (separate consents, Textos Web IMP-13 / IMP-18).
+    options: {
+      data: { full_name: name.trim(), privacy_accepted: true, terms_accepted: true, marketing_opt_in: Boolean(consents.marketing) },
+      emailRedirectTo: authCallbackUrl("signup"),
+    },
   });
   if (error || !data.user) return { ok: false as const, message: mapAuthError(error?.message) };
   // No session yet (email confirmation pending), so the row must be read as admin.
@@ -550,6 +560,11 @@ function rowToProgress(row: Record<string, unknown>): Progress {
     state: (row.state as Progress["state"]) ?? "new",
     attempts: Number(row.attempts ?? 0),
     updatedAt: String(row.updated_at ?? new Date().toISOString()),
+    openedAt: row.opened_at ? String(row.opened_at) : null,
+    quizCompleted: Boolean(row.quiz_completed ?? Number(row.attempts ?? 0) > 0),
+    quizCorrect: Boolean(row.quiz_correct ?? row.state === "mastered"),
+    masteredAt: row.mastered_at ? String(row.mastered_at) : null,
+    lastActivityAt: row.last_activity_at ? String(row.last_activity_at) : null,
   };
 }
 
@@ -594,20 +609,31 @@ export async function bootstrap(userId: string | null) {
   if (!user) return { session: null, terms: [], progress: [], users: [], inbox: [], entitlement: entitlementFor(trial()) };
   const isAdmin = user.role === "admin";
   const supabase = await getSupabaseServerClient();
-  const terms = await listTerms(isAdmin, isAdmin || canLearn(user).ok);
   let progressQuery = supabase.from("user_term_progress").select("*");
   if (!isAdmin) progressQuery = progressQuery.eq("user_id", userId);
-  const { data: progressRows } = await progressQuery;
+  // M-02 (Hito B revalidation): "Opening your studio…" was taking 15–30 s
+  // because these six reads ran one after another, each a full round trip to
+  // Supabase (terms + signed audio URLs, progress, study days, tickets, users,
+  // billing). They are independent, so they now run concurrently; the page
+  // waits for the slowest one instead of the sum of all of them.
+  const [terms, progressResult, studyDays, tickets, users, billingHistory] = await Promise.all([
+    listTerms(isAdmin, isAdmin || canLearn(user).ok),
+    progressQuery,
+    studyDaysFor(userId),
+    listTickets(userId).then((result) => (result.ok ? result.tickets : [])),
+    isAdmin ? listUsers() : Promise.resolve([]),
+    billingHistoryFor(userId, user),
+  ]);
   return {
     session: { user, subscription: user.subscription },
     terms,
-    progress: (progressRows ?? []).map(rowToProgress),
-    studyDays: await studyDaysFor(userId),
-    tickets: await listTickets(userId).then((result) => (result.ok ? result.tickets : [])),
-    users: isAdmin ? await listUsers() : [],
+    progress: (progressResult.data ?? []).map(rowToProgress),
+    studyDays,
+    tickets,
+    users,
     inbox: [] as Mail[],
     entitlement: entitlementFor(user.subscription),
-    billingHistory: await billingHistoryFor(userId),
+    billingHistory,
   };
 }
 
@@ -616,7 +642,7 @@ export async function bootstrap(userId: string | null) {
  * (migration 004). Read with the service role because the ledger's RLS only
  * exposes it to the Owner; the filter by user_id keeps it per-account.
  */
-async function billingHistoryFor(userId: string): Promise<BillingRecord[]> {
+async function billingHistoryFor(userId: string, known?: Awaited<ReturnType<typeof getUser>>): Promise<BillingRecord[]> {
   const admin = getSupabaseServiceRoleClient();
   const { data } = await admin
     .from("billing_events")
@@ -625,7 +651,8 @@ async function billingHistoryFor(userId: string): Promise<BillingRecord[]> {
     .eq("applied", true)
     .order("received_at", { ascending: false })
     .limit(24);
-  const user = await getUser(userId);
+  // bootstrap already loaded the user; avoid a second auth + profile round trip.
+  const user = known ?? (await getUser(userId));
   return (data ?? []).map((row) => ({
     id: String(row.id),
     userId,
@@ -650,15 +677,19 @@ export async function openTerm(userId: string, termId: string, day?: unknown) {
   const access = canStudyTerm(user, await visibleTerm(termId));
   if (!access.ok) return { ok: false as const, message: access.message };
   const supabase = await getSupabaseServerClient();
+  const now = new Date().toISOString();
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
   if (!existing) {
-    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state: "learning", attempts: 0 });
+    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state: "learning", attempts: 0, opened_at: now, last_activity_at: now });
   } else if (existing.state === "new") {
-    await supabase.from("user_term_progress").update({ state: "learning", updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
+    await supabase.from("user_term_progress").update({ state: "learning", opened_at: existing.opened_at ?? now, last_activity_at: now, updated_at: now }).eq("user_id", userId).eq("term_id", termId);
+  } else if (!existing.opened_at) {
+    // Legacy row from before the audit columns: record the first open we can prove.
+    await supabase.from("user_term_progress").update({ opened_at: now, last_activity_at: now }).eq("user_id", userId).eq("term_id", termId);
   }
   await recordStudy(userId, day, { opened: 1 });
-  const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
-  return { ok: true as const, progress: (rows ?? []).map(rowToProgress), studyDays: await studyDaysFor(userId) };
+  const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
+  return { ok: true as const, progress: (rows ?? []).map(rowToProgress), studyDays };
 }
 
 export async function toggleFavourite(userId: string, termId: string, day?: unknown) {
@@ -676,7 +707,28 @@ export async function toggleFavourite(userId: string, termId: string, day?: unkn
   return { ok: true as const, progress: (rows ?? []).map(rowToProgress), studyDays: await studyDaysFor(userId) };
 }
 
-export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown) {
+/** Postgres error codes the quiz path handles explicitly. */
+const PG_UNDEFINED_TABLE = "42P01";
+const PG_UNDEFINED_COLUMN = "42703";
+const PG_UNIQUE_VIOLATION = "23505";
+
+/**
+ * Grade one Quick Quiz answer. Hardened after the Hito B progress-state
+ * finding so that a Term can only become Mastered, and an attempt can only be
+ * counted, when the signed-in learner really submitted an answer for a Term
+ * she had opened:
+ *
+ *  - the option must be one of this Term's own answer letters;
+ *  - the Term must already be in the learner's progress (opened → Learning);
+ *    a quiz for a Term never opened is refused, on every page;
+ *  - each Check Answer press carries a client key: a duplicated or retried
+ *    request with the same key returns the previous grade and does not add
+ *    a second attempt;
+ *  - every graded answer is appended to the quiz_attempts ledger (migration
+ *    010) before the summary row is updated, so Mastered / attempts are
+ *    always backed by dated, per-answer evidence.
+ */
+export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown, meta: QuizSubmission = {}) {
   const user = await getUser(userId);
   const supabase = await getSupabaseServerClient();
   const { data: termRow } = await supabase.from("terms").select("*, quiz_items(*)").eq("id", termId).maybeSingle();
@@ -684,18 +736,58 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   const access = canStudyTerm(user, term);
   if (!access.ok) return { ok: false as const, message: access.message };
   if (!term?.quiz) return { ok: false as const, message: "Quiz unavailable." };
-  const correct = term.quiz.correctOption === option || term.quiz.options[term.quiz.correctOption.charCodeAt(0) - 65] === option;
+
+  const graded = gradeAnswer(term, option);
+  if (!graded) return { ok: false as const, message: "That answer is not one of this quiz's options." };
+  const { letter, correct } = graded;
+
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
-  const attempts = Number(existing?.attempts ?? 0) + 1;
-  const state = correct ? "mastered" : "learning";
-  if (existing) {
-    await supabase.from("user_term_progress").update({ state, attempts, updated_at: new Date().toISOString() }).eq("user_id", userId).eq("term_id", termId);
-  } else {
-    await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state, attempts });
+  if (!existing || existing.state === "new") {
+    return { ok: false as const, code: "not-opened" as const, message: "Open and read this Term before taking its quiz." };
   }
+
+  const now = new Date().toISOString();
+  const clientKey = typeof meta.clientKey === "string" && meta.clientKey.trim() ? meta.clientKey.trim().slice(0, 80) : null;
+  const source: QuizSource = meta.source === "runner" || meta.source === "session" ? meta.source : "term";
+
+  // 1. Ledger first. A unique violation on (user, client_key) means this exact
+  //    press was already graded: answer again without touching the counters.
+  const ledger = await supabase
+    .from("quiz_attempts")
+    .insert({ user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now });
+  if (ledger.error?.code === PG_UNIQUE_VIOLATION) {
+    const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
+    return { ok: true as const, correct, duplicate: true as const, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays };
+  }
+  if (ledger.error && ledger.error.code !== PG_UNDEFINED_TABLE) {
+    return { ok: false as const, message: "Your answer could not be recorded. Try again." };
+  }
+  const ledgerAvailable = !ledger.error;
+
+  // 2. Summary row. Mastered only on a correct, recorded answer.
+  const attempts = Number(existing.attempts ?? 0) + 1;
+  const state = correct ? "mastered" : "learning";
+  const wasMastered = existing.state === "mastered";
+  const audited = {
+    state,
+    attempts,
+    quiz_completed: true,
+    quiz_correct: correct,
+    mastered_at: correct ? (wasMastered && existing.mastered_at ? existing.mastered_at : now) : null,
+    last_activity_at: now,
+    opened_at: existing.opened_at ?? existing.updated_at ?? now,
+    updated_at: now,
+  };
+  let update = await supabase.from("user_term_progress").update(audited).eq("user_id", userId).eq("term_id", termId);
+  if (update.error?.code === PG_UNDEFINED_COLUMN && !ledgerAvailable) {
+    // Migration 010 not applied yet: keep the legacy shape rather than lose the answer.
+    update = await supabase.from("user_term_progress").update({ state, attempts, updated_at: now }).eq("user_id", userId).eq("term_id", termId);
+  }
+  if (update.error) return { ok: false as const, message: "Your answer could not be saved. Try again." };
+
   await recordStudy(userId, day, { attempts: 1, correct: correct ? 1 : 0 });
-  const { data: rows } = await supabase.from("user_term_progress").select("*").eq("user_id", userId);
-  return { ok: true as const, correct, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays: await studyDaysFor(userId) };
+  const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
+  return { ok: true as const, correct, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays };
 }
 
 export async function applyBilling(_userId: string, _event: string, _plan?: Plan) {

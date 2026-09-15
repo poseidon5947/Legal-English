@@ -12,7 +12,11 @@ export async function POST(request: Request) {
     return json({ ok: true, ...(await store.bootstrap(result.user.id)) }, 200, request, result.user.id);
   }
   if (action === "signup") {
-    const result = await store.register(body.name, body.email, body.password, Boolean(body.privacyAccepted));
+    const result = await store.register(body.name, body.email, body.password, {
+      terms: Boolean(body.termsAccepted),
+      data: Boolean(body.privacyAccepted),
+      marketing: Boolean(body.marketingOptIn),
+    });
     if (!result.ok) return json(result, 400, request);
     // sessionEstablished is false whenever Supabase requires email
     // confirmation before a session exists (the normal production
