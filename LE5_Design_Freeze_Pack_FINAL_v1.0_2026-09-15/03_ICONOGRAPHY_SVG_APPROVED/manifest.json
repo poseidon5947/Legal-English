@@ -1,0 +1,187 @@
+[
+  {
+    "family": "I01_content",
+    "file": "I01_content/civil-law-equivalent.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/comparative-law-note.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/definition.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/do-not-confuse-with.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/in-context.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/legalese-watch.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/pronunciation.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/quick-quiz.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/spanish-equivalent.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/spanish-speaker-alert.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I01_content",
+    "file": "I01_content/use-it-with.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I02_areas",
+    "file": "I02_areas/contracts.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I02_areas",
+    "file": "I02_areas/corporate-law.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I02_areas",
+    "file": "I02_areas/employment-law.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/account.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/areas.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/billing.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/help.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/home.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/how-it-works.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/progress.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/quiz.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/saved-terms.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/settings.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/sign-out.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I03_navigation",
+    "file": "I03_navigation/terms-library.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/bookmark.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/chevron.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/close.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/completion.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/external-link.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/language.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/menu.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/notifications.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/pause.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/play.svg",
+    "status": "APPROVED / FROZEN"
+  },
+  {
+    "family": "I04_utility",
+    "file": "I04_utility/search.svg",
+    "status": "APPROVED / FROZEN"
+  }
+]

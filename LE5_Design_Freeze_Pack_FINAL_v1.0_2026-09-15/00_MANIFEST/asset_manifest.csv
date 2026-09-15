@@ -1,0 +1,23 @@
+ID,Asset,Status,Freeze note
+L01,Primary Light SVG,APPROVED / FROZEN,Controlled vectorization approved by the Owner on 15 September 2026; path-only SVG included.
+L02,Primary Dark SVG,APPROVED / FROZEN,Approved reversed production variant for Brand Dark backgrounds; path-only SVG included.
+L03,Primary Monochrome SVG,APPROVED / FROZEN,Approved one-color production variant; path-only SVG included.
+L04,Monogram Light SVG,APPROVED / FROZEN,Controlled vectorization approved by the Owner; path-only SVG included.
+L05,Monogram Dark SVG,APPROVED / FROZEN,Approved compact variant for Primary Purple backgrounds; path-only SVG included.
+L06,Favicon package,APPROVED / FROZEN,Favicon SVG plus 16/32 PNG Apple 180 and PWA 192/512 exports included.
+L07,Social avatar,APPROVED / FROZEN,Monogram Dark SVG master plus 1200x1200 PNG included.
+P01,Hero,APPROVED / PRODUCTION EXPORTS FROZEN,2400x1600 master plus approved 1920x1200 desktop and 1080x1350 mobile crops included.
+P02,Contracts,APPROVED / PRODUCTION EXPORTS FROZEN,Exact Owner-supplied source recovered; 1600x900 master and 800x450 Area-card export included.
+P03,Corporate Law,APPROVED / PRODUCTION EXPORTS FROZEN,1600x900 master and 800x450 crop included; board scene has at least five people.
+P04,Employment Law,APPROVED / PRODUCTION EXPORTS FROZEN,1600x900 master and 800x450 crop included.
+P05,Common Law vs Civil Law,APPROVED / PRODUCTION EXPORTS FROZEN,2000x1200 master and 1080x1350 mobile crop included.
+P06,About / Founder,APPROVED / PRODUCTION EXPORTS FROZEN,1600x2000 4:5 master and 1600x960 horizontal crop included; Owner approved 15 September 2026.
+P07,Editorial Process / Trust,APPROVED / PRODUCTION EXPORT FROZEN,2000x1200 production master included; Owner approved 15 September 2026.
+I01,Content icon family,APPROVED / FROZEN,11 individual currentColor SVGs plus sprite and preview included; Owner approved 15 September 2026.
+I02,Area icon family,APPROVED / FROZEN,Contracts/Corporate Law/Employment Law SVGs included; learner-facing naming uses Areas.
+I03,Navigation icon family,APPROVED / FROZEN,12 individual SVGs plus sprite included; navigation asset is Areas not Categories.
+I04,Utility icon family,APPROVED / FROZEN,11 individual SVGs plus sprite included with approved selective yellow accents.
+D03,Component and State Sheet,APPROVED,Approved visual sheet present.
+D04,Design Tokens,APPROVED / RECONCILED,Approved visual sheet plus developer-readable JSON included.
+D01,Desktop visual compositions,APPROVED,Eight final 1440px comps included; EN/ES correction included.
+D02,Mobile visual compositions,APPROVED,Nine final 390px comps included; EN/ES included.

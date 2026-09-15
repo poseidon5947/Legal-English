@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "product": "Legal English 5",
+    "status": "APPROVED / RECONCILED",
+    "date": "2026-09-14",
+    "typography_decision": "Source Serif 4 + Inter"
+  },
+  "color": {
+    "brandPurple700": "#452B84",
+    "brandPurple800": "#352065",
+    "accentYellow500": "#F5E400",
+    "ink900": "#1A171B",
+    "slate700": "#3C3D40",
+    "muted500": "#6B6870",
+    "canvas": "#FAFAF8",
+    "canvasSubtle": "#F7F6F9",
+    "surface": "#FFFFFF",
+    "border": "#DED9E3",
+    "success": "#2F6F44",
+    "warning": "#8A6500",
+    "error": "#A33A3A"
+  },
+  "typography": {
+    "editorialFamily": "Source Serif 4",
+    "uiFamily": "Inter",
+    "roles": {
+      "display": {
+        "font": "Source Serif 4",
+        "weight": 600,
+        "desktop": "56/60",
+        "mobile": "40/44"
+      },
+      "h1": {
+        "font": "Source Serif 4",
+        "weight": 600,
+        "desktop": "44/52",
+        "mobile": "34/40"
+      },
+      "h2": {
+        "font": "Source Serif 4",
+        "weight": 600,
+        "desktop": "32/40",
+        "mobile": "28/34"
+      },
+      "h3": {
+        "font": "Source Serif 4",
+        "weight": 600,
+        "desktop": "24/32",
+        "mobile": "22/28"
+      },
+      "cardTitle": {
+        "font": "Inter",
+        "weight": 600,
+        "desktop": "18/26",
+        "mobile": "18/24"
+      },
+      "body": {
+        "font": "Inter",
+        "weight": 400,
+        "desktop": "16/26",
+        "mobile": "16/25"
+      },
+      "smallBody": {
+        "font": "Inter",
+        "weight": 400,
+        "desktop": "14/21",
+        "mobile": "14/20"
+      },
+      "label": {
+        "font": "Inter",
+        "weight": 600,
+        "desktop": "12/16",
+        "mobile": "12/16",
+        "tracking": "0.06em"
+      },
+      "button": {
+        "font": "Inter",
+        "weight": 600,
+        "desktop": "15/20",
+        "mobile": "15/20"
+      }
+    }
+  },
+  "spacing": {
+    "base": 8,
+    "micro": 4,
+    "publicMaxWidth": 1200,
+    "desktopGutter": "24-32",
+    "mobileGutter": 16,
+    "sectionDesktop": "80-96",
+    "sectionMobile": "48-64",
+    "cardPaddingDesktop": 24,
+    "cardPaddingMobile": "18-20"
+  },
+  "radius": {
+    "controls": 6,
+    "cards": 8,
+    "pill": 999
+  },
+  "border": {
+    "standard": "1px solid #DED9E3"
+  },
+  "elevation": {
+    "approved": "0 1px 2px rgba(26,23,27,.06), 0 8px 24px rgba(26,23,27,.08)",
+    "use": "overlays, active cards, conversion panels only"
+  },
+  "motion": {
+    "duration": "150-220ms",
+    "easing": "ease-out",
+    "ornamentalMotion": false
+  }
+}

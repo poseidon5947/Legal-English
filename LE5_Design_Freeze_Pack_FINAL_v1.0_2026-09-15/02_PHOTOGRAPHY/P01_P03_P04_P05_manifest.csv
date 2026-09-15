@@ -1,0 +1,10 @@
+ID,Asset,File,Dimensions,FocalPoint,Use,Status
+P01,Hero,P01_hero-le5_master_2400x1600.jpg,2400x1600,62% 46%,Home hero,APPROVED
+P01,Hero desktop,P01_hero-le5_desktop_1920x1200.jpg,1920x1200,62% 46%,Home hero desktop,APPROVED
+P01,Hero mobile,P01_hero-le5_mobile_1080x1350.jpg,1080x1350,62% 46%,Home hero mobile,APPROVED
+P03,Corporate Law,P03_category-corporate_master_1600x900.jpg,1600x900,52% 43%,Corporate Law Area,APPROVED
+P03,Corporate Law card,P03_category-corporate_800x450.jpg,800x450,52% 43%,Corporate Law Area card,APPROVED
+P04,Employment Law,P04_category-employment_master_1600x900.jpg,1600x900,52% 48%,Employment Law Area,APPROVED
+P04,Employment Law card,P04_category-employment_800x450.jpg,800x450,52% 48%,Employment Law Area card,APPROVED
+P05,Common Law vs Civil Law,P05_common-civil_master_2000x1200.jpg,2000x1200,60% 48%,Common Law vs Civil Law section,APPROVED
+P05,Common Law vs Civil Law mobile,P05_common-civil_mobile_1080x1350.jpg,1080x1350,60% 48%,Common Law vs Civil Law mobile,APPROVED

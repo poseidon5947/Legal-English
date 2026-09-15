@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Contracts</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<path class="icon" d="M5 3.5h9l4 4v13H5z"/><path class="icon" d="M14 3.5v4h4"/><path class="icon" d="M8 16c1.5-2 2.5-2 4 0s2.5 2 4 0"/>
+</svg>

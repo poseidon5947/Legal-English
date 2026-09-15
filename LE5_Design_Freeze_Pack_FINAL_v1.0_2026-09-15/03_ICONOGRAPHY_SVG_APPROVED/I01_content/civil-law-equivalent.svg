@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Civil Law Equivalent</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<path class="icon" d="M5 5h5v14H5zM14 5h5v14h-5z"/><path class="icon" d="M10 9h4M10 15h4"/><path class="icon" d="M11.5 7.5 10 9l1.5 1.5M12.5 13.5 14 15l-1.5 1.5"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Search</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<circle class="icon" cx="10.5" cy="10.5" r="5.5"/><path class="icon" d="m15 15 5 5"/><path class="accent-stroke" d="M8 9.5a3 3 0 0 1 2.5-2.5"/>
+</svg>

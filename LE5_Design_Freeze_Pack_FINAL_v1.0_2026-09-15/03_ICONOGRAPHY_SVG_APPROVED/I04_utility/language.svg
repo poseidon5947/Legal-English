@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Language</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<circle class="icon" cx="12" cy="12" r="8"/><path class="icon" d="M4 12h16M12 4a13 13 0 0 1 0 16M12 4a13 13 0 0 0 0 16"/><circle class="accent-fill" cx="18" cy="16.5" r="2"/>
+</svg>

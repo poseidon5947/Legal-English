@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Definition</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<path class="icon" d="M6 3.5h8l4 4V20.5H6z"/><path class="icon" d="M14 3.5v4h4"/><path class="icon" d="M9 11h6M9 14h6M9 17h4"/>
+</svg>

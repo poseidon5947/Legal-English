@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+<title id="title">Employment Law</title>
+<style>
+.icon{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-stroke{fill:none;stroke:#F5E400;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.accent-fill{fill:#F5E400;stroke:none}
+</style>
+<circle class="icon" cx="12" cy="7" r="2.5"/><circle class="icon" cx="6" cy="9" r="2"/><circle class="icon" cx="18" cy="9" r="2"/><path class="icon" d="M8 19v-3a4 4 0 0 1 8 0v3M2.5 18v-2a3.5 3.5 0 0 1 4-3.5M21.5 18v-2a3.5 3.5 0 0 0-4-3.5"/>
+</svg>
