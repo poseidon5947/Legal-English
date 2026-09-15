@@ -12,7 +12,7 @@ export default function CookiesPage() {
       : { eyebrow: "Cookies", title: "Cookie Policy", lead: "Which cookies Legal English 5 uses and why." };
   return (
     <LegalDocument
-      photo="/home-assets/photos/privacy-lock.jpg"
+      photo="/home-assets/photos/editorial-process.jpg"
       eyebrow={copy.eyebrow}
       title={copy.title}
       lead={copy.lead}

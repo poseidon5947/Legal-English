@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
@@ -32,8 +33,28 @@ type ShellIcon =
   | "chevron-down"
   | "crown";
 
+/** Shell icon → approved Design Freeze Pack SVG (I03 navigation / I04 utility). */
+const SHELL_ICON: Record<ShellIcon, Le5IconName> = {
+  "nav-home": "navigation/home",
+  "nav-book": "navigation/terms-library",
+  "nav-categories": "navigation/areas",
+  "nav-progress": "navigation/progress",
+  "nav-quiz": "navigation/quiz",
+  "nav-bookmark": "navigation/saved-terms",
+  "nav-user": "navigation/account",
+  "nav-billing-card": "navigation/billing",
+  "nav-help": "navigation/help",
+  "settings-gear": "navigation/settings",
+  "nav-how": "navigation/how-it-works",
+  "nav-signout": "navigation/sign-out",
+  search: "utility/search",
+  bell: "utility/notifications",
+  "chevron-down": "utility/chevron",
+  crown: "utility/completion",
+};
+
 export function ShellIcon({ name, className = "" }: { name: ShellIcon; className?: string }) {
-  return <img className={`terms-library-icon ${className}`.trim()} src={`/terms-library-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
+  return <Le5Icon name={SHELL_ICON[name]} className={`terms-library-icon ${name === "chevron-down" ? "le5-rotate-90" : ""} ${className}`.trim()} />;
 }
 
 export { initialsOf };
@@ -234,9 +255,7 @@ export function LearnerShell({
           aria-controls="learner-drawer"
           onClick={() => setMenuOpen((value) => !value)}
         >
-          <span />
-          <span />
-          <span />
+          <Le5Icon name={menuOpen ? "utility/close" : "utility/menu"} className="learner-menu-toggle-icon" />
         </button>
         <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
           <BrandMark />

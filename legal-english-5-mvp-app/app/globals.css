@@ -26770,3 +26770,53 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 @media (max-width: 760px) {
   .about-studio-photo img { height: auto; }
 }
+
+/* Design Freeze Pack I01–I04 in the learner shell: orientation helpers and the
+   brand-purple colour the approved icons take from currentColor. */
+.le5-icon.le5-rotate-90 { transform: rotate(90deg); }
+.le5-icon.le5-flip-x { transform: scaleX(-1); }
+.learner-shell .consideration-info-icon .le5-icon { width: 30px; height: 30px; color: #452b84; }
+.learner-shell .consideration-info-card.orange .consideration-info-icon .le5-icon { color: #7a4d00; }
+.learner-shell .consideration-rail-heading h2 .le5-icon,
+.learner-shell .consideration-title-line .le5-icon,
+.learner-shell .consideration-pronunciation button .le5-icon { color: #452b84; }
+.learner-shell .consideration-term-nav-main .primary .le5-icon { color: #ffffff; }
+.learner-shell .consideration-breadcrumb .le5-icon { width: 14px; height: 14px; color: #8b86a0; }
+.learner-shell .terms-reference-nav .le5-icon,
+.learner-shell .consideration-nav .le5-icon { color: #452b84; }
+.learner-shell .learner-tabbar .le5-icon { color: inherit; }
+
+/* Auth pages — Design Freeze Pack D01.8 (light two-panel composition, no photography). */
+.auth-reference-page .auth-reference-hero { background: #f7f6fb; color: #1a171b; }
+.auth-reference-page .auth-reference-hero::after,
+.auth-reference-page .auth-reference-hero::before { display: none; }
+.auth-reference-page .auth-reference-hero-content { padding: 32px 48px 40px; }
+.auth-reference-page .auth-reference-kicker { color: #452b84; margin-top: 56px; }
+.auth-reference-page .auth-reference-kicker .auth-ref-icon { display: none; }
+.auth-reference-page .auth-reference-hero h1 { color: #2f1f6d; font-size: 2.9rem; }
+.auth-reference-page .auth-reference-hero h1 span { color: #452b84; }
+.auth-reference-page .auth-reference-hero-content > i { background: #f5e400; }
+.auth-reference-page .auth-reference-lead { color: #4a4757; }
+.auth-reference-page .auth-feature-list article > span { border: 1.5px solid #d9d4ea; background: #ffffff; color: #452b84; }
+.auth-reference-page .auth-feature-list article > span .le5-icon { width: 24px; height: 24px; }
+.auth-reference-page .auth-feature-list strong { color: #2f1f6d; }
+.auth-reference-page .auth-feature-list p { color: #5b5868; }
+.auth-reference-page .auth-reference-secure { color: #4a4757; padding: 14px 16px; border: 1px solid #e4e0f0; border-radius: 10px; background: #ffffff; }
+.auth-reference-page .auth-reference-secure .auth-ref-icon { filter: none; }
+
+/* D04 motion: ornamentalMotion = false. Scroll-reveal choreography is switched
+   off; content is visible immediately (150–220 ms ease-out stays for controls). */
+.reveal-ready [data-reveal],
+.reveal-ready [data-reveal="left"],
+.reveal-ready [data-reveal="stagger"] > * {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  animation: none;
+  will-change: auto;
+}
+.reveal-ready [data-reveal="stagger"].in-view > * { animation: none; }
+
+/* Hamburger buttons render the approved I04 menu / close icons. */
+.learner-menu-toggle, .landing-menu-toggle { place-items: center; padding: 0; gap: 0; color: #452b84; }
+.learner-menu-toggle-icon, .landing-nav-toggle-icon { width: 24px; height: 24px; }

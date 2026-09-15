@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "Progress",
-  description: "Your learning activity, streaks and mastery by category.",
+  description: "Your learning activity, streaks and mastery by Area.",
   path: "/progress",
 });
 

@@ -8,7 +8,7 @@ export default function PrivacyPage() {
   const { locale, t } = useLocale();
   return (
     <LegalDocument
-      photo="/home-assets/photos/legal-books.jpg"
+      photo="/home-assets/photos/editorial-process.jpg"
       eyebrow={t("privacyPageEyebrow")}
       title={t("privacyPageTitle")}
       lead={t("privacyPageLead")}

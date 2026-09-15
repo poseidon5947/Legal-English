@@ -3,6 +3,7 @@
 import { categoryPhoto } from "@/lib/category-photos";
 import { Photo } from "@/components/photo";
 import Link from "next/link";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
@@ -37,7 +38,7 @@ function QuizIcon({ name, className = "" }: { name: QuizIcon; className?: string
   return <img className={`quiz-ref-icon ${className}`.trim()} src={`/quiz-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-const CATEGORY_ICON: Record<string, QuizIcon> = { Contracts: "balance-scales", "Corporate Law": "courthouse", "Employment Law": "people-group" };
+const CATEGORY_ICON: Record<string, Le5IconName> = { Contracts: "areas/contracts", "Corporate Law": "areas/corporate-law", "Employment Law": "areas/employment-law" };
 const CATEGORY_TONE: Record<string, string> = { Contracts: "blue", "Corporate Law": "green", "Employment Law": "purple" };
 const ACH_ICON: Record<string, QuizIcon> = {
   firstMastery: "check-circle",
@@ -445,7 +446,7 @@ export function QuizWorkspace() {
                 <article className={`${CATEGORY_TONE[item.category]} with-photo`} key={item.category}>
                   <Photo className="quiz-practice-photo" src={categoryPhoto(item.category)} size="card" />
                   <span>
-                    <QuizIcon name={CATEGORY_ICON[item.category]} />
+                    <Le5Icon name={CATEGORY_ICON[item.category]} className="quiz-ref-icon" />
                   </span>
                   <div>
                     <h3>{categoryLabel(locale, item.category)}</h3>
@@ -467,7 +468,7 @@ export function QuizWorkspace() {
 
         <aside className="quiz-ref-right-rail">
           <Link className="learner-photo-card" href="/terms?state=learning">
-            <Photo src="/home-assets/photos/quiz-focus.jpg" size="card" />
+            <Photo src="/home-assets/photos/common-civil.jpg" size="card" />
             <span>
               <small>{L("quizPhotoTag")}</small>
               <strong>{L("quizPhotoTitle")}</strong>
@@ -552,7 +553,7 @@ export function QuizWorkspace() {
               {byCategory.map((item) => (
                 <article className={CATEGORY_TONE[item.category]} key={item.category}>
                   <span>
-                    <QuizIcon name={CATEGORY_ICON[item.category]} />
+                    <Le5Icon name={CATEGORY_ICON[item.category]} className="quiz-ref-icon" />
                     <strong>{categoryLabel(locale, item.category)}</strong>
                   </span>
                   <i>

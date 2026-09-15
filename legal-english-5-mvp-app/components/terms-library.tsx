@@ -4,6 +4,7 @@ import { categoryPhotoAlt, termPhoto } from "@/lib/category-photos";
 import { Photo } from "@/components/photo";
 
 import Link from "next/link";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/components/app-provider";
@@ -29,7 +30,24 @@ type LibIcon =
   | "pagination-left"
   | "pagination-right";
 
+/** Library icons with an approved Design Freeze Pack equivalent (I02 areas / I04 utility). The rest (view toggles, status dots) stay as page art. */
+const LIB_ICON: Partial<Record<LibIcon, Le5IconName>> = {
+  "chevron-down": "utility/chevron",
+  "category-contract": "areas/contracts",
+  "category-corporate": "areas/corporate-law",
+  "category-employment": "areas/employment-law",
+  "bookmark-outline": "utility/bookmark",
+  "status-check": "utility/completion",
+  "pagination-left": "utility/chevron",
+  "pagination-right": "utility/chevron",
+};
+
 function LibraryIcon({ name, className = "" }: { name: LibIcon; className?: string }) {
+  const approved = LIB_ICON[name];
+  if (approved) {
+    const orient = name === "chevron-down" ? "le5-rotate-90" : name === "pagination-left" ? "le5-flip-x" : "";
+    return <Le5Icon name={approved} className={`terms-library-icon ${orient} ${className}`.trim()} />;
+  }
   return <img className={`terms-library-icon ${className}`.trim()} src={`/terms-library-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
@@ -345,7 +363,7 @@ export function TermsLibrary() {
           </div>
         )}
 
-        <section className="terms-category-progress" aria-label="Category progress">
+        <section className="terms-category-progress" aria-label={locale === "es" ? "Progreso por Área" : "Progress by Area"}>
           {byCategory.map((item) => (
             <article
               className={`${CATEGORY_THEME[item.category]} with-photo${category === item.category ? " active" : ""}`}

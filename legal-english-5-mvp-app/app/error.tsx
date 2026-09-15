@@ -57,7 +57,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
           </p>
         )}
         <figure className="not-found-photo" aria-hidden="true">
-          <Photo src="/home-assets/photos/mosaic-documents.jpg" size="card" priority />
+          <Photo src="/home-assets/photos/common-civil.jpg" size="card" priority />
         </figure>
       </section>
       <LandingFooter />

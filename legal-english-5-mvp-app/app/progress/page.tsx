@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { useMemo } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
@@ -30,7 +31,7 @@ function ProgressIcon({ name, className = "" }: { name: ProgressIcon; className?
   return <img className={`progress-ref-icon ${className}`.trim()} src={`/progress-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
-const CATEGORY_ICON: Record<string, ProgressIcon> = { Contracts: "activity-book", "Corporate Law": "courthouse", "Employment Law": "people-group" };
+const CATEGORY_ICON: Record<string, Le5IconName> = { Contracts: "areas/contracts", "Corporate Law": "areas/corporate-law", "Employment Law": "areas/employment-law" };
 const CATEGORY_TONE: Record<string, string> = { Contracts: "blue", "Corporate Law": "green", "Employment Law": "purple" };
 const ACTIVITY_ICON = { mastered: "achievement-shield", attempted: "activity-quiz", studied: "activity-book", saved: "stat-book" } as const;
 const ACTIVITY_TONE = { mastered: "green", attempted: "purple", studied: "orange", saved: "blue" } as const;
@@ -214,7 +215,7 @@ export default function ProgressPage() {
                 <Link className={`${CATEGORY_TONE[item.category]} with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
                   <span>
                     <Photo src={categoryPhoto(item.category)} size="thumb" />
-                    <ProgressIcon name={CATEGORY_ICON[item.category]} />
+                    <Le5Icon name={CATEGORY_ICON[item.category]} className="progress-ref-icon" />
                   </span>
                   <strong>{categoryLabel(locale, item.category)}</strong>
                   <div>
@@ -232,7 +233,7 @@ export default function ProgressPage() {
 
         <aside className="progress-ref-rail">
           <Link className="learner-photo-card" href="/terms">
-            <Photo src="/home-assets/photos/workflow-study.jpg" size="card" />
+            <Photo src="/home-assets/photos/common-civil.jpg" size="card" />
             <span>
               <small>{L("photoCardTag")}</small>
               <strong>{L("photoCardTitle")}</strong>

@@ -27,7 +27,7 @@ export default function AchievementsPage() {
         </div>
       </div>
       <figure className="learner-photo-banner short" aria-hidden="true">
-        <Photo src="/home-assets/photos/achievements.jpg" size="wide" priority />
+        <Photo src="/home-assets/photos/common-civil.jpg" size="wide" priority />
       </figure>
       <div className="stat-grid four">
         <div className="stat">

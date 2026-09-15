@@ -29,6 +29,19 @@ const SIZES: Record<Size, string> = {
 const MAX_WIDTH: Record<Size, number> = { thumb: 480, card: 800, wide: 1200, full: 1200 };
 
 type Entry = { w: number[]; ar: number };
+
+/**
+ * Approved focal points (Design Freeze Pack v1.0, 02_PHOTOGRAPHY READMEs) as
+ * CSS object-position, so any crop a layout imposes keeps the approved subject.
+ */
+const FOCAL_POINT: Record<string, string> = {
+  "/home-assets/photos/hero-le5.jpg": "62% 46%",
+  "/home-assets/photos/hero-le5-mobile.jpg": "62% 46%",
+  "/home-assets/photos/area-contracts.jpg": "44% 58%",
+  "/home-assets/photos/area-corporate.jpg": "52% 43%",
+  "/home-assets/photos/area-employment.jpg": "52% 48%",
+  "/home-assets/photos/common-civil.jpg": "60% 48%",
+};
 const MANIFEST = manifest as Record<string, Entry>;
 
 export function photoSources(src: string, size: Size = "card"): { src: string; srcSet?: string; sizes?: string } {
@@ -53,11 +66,13 @@ type Props = Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "srcSet"> & {
   priority?: boolean;
 };
 
-export function Photo({ src, size = "card", priority = false, alt = "", loading, decoding = "async", sizes, ...rest }: Props) {
+export function Photo({ src, size = "card", priority = false, alt = "", loading, decoding = "async", sizes, style, ...rest }: Props) {
   const sources = photoSources(src, size);
+  const focal = FOCAL_POINT[src];
   return (
     <img
       {...rest}
+      style={focal ? { objectPosition: focal, ...style } : style}
       {...sources}
       sizes={sizes ?? sources.sizes}
       alt={alt}

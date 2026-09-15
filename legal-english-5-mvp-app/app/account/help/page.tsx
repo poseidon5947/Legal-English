@@ -42,7 +42,7 @@ export default function HelpPage() {
       {error && <p className="notice">{error}</p>}
       <div className="account-stack">
         <section className="account-card help-hero-card with-photo">
-          <Photo className="help-hero-photo" src="/home-assets/photos/help-support.jpg" size="card" priority />
+          <Photo className="help-hero-photo" src="/home-assets/photos/editorial-process.jpg" size="card" priority />
           <div>
             <span className="eyebrow">{t("helpEyebrow")}</span>
             <h2>{t("helpTitle")}</h2>

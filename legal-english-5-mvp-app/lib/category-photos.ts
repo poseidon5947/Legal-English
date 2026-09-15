@@ -1,6 +1,6 @@
 /**
- * Editorial photography for the three canonical MCD categories
- * (see public/home-assets/photos/CREDITS.txt for Unsplash sources).
+ * Approved photography for the three Areas (Design Freeze Pack v1.0, P02–P04;
+ * see public/home-assets/photos/CREDITS.txt).
  *
  * Three layers so the same photo is not repeated across a page or across
  * consecutive terms:
@@ -17,46 +17,17 @@ export const CATEGORY_PHOTO: Record<string, string> = {
   "Employment Law": `${P}area-employment.jpg`,
 };
 
-export const CATEGORY_PHOTO_ALT: Record<string, string> = {
-  Contracts: `${P}term-contracts-review.jpg`,
-  "Corporate Law": `${P}term-corporate-boardroom.jpg`,
-  "Employment Law": `${P}term-employment-team.jpg`,
-};
+/* Design Freeze Pack v1.0: P02–P04 are the only approved Area photographs, so
+   the secondary and per-term slots reuse them instead of the retired Unsplash pool. */
+export const CATEGORY_PHOTO_ALT: Record<string, string> = CATEGORY_PHOTO;
 
 const TERM_PHOTOS: Record<string, string[]> = {
-  Contracts: [
-    `${P}term-contracts-signing.jpg`,
-    `${P}scenario-negotiation.jpg`,
-    `${P}term-contracts-drafting.jpg`,
-    `${P}term-contracts-checklist.jpg`,
-    `${P}tos-signature.jpg`,
-    `${P}term-contracts-paperwork.jpg`,
-    `${P}area-contracts.jpg`,
-    `${P}mosaic-documents.jpg`,
-  ],
-  "Corporate Law": [
-    `${P}scenario-boardroom.jpg`,
-    `${P}term-corporate-office.jpg`,
-    `${P}term-corporate-analytics.jpg`,
-    `${P}studio-boardroom.jpg`,
-    `${P}term-corporate-press.jpg`,
-    `${P}term-corporate-workspace.jpg`,
-    `${P}area-corporate.jpg`,
-    `${P}term-corporate-boardroom.jpg`,
-  ],
-  "Employment Law": [
-    `${P}term-employment-interview.jpg`,
-    `${P}scenario-onboarding.jpg`,
-    `${P}term-employment-office.jpg`,
-    `${P}term-employment-portrait.jpg`,
-    `${P}term-employment-colleagues.jpg`,
-    `${P}term-employment-manager.jpg`,
-    `${P}area-employment.jpg`,
-    `${P}help-support.jpg`,
-  ],
+  Contracts: [CATEGORY_PHOTO.Contracts],
+  "Corporate Law": [CATEGORY_PHOTO["Corporate Law"]],
+  "Employment Law": [CATEGORY_PHOTO["Employment Law"]],
 };
 
-const FALLBACK = `${P}mosaic-documents.jpg`;
+const FALLBACK = `${P}common-civil.jpg`;
 
 export function categoryPhoto(category: string): string {
   return CATEGORY_PHOTO[category] || FALLBACK;

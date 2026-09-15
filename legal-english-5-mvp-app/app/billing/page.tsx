@@ -140,7 +140,7 @@ function BillingWorkspace() {
 
       <div className="billing-card account-billing-grid">
         <section className="billing-subscription-card with-photo">
-          <Photo className="billing-card-photo" src="/home-assets/photos/cta-courthouse.jpg" size="card" aria-hidden="true" priority />
+          <Photo className="billing-card-photo" src="/home-assets/photos/editorial-process.jpg" size="card" aria-hidden="true" priority />
           <span className={`status ${entitlement.allowed ? "active" : "blocked"}`}>{entitlementLabel(locale, entitlement.label)}</span>
           <h2>{subscription ? subscriptionStatusLabel(locale, subscription.status) : t("noSession")}</h2>
           <p>{entitlementDetail(locale, entitlement.detail)}</p>

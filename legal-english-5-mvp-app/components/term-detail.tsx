@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/app-provider";
 import { LearnerShell } from "@/components/learner-shell";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { useLocale } from "@/components/locale-provider";
 import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
@@ -20,19 +21,40 @@ type DetailIcon =
   | "arrow-right"
   | "bookmark-outline"
   | "speaker"
-  | "contract-document"
-  | "definition-book"
-  | "spanish-globe"
-  | "civil-scales"
-  | "warning-triangle"
-  | "chain-link"
-  | "quote-marks"
+  | "definition"
+  | "spanish-equivalent"
+  | "civil-law-equivalent"
+  | "comparative-law-note"
+  | "spanish-speaker-alert"
+  | "use-it-with"
+  | "in-context"
+  | "language"
   | "mastered-check"
-  | "notes-page"
-  | "nav-quiz";
+  | "feedback"
+  | "quick-quiz";
+
+/** Term Detail icon → approved Design Freeze Pack SVG (I01 content / I04 utility / I03 navigation). */
+const DETAIL_ICON: Record<DetailIcon, Le5IconName> = {
+  "chevron-right": "utility/chevron",
+  "arrow-left": "utility/chevron",
+  "arrow-right": "utility/chevron",
+  "bookmark-outline": "utility/bookmark",
+  speaker: "content/pronunciation",
+  definition: "content/definition",
+  "spanish-equivalent": "content/spanish-equivalent",
+  "civil-law-equivalent": "content/civil-law-equivalent",
+  "comparative-law-note": "content/comparative-law-note",
+  "spanish-speaker-alert": "content/spanish-speaker-alert",
+  "use-it-with": "content/use-it-with",
+  "in-context": "content/in-context",
+  language: "utility/language",
+  "mastered-check": "utility/completion",
+  feedback: "navigation/help",
+  "quick-quiz": "content/quick-quiz",
+};
 
 function DetailIcon({ name, className = "" }: { name: DetailIcon; className?: string }) {
-  return <img className={`consideration-icon ${className}`.trim()} src={`/consideration-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
+  return <Le5Icon name={DETAIL_ICON[name]} className={`consideration-icon ${name === "arrow-left" ? "le5-flip-x" : ""} ${className}`.trim()} />;
 }
 
 const STATE_KEY: Record<ProgressState, LearnerKey> = { new: "stateNew", learning: "stateLearning", mastered: "stateMastered" };
@@ -317,7 +339,7 @@ export function TermDetail({ id }: { id: string }) {
             {term.definition.trim() && (
               <article className="consideration-info-card blue">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="definition-book" />
+                  <DetailIcon name="definition" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
@@ -331,7 +353,7 @@ export function TermDetail({ id }: { id: string }) {
             {spanishEquivalent && (
               <article className="consideration-info-card green">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="civil-scales" />
+                  <DetailIcon name="spanish-equivalent" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
@@ -345,7 +367,7 @@ export function TermDetail({ id }: { id: string }) {
             {civilLawEquivalent && (
               <article className="consideration-info-card purple">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="civil-scales" />
+                  <DetailIcon name="civil-law-equivalent" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
@@ -363,7 +385,7 @@ export function TermDetail({ id }: { id: string }) {
             {equivalenceNote && equivalenceNote !== civilLawEquivalent && (
               <article className="consideration-info-card purple comparative-note">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="civil-scales" />
+                  <DetailIcon name="comparative-law-note" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
@@ -377,7 +399,7 @@ export function TermDetail({ id }: { id: string }) {
             {useItWith.trim() && (
               <article className="consideration-info-card indigo">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="chain-link" />
+                  <DetailIcon name="use-it-with" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
@@ -391,7 +413,7 @@ export function TermDetail({ id }: { id: string }) {
             {term.inContext && (
               <article className="consideration-info-card quote">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="quote-marks" />
+                  <DetailIcon name="in-context" />
                 </div>
                 <div>
                   <h2>{L("inContext")}</h2>
@@ -407,7 +429,7 @@ export function TermDetail({ id }: { id: string }) {
             {term.spanishSpeakerAlert.trim() && (
               <article className="consideration-info-card orange">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="warning-triangle" />
+                  <DetailIcon name="spanish-speaker-alert" />
                 </div>
                 <div>
                   <div className="consideration-info-heading">
@@ -421,7 +443,7 @@ export function TermDetail({ id }: { id: string }) {
             {(term.usVariant || term.ukVariant) && (
               <article className="consideration-info-card indigo">
                 <div className="consideration-info-icon">
-                  <DetailIcon name="spanish-globe" />
+                  <DetailIcon name="language" />
                 </div>
                 <div>
                   {term.usVariant && (
@@ -527,7 +549,7 @@ export function TermDetail({ id }: { id: string }) {
           <section className="consideration-quiz-card" id="quick-quiz" tabIndex={-1}>
             <div className="consideration-rail-heading">
               <h2>
-                <DetailIcon name="nav-quiz" />
+                <DetailIcon name="quick-quiz" />
                 {L("quickQuiz")}
               </h2>
               <span>{L("oneOfOne")}</span>
@@ -663,7 +685,7 @@ export function TermDetail({ id }: { id: string }) {
                 </form>
               ) : (
                 <button type="button" className="consideration-report-toggle" onClick={() => setReportOpen(true)}>
-                  <DetailIcon name="notes-page" />
+                  <DetailIcon name="feedback" />
                   {L("reportProblem")}
                 </button>
               )}

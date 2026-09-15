@@ -51,7 +51,7 @@ export default function NotFound() {
           <Link href="/account/help">{c.help}</Link>
         </div>
         <figure className="not-found-photo" aria-hidden="true">
-          <Photo src="/home-assets/photos/mosaic-library.jpg" size="card" priority />
+          <Photo src="/home-assets/photos/common-civil.jpg" size="card" priority />
         </figure>
       </section>
       <LandingFooter />

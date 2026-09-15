@@ -8,7 +8,7 @@ export default function TermsOfServicePage() {
   const { locale, t } = useLocale();
   return (
     <LegalDocument
-      photo="/home-assets/photos/tos-signature.jpg"
+      photo="/home-assets/photos/editorial-process.jpg"
       eyebrow={t("termsPageEyebrow")}
       title={t("termsPageTitle")}
       lead={t("termsPageLead")}

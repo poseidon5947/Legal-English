@@ -121,7 +121,7 @@ export function HowItWorksWorkspace() {
           </ol>
 
           <section className="how-works-result-card">
-            <Photo className="how-works-result-photo" src="/home-assets/photos/study-group.jpg" size="card" aria-hidden="true" />
+            <Photo className="how-works-result-photo" src="/home-assets/photos/editorial-process.jpg" size="card" aria-hidden="true" />
             <span>
               <HowIcon name="built-star" />
             </span>

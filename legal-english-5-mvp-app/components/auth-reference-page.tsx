@@ -3,10 +3,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
+import { Le5Icon } from "@/components/le5-icon";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
-import { Photo } from "@/components/photo";
 import { DEMO_ACCOUNTS, type Consents } from "@/lib/types";
 import { trackAction } from "@/lib/track";
 import { SUPPORT_EMAIL } from "@/lib/commercial";
@@ -290,11 +290,10 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
   return (
     <main id="main" className={`auth-reference-page ${isSignup ? "auth-signup-mode" : ""}`}>
       <section className="auth-reference-hero">
-        <Photo src="/auth-assets/backgrounds/courthouse-auth.jpg" size="wide" priority />
-        <div className="auth-reference-overlay" />
+        {/* Design Freeze Pack D01.8: light panel, no photography, approved icons. */}
         <div className="auth-reference-hero-content">
-          <Link className="auth-reference-brand light" href="/">
-            <BrandMark className="light" />
+          <Link className="auth-reference-brand dark" href="/">
+            <BrandMark />
           </Link>
 
           <div className="auth-reference-kicker">
@@ -312,11 +311,11 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
 
           <div className="auth-feature-list">
             {c.features.map(([heading, body], index) => {
-              const icon = (["feature-book", "feature-chart", "feature-trophy"] as const)[index];
+              const icon = (["content/definition", "content/use-it-with", "utility/bookmark"] as const)[index];
               return (
               <article key={heading}>
                 <span>
-                  <AuthIcon name={icon as AuthIconName} />
+                  <Le5Icon name={icon} className="auth-ref-icon" />
                 </span>
                 <div>
                   <strong>{heading}</strong>

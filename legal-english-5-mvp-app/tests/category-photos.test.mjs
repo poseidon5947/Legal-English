@@ -23,22 +23,29 @@ test("every photo has its responsive WebP variants (scripts/build-photos.py)", (
   }
 });
 
-test("library cards use a different photo from the home/category hero", () => {
-  for (const category of Object.keys(CATEGORY_PHOTO)) assert.notEqual(categoryPhotoAlt(category), CATEGORY_PHOTO[category]);
-});
+// Design Freeze Pack v1.0 (15 Sep 2026): P02–P04 are the only approved Area
+// photographs. Every learner-facing photo slot must resolve to one of them (or to
+// the approved P05 fallback) — no retired Unsplash pool, no per-term variety.
+const APPROVED = new Set([
+  "/home-assets/photos/area-contracts.jpg",
+  "/home-assets/photos/area-corporate.jpg",
+  "/home-assets/photos/area-employment.jpg",
+  "/home-assets/photos/common-civil.jpg",
+]);
 
-test("neighbouring terms in a category never share a photo (curriculum order)", () => {
+test("library cards and Area tiles use the approved Area photograph", () => {
   for (const category of Object.keys(CATEGORY_PHOTO)) {
-    const rows = seed.filter((t) => t.category === category);
-    const photos = rows.map((t) => termPhoto(t, seed));
-    for (let i = 1; i < photos.length; i += 1) assert.notEqual(photos[i], photos[i - 1], `${rows[i].id} repeats ${rows[i - 1].id}`);
-    assert.ok(new Set(photos).size >= Math.min(rows.length, 8), `${category} shows too few distinct photos`);
+    assert.ok(APPROVED.has(CATEGORY_PHOTO[category]), category);
+    assert.equal(categoryPhotoAlt(category), CATEGORY_PHOTO[category]);
   }
 });
 
-test("termPhoto is stable for the same term with or without the full list", () => {
+test("every term resolves to its Area's approved photograph", () => {
+  for (const term of seed) assert.equal(termPhoto(term, seed), CATEGORY_PHOTO[term.category], term.id);
+});
+
+test("termPhoto is stable and falls back to the approved P05 image", () => {
   const term = seed[0];
-  assert.equal(termPhoto(term, seed), termPhoto(term, seed));
-  assert.ok(termPhoto(term).startsWith("/home-assets/photos/"));
-  assert.equal(termPhoto({ id: "X-1", category: "Unknown" }), "/home-assets/photos/mosaic-documents.jpg");
+  assert.equal(termPhoto(term, seed), termPhoto(term));
+  assert.equal(termPhoto({ id: "X-1", category: "Unknown" }), "/home-assets/photos/common-civil.jpg");
 });

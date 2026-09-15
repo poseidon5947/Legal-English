@@ -93,10 +93,8 @@ export function LandingHeader() {
         aria-controls="landing-menu"
         onClick={() => setOpen((value) => !value)}
       >
-        <span />
-        <span />
-        <span />
-      </button>
+          <Le5Icon name={open ? "utility/close" : "utility/menu"} className="landing-nav-toggle-icon" />
+        </button>
       <div className="landing-nav-links" id="landing-menu">
         <span className="landing-menu-title" aria-hidden="true">{nav.menu}</span>
         {links.map(([href, label, icon]) => (

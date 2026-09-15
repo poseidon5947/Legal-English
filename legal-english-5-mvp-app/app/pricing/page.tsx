@@ -57,7 +57,7 @@ export default function PricingPage() {
             ))}
           </div>
           <Link className="faq-photo-card" href="/signup" onClick={() => trackAction("cta", "pricing-faq")}>
-            <Photo src="/home-assets/photos/common-civil.jpg" size="card" alt="" />
+            <Photo src="/home-assets/photos/common-civil.jpg" size="card" alt={locale === "es" ? "Dos profesionales del derecho comparan materiales de Common Law y Civil Law en una oficina corporativa." : "Two legal professionals compare Common Law and Civil Law materials in a corporate office."} />
             <span>
               <small>{c.pricing.monthly.trial}</small>
               <strong>{c.cta.button}</strong>
