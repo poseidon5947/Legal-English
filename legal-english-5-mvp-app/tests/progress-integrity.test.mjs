@@ -171,6 +171,14 @@ test("an option outside A–D is rejected and does not touch progress", async ()
   assert.equal(row.attempts, 2);
 });
 
+test("a non-string option (manipulated payload) is rejected cleanly, never thrown", async () => {
+  for (const bad of [3, null, { letter: "A" }, ["A"], true]) {
+    const result = await store.submitQuiz(userId, term.id, bad, undefined, { clientKey: `k-bad-${typeof bad}-${JSON.stringify(bad)}` });
+    assert.equal(result.ok, false);
+  }
+  assert.equal(progressFor((await store.bootstrap(userId)).progress).attempts, 2);
+});
+
 test("an unpublished term cannot be quizzed", async () => {
   const result = await store.submitQuiz(userId, unpublishedCandidate.id, "A", undefined, { clientKey: "k-unpublished", source: "runner" });
   assert.equal(result.ok, false);

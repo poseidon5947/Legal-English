@@ -11,7 +11,8 @@ export function gradeAnswer(term: Term, option: string): { letter: string; corre
   const options = quiz.options
     .map((text, index) => ({ letter: String.fromCharCode(65 + index), text: (text ?? "").trim() }))
     .filter((item) => item.text);
-  const trimmed = (option ?? "").trim();
+  // A manipulated payload (number, object, null) is rejected as "no such option", never a 500.
+  const trimmed = typeof option === "string" ? option.trim() : "";
   const match = options.find((item) => item.letter === trimmed.toUpperCase()) ?? options.find((item) => item.text === trimmed);
   if (!match) return null;
   return { letter: match.letter, correct: match.letter === quiz.correctOption.trim().toUpperCase() };
