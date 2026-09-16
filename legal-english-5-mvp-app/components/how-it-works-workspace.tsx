@@ -1,5 +1,6 @@
 "use client";
 
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useApp } from "@/components/app-provider";
@@ -23,7 +24,15 @@ type HowIconName =
   | "external-link"
   | "support-bulb";
 
+const HOW_APPROVED: Partial<Record<HowIconName, Le5IconName>> = {
+  "external-link": "utility/external-link",
+  "progress-chart": "navigation/progress",
+  "support-bulb": "navigation/help",
+  "built-star": "utility/completion",
+};
 function HowIcon({ name, className = "" }: { name: HowIconName; className?: string }) {
+  const approved = HOW_APPROVED[name];
+  if (approved) return <Le5Icon name={approved} className={`how-works-icon ${className}`.trim()} />;
   return <img className={`how-works-icon ${className}`.trim()} src={`/how-it-works-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 

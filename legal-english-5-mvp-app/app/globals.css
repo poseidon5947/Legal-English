@@ -17551,12 +17551,12 @@ h3,
   background: #ffdcdc;
 }
 
+/* D07: the full trial end date/time must stay readable — no line clamp, wrap instead. */
 .learner-shell .terms-trial-card p {
   display: block;
-  -webkit-line-clamp: 4;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  hyphens: manual;
 }
 
 .learner-shell .verify-banner {
@@ -26442,9 +26442,11 @@ a.accent:hover {
  .learner-shell .terms-reference-user-tools { display: none; }
 }
 @media (max-width: 640px) {
- .auth-reference-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 16px; }
+ /* D12/D13: brand on its own row; Home · language · Need help? share one row. */
+ .auth-reference-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px 12px; align-items: center; }
  .auth-reference-top .auth-reference-brand { grid-column: 1 / -1; }
- .auth-reference-top > a:last-child { justify-self: end; }
+ .auth-reference-top button { justify-self: center; }
+ .auth-reference-top > a:last-child { justify-self: end; white-space: nowrap; }
  .auth-reference-card h2 { font-size: clamp(28px, 8vw, 36px); line-height: 1.15; }
  .auth-reference-tabs button { min-width: 0; font-size: 13px; }
  .auth-reference-card > p { font-size: 13px; line-height: 1.7; }
@@ -26850,4 +26852,146 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
   .legal-layout { grid-template-columns: 1fr; }
   .legal-body section { break-inside: avoid; border-bottom: 0; }
   .legal-body a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #555; }
+}
+
+/* ---- Production corrections 16 Sep 2026 (Informe de correcciones, 23 defectos) ---- */
+/* D03: the "?" control is Help & Support (I03 navigation/help icon). */
+.terms-help-link { color: #452b84; text-decoration: none; }
+.terms-help-link .le5-icon { width: 18px; height: 18px; }
+
+/* D01: the sidebar scrolls vertically only; nothing inside may widen it. */
+.learner-shell .terms-reference-sidebar { overflow-x: hidden; }
+.terms-reference-sidebar > div, .terms-reference-sidebar-bottom, .terms-reference-nav, .terms-reference-nav a, .terms-trial-card { min-width: 0; max-width: 100%; }
+.terms-reference-nav a span { min-width: 0; overflow-wrap: anywhere; }
+/* D07: the trial card and its button always fit the drawer / sidebar width. */
+.terms-trial-card { box-sizing: border-box; }
+.terms-trial-card a { max-width: 100%; white-space: normal; text-align: center; padding: 0 8px; height: auto; min-height: 34px; }
+/* D02: single primary action on the Home. */
+.dashboard-primary .dashboard-continue-card { margin: 4px 0 14px; }
+.dashboard-primary .dashboard-continue-card > span { display: grid; gap: 4px; }
+.dashboard-area-icon.dashboard-session-index { background: #efebf9; color: #452b84; }
+.dashboard-area-icon .le5-icon { width: 20px; height: 20px; }
+/* D05: illustration removed — two columns (photo + text), no residual gap. */
+.learner-shell .help-hero-card.with-photo { grid-template-columns: 220px minmax(0, 1fr); }
+.help-hero-card .ghost.inline { justify-self: start; margin-top: 10px; }
+/* D06 / D08: pending-error practice. */
+.rail-practice-link { display: inline-block; margin-top: 8px; color: #452b84; font-size: .8rem; font-weight: 600; text-decoration: none; }
+.rail-practice-link:hover { text-decoration: underline; }
+.quiz-practice-terms { display: grid; gap: 3px; margin: 6px 0 2px; padding: 0; list-style: none; }
+.quiz-practice-terms a { color: #383a3d; font-size: .74rem; text-decoration: none; }
+.quiz-practice-terms a:hover { color: #452b84; text-decoration: underline; }
+.quiz-practice-grid .quiz-practice-cta { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 32px; min-width: 102px; margin-top: 8px; padding: 0 12px; border: 1px solid #e8e5f1; border-radius: 5px; background: #ffffff; color: #383a3d; font-size: .6875rem; font-weight: 600; text-decoration: none; }
+.quiz-practice-grid .quiz-practice-cta .quiz-ref-icon { width: 12px; height: 12px; }
+.quiz-practice-grid .quiz-practice-cta:hover { border-color: #c4bbda; background: #f9f7fc; }
+/* D12 / D13: auth header — Home link back to the public site, Need help? to public /help. */
+.auth-reference-top a { color: inherit; text-decoration: none; }
+.auth-reference-top a:hover { text-decoration: underline; }
+.auth-reference-home { display: inline-flex; align-items: center; gap: 6px; }
+.auth-reference-home .le5-icon { width: 16px; height: 16px; }
+@media (max-width: 640px) { .auth-reference-top { gap: 14px 18px; } }
+/* D14: the support address never breaks (".co" / "m"). */
+.landing-footer .footer-contact { min-width: 0; }
+.landing-footer .footer-contact .footer-email { display: inline-block; white-space: nowrap; overflow-wrap: normal; word-break: keep-all; hyphens: none; max-width: 100%; font-weight: 500; }
+@media (max-width: 960px) {
+  .home-reference .landing-footer .footer-contact { grid-column: 1 / -1; }
+}
+@media (max-width: 360px) {
+  .landing-footer .footer-contact .footer-email { font-size: 0.78rem; letter-spacing: -0.01em; }
+}
+/* D15: contact actions on the public Help page. */
+.public-help-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 10px; }
+.public-help-address a { color: inherit; font-weight: 600; text-decoration: underline; white-space: nowrap; }
+/* D19: clear vertical space between the hero text block and the CTA row (D04 spacing tokens: 24px desktop / 20px mobile). */
+.home-reference .hero-audience-line { margin-bottom: var(--space-m); }
+.home-ref-actions.hero-editorial-actions { margin-top: var(--space-m); gap: var(--space-s) var(--space-m); }
+@media (max-width: 760px) {
+  .home-reference .hero-audience-line { margin-bottom: 20px; }
+  .home-ref-actions.hero-editorial-actions { margin-top: 20px; gap: 12px; }
+}
+
+/* D20: D04 button tokens (Primary / Outline / Text) applied to every sampled button.
+   Primary: brandPurple700 fill, white text; hover brandPurple800; radius.controls 6px;
+   Inter 600 15/20. Outline: 1px brandPurple700 border on surface. Text: purple link. */
+.primary, a.primary, button.primary,
+.home-reference a.primary, .home-reference button.primary,
+.home-brief a.primary, .home-brief button.primary,
+.home-ref-actions.hero-editorial-actions > a.primary,
+.home-brief .home-ref-actions.hero-editorial-actions > a.primary,
+.learner-shell .primary, .brief-plan .primary, .auth-reference-submit, .lesson-check,
+.quiz-active-actions button:last-child {
+  border: 1px solid var(--brand-purple);
+  border-radius: var(--radius-control);
+  background: var(--brand-purple);
+  color: #ffffff;
+  font-family: var(--font-ui, "Inter", system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  box-shadow: none;
+  text-shadow: none;
+}
+.primary:hover, a.primary:hover, button.primary:not(:disabled):hover,
+.home-reference a.primary:hover, .home-reference button.primary:hover,
+.home-ref-actions.hero-editorial-actions > a.primary:hover,
+.learner-shell .primary:not(:disabled):hover, .brief-plan .primary:hover, .auth-reference-submit:hover, .lesson-check:hover,
+.quiz-active-actions button:last-child:not(:disabled):hover {
+  border-color: var(--brand-purple-800);
+  background: var(--brand-purple-800);
+  color: #ffffff;
+  box-shadow: none;
+  transform: none;
+}
+.primary:active, .learner-shell .primary:not(:disabled):active, .lesson-check:active { background: #2a184f; border-color: #2a184f; }
+.primary:disabled, button.primary:disabled, .learner-shell .primary:disabled, .lesson-check:disabled, .quiz-active-actions button:last-child:disabled {
+  border-color: #e5e2ee; background: #e5e2ee; color: #8b8791; opacity: 1; cursor: not-allowed;
+}
+.lesson-check > span, .lesson-check:disabled > span { color: inherit; }
+.ghost, a.ghost, button.ghost, .home-reference a.ghost, .learner-shell .ghost, .brief-plan .ghost,
+.quiz-active-actions button:not(:last-child), .quiz-practice-grid .quiz-practice-cta {
+  border: 1px solid var(--brand-purple);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--brand-purple);
+  font-family: var(--font-ui, "Inter", system-ui, sans-serif);
+  font-weight: 600;
+  box-shadow: none;
+}
+.ghost:hover, a.ghost:hover, button.ghost:not(:disabled):hover, .home-reference a.ghost:hover, .learner-shell .ghost:not(:disabled):hover,
+.quiz-active-actions button:not(:last-child):hover, .quiz-practice-grid .quiz-practice-cta:hover {
+  border-color: var(--brand-purple-800);
+  background: #f7f6f9;
+  color: var(--brand-purple-800);
+  transform: none;
+}
+.quiz-active-actions button:last-child .quiz-ref-icon { filter: none; }
+.primary .le5-icon, .ghost .le5-icon { width: 16px; height: 16px; }
+/* CTA arrows are text glyphs, not raster assets. */
+.cta-arrow { display: inline-block; margin-left: 8px; font-weight: 600; }
+/* D20: final CTA without the decorative raster icon; two columns (copy + button). */
+.home-ref-cta.brief-final { grid-template-columns: minmax(0, 1fr) auto; }
+.home-ref-cta.brief-final .primary { background: var(--brand-yellow); border-color: var(--brand-yellow); color: var(--brand-dark); }
+.home-ref-cta.brief-final .primary:hover { background: #e6d600; border-color: #e6d600; color: var(--brand-dark); }
+.home-generated-icon.le5-icon { width: 22px; height: 22px; color: var(--brand-purple); }
+/* Badge boxes keep their approved 44 / 40 px frame; the glyph fills the box minus its padding. */
+.brief-problem-grid .icon.le5-icon, .brief-built-copy .icon.le5-icon { width: 44px; height: 44px; }
+.brief-components-grid .icon.le5-icon { width: 40px; height: 40px; }
+.lesson-tabs .home-generated-icon.le5-icon, .lesson-practice-icon .home-generated-icon.le5-icon { width: 18px; height: 18px; }
+/* D15: on the dark contact panel the primary action uses the D04 secondary (yellow) button and the outline stays legible. */
+.public-help-contact a.primary { background: var(--brand-yellow); border-color: var(--brand-yellow); color: var(--brand-dark); }
+.public-help-contact a.primary:hover { background: #e6d600; border-color: #e6d600; color: var(--brand-dark); }
+.public-help-contact .ghost, .public-help-contact a.ghost, .public-help-contact button.ghost { background: transparent; border-color: rgba(255, 255, 255, 0.7); color: #ffffff; }
+.public-help-contact .ghost:hover, .public-help-contact a.ghost:hover, .public-help-contact button.ghost:not(:disabled):hover { background: rgba(255, 255, 255, 0.12); border-color: #ffffff; color: #ffffff; }
+.public-help-contact .public-help-address a { color: #ffffff; }
+/* D19 / D20: hero CTA row — Primary + Outline (D04), same height, side by side when space allows. */
+.home-ref-actions.hero-editorial-actions > a.primary,
+.home-ref-actions.hero-editorial-actions > .hero-sample-link {
+  display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center;
+  width: auto; min-height: 48px; padding: 12px 22px; border-radius: var(--radius-control);
+  font-size: 15px; line-height: 20px; font-weight: 600; text-decoration: none; box-shadow: none;
+}
+.home-ref-actions.hero-editorial-actions > .hero-sample-link { border: 1px solid var(--brand-purple); background: #ffffff; color: var(--brand-purple); }
+.home-ref-actions.hero-editorial-actions > .hero-sample-link:hover { border-color: var(--brand-purple-800); background: #f7f6f9; color: var(--brand-purple-800); text-decoration: none; }
+@media (max-width: 760px) {
+  .home-ref-actions.hero-editorial-actions > a.primary,
+  .home-ref-actions.hero-editorial-actions > .hero-sample-link { width: 100%; }
 }

@@ -3,13 +3,12 @@
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
-import { Le5Icon } from "@/components/le5-icon";
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
 import { DEMO_ACCOUNTS, type Consents } from "@/lib/types";
 import { trackAction } from "@/lib/track";
-import { SUPPORT_EMAIL } from "@/lib/commercial";
 import { PRIVACY_SHORT_NOTICE } from "@/lib/legal-content";
 
 const COPY = {
@@ -25,6 +24,7 @@ const COPY = {
     ],
     secure: "We use reasonable safeguards to protect your personal data and do not sell it. See our Privacy Policy for details.",
     needHelp: "Need help?",
+    home: "Home",
     titleSignup: "Create your account",
     titleRecover: "Recover access",
     subRecoverReset: "Enter the code from your email and choose a new password.",
@@ -82,6 +82,7 @@ const COPY = {
     ],
     secure: "Aplicamos medidas razonables para proteger tus datos personales y no los vendemos. Consulta la Política de Tratamiento de Datos Personales y Privacidad.",
     needHelp: "¿Necesitas ayuda?",
+    home: "Inicio",
     titleSignup: "Crea tu cuenta",
     titleRecover: "Recuperar acceso",
     subRecoverReset: "Escribe el código de tu correo y elige una contraseña nueva.",
@@ -149,7 +150,15 @@ type AuthIconName =
 
 type AuthMode = "login" | "signup" | "forgot" | "reset" | "confirm";
 
+const AUTH_APPROVED: Partial<Record<AuthIconName, Le5IconName>> = {
+  "language-globe": "utility/language",
+  "chevron-down": "utility/chevron",
+  "check-circle": "utility/completion",
+  "user-name": "navigation/account",
+};
 function AuthIcon({ name, className = "" }: { name: AuthIconName; className?: string }) {
+  const approved = AUTH_APPROVED[name];
+  if (approved) return <Le5Icon name={approved} className={`auth-ref-icon ${name === "chevron-down" ? "le5-rotate-90" : ""} ${className}`.trim()} />;
   return <img className={`auth-ref-icon ${className}`.trim()} src={`/auth-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
@@ -340,12 +349,17 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
           <Link className="auth-reference-brand dark auth-reference-brand-mobile" href="/">
             <BrandMark />
           </Link>
+          {/* D13: a visible way back to the public site; D12: help is the public Help page. */}
+          <Link className="auth-reference-home" href="/">
+            <Le5Icon name="navigation/home" />
+            {c.home}
+          </Link>
           <button type="button" onClick={() => setLocale(locale === "en" ? "es" : "en")} aria-label={t("langToggle")}>
             <AuthIcon name="language-globe" />
             {locale === "en" ? "English" : "Español"}
             <AuthIcon name="chevron-down" />
           </button>
-          <a href={`mailto:${SUPPORT_EMAIL}`}>{c.needHelp}</a>
+          <Link href="/help">{c.needHelp}</Link>
         </header>
 
         <div className="auth-reference-card">

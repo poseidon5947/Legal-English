@@ -54,6 +54,26 @@ export function areaRoute(visible: Term[], progress: Record<string, Progress>, c
   return { category, status: touched ? "continue" : "start", term: rows[index], position: index + 1, total: rows.length, mastered };
 }
 
+/* ---- Pending quiz errors (D06 / D08, 16 Sep 2026) -------------------------
+ * A Term has a pending error when its most recent recorded quiz answer was
+ * wrong (`quizCompleted` true, `quizCorrect` false). Those two columns are
+ * written by the server from the quiz_attempts ledger on every graded answer,
+ * so the list is exactly "the Terms failed in the learner's last quiz and not
+ * yet corrected": a later correct answer flips `quizCorrect` and removes the
+ * Term. Terms never quizzed and Terms whose last answer was right are excluded.
+ */
+export function hasPendingError(progress: Record<string, Progress>, termId: string): boolean {
+  const row = progress[termId];
+  return Boolean(row && row.quizCompleted && row.quizCorrect === false && row.state !== "mastered");
+}
+
+/** Failed, not-yet-corrected Terms, most recent activity first. Optionally one area. */
+export function failedTerms(visible: Term[], progress: Record<string, Progress>, category?: string): Term[] {
+  return visible
+    .filter((term) => (category ? term.category === category : true) && hasPendingError(progress, term.id))
+    .sort((a, b) => (progress[b.id]?.lastActivityAt ?? progress[b.id]?.updatedAt ?? "").localeCompare(progress[a.id]?.lastActivityAt ?? progress[a.id]?.updatedAt ?? ""));
+}
+
 export type AreaNeighbours = { previous: Term | null; next: Term | null; position: number; total: number; last: boolean };
 
 /** Previous / Next Term inside the same area by DisplayOrder (`next` is null on the area's last Term). */

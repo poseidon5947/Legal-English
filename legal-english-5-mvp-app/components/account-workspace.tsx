@@ -1,5 +1,6 @@
 "use client";
 
+import { Le5Icon, type Le5IconName } from "@/components/le5-icon";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
@@ -29,7 +30,20 @@ type AccountIcon =
   | "security-shield"
   | "check-circle";
 
+const ACCOUNT_APPROVED: Partial<Record<AccountIcon, Le5IconName>> = {
+  "chevron-right": "utility/chevron",
+  "settings-gear": "navigation/settings",
+  "activity-gear": "navigation/settings",
+  "trend-chart": "navigation/progress",
+  "activity-study": "navigation/terms-library",
+  "premium-badge": "navigation/billing",
+  "activity-quiz": "navigation/quiz",
+  "activity-book": "navigation/terms-library",
+  "check-circle": "utility/completion",
+};
 function AccountIcon({ name, className = "" }: { name: AccountIcon; className?: string }) {
+  const approved = ACCOUNT_APPROVED[name];
+  if (approved) return <Le5Icon name={approved} className={`account-ref-icon ${className}`.trim()} />;
   return <img className={`account-ref-icon ${className}`.trim()} src={`/account-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 

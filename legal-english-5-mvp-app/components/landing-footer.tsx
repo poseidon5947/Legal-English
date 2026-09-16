@@ -31,8 +31,8 @@ export function LandingFooter() {
             <span>{f.support}</span>
             <Link href="/help">{f.links.helpCenter}</Link>
             <Link href="/pricing#faq">{f.links.faqs}</Link>
-            <Link href="/help">{f.links.contactUs}</Link>
-            <Link href="/billing">{f.links.billing}</Link>
+            <Link href="/help#contact">{f.links.contactUs}</Link>
+            <Link href="/help#billing">{f.links.billing}</Link>
             <Link href="/status">{f.links.status}</Link>
           </div>
           <div>
@@ -44,10 +44,7 @@ export function LandingFooter() {
           </div>
           <div className="footer-contact">
             <span>{f.contact}</span>
-            <a href="mailto:support@legalenglish5.com">
-              <img className="icon home-generated-icon" src="/home-assets/icons/mail.png" alt="" aria-hidden="true" />
-              support@legalenglish5.com
-            </a>
+            <a href="mailto:support@legalenglish5.com" className="footer-email">support@legalenglish5.com</a>
             <p>{f.reply}</p>
           </div>
         </nav>

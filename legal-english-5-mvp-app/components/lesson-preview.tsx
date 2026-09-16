@@ -291,7 +291,6 @@ export function LessonPreview({ locale, tabIcons, renderIcon }: { locale: Locale
         {!checked ? <button type="button" className="lesson-check" onClick={() => choice !== null && setChecked(true)} disabled={choice === null}>{P.check}<span aria-hidden="true">→</span></button>
           : choice === correct ? <Link className="lesson-check" href="/signup" onClick={() => trackAction("cta", "example")}>{P.signup}</Link>
           : <button type="button" className="lesson-check" onClick={() => { setChecked(false); setChoice(null); }}>{P.tryAgain}<span aria-hidden="true">↻</span></button>}
-        <p className="lesson-source">{P.source}</p>
       </article>
     </div>
   );

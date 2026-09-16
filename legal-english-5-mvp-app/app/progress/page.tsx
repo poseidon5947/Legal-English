@@ -27,7 +27,19 @@ type ProgressIcon =
   | "courthouse"
   | "people-group";
 
+const PROGRESS_APPROVED: Partial<Record<ProgressIcon, Le5IconName>> = {
+  "stat-book": "navigation/terms-library",
+  "stat-target": "content/quick-quiz",
+  "stat-graduation": "utility/completion",
+  "flame-streak": "navigation/progress",
+  "stat-clock": "navigation/saved-terms",
+  "check-circle": "utility/completion",
+  "activity-book": "navigation/terms-library",
+  "activity-quiz": "navigation/quiz",
+};
 function ProgressIcon({ name, className = "" }: { name: ProgressIcon; className?: string }) {
+  const approved = PROGRESS_APPROVED[name];
+  if (approved) return <Le5Icon name={approved} className={`progress-ref-icon ${className}`.trim()} />;
   return <img className={`progress-ref-icon ${className}`.trim()} src={`/progress-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
@@ -133,8 +145,8 @@ export default function ProgressPage() {
           </div>
 
           <section className="progress-next-step">
-            <div><h2>{locale === "es" ? "Tu próximo paso" : "Your next step"}</h2><p>{locale === "es" ? "Continúa con tu sesión de hoy o repasa lo que ya has aprendido." : "Continue today's session or review what you have learned."}</p></div>
-            <Link className="primary inline" href="/dashboard">{locale === "es" ? "Ir a mi sesión" : "Go to my session"} →</Link>
+            <div><h2>{locale === "es" ? "Tu próximo paso" : "Your next step"}</h2><p>{locale === "es" ? "Continúa donde lo dejaste o repasa lo que ya has aprendido." : "Continue where you left off or review what you have learned."}</p></div>
+            <Link className="primary inline" href="/dashboard">{L("dashContinue")} →</Link>
           </section>
 
           <section className="progress-ref-stats" aria-label={locale === "es" ? "Estadísticas de progreso" : "Progress statistics"}>
@@ -202,7 +214,7 @@ export default function ProgressPage() {
               </span>
             </div>
             <ActivityChart weeks={weeks} locale={locale} />
-            </> : <p className="progress-empty">{locale === "es" ? "Tu actividad aparecerá aquí cuando empieces a estudiar. Abre tu sesión para comenzar." : "Your activity will appear here when you start studying. Open your session to begin."}</p>}
+            </> : <p className="progress-empty">{locale === "es" ? "Tu actividad aparecerá aquí cuando empieces a estudiar. Elige un Área para comenzar." : "Your activity will appear here when you start studying. Choose an Area to begin."}</p>}
           </section>
 
           <section className="progress-panel progress-category-panel">
@@ -260,7 +272,7 @@ export default function ProgressPage() {
                 </span>
               ))}
             </div>
-            <p className="progress-longest">{L("longest", { n: streak.longest })}</p>
+            <p className="progress-longest">{L("longest", { n: streak.longest, unit: streak.longest === 1 ? L("day").toLowerCase() : L("days").toLowerCase() })}</p>
           </section>
 
           <section className="progress-panel progress-recent-card">

@@ -41,14 +41,19 @@ export default function HelpPage() {
       {message && <p className="notice">{message}</p>}
       {error && <p className="notice">{error}</p>}
       <div className="account-stack">
+        {/* D04/D05: one learner-facing instruction, approved photography only (no illustration). */}
         <section className="account-card help-hero-card with-photo">
           <Photo className="help-hero-photo" src="/home-assets/photos/editorial-process.jpg" size="card" priority />
           <div>
             <span className="eyebrow">{t("helpEyebrow")}</span>
-            <h2>{t("helpTitle")}</h2>
-            <p>{t("helpLead")}</p>
+            <h2>{t("helpReportTitle")}</h2>
+            <p>
+              {t("helpContactLine").split("support@legalenglish5.com")[0]}
+              <a href="mailto:support@legalenglish5.com">support@legalenglish5.com</a>
+              {t("helpContactLine").split("support@legalenglish5.com")[1]}
+            </p>
+            <a className="ghost inline" href="#contact">{t("helpGoToForm")} →</a>
           </div>
-          <Icon name="headset" />
         </section>
         <section className="account-card">
           <div className="settings-card-head">
@@ -87,7 +92,6 @@ export default function HelpPage() {
             <Icon name="help" />
             <div>
               <h2>{t("helpReportTitle")}</h2>
-              <p>{t("helpLead")}</p>
             </div>
           </div>
           <form onSubmit={(event) => void onSubmit(event)}>

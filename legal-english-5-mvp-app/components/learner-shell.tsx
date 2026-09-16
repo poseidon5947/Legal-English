@@ -407,10 +407,12 @@ export function LearnerShell({
           </form>
           <div className="terms-reference-user-tools">
             <LanguageToggle />
-            <button type="button" className="terms-shortcuts" onClick={() => setShortcutsOpen(true)} aria-label={L("shortcutsButton")} title={L("shortcutsButton")}>
-              <kbd>?</kbd>
-            </button>
-            <Link className="terms-notification" href="/account/help" aria-label={L("notifications")} title={L("notifications")}>
+            {/* D03: "?" is Help & Support; the bell is Notifications. Keyboard
+                shortcuts live in the user menu (and on the "?" key). */}
+            <Link className="terms-shortcuts terms-help-link" href="/account/help" aria-label={L("navHelp")} title={L("navHelp")}>
+              <ShellIcon name="nav-help" />
+            </Link>
+            <Link className="terms-notification" href="/account/settings?tab=notifications" aria-label={L("notifications")} title={L("notifications")}>
               <ShellIcon name="bell" />
               {notificationCount > 0 && <span>{notificationCount}</span>}
             </Link>
@@ -440,6 +442,16 @@ export function LearnerShell({
                   <Link href="/account/help" role="menuitem" onClick={() => setUserMenuOpen(false)}>
                     {L("navHelp")}
                   </Link>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      setShortcutsOpen(true);
+                    }}
+                  >
+                    {L("shortcutsButton")}
+                  </button>
                   {isOwner && (
                     <Link href="/admin" role="menuitem" onClick={() => setUserMenuOpen(false)}>
                       {L("navAdmin")}

@@ -58,11 +58,12 @@ test("navigation and Areas terminology match Part III / IV", () => {
   assert.equal(learnerCopy.en.libraryLead, "Browse terms across Contracts, Corporate Law and Employment Law.");
 });
 
-test("home hero, example credit and trial CTA are the approved texts (IMP-03 / IMP-04)", () => {
+test("home hero and trial CTA are the approved texts; the editorial legend is gone from the quiz (IMP-03 / IMP-04 / D21)", () => {
   assert.equal(landingCopy.en.hero.title, "Legal English for real legal work.");
   assert.equal(landingCopy.es.hero.title, "Legal English para el trabajo jurídico real.");
-  assert.equal(landingCopy.en.example.source, "Editorially reviewed by MPC LAW STUDIO.");
-  assert.equal(landingCopy.es.example.source, "Revisado editorialmente por MPC LAW STUDIO.");
+  // D21 (16 Sep 2026): no "EDITORIALLY REVIEWED BY MPC LAW STUDIO." legend under Check answer.
+  assert.equal("source" in landingCopy.en.example, false);
+  assert.doesNotMatch(strings(landingCopy.en.example).join(" "), /editorially reviewed by/i);
   assert.equal(landingCopy.en.hero.cta, "Start your 7-day free trial");
   assert.equal(landingCopy.es.hero.cta, "Empieza tu prueba gratis de 7 días");
 });

@@ -12,7 +12,7 @@ import { useLocale } from "@/components/locale-provider";
 import { useToast } from "@/components/toaster";
 import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
-import { achievementsFor, categoryStats, countsFor, formatWhen, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
+import { achievementsFor, categoryStats, countsFor, failedTerms, formatWhen, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
 import { quizClientKey } from "@/lib/quiz-grading";
 import type { Term } from "@/lib/types";
 import { sessionTerms, sessionQuery } from "@/lib/learning-session";
@@ -34,7 +34,17 @@ type QuizIcon =
   | "calendar"
   | "report-bars";
 
+/** D20: quiz icons covered by the approved I01–I04 set render the DFP SVG; the rest have no approved equivalent. */
+const QUIZ_APPROVED: Partial<Record<QuizIcon, Le5IconName>> = {
+  "arrow-right": "utility/chevron",
+  "check-circle": "utility/completion",
+  "clipboard-quizzes": "navigation/quiz",
+  "document-row": "navigation/terms-library",
+  "history-document": "navigation/terms-library",
+};
 function QuizIcon({ name, className = "" }: { name: QuizIcon; className?: string }) {
+  const approved = QUIZ_APPROVED[name];
+  if (approved) return <Le5Icon name={approved} className={`quiz-ref-icon ${className}`.trim()} />;
   return <img className={`quiz-ref-icon ${className}`.trim()} src={`/quiz-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
 }
 
@@ -83,6 +93,11 @@ export function QuizWorkspace() {
   const focusTerm = params.get("term");
   const selectedSession = params.get("session");
   const inSession = selectedSession !== null;
+  // D08: /quizzes?practice=<Area|All> — a practice made only of the Terms the
+  // learner answered incorrectly and has not corrected yet.
+  const practiceArea = params.get("practice");
+  const inPractice = practiceArea !== null && !inSession;
+  const failedByArea = useMemo(() => failedTerms(visible, progress), [visible, progress]);
   useEffect(() => {
     const next = params.get("category");
     if (next) setCategory(next);
@@ -108,6 +123,7 @@ export function QuizWorkspace() {
     // then Mastered.
     const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption);
     if (inSession) return sessionTerms(pool, selectedSession).map((term) => term.id);
+    if (inPractice) return failedTerms(pool, progress, practiceArea === "All" ? undefined : practiceArea).map((term) => term.id);
     const scoped = onlyTerm ? pool.filter((term) => term.id === onlyTerm) : scope === "All" ? pool : pool.filter((term) => term.category === scope);
     const weight = (term: Term) => (stateOf(progress, term.id) === "mastered" ? 2 : stateOf(progress, term.id) === "learning" ? 0 : 1);
     return [...scoped].sort((a, b) => weight(a) - weight(b) || a.displayOrder - b.displayOrder).map((term) => term.id);
@@ -123,7 +139,7 @@ export function QuizWorkspace() {
     setMissed([]);
     setAnswered(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible.length, category, focusTerm, selectedSession]);
+  }, [visible.length, category, focusTerm, selectedSession, practiceArea]);
 
   const current = queue.length ? visible.find((term) => term.id === queue[position]) : undefined;
   const options = current ? quizOptions(current) : [];
@@ -132,7 +148,7 @@ export function QuizWorkspace() {
     if (!current || selected === null || busy || inFlight.current || !canStudy || result) return;
     inFlight.current = true;
     setBusy(true);
-    void submitQuiz(current.id, selected, { clientKey: quizClientKey(), source: inSession ? "session" : "runner" })
+    void submitQuiz(current.id, selected, { clientKey: quizClientKey(), source: inSession || inPractice ? "session" : "runner" })
       .then((response) => {
         // Only a successful, graded response counts as an answer. A failed
         // request (offline, session expired) is reported and the learner's
@@ -239,6 +255,12 @@ export function QuizWorkspace() {
                 <span>{locale === "es" ? "Los términos que elegiste, en el mismo orden." : "Your selected terms, in the same order."}</span>
                 <Link href={queue[0] ? `/terms/${queue[0]}?${sessionQuery(sessionTerms(visible, selectedSession))}` : "/dashboard"}>{locale === "es" ? "Volver a estudiar" : "Back to studying"}</Link>
               </div>
+            ) : inPractice ? (
+              <div className="session-scope">
+                <strong>{practiceArea === "All" ? L("practiceScopeAll") : L("practiceScopeTitle", { area: categoryLabel(locale, practiceArea) })}</strong>
+                <span>{L("practiceScopeBody")}</span>
+                <Link href="/quizzes">{L("practiceBack")}</Link>
+              </div>
             ) : <div className="quiz-scope">
               {["All", "Contracts", "Corporate Law", "Employment Law"].map((item) => (
                 <button key={item} type="button" className={category === item ? "active" : ""} onClick={() => setCategory(item)}>
@@ -248,9 +270,9 @@ export function QuizWorkspace() {
             </div>}
             {queue.length === 0 ? (
               <div className="quiz-empty">
-                <p>{L("noQuizzes")}</p>
-                <Link className="primary inline" href={category === "All" ? "/terms" : `/terms?category=${encodeURIComponent(category)}`}>
-                  {L("openTermsFirst")}
+                <p>{inPractice ? L("practiceEmpty") : L("noQuizzes")}</p>
+                <Link className="primary inline" href={inPractice ? "/quizzes" : category === "All" ? "/terms" : `/terms?category=${encodeURIComponent(category)}`}>
+                  {inPractice ? L("practiceBack") : L("openTermsFirst")}
                 </Link>
               </div>
             ) : finished ? (
@@ -266,7 +288,7 @@ export function QuizWorkspace() {
                 </div>
                 {missed.length > 0 && (
                   <div className="quiz-missed">
-                    <strong>{L("reviewMissed", { n: missed.length })}</strong>
+                    <strong>{missed.length === 1 ? L("reviewMissedOne") : L("reviewMissed", { n: missed.length })}</strong>
                     <ul>
                       {missed.map((id) => {
                         const term = visible.find((item) => item.id === id);
@@ -347,7 +369,7 @@ export function QuizWorkspace() {
                   )}
                 </div>
                 <p className="quiz-kbd-hint" aria-hidden="true">
-                  <kbd>1</kbd>–<kbd>{options.length}</kbd> {L("kbdPick")} · <kbd>Enter</kbd> {result ? L("kbdNext") : L("kbdCheck")}
+                  {L("kbdPick", { keys: `1–${options.length}` })} · {result ? L("kbdNext") : L("kbdCheck")}
                 </p>
               </>
             ) : null}
@@ -383,7 +405,7 @@ export function QuizWorkspace() {
                 <strong>
                   {streak.current} {streak.current === 1 ? L("day") : L("days")}
                 </strong>
-                <small>{L("best", { n: streak.longest })}</small>
+                <small>{L("best", { n: streak.longest, unit: streak.longest === 1 ? L("day").toLowerCase() : L("days").toLowerCase() })}</small>
               </div>
             </article>
             <article className="purple">
@@ -442,28 +464,39 @@ export function QuizWorkspace() {
           <section className="quiz-practice-card">
             <h2>{L("recommended")}</h2>
             <p>{L("recommendedLead")}</p>
-            <div className="quiz-practice-grid">
-              {byCategory.map((item) => (
-                <article className={`${CATEGORY_TONE[item.category]} with-photo`} key={item.category}>
-                  <Photo className="quiz-practice-photo" src={categoryPhoto(item.category)} size="card" />
-                  <span>
-                    <Le5Icon name={CATEGORY_ICON[item.category]} className="quiz-ref-icon" />
-                  </span>
-                  <div>
-                    <h3>{categoryLabel(locale, item.category)}</h3>
-                    <small>{item.pct === 100 && item.total > 0 ? L("complete") : item.pct >= 50 ? L("goodProgress") : L("needsPractice")}</small>
-                    <p>{L("mastery", { pct: item.pct })}</p>
-                    <i>
-                      <b style={{ width: `${item.pct}%` }} />
-                    </i>
-                    <button type="button" onClick={() => setCategory(item.category)}>
-                      {L("practiceNow")}
-                      <QuizIcon name="arrow-right" />
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
+            {failedByArea.length === 0 ? (
+              <p className="quiz-empty">{L("recommendedNone")}</p>
+            ) : (
+              <div className="quiz-practice-grid">
+                {byCategory
+                  .map((item) => ({ item, failed: failedByArea.filter((term) => term.category === item.category) }))
+                  .filter(({ failed }) => failed.length > 0)
+                  .map(({ item, failed }) => (
+                    <article className={`${CATEGORY_TONE[item.category]} with-photo`} key={item.category}>
+                      <Photo className="quiz-practice-photo" src={categoryPhoto(item.category)} size="card" />
+                      <span>
+                        <Le5Icon name={CATEGORY_ICON[item.category]} className="quiz-ref-icon" />
+                      </span>
+                      <div>
+                        <h3>{categoryLabel(locale, item.category)}</h3>
+                        <small>{L("needsPractice")}</small>
+                        <p>{L("failedCount", { n: failed.length })}</p>
+                        <ul className="quiz-practice-terms">
+                          {failed.map((term) => (
+                            <li key={term.id}>
+                              <Link href={`/terms/${term.id}`}>{term.term}</Link>
+                            </li>
+                          ))}
+                        </ul>
+                        <Link className="quiz-practice-cta" href={`/quizzes?practice=${encodeURIComponent(item.category)}`}>
+                          {L("practiceNow")}
+                          <QuizIcon name="arrow-right" />
+                        </Link>
+                      </div>
+                    </article>
+                  ))}
+              </div>
+            )}
           </section>
         </section>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
@@ -12,11 +13,13 @@ type Copy = {
   eyebrow: string;
   title: string;
   lead: string;
-  topics: { title: string; body: string; cta?: { label: string; href: string } }[];
+  topics: { id?: string; title: string; body: string; cta?: { label: string; href: string } }[];
   contactTitle: string;
   contactBody: string;
   contactCta: string;
   reply: string;
+  copy: string;
+  copied: string;
   signedInTitle: string;
   signedInBody: string;
   signedInCta: string;
@@ -39,6 +42,7 @@ const COPY: Record<Locale, Copy> = {
         body: "Check your spam and promotions folders. If the code does not arrive within a few minutes, request a new one. Only the most recent code is valid.",
       },
       {
+        id: "billing",
         title: "My trial ended and I cannot open the lessons",
         body: "Protected lesson content requires an active trial or subscription. Open Billing in your account to select a plan. Access returns after payment is confirmed.",
         cta: { label: "See plans", href: "/pricing" },
@@ -53,9 +57,11 @@ const COPY: Record<Locale, Copy> = {
       },
     ],
     contactTitle: "Still need help?",
-    contactBody: "Email us from the address associated with your account and identify the page where the problem occurred.",
+    contactBody: "Email us and identify the page where the problem occurred. If you have an account, please use the email address associated with it.",
     contactCta: "Email support",
     reply: "We typically reply within one business day, Colombia time.",
+    copy: "Copy address",
+    copied: "Address copied",
     signedInTitle: "Already signed in?",
     signedInBody: "The Help page inside your account lets you send a report linked to your account.",
     signedInCta: "Open Help in your account",
@@ -75,6 +81,7 @@ const COPY: Record<Locale, Copy> = {
         body: "Revisa las carpetas de spam y promociones. Si no llega en unos minutos, solicita un código nuevo. Solo el código más reciente es válido.",
       },
       {
+        id: "billing",
         title: "Terminó mi prueba y no puedo abrir las lecciones",
         body: "El contenido protegido requiere una prueba o suscripción activa. Abre Facturación en tu cuenta para elegir un plan. El acceso regresa después de confirmarse el pago.",
         cta: { label: "Ver planes", href: "/pricing" },
@@ -89,9 +96,11 @@ const COPY: Record<Locale, Copy> = {
       },
     ],
     contactTitle: "¿Aún necesitas ayuda?",
-    contactBody: "Escríbenos desde el correo asociado a tu cuenta e identifica la página donde ocurrió el problema.",
+    contactBody: "Escríbenos e indica la página donde ocurrió el problema. Si tienes una cuenta, usa el correo asociado a ella.",
     contactCta: "Escribir a soporte",
     reply: "Normalmente respondemos en un día hábil, hora de Colombia.",
+    copy: "Copiar dirección",
+    copied: "Dirección copiada",
     signedInTitle: "¿Ya iniciaste sesión?",
     signedInBody: "La página de Ayuda dentro de tu cuenta permite enviar un reporte vinculado a tu cuenta.",
     signedInCta: "Abrir Ayuda en tu cuenta",
@@ -101,6 +110,7 @@ const COPY: Record<Locale, Copy> = {
 export default function PublicHelpPage() {
   const { locale } = useLocale();
   const c = COPY[locale];
+  const [copied, setCopied] = useState(false);
   return (
     <main id="main" className="landing home-reference">
       <LandingHeader />
@@ -112,7 +122,7 @@ export default function PublicHelpPage() {
         </div>
         <div className="public-help-grid">
           {c.topics.map((topic) => (
-            <article className="public-help-card" key={topic.title}>
+            <article className="public-help-card" key={topic.title} id={topic.id}>
               <h2>{topic.title}</h2>
               <p>{topic.body}</p>
               {topic.cta && (
@@ -123,15 +133,31 @@ export default function PublicHelpPage() {
             </article>
           ))}
         </div>
-        <div className="public-help-contact">
+        <div className="public-help-contact" id="contact">
           <div>
             <h2>{c.contactTitle}</h2>
             <p>{c.contactBody}</p>
-            <a className="primary inline" href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Legal English 5 — support")}`}>
-              {c.contactCta}
-            </a>
-            <p className="muted tiny">
-              {SUPPORT_EMAIL} · {c.reply}
+            {/* D15: the button and the visible address both open a new email to support; the
+                address stays visible (and copyable) when no mail application is configured. */}
+            <div className="public-help-actions">
+              <a className="primary inline" href={`mailto:${SUPPORT_EMAIL}`}>
+                {c.contactCta}
+              </a>
+              <button
+                type="button"
+                className="ghost inline"
+                onClick={() => {
+                  void navigator.clipboard?.writeText(SUPPORT_EMAIL).then(() => {
+                    setCopied(true);
+                    window.setTimeout(() => setCopied(false), 2400);
+                  });
+                }}
+              >
+                {copied ? c.copied : c.copy}
+              </button>
+            </div>
+            <p className="muted tiny public-help-address">
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> · {c.reply}
             </p>
           </div>
           <div>

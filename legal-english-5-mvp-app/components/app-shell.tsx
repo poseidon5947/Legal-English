@@ -7,14 +7,15 @@ import { LearnerShell } from "@/components/learner-shell";
 import { useLocale } from "@/components/locale-provider";
 import { Icon, IconName } from "@/components/ui-icons";
 import { categoryLabel, entitlementDetail, entitlementLabel } from "@/lib/i18n";
-import { countsFor, stateOf, studyTerms } from "@/lib/learner-stats";
+import { countsFor, failedTerms, studyTerms } from "@/lib/learner-stats";
 
 function ProgressRail() {
   const { terms, progress, studyDays, session, entitlement } = useApp();
   const { locale, t } = useLocale();
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
   const counts = countsFor(visible, progress, studyDays);
-  const nextTerms = visible.filter((term) => stateOf(progress, term.id) !== "mastered").slice(0, 4);
+  // D06: only Terms failed in the last quiz and not yet corrected; hidden when none.
+  const nextTerms = useMemo(() => failedTerms(visible, progress).slice(0, 6), [visible, progress]);
   return (
     <aside className="progress-rail" aria-label="Your progress">
       <section className="rail-card rail-score">
@@ -42,15 +43,18 @@ function ProgressRail() {
           </div>
         ))}
       </section>
-      <section className="rail-card">
-        <h2>{t("recommended")}</h2>
-        {nextTerms.map((term) => (
-          <Link href={`/terms/${term.id}`} className="rail-term" key={term.id}>
-            <span>{term.term}</span>
-            <small>{categoryLabel(locale, term.category)}</small>
-          </Link>
-        ))}
-      </section>
+      {nextTerms.length > 0 && (
+        <section className="rail-card">
+          <h2>{t("recommended")}</h2>
+          {nextTerms.map((term) => (
+            <Link href={`/terms/${term.id}`} className="rail-term" key={term.id}>
+              <span>{term.term}</span>
+              <small>{categoryLabel(locale, term.category)}</small>
+            </Link>
+          ))}
+          <Link href={`/quizzes?practice=${encodeURIComponent("All")}`} className="rail-practice-link">{t("recommendedRetry")} →</Link>
+        </section>
+      )}
       <section className="rail-card rail-upgrade">
         <Icon name={entitlement.allowed ? "scales" : "lock"} />
         <strong>{entitlementLabel(locale, entitlement.label)}</strong>

@@ -35,7 +35,7 @@ export type LandingCopy = {
     slides: ReadonlyArray<{ caption: string; tag: string }>;
     photoAlt: string;
   };
-  example: { eyebrow: string; title: string; lead: string; label: string; source: string };
+  example: { eyebrow: string; title: string; lead: string; label: string };
   launch: { eyebrow: string; title: string; termsLabel: string; explore: string; note: string; items: readonly [string, string, string] };
   benefits: { eyebrow: string; title: string; items: readonly [readonly [string, string], readonly [string, string], readonly [string, string]] };
   components: { title: string; items: ReadonlyArray<string> };
@@ -47,7 +47,7 @@ export type LandingCopy = {
     perMonth: string;
     perYear: string;
     monthly: { name: string; trial: string; terms: string; cta: string };
-    annual: { name: string; discount: string; terms: string; note: string; cta: string };
+    annual: { name: string; discount: string; note: string; cta: string };
     payment: string;
   };
   faq: { eyebrow: string; title: string; items: ReadonlyArray<readonly [string, string]> };
@@ -107,7 +107,6 @@ const en: LandingCopy = {
     title: "See how a legal term works in context.",
     lead: "Explore how a definition, pronunciation, Spanish equivalent, legal collocations, context and a focused quiz work together in one term.",
     label: "A look inside a term",
-    source: "Editorially reviewed by MPC LAW STUDIO.",
   },
   launch: {
     eyebrow: "LEGAL ENGLISH AREAS",
@@ -162,7 +161,6 @@ const en: LandingCopy = {
     annual: {
       name: "Annual",
       discount: "50% discount compared with twelve monthly payments",
-      terms: "Save 50% compared with twelve monthly payments of COP $90,000.",
       note: "After you activate the trial, select annual billing from your account before the trial ends to avoid the monthly charge.",
       cta: "Start your trial and choose annual billing",
     },
@@ -257,7 +255,6 @@ const es: LandingCopy = {
     title: "Mira cómo funciona un término jurídico en contexto.",
     lead: "Descubre cómo la definición, la pronunciación, el equivalente en español, las colocaciones jurídicas, el contexto y un quiz breve se integran en un solo término.",
     label: "Vista previa de un término",
-    source: "Revisado editorialmente por MPC LAW STUDIO.",
   },
   launch: {
     eyebrow: "ÁREAS DE LEGAL ENGLISH",
@@ -312,7 +309,6 @@ const es: LandingCopy = {
     annual: {
       name: "Anual",
       discount: "50 % de descuento frente a doce pagos mensuales",
-      terms: "Ahorra un 50 % frente a doce pagos mensuales de COP $90.000.",
       note: "Después de activar la prueba, selecciona la facturación anual desde tu cuenta antes de que finalice para evitar el cobro mensual.",
       cta: "Empieza la prueba y elige facturación anual",
     },

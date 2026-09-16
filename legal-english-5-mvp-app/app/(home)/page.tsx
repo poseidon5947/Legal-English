@@ -18,35 +18,28 @@ import { trackAction } from "@/lib/track";
  * Detailed component descriptions remain available in the method disclosure.
  */
 
-type HomeIconName =
-  | "arrow-right"
-  | "bookmark"
-  | "category-contracts"
-  | "category-corporate"
-  | "category-employment"
-  | "contract-clipboard"
-  | "courthouse"
-  | "credit-card"
-  | "feature-search"
-  | "feature-timer"
-  | "flame-stopwatch"
-  | "globe"
-  | "help"
-  | "legal-scales"
-  | "lock"
-  | "open-book"
-  | "people"
-  | "search"
-  | "shield-badge"
-  | "speaker"
-  | "user-avatar"
-  | "workflow-book"
-  | "workflow-chat"
-  | "workflow-growth"
-  | "workflow-quiz";
+/* D20 (16 Sep 2026): the Home renders only the approved SVG iconography
+ * (Design Freeze Pack I01–I04). Every former PNG has been mapped to its
+ * approved equivalent; CTA arrows are text glyphs. */
+type HomeIconName = keyof typeof HOME_ICON;
+const HOME_ICON = {
+  "open-book": "content/definition",
+  globe: "content/spanish-equivalent",
+  "legal-scales": "content/civil-law-equivalent",
+  help: "content/spanish-speaker-alert",
+  "contract-clipboard": "content/use-it-with",
+  bookmark: "content/in-context",
+  speaker: "content/pronunciation",
+  "in-context": "content/in-context",
+  collocations: "content/use-it-with",
+  "quick-quiz": "content/quick-quiz",
+} as const satisfies Record<string, Le5IconName>;
 
 function HomeIcon({ name, className = "" }: { name: HomeIconName; className?: string }) {
-  return <img className={`icon home-generated-icon ${className}`.trim()} src={`/home-assets/icons/${name}.png`} alt="" aria-hidden="true" />;
+  return <Le5Icon name={HOME_ICON[name]} className={`icon home-generated-icon ${className}`.trim()} />;
+}
+function CtaArrow() {
+  return <span className="cta-arrow" aria-hidden="true">→</span>;
 }
 
 // Same order as landingCopy.launch.items (the three Areas; internal keys stay as stored).
@@ -66,7 +59,7 @@ const categoryPhotoAlts = {
     "Una abogada laboralista asesora a directivos y a recursos humanos en una reunión sobre políticas laborales.",
   ],
 } as const;
-const problemIcons: readonly HomeIconName[] = ["open-book", "workflow-chat", "globe"];
+const problemIcons: readonly HomeIconName[] = ["in-context", "collocations", "legal-scales"];
 // One approved content icon (I01) per "What a term may include" item, in the approved order.
 const componentIcons = [
   "content/definition",
@@ -106,8 +99,8 @@ export default function Home() {
           <p className="hero-editorial-lead">{c.hero.lead}</p>
           <p className="hero-audience-line">{c.hero.audience}</p>
           <div className="home-ref-actions hero-editorial-actions">
-            <Link className="primary" href="/signup" onClick={() => trackAction("cta", "hero")}>{c.hero.cta}<HomeIcon name="arrow-right" /></Link>
-            <a className="hero-sample-link" href="#how-it-works" onClick={() => trackAction("cta", "hero-sample")}>{c.hero.sample}<HomeIcon name="arrow-right" /></a>
+            <Link className="primary" href="/signup" onClick={() => trackAction("cta", "hero")}>{c.hero.cta}<CtaArrow /></Link>
+            <a className="hero-sample-link" href="#how-it-works" onClick={() => trackAction("cta", "hero-sample")}>{c.hero.sample}<CtaArrow /></a>
           </div>
         </div>
         {/* Design Freeze Pack P01: approved desktop and mobile crops, no overlays. */}
@@ -188,10 +181,7 @@ export default function Home() {
           <h2 id="brief-pricing-title">{c.pricing.title}</h2>
         </div>
         <PlanCards locale={locale} placement="pricing" />
-        <p className="home-ref-secure">
-          <HomeIcon name="lock" />
-          {c.pricing.payment}
-        </p>
+        <p className="home-ref-secure">{c.pricing.payment}</p>
       </section>
 
       {/* 10 · FAQ */}
@@ -212,16 +202,13 @@ export default function Home() {
 
       {/* 8 · Final CTA (no trial disclosure: IMP-05) */}
       <section className="home-ref-cta brief-final" data-reveal lang={locale}>
-        <span>
-          <HomeIcon name="legal-scales" />
-        </span>
         <div>
           <h2>{c.cta.title}</h2>
           <p className="brief-final-body">{c.cta.body}</p>
         </div>
         <Link className="primary" href="/signup" onClick={() => trackAction("cta", "final")}>
           {c.cta.button}
-          <HomeIcon name="arrow-right" />
+          <CtaArrow />
         </Link>
       </section>
 

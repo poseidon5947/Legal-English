@@ -339,7 +339,7 @@ export function TermsLibrary() {
 
         {activeFilters > 0 && (
           <div className="terms-active-filters" aria-live="polite">
-            <span>{L("filteredCount", { n: sorted.length })}</span>
+            <span>{sorted.length === 1 ? L("filteredCountOne") : L("filteredCount", { n: sorted.length })}</span>
             {query.trim() && (
               <button type="button" onClick={() => { setQuery(""); setParam("search", null); }}>
                 “{query.trim()}” <i aria-hidden="true">×</i>

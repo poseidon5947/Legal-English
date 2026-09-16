@@ -12,15 +12,16 @@ import { categoryLabel } from "@/lib/i18n";
 import { learnerText, type LearnerKey } from "@/lib/learner-copy";
 import { areaRoute, categoryStats, countsFor, formatWhen, recentActivity, stateOf, streakFor, studyTerms } from "@/lib/learner-stats";
 import { routeLabel } from "@/components/area-route";
-import { sessionQuery } from "@/lib/learning-session";
+import { Le5Icon } from "@/components/le5-icon";
 
-const SESSION_SIZE = 5;
 const CHECKLIST_KEY = "le5.dashboard.checklist.hidden";
 
 /**
- * Signed-in home: today's five-term session (learning first, then new in
- * curriculum order), where you left off, streak / mastery / saved at a glance
- * and the three categories. Everything is derived from the same progress rows
+ * Signed-in home. One unambiguous primary action (D02, 16 Sep 2026): a
+ * returning learner sees "Continue where you left off" with the last term and
+ * its Area; an account without history is sent to Areas to choose Contracts,
+ * Corporate Law or Employment Law. No automatic term selection. Streak /
+ * mastery / saved and the three Areas are derived from the same progress rows
  * the Progress page uses, so the numbers always agree.
  */
 export function LearnerDashboard() {
@@ -34,18 +35,12 @@ export function LearnerDashboard() {
   const streak = streakFor(progressRows, new Date(), studyDays);
   const recent = recentActivity(visible, progressRows, 4);
 
-  const today = useMemo(() => {
-    const learning = visible.filter((term) => stateOf(progress, term.id) === "learning");
-    const fresh = visible.filter((term) => stateOf(progress, term.id) === "new");
-    return [...learning, ...fresh].slice(0, SESSION_SIZE);
-  }, [visible, progress]);
-
   const lastOpened = recent.find((item) => item.kind === "studied" || item.kind === "attempted") ?? recent[0];
 
   // Getting started: derived from real progress, so it never lies; hidden once
   // the learner dismisses it after completing everything.
   const steps = [
-    { id: "open", done: counts.studied > 0, href: today[0] ? `/terms/${today[0].id}` : "/terms", label: L("checkOpen") },
+    { id: "open", done: counts.studied > 0, href: "/categories", label: L("checkOpen") },
     { id: "quiz", done: counts.attempts > 0, href: "/quizzes", label: L("checkQuiz") },
     { id: "save", done: counts.favourites > 0, href: "/terms", label: L("checkSave") },
     { id: "verify", done: Boolean(session?.user.emailVerified), href: "/account/settings?tab=security", label: L("checkVerify") },
@@ -61,8 +56,6 @@ export function LearnerDashboard() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "dashGoodMorning" : hour < 19 ? "dashGoodAfternoon" : "dashGoodEvening";
   const firstName = session?.user.name.split(" ")[0] ?? "";
-  const selectedSession = sessionQuery(today);
-  const quizHref = today.length ? `/quizzes?${selectedSession}` : "/quizzes";
 
   return (
     <LearnerShell pageClass="dashboard-page">
@@ -118,56 +111,14 @@ export function LearnerDashboard() {
         )}
 
         <div className="dashboard-grid">
-          <section className="dashboard-session" aria-labelledby="dash-session-title">
-            <div className="dashboard-session-head">
-              <span className="eyebrow">{L("dashSessionTag")}</span>
-              <h2 id="dash-session-title">{today.length ? L("dashSessionTitle", { n: today.length }) : visible.length === 0 ? L("emptyLibraryTitle") : L("stateMastered")}</h2>
-              <p>{today.length ? L("dashSessionBody") : visible.length === 0 ? L("emptyLibraryBody") : L("dashSessionDone")}</p>
-            </div>
-            {today.length > 0 && (
+          <section className="dashboard-session dashboard-primary" aria-labelledby="dash-primary-title">
+            {lastOpened ? (
               <>
-                <div className="dashboard-session-actions">
-                  <Link className="primary inline" href={`/terms/${today[0].id}?${selectedSession}`}>
-                    {L("dashStartSession")}
-                  </Link>
-                  <Link className="ghost" href={quizHref}>
-                    {L("dashQuizThem")}
-                  </Link>
+                <div className="dashboard-session-head">
+                  <span className="eyebrow">{L("dashContinue")}</span>
+                  <h2 id="dash-primary-title">{lastOpened.term.term}</h2>
+                  <p>{L("dashContinueBody")}</p>
                 </div>
-                <ol className="dashboard-session-list">
-                  {today.map((term, index) => (
-                    <li key={term.id}>
-                      <Link href={`/terms/${term.id}?${selectedSession}`}>
-                        <span className="dashboard-session-index">{index + 1}</span>
-                        <span className="dashboard-session-body">
-                          <strong>{term.term}</strong>
-                          <small>
-                            {categoryLabel(locale, term.category)} · {term.spanishEquivalent}
-                          </small>
-                        </span>
-                        <StatusBadge state={stateOf(progress, term.id)} locale={locale} />
-                      </Link>
-                    </li>
-                  ))}
-                </ol>
-              </>
-            )}
-            {today.length === 0 && (
-              <div className="dashboard-session-actions">
-                <Link className="primary inline" href={visible.length ? "/terms" : "/#how-it-works"}>
-                  {visible.length ? L("navLibrary") : locale === "es" ? "Prueba una lección de muestra" : "Try a sample lesson"}
-                </Link>
-                <Link className="ghost" href={visible.length ? "/quizzes" : "/account/help"}>
-                  {visible.length ? L("navQuizzes") : L("contactSupport")}
-                </Link>
-              </div>
-            )}
-          </section>
-
-          <aside className="dashboard-rail">
-            <section className="dashboard-continue">
-              <span className="eyebrow">{L("dashContinue")}</span>
-              {lastOpened ? (
                 <Link href={`/terms/${lastOpened.term.id}`} className="dashboard-continue-card">
                   <Photo src={termPhoto(lastOpened.term, terms)} size="thumb" />
                   <span>
@@ -175,14 +126,52 @@ export function LearnerDashboard() {
                     <small>
                       {categoryLabel(locale, lastOpened.term.category)} · {formatWhen(lastOpened.at, locale, { today: L("today"), yesterday: L("yesterday") })}
                     </small>
-                    <em>{L("dashOpenTerm")} →</em>
+                    <StatusBadge state={stateOf(progress, lastOpened.term.id)} locale={locale} />
                   </span>
                 </Link>
-              ) : (
-                <p className="dashboard-empty">{L("dashContinueEmpty")}</p>
-              )}
-            </section>
+                <div className="dashboard-session-actions">
+                  <Link className="primary inline" href={`/terms/${lastOpened.term.id}`}>
+                    {L("dashOpenTerm")}
+                  </Link>
+                  <Link className="ghost" href={`/terms?category=${encodeURIComponent(lastOpened.term.category)}`}>
+                    {L("dashOpenArea", { area: categoryLabel(locale, lastOpened.term.category) })}
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="dashboard-session-head">
+                  <span className="eyebrow">{L("dashByCategory")}</span>
+                  <h2 id="dash-primary-title">{visible.length === 0 ? L("emptyLibraryTitle") : L("dashStartTitle")}</h2>
+                  <p>{visible.length === 0 ? L("emptyLibraryBody") : L("dashStartBody")}</p>
+                </div>
+                {visible.length > 0 && (
+                  <ol className="dashboard-session-list dashboard-area-list">
+                    {byCategory.map((item) => (
+                      <li key={item.category}>
+                        <Link href={`/terms?category=${encodeURIComponent(item.category)}`}>
+                          <span className="dashboard-session-index dashboard-area-icon">
+                            <Le5Icon name={item.category === "Contracts" ? "areas/contracts" : item.category === "Corporate Law" ? "areas/corporate-law" : "areas/employment-law"} />
+                          </span>
+                          <span className="dashboard-session-body">
+                            <strong>{categoryLabel(locale, item.category)}</strong>
+                            <small>{L("dashMasteryBody", { m: item.mastered, n: item.total })}</small>
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+                <div className="dashboard-session-actions">
+                  <Link className="primary inline" href={visible.length ? "/categories" : "/#how-it-works"}>
+                    {visible.length ? L("dashChooseArea") : locale === "es" ? "Prueba una lección de muestra" : "Try a sample lesson"}
+                  </Link>
+                </div>
+              </>
+            )}
+          </section>
 
+          <aside className="dashboard-rail">
             <div className="dashboard-stats">
               <Link href="/progress" className="dashboard-stat streak">
                 <small>{L("dashStreak")}</small>
@@ -197,7 +186,7 @@ export function LearnerDashboard() {
               <Link href="/library" className="dashboard-stat saved">
                 <small>{L("dashSaved")}</small>
                 <strong>{counts.favourites}</strong>
-                <span>{L("dashSavedBody", { n: counts.favourites })}</span>
+                <span>{counts.favourites === 1 ? L("dashSavedBodyOne") : L("dashSavedBody", { n: counts.favourites })}</span>
               </Link>
             </div>
           </aside>
