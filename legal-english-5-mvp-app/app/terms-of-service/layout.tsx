@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { pageMetadata } from "@/lib/site";
+import { serverLocale } from "@/lib/locale-server";
+import { seoMetadata } from "@/lib/site";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Terms of Service",
-  description: "The terms that govern your use of Legal English 5.",
-  path: "/terms-of-service",
-  index: true,
-});
+// Approved legal package (IMP-17/18): title and description in the visitor's language.
+export async function generateMetadata(): Promise<Metadata> {
+  return seoMetadata("/terms-of-service", await serverLocale());
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

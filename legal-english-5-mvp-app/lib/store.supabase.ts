@@ -715,12 +715,13 @@ const PG_UNIQUE_VIOLATION = "23505";
 /**
  * Grade one Quick Quiz answer. Hardened after the Hito B progress-state
  * finding so that a Term can only become Mastered, and an attempt can only be
- * counted, when the signed-in learner really submitted an answer for a Term
- * she had opened:
+ * counted, when the signed-in learner really submitted an answer:
  *
  *  - the option must be one of this Term's own answer letters;
- *  - the Term must already be in the learner's progress (opened → Learning);
- *    a quiz for a Term never opened is refused, on every page;
+ *  - the Term does NOT need to have been opened first (approved functional
+ *    rule, 16 Sep 2026): a New Term answered wrong becomes Learning, answered
+ *    right becomes Mastered. opened_at is audit data only and stays NULL when
+ *    the learner never opened the Term's page;
  *  - each Check Answer press carries a client key: a duplicated or retried
  *    request with the same key returns the previous grade and does not add
  *    a second attempt;
@@ -742,9 +743,6 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   const { letter, correct } = graded;
 
   const { data: existing } = await supabase.from("user_term_progress").select("*").eq("user_id", userId).eq("term_id", termId).maybeSingle();
-  if (!existing || existing.state === "new") {
-    return { ok: false as const, code: "not-opened" as const, message: "Open and read this Term before taking its quiz." };
-  }
 
   const now = new Date().toISOString();
   const clientKey = typeof meta.clientKey === "string" && meta.clientKey.trim() ? meta.clientKey.trim().slice(0, 80) : null;
@@ -764,24 +762,29 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   }
   const ledgerAvailable = !ledger.error;
 
-  // 2. Summary row. Mastered only on a correct, recorded answer.
-  const attempts = Number(existing.attempts ?? 0) + 1;
+  // 2. Summary row. Mastered only on a correct, recorded answer. A Term that
+  //    was never opened gets its first row here, with opened_at left NULL.
+  const attempts = Number(existing?.attempts ?? 0) + 1;
   const state = correct ? "mastered" : "learning";
-  const wasMastered = existing.state === "mastered";
+  const wasMastered = existing?.state === "mastered";
   const audited = {
     state,
     attempts,
     quiz_completed: true,
     quiz_correct: correct,
-    mastered_at: correct ? (wasMastered && existing.mastered_at ? existing.mastered_at : now) : null,
+    mastered_at: correct ? (wasMastered && existing?.mastered_at ? existing.mastered_at : now) : null,
     last_activity_at: now,
-    opened_at: existing.opened_at ?? existing.updated_at ?? now,
+    opened_at: existing?.opened_at ?? null,
     updated_at: now,
   };
-  let update = await supabase.from("user_term_progress").update(audited).eq("user_id", userId).eq("term_id", termId);
+  let update = existing
+    ? await supabase.from("user_term_progress").update(audited).eq("user_id", userId).eq("term_id", termId)
+    : await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, ...audited });
   if (update.error?.code === PG_UNDEFINED_COLUMN && !ledgerAvailable) {
     // Migration 010 not applied yet: keep the legacy shape rather than lose the answer.
-    update = await supabase.from("user_term_progress").update({ state, attempts, updated_at: now }).eq("user_id", userId).eq("term_id", termId);
+    update = existing
+      ? await supabase.from("user_term_progress").update({ state, attempts, updated_at: now }).eq("user_id", userId).eq("term_id", termId)
+      : await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state, attempts, updated_at: now });
   }
   if (update.error) return { ok: false as const, message: "Your answer could not be saved. Try again." };
 

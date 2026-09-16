@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { pageMetadata } from "@/lib/site";
+import { serverLocale } from "@/lib/locale-server";
+import { seoMetadata } from "@/lib/site";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Cookie Policy",
-  description: "Essential cookies Legal English 5 uses to keep you signed in and remember your language. No advertising trackers.",
-  path: "/cookies",
-  index: true,
-});
+// Approved legal package (IMP-17/18): title and description in the visitor's language.
+export async function generateMetadata(): Promise<Metadata> {
+  return seoMetadata("/cookies", await serverLocale());
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

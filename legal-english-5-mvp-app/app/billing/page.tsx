@@ -10,7 +10,8 @@ import { entitlementDetail, entitlementLabel, subscriptionStatusLabel, type Mess
 import { Icon, IconName } from "@/components/ui-icons";
 import { Photo } from "@/components/photo";
 import type { Plan } from "@/lib/types";
-import { ANNUAL_HOWTO } from "@/lib/commercial";
+import { ANNUAL_HOWTO, checkoutNotice } from "@/lib/commercial";
+import Link from "next/link";
 
 const HISTORY_KEY: Record<string, MessageKey> = {
   payment_approved: "historyPaymentApproved",
@@ -100,6 +101,10 @@ function BillingWorkspace() {
     }
   }
 
+  // Trial end shown in the activation notice: the recorded trial end while it
+  // is still ahead, otherwise seven days from now.
+  const trialEnd = subscription && new Date(subscription.trialEndsAt).getTime() > Date.now() ? new Date(subscription.trialEndsAt) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
   const notice =
     returned === "success" || (returned === "pending" && active)
       ? { tone: "ok", text: t("billingCheckoutSuccess") }
@@ -179,6 +184,13 @@ function BillingWorkspace() {
           {!active && (
             <>
               <p className="muted tiny">{ANNUAL_HOWTO[locale]}</p>
+              {/* Legal package annex §2: exact trial end (Bogotá), first charge, renewal and the three documents before the final button. */}
+              <p className="billing-activation-notice">
+                {checkoutNotice(locale, trialEnd)}{" "}
+                <Link href="/terms-of-service" target="_blank">{locale === "es" ? "Términos del Servicio" : "Terms of Service"}</Link> ·{" "}
+                <Link href="/privacy" target="_blank">{locale === "es" ? "Política de Privacidad" : "Privacy Policy"}</Link> ·{" "}
+                <Link href="/cookies" target="_blank">{locale === "es" ? "Política de Cookies" : "Cookie Policy"}</Link>
+              </p>
               <button className="ghost" onClick={() => void subscribe("monthly")} disabled={Boolean(busy)} aria-busy={busy === "monthly" || undefined}>
                 {busy === "monthly" ? t("billingRedirecting") : t("subscribeMonth")}
               </button>

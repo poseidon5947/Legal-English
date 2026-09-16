@@ -158,13 +158,7 @@ export function TermDetail({ id }: { id: string }) {
     setBusy(true);
     const clientKey = quizClientKey();
     try {
-      let response = await submitQuiz(term.id, selected, { clientKey, source: "term" });
-      if (!response.ok && response.code === "not-opened") {
-        // The open request from mount has not landed yet (slow network): record
-        // the open, then grade the same press once with the same key.
-        await openTerm(term.id);
-        response = await submitQuiz(term.id, selected, { clientKey, source: "term" });
-      }
+      const response = await submitQuiz(term.id, selected, { clientKey, source: "term" });
       // A failed request is not a wrong answer: report it and keep the selection.
       if (!response.ok) {
         notify(response.message || L("reportFailed"), "error");

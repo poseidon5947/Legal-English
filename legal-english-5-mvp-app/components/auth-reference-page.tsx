@@ -10,6 +10,7 @@ import { useLocale } from "@/components/locale-provider";
 import { DEMO_ACCOUNTS, type Consents } from "@/lib/types";
 import { trackAction } from "@/lib/track";
 import { SUPPORT_EMAIL } from "@/lib/commercial";
+import { PRIVACY_SHORT_NOTICE } from "@/lib/legal-content";
 
 const COPY = {
   en: {
@@ -463,6 +464,8 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                     <small>{c.optional}</small> {c.consentMarketing}
                   </label>
                 </div>
+                {/* Short privacy notice required by the legal package annex §4. */}
+                <p className="auth-privacy-notice">{PRIVACY_SHORT_NOTICE[locale]}</p>
               </fieldset>
             )}
 

@@ -51,6 +51,18 @@ export const SEO: Record<string, Record<"en" | "es", { title: string; descriptio
     en: { title: "Create Account | Legal English 5", description: "Create a Legal English 5 account, then activate the 7-day free trial." },
     es: { title: "Crear cuenta | Legal English 5", description: "Crea una cuenta de Legal English 5 y luego activa la prueba gratis de 7 días." },
   },
+  "/terms-of-service": {
+    en: { title: "Terms of Service | Legal English 5", description: "Terms of Service for Legal English 5 by MPC LAW STUDIO, effective 11 September 2026." },
+    es: { title: "Términos del Servicio | Legal English 5", description: "Términos del Servicio de Legal English 5 de MPC LAW STUDIO, vigentes desde el 11 de septiembre de 2026." },
+  },
+  "/privacy": {
+    en: { title: "Personal Data Processing and Privacy Policy | Legal English 5", description: "How MPC LAW STUDIO processes personal data in Legal English 5 and how to exercise your rights." },
+    es: { title: "Política de Tratamiento de Datos Personales y Privacidad | Legal English 5", description: "Cómo MPC LAW STUDIO trata los datos personales en Legal English 5 y cómo ejercer tus derechos." },
+  },
+  "/cookies": {
+    en: { title: "Cookie Policy | Legal English 5", description: "Cookies and equivalent technologies used by Legal English 5: authentication, language preference and payment provider." },
+    es: { title: "Política de Cookies | Legal English 5", description: "Cookies y tecnologías equivalentes que usa Legal English 5: autenticación, preferencia de idioma y proveedor de pagos." },
+  },
 };
 
 /** Metadata for a public page from the approved SEO table, in the visitor's language. */

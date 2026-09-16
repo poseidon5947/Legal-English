@@ -6,6 +6,7 @@ import { useLocale } from "@/components/locale-provider";
 import { landingCopy } from "@/lib/landing-copy";
 import { BackToTop } from "@/components/back-to-top";
 import { CookieNotice } from "@/components/cookie-notice";
+import { SIC_PORTAL_URL } from "@/lib/legal-content";
 
 export function LandingFooter() {
   const { locale } = useLocale();
@@ -39,6 +40,7 @@ export function LandingFooter() {
             <Link href="/terms-of-service">{f.links.terms}</Link>
             <Link href="/privacy">{f.links.privacy}</Link>
             <Link href="/cookies">{f.links.cookies}</Link>
+            <a href={SIC_PORTAL_URL} target="_blank" rel="noreferrer">{f.links.sic}</a>
           </div>
           <div className="footer-contact">
             <span>{f.contact}</span>

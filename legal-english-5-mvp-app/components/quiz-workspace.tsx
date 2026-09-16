@@ -102,10 +102,11 @@ export function QuizWorkspace() {
   const [answered, setAnswered] = useState(0);
 
   function buildQueue(scope: string, onlyTerm?: string | null) {
-    // Only Terms the learner has already opened (Learning / Mastered) can be
-    // quizzed: a Term never read cannot become Mastered from this page. The
-    // server enforces the same rule; this keeps the queue honest up front.
-    const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption && stateOf(progress, term.id) !== "new");
+    // Every published Term with a quiz is practisable, including Terms still
+    // New (approved rule, 16 Sep 2026): a wrong answer moves New → Learning,
+    // a right one New → Mastered. Learning Terms are served first, then New,
+    // then Mastered.
+    const pool = visible.filter((term) => quizOptions(term).length >= 3 && term.quiz?.correctOption);
     if (inSession) return sessionTerms(pool, selectedSession).map((term) => term.id);
     const scoped = onlyTerm ? pool.filter((term) => term.id === onlyTerm) : scope === "All" ? pool : pool.filter((term) => term.category === scope);
     const weight = (term: Term) => (stateOf(progress, term.id) === "mastered" ? 2 : stateOf(progress, term.id) === "learning" ? 0 : 1);
@@ -247,7 +248,7 @@ export function QuizWorkspace() {
             </div>}
             {queue.length === 0 ? (
               <div className="quiz-empty">
-                <p>{visible.some((term) => quizOptions(term).length >= 3) ? L("noOpenedForQuiz") : L("noQuizzes")}</p>
+                <p>{L("noQuizzes")}</p>
                 <Link className="primary inline" href={category === "All" ? "/terms" : `/terms?category=${encodeURIComponent(category)}`}>
                   {L("openTermsFirst")}
                 </Link>

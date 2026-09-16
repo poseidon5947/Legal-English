@@ -14,6 +14,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Build identity exposed by /api/version so the deployed commit and build
+  // time can be verified from outside the hosting console.
+  env: {
+    NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
+    NEXT_PUBLIC_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA || process.env.GIT_COMMIT_SHA || "",
+  },
   poweredByHeader: false,
   // The floating "N" dev badge sat on top of the sidebar avatar during review.
   devIndicators: false,

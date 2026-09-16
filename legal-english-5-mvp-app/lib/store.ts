@@ -455,7 +455,7 @@ export async function toggleFavourite(userId: string, termId: string, day?: unkn
   return { ok: true as const, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
 }
 
-/** Same contract as the production store (see lib/store.supabase.ts submitQuiz): opened-first, graded option, idempotent per client key, ledgered. */
+/** Same contract as the production store (see lib/store.supabase.ts submitQuiz): graded option, idempotent per client key, ledgered; a New Term may be answered without opening it (opened_at stays null). */
 export async function submitQuiz(userId: string, termId: string, option: string, day?: unknown, meta: QuizSubmission = {}) {
   const data = load();
   const user = data.users.find((item) => item.id === userId);
@@ -466,10 +466,8 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   const graded = gradeAnswer(term, option);
   if (!graded) return { ok: false as const, message: "That answer is not one of this quiz's options." };
   const { letter, correct } = graded;
-  const current = data.progress.find((item) => item.userId === userId && item.termId === termId);
-  if (!current || current.state === "new") {
-    return { ok: false as const, code: "not-opened" as const, message: "Open and read this Term before taking its quiz." };
-  }
+  const current: Progress = data.progress.find((item) => item.userId === userId && item.termId === termId)
+    ?? { userId, termId, favourite: false, state: "new", attempts: 0, updatedAt: new Date().toISOString(), openedAt: null, lastActivityAt: null };
   const now = new Date().toISOString();
   const clientKey = typeof meta.clientKey === "string" && meta.clientKey.trim() ? meta.clientKey.trim().slice(0, 80) : null;
   data.quizAttempts = data.quizAttempts ?? [];
@@ -484,7 +482,8 @@ export async function submitQuiz(userId: string, termId: string, option: string,
     state: correct ? "mastered" : "learning",
     attempts: (current.attempts ?? 0) + 1,
     updatedAt: now,
-    openedAt: current.openedAt ?? current.updatedAt,
+    // Audit only: stays null when the learner answered without opening the page.
+    openedAt: current.openedAt ?? null,
     quizCompleted: true,
     quizCorrect: correct,
     masteredAt: correct ? (wasMastered && current.masteredAt ? current.masteredAt : now) : null,

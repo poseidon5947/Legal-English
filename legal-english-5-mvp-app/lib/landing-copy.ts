@@ -58,7 +58,7 @@ export type LandingCopy = {
     support: string;
     legal: string;
     contact: string;
-    links: { library: string; categories: string; how: string; pricing: string; about: string; helpCenter: string; faqs: string; contactUs: string; billing: string; status: string; terms: string; privacy: string; cookies: string };
+    links: { library: string; categories: string; how: string; pricing: string; about: string; helpCenter: string; faqs: string; contactUs: string; billing: string; status: string; terms: string; privacy: string; cookies: string; sic: string };
     reply: string;
     rights: string;
     trust: string;
@@ -207,12 +207,13 @@ const en: LandingCopy = {
       terms: "Terms of Service",
       privacy: "Privacy Policy",
       cookies: "Cookie Policy",
+      sic: "Superintendence of Industry and Commerce (SIC)",
     },
     reply: "We typically reply within one business day.",
     rights: "© 2026 Legal English 5 by MPC LAW STUDIO. All rights reserved.",
     trust: "Payments processed through Mercado Pago. Personal data is handled as described in our Privacy Policy.",
     madeIn: "MPC LAW STUDIO · Colombia",
-    cookieText: "We use essential cookies to keep you signed in and remember your language. We do not use advertising trackers.",
+    cookieText: "We only use strictly necessary technologies: your sign-in session, your language preference (le5_locale) and, during checkout, Mercado Pago's own cookies. No analytics or advertising trackers.",
     cookieAccept: "Got it",
     cookieMore: "Cookie Policy",
   },
@@ -356,12 +357,13 @@ const es: LandingCopy = {
       terms: "Términos del Servicio",
       privacy: "Política de Tratamiento de Datos Personales y Privacidad",
       cookies: "Política de Cookies",
+      sic: "Superintendencia de Industria y Comercio (SIC)",
     },
     reply: "Normalmente respondemos en un día hábil.",
     rights: "© 2026 Legal English 5 by MPC LAW STUDIO. Todos los derechos reservados.",
     trust: "Pagos procesados a través de Mercado Pago. Los datos personales se tratan según nuestra Política de Tratamiento de Datos Personales y Privacidad.",
     madeIn: "MPC LAW STUDIO · Colombia",
-    cookieText: "Usamos cookies esenciales para mantener tu sesión y recordar tu idioma. No usamos rastreadores publicitarios.",
+    cookieText: "Solo usamos tecnologías estrictamente necesarias: tu sesión de inicio, tu preferencia de idioma (le5_locale) y, durante el pago, las cookies propias de Mercado Pago. Sin analítica ni rastreadores publicitarios.",
     cookieAccept: "Entendido",
     cookieMore: "Política de Cookies",
   },
