@@ -47,7 +47,7 @@ function BillingWorkspace() {
   const subscription = session?.subscription;
   const hasMethod = Boolean(subscription?.providerReference);
   // One date format for the whole card, matching the trial banner ("24 Sept 2026, 06:33").
-  const when = (iso: string) => new Date(iso).toLocaleString(locale === "es" ? "es-CO" : "en-GB", { dateStyle: "medium", timeStyle: "short" });
+  const when = (iso: string) => new Date(iso).toLocaleString(locale === "es" ? "es-ES" : "en-GB", { dateStyle: "medium", timeStyle: "short" });
   const active = subscription?.status === "active";
   const accessValue = entitlement.allowed ? t("billingFullAccess") : t("billingBlocked");
 

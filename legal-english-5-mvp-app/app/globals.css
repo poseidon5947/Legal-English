@@ -27018,3 +27018,58 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
   .home-ref-actions.hero-editorial-actions > a.primary,
   .home-ref-actions.hero-editorial-actions > .hero-sample-link { width: 100%; }
 }
+
+/* Billing page (learner) — readability and D04 tokens.
+   1. The activation notice sits on the purple card: translucent white panel, white text, yellow links.
+   2. Buttons on the purple card: Primary is the yellow variant (the purple one vanished on purple);
+      Outline stays white on purple. Both span the card and may wrap onto two balanced lines.
+   3. Payment / Manage buttons use the Outline token instead of a grey hairline.
+   4. Access and payment rows stay in one line on phones (icon · label · value). */
+.learner-shell .billing-subscription-card .billing-activation-notice {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.92);
+}
+.learner-shell .billing-subscription-card .billing-activation-notice a { color: var(--brand-yellow); text-decoration: underline; white-space: nowrap; }
+.learner-shell .billing-subscription-card p.muted.tiny { color: rgba(255, 255, 255, 0.78); }
+.learner-shell .billing-subscription-card > .ghost,
+.learner-shell .billing-subscription-card > .primary {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 44px;
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  white-space: normal;
+  text-wrap: balance;
+  line-height: 20px;
+}
+.learner-shell .billing-subscription-card > .ghost { background: #ffffff; border-color: #ffffff; color: var(--brand-purple); }
+.learner-shell .billing-subscription-card > .ghost:not(:disabled):hover { background: #f7f6f9; border-color: #f7f6f9; color: var(--brand-purple-800); }
+.learner-shell .billing-subscription-card > .primary { background: var(--brand-yellow); border-color: var(--brand-yellow); color: var(--brand-dark); }
+.learner-shell .billing-subscription-card > .primary:not(:disabled):hover { background: #e6d600; border-color: #e6d600; color: var(--brand-dark); }
+.learner-shell .billing-panel-card .payment-row button,
+.learner-shell .billing-panel-card .manage-card button:not(.primary),
+.learner-shell .manage-card > div > button:not(.primary) {
+  border: 1px solid var(--brand-purple);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--brand-purple);
+  font-family: var(--font-ui, "Inter", system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 10px 14px;
+}
+.learner-shell .billing-panel-card .payment-row button:not(:disabled):hover,
+.learner-shell .manage-card > div > button:not(.primary):not(:disabled):hover { border-color: var(--brand-purple-800); background: #f7f6f9; color: var(--brand-purple-800); }
+/* Payment row: icon · text on the first line, the action on its own line underneath (no two-line squeeze). */
+.learner-shell .billing-panel-card .payment-row { grid-template-columns: auto minmax(0, 1fr); }
+.learner-shell .billing-panel-card .payment-row > button,
+.learner-shell .billing-panel-card .payment-row > a { grid-column: 2; justify-self: start; }
+@media (max-width: 960px) {
+  .learner-shell .access-row { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .learner-shell .access-row strong { text-align: right; }
+  .learner-shell .billing-history-row { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .learner-shell .manage-card > div > button { width: 100%; }
+}
