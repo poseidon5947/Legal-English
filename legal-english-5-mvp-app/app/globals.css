@@ -26888,8 +26888,10 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
   .learner-shell .help-hero-card.with-photo { grid-template-columns: 220px minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
-  .learner-shell .help-hero-card.with-photo { grid-template-columns: minmax(0, 1fr); }
-  .learner-shell .help-hero-card.with-photo > div { min-width: 0; }
+  /* Photo spans the whole card (no right-hand gutter); the text keeps its own padding. */
+  .learner-shell .help-hero-card.with-photo { grid-template-columns: minmax(0, 1fr); padding: 0 0 18px; }
+  .learner-shell .help-hero-card.with-photo .help-hero-photo { width: 100%; height: 170px; border-radius: 0; }
+  .learner-shell .help-hero-card.with-photo > div { min-width: 0; padding: 0 18px; }
   /* The address never breaks mid-word (".c / om"); it drops to its own line and shrinks slightly instead. */
   .learner-shell .help-hero-card.with-photo a[href^="mailto:"] { display: inline-block; max-width: 100%; white-space: nowrap; overflow-wrap: normal; word-break: keep-all; }
 }
@@ -26992,6 +26994,14 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 .cta-arrow { display: inline-block; margin-left: 8px; font-weight: 600; }
 /* D20: final CTA without the decorative raster icon; two columns (copy + button). */
 .home-ref-cta.brief-final { grid-template-columns: minmax(0, 1fr) auto; }
+/* Phones: the final CTA stacks — copy first, then a full-width button of normal height. */
+@media (max-width: 760px) {
+  .home-ref-cta.brief-final, .home-brief .home-ref-cta.brief-final { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 14px; }
+  .home-ref-cta.brief-final > div { min-width: 0; }
+  .home-ref-cta.brief-final h2 { font-size: 1.35rem; line-height: 1.25; overflow-wrap: normal; }
+  .home-ref-cta.brief-final .brief-final-body { font-size: 0.95rem; }
+  .home-ref-cta.brief-final .primary, .home-ref-cta.brief-final a.primary { width: 100%; height: 44px; align-self: start; justify-content: center; font-size: 15px; }
+}
 .home-ref-cta.brief-final .primary { background: var(--brand-yellow); border-color: var(--brand-yellow); color: var(--brand-dark); }
 .home-ref-cta.brief-final .primary:hover { background: #e6d600; border-color: #e6d600; color: var(--brand-dark); }
 .home-generated-icon.le5-icon { width: 22px; height: 22px; color: var(--brand-purple); }
