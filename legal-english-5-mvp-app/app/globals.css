@@ -26799,6 +26799,17 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 .auth-reference-page .auth-reference-hero h1 { color: #2f1f6d; font-size: 2.9rem; }
 .auth-reference-page .auth-reference-hero h1 span { color: #452b84; }
 .auth-reference-page .auth-reference-hero-content > i { background: #f5e400; }
+/* Phones: the redesign rules above are unscoped, so the mobile sizes are restated after them.
+   ≤ 640px: 24px gutters, 2.54rem headline. ≤ 360px: the headline must not clip on the right. */
+@media (max-width: 640px) {
+  .auth-reference-page .auth-reference-hero-content { padding: 30px 24px 36px; }
+  .auth-reference-page .auth-reference-hero h1 { font-size: 2.54rem; }
+}
+@media (max-width: 360px) {
+  .auth-reference-page .auth-reference-hero-content { padding: 28px 20px 32px; }
+  .auth-reference-page .auth-reference-hero h1 { font-size: clamp(30px, 10.5vw, 38px); line-height: 1.1; }
+  .auth-reference-page .auth-reference-kicker, .auth-reference-page .auth-reference-lead, .auth-reference-page .auth-feature-list { min-width: 0; max-width: 100%; }
+}
 .auth-reference-page .auth-reference-lead { color: #4a4757; }
 .auth-reference-page .auth-feature-list article > span { border: 1.5px solid #d9d4ea; background: #ffffff; color: #452b84; }
 .auth-reference-page .auth-feature-list article > span .le5-icon { width: 24px; height: 24px; }
@@ -26871,8 +26882,20 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 .dashboard-primary .dashboard-continue-card > span { display: grid; gap: 4px; }
 .dashboard-area-icon.dashboard-session-index { background: #efebf9; color: #452b84; }
 .dashboard-area-icon .le5-icon { width: 20px; height: 20px; }
-/* D05: illustration removed — two columns (photo + text), no residual gap. */
-.learner-shell .help-hero-card.with-photo { grid-template-columns: 220px minmax(0, 1fr); }
+/* D05: illustration removed — two columns (photo + text), no residual gap.
+   Scoped to ≥ 641px so the phone layout keeps stacking photo over text (single column). */
+@media (min-width: 641px) {
+  .learner-shell .help-hero-card.with-photo { grid-template-columns: 220px minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .learner-shell .help-hero-card.with-photo { grid-template-columns: minmax(0, 1fr); }
+  .learner-shell .help-hero-card.with-photo > div { min-width: 0; }
+  /* The address never breaks mid-word (".c / om"); it drops to its own line and shrinks slightly instead. */
+  .learner-shell .help-hero-card.with-photo a[href^="mailto:"] { display: inline-block; max-width: 100%; white-space: nowrap; overflow-wrap: normal; word-break: keep-all; }
+}
+@media (max-width: 360px) {
+  .learner-shell .help-hero-card.with-photo a[href^="mailto:"] { font-size: 0.9em; letter-spacing: -0.01em; }
+}
 .help-hero-card .ghost.inline { justify-self: start; margin-top: 10px; }
 /* D06 / D08: pending-error practice. */
 .rail-practice-link { display: inline-block; margin-top: 8px; color: #452b84; font-size: .8rem; font-weight: 600; text-decoration: none; }

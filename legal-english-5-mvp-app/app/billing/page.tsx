@@ -46,6 +46,8 @@ function BillingWorkspace() {
   const returned = params.get("checkout"); // success | pending | failure (back_url from the hosted checkout)
   const subscription = session?.subscription;
   const hasMethod = Boolean(subscription?.providerReference);
+  // One date format for the whole card, matching the trial banner ("24 Sept 2026, 06:33").
+  const when = (iso: string) => new Date(iso).toLocaleString(locale === "es" ? "es-CO" : "en-GB", { dateStyle: "medium", timeStyle: "short" });
   const active = subscription?.status === "active";
   const accessValue = entitlement.allowed ? t("billingFullAccess") : t("billingBlocked");
 
@@ -153,30 +155,32 @@ function BillingWorkspace() {
             <dl className="dates">
               <div>
                 <dt>{t("trialStarted")}</dt>
-                <dd>{new Date(subscription.trialStartedAt).toLocaleString()}</dd>
+                <dd>{when(subscription.trialStartedAt)}</dd>
               </div>
               <div>
                 <dt>{t("trialEnds")}</dt>
-                <dd>{new Date(subscription.trialEndsAt).toLocaleString()}</dd>
+                <dd>{when(subscription.trialEndsAt)}</dd>
               </div>
               <div>
                 <dt>{t("plan")}</dt>
                 <dd>{subscription.plan ? t(subscription.plan) : t("noneYet")}</dd>
               </div>
-              <div>
-                <dt>{t("providerRef")}</dt>
-                <dd>{subscription.providerReference || "—"}</dd>
-              </div>
+              {subscription.providerReference && (
+                <div>
+                  <dt>{t("providerRef")}</dt>
+                  <dd>{subscription.providerReference}</dd>
+                </div>
+              )}
               {subscription.currentPeriodEnd && (
                 <div>
                   <dt>{t("periodEnd")}</dt>
-                  <dd>{new Date(subscription.currentPeriodEnd).toLocaleString()}</dd>
+                  <dd>{when(subscription.currentPeriodEnd)}</dd>
                 </div>
               )}
               {subscription.status === "past_due" && subscription.graceUntil && (
                 <div>
                   <dt>{t("graceEnd")}</dt>
-                  <dd>{new Date(subscription.graceUntil).toLocaleString()}</dd>
+                  <dd>{when(subscription.graceUntil)}</dd>
                 </div>
               )}
             </dl>

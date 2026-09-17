@@ -20,6 +20,7 @@ type Copy = {
   reply: string;
   copy: string;
   copied: string;
+  copyFailed: string;
   signedInTitle: string;
   signedInBody: string;
   signedInCta: string;
@@ -62,6 +63,7 @@ const COPY: Record<Locale, Copy> = {
     reply: "We typically reply within one business day, Colombia time.",
     copy: "Copy address",
     copied: "Address copied",
+    copyFailed: "Select the address below and copy it",
     signedInTitle: "Already signed in?",
     signedInBody: "The Help page inside your account lets you send a report linked to your account.",
     signedInCta: "Open Help in your account",
@@ -101,6 +103,7 @@ const COPY: Record<Locale, Copy> = {
     reply: "Normalmente respondemos en un día hábil, hora de Colombia.",
     copy: "Copiar dirección",
     copied: "Dirección copiada",
+    copyFailed: "Selecciona la dirección de abajo y cópiala",
     signedInTitle: "¿Ya iniciaste sesión?",
     signedInBody: "La página de Ayuda dentro de tu cuenta permite enviar un reporte vinculado a tu cuenta.",
     signedInCta: "Abrir Ayuda en tu cuenta",
@@ -110,7 +113,7 @@ const COPY: Record<Locale, Copy> = {
 export default function PublicHelpPage() {
   const { locale } = useLocale();
   const c = COPY[locale];
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   return (
     <main id="main" className="landing home-reference">
       <LandingHeader />
@@ -147,13 +150,30 @@ export default function PublicHelpPage() {
                 type="button"
                 className="ghost inline"
                 onClick={() => {
-                  void navigator.clipboard?.writeText(SUPPORT_EMAIL).then(() => {
-                    setCopied(true);
-                    window.setTimeout(() => setCopied(false), 2400);
-                  });
+                  const reset = () => window.setTimeout(() => setCopied("idle"), 2400);
+                  const fallback = () => {
+                    // No clipboard permission / insecure context: select the visible address so the
+                    // learner can copy it manually, and say so instead of failing silently.
+                    const node = document.querySelector<HTMLElement>(".public-help-address a");
+                    const selection = window.getSelection();
+                    if (node && selection) {
+                      const range = document.createRange();
+                      range.selectNodeContents(node);
+                      selection.removeAllRanges();
+                      selection.addRange(range);
+                    }
+                    setCopied("failed");
+                    reset();
+                  };
+                  if (!navigator.clipboard?.writeText) return fallback();
+                  navigator.clipboard.writeText(SUPPORT_EMAIL).then(() => {
+                    setCopied("done");
+                    reset();
+                  }, fallback);
                 }}
+                aria-live="polite"
               >
-                {copied ? c.copied : c.copy}
+                {copied === "done" ? c.copied : copied === "failed" ? c.copyFailed : c.copy}
               </button>
             </div>
             <p className="muted tiny public-help-address">
