@@ -26217,6 +26217,12 @@ html[data-input="pointer"] .skip-link:focus-visible {
     align-items: center;
     min-height: 44px !important;
   }
+  /* Progress by Area rows are tone-classed links (a.green / a.purple) laid out as a grid;
+     they keep the grid so all three Areas render identically on touch devices. */
+  .progress-category-list a.with-photo {
+    display: grid;
+    min-height: 44px !important;
+  }
 }
 
 /* §2.3 Contrast rules: Brand Dark on Brand Yellow, never white on yellow. */
@@ -26466,7 +26472,8 @@ a.accent:hover {
  .progress-ref-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 860px) {
- .progress-category-list a.with-photo { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 8px 12px; }
+ /* .learner-shell prefix: must outrank the 5-column desktop template declared with the same prefix. */
+ .learner-shell .progress-category-list a.with-photo { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 8px 12px; }
  .progress-category-list a.with-photo > span { grid-column: 1; grid-row: 1 / 4; width: 40px; }
  .progress-category-list a.with-photo > strong { grid-column: 2; grid-row: 1; line-height: 1.5; }
  .progress-category-list a.with-photo > div { grid-column: 2 / 4; grid-row: 2; width: 100%; }
