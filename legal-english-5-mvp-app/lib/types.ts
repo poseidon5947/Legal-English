@@ -141,8 +141,32 @@ export type Progress = {
 /** Where a Quick Quiz answer was submitted from (kept in the quiz_attempts ledger). */
 export type QuizSource = "term" | "runner" | "session";
 
-/** Optional metadata sent with a quiz answer: an idempotency key per Check Answer press and the page it came from. */
-export type QuizSubmission = { clientKey?: string; source?: QuizSource };
+/**
+ * The quiz session an answer belongs to (NEW-01, 17 Sep 2026). A session is
+ * the set of questions the learner starts in Quiz — the mixed quiz, one Area,
+ * a Dashboard session, a practice of failed Terms. `key` is minted by the
+ * browser once per session and `total` is its question count; the server
+ * creates the quiz_sessions row on the first answer and attaches every attempt.
+ */
+export type QuizSessionRef = { key: string; scope: string; total: number };
+
+/** Optional metadata sent with a quiz answer: an idempotency key per Check Answer press, the page it came from and the session it belongs to. */
+export type QuizSubmission = { clientKey?: string; source?: QuizSource; session?: QuizSessionRef };
+
+/**
+ * One completed quiz session. "Quizzes Completed" is the number of these rows;
+ * question attempts (quiz_attempts) and Term attempts (progress.attempts) are
+ * counted separately and never inflate it.
+ */
+export type QuizSession = {
+  key: string;
+  scope: string;
+  total: number;
+  answered: number;
+  correct: number;
+  startedAt: string;
+  completedAt: string | null;
+};
 
 /**
  * One row per learner per calendar day (the learner's local day, "YYYY-MM-DD").

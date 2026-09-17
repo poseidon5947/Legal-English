@@ -1,4 +1,4 @@
-import type { Term } from "@/lib/types";
+import type { QuizSessionRef, Term } from "@/lib/types";
 
 /**
  * Resolve a submitted answer to one of this Term's own option letters (A–D)
@@ -22,4 +22,19 @@ export function gradeAnswer(term: Term, option: string): { letter: string; corre
 export function quizClientKey() {
   const random = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2);
   return `${Date.now().toString(36)}-${random}`;
+}
+
+/**
+ * Validate the quiz-session reference sent with an answer (NEW-01). Anything
+ * malformed — missing key, non-integer or out-of-range total — is treated as
+ * "no session" rather than rejected, so a Term-page answer is unaffected.
+ */
+export function sessionRef(value: unknown): QuizSessionRef | null {
+  if (!value || typeof value !== "object") return null;
+  const raw = value as Record<string, unknown>;
+  const key = typeof raw.key === "string" ? raw.key.trim().slice(0, 80) : "";
+  const total = typeof raw.total === "number" && Number.isInteger(raw.total) ? raw.total : NaN;
+  if (!key || !(total >= 1 && total <= 500)) return null;
+  const scope = typeof raw.scope === "string" && raw.scope.trim() ? raw.scope.trim().slice(0, 80) : "all";
+  return { key, scope, total };
 }

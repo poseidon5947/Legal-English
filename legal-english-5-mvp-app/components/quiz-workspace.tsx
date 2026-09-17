@@ -75,7 +75,7 @@ function quizOptions(term: Term) {
 }
 
 export function QuizWorkspace() {
-  const { terms, progress, progressRows, studyDays, session, entitlement, submitQuiz } = useApp();
+  const { terms, progress, progressRows, studyDays, quizSessions, session, entitlement, submitQuiz, completeQuizSession } = useApp();
   const { locale, t } = useLocale();
   const { notify } = useToast();
   const params = useSearchParams();
@@ -86,7 +86,8 @@ export function QuizWorkspace() {
   const counts = countsFor(visible, progress, studyDays);
   const byCategory = categoryStats(visible, progress);
   const streak = streakFor(progressRows, new Date(), studyDays);
-  const achievements = achievementsFor(counts, streak, byCategory);
+  const quizzesCompleted = quizSessions.length;
+  const achievements = achievementsFor(counts, streak, byCategory, quizzesCompleted);
 
   // Queue: terms with a usable quiz, weakest first, optionally one category or one term.
   const [category, setCategory] = useState<string>(params.get("category") || "All");
@@ -115,6 +116,11 @@ export function QuizWorkspace() {
   const [finished, setFinished] = useState(false);
   const [missed, setMissed] = useState<string[]>([]);
   const [answered, setAnswered] = useState(0);
+  // NEW-01: one key per quiz session. Every answer carries it; the session is
+  // reported complete only once every question in the queue has been answered.
+  const [sessionKey, setSessionKey] = useState(() => quizClientKey());
+  const completedKey = useRef<string | null>(null);
+  const sessionScope = inSession ? `session:${selectedSession}` : inPractice ? `practice:${practiceArea}` : focusTerm ? `term:${focusTerm}` : category === "All" ? "all" : `area:${category}`;
 
   function buildQueue(scope: string, onlyTerm?: string | null) {
     // Every published Term with a quiz is practisable, including Terms still
@@ -138,8 +144,19 @@ export function QuizWorkspace() {
     setFinished(false);
     setMissed([]);
     setAnswered(0);
+    setSessionKey(quizClientKey());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible.length, category, focusTerm, selectedSession, practiceArea]);
+
+  // The session counts as a completed quiz only when every question has a
+  // graded answer — whether the learner pressed Finish on the last question
+  // or End quiz after it. Ending early leaves the session incomplete.
+  useEffect(() => {
+    if (!finished || queue.length === 0 || answered < queue.length || completedKey.current === sessionKey) return;
+    completedKey.current = sessionKey;
+    void completeQuizSession(sessionKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finished, answered, queue.length, sessionKey]);
 
   const current = queue.length ? visible.find((term) => term.id === queue[position]) : undefined;
   const options = current ? quizOptions(current) : [];
@@ -148,7 +165,7 @@ export function QuizWorkspace() {
     if (!current || selected === null || busy || inFlight.current || !canStudy || result) return;
     inFlight.current = true;
     setBusy(true);
-    void submitQuiz(current.id, selected, { clientKey: quizClientKey(), source: inSession || inPractice ? "session" : "runner" })
+    void submitQuiz(current.id, selected, { clientKey: quizClientKey(), source: inSession || inPractice ? "session" : "runner", session: { key: sessionKey, scope: sessionScope, total: queue.length } })
       .then((response) => {
         // Only a successful, graded response counts as an answer. A failed
         // request (offline, session expired) is reported and the learner's
@@ -178,6 +195,7 @@ export function QuizWorkspace() {
     setFinished(false);
     setMissed([]);
     setAnswered(0);
+    setSessionKey(quizClientKey());
   }
 
   // Keyboard: 1-4 (or A-D) pick an option, Enter checks / advances, Esc ends.
@@ -392,8 +410,8 @@ export function QuizWorkspace() {
               </span>
               <div>
                 <p>{L("quizzesCompleted")}</p>
-                <strong>{counts.attempts}</strong>
-                <small>{L("totalAttempts")}</small>
+                <strong>{quizzesCompleted}</strong>
+                <small>{counts.attempts === 1 ? L("answersRecordedOne") : L("answersRecorded", { n: counts.attempts })}</small>
               </div>
             </article>
             <article className="gold">

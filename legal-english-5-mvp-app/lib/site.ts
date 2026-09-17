@@ -173,7 +173,7 @@ export function courseJsonLd(options: {
         priceCurrency: options.currency,
         url: `${base}/pricing`,
         description: spanish
-          ? "COP $540.000 al año, equivalente a un descuento del 50 % frente a doce pagos mensuales."
+          ? "COP $540.000 al año, equivalente a un descuento del 50 % frente a doce pagos mensuales."
           : "COP $540,000 per year, a 50% discount versus twelve monthly payments.",
       },
     ],

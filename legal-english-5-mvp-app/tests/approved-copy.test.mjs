@@ -74,7 +74,9 @@ test("pricing keeps the approved amounts and the trial conditions (IMP-05 / IMP-
   assert.match(en, /COP \$90,000/);
   assert.match(es, /COP \$90\.000/);
   // The annual amount itself is rendered by PlanCards from PLAN_PRICES (formatCop); the copy names the plan and the 50% saving.
-  assert.match(es, /50 ?%/);
+  // NEW-11: "50 %" is written with a no-break space so the figure and the sign never split across lines.
+  assert.match(es, /50\u00a0%/);
+  assert.doesNotMatch(es, /50 %/);
   assert.match(landingCopy.en.pricing.monthly.terms, /automatically continue on the COP \$90,000 monthly plan/);
   // The trial disclosure is not repeated in the home CTA block (IMP-05).
   assert.doesNotMatch(landingCopy.en.cta.body + landingCopy.en.hero.lead, /credit card/i);

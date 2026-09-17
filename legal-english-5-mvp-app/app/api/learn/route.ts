@@ -13,8 +13,11 @@ export async function POST(request: Request) {
   if (body.action === "quiz") {
     // clientKey: one per Check Answer press, so a duplicated request is graded once.
     // source: which page the answer came from (kept in the quiz_attempts ledger).
-    const meta = { clientKey: typeof body.clientKey === "string" ? body.clientKey : undefined, source: body.source };
+    // session: the quiz session this answer belongs to (validated in the store; absent for a Term-page answer).
+    const meta = { clientKey: typeof body.clientKey === "string" ? body.clientKey : undefined, source: body.source, session: body.session };
     return json(await store.submitQuiz(user.id, body.termId, body.option, body.day, meta));
   }
+  // NEW-01: "Quizzes Completed" moves only here, and only if the ledger shows every question answered.
+  if (body.action === "quizComplete") return json(await store.completeQuizSession(user.id, body.sessionKey));
   return json({ ok: false, message: "Unknown learn action." }, 400);
 }

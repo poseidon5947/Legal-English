@@ -12,8 +12,8 @@ import { acceptDay, bumpStudyDay, type StudyDelta } from "./study-day";
 import { entitlementFor } from "./entitlement";
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
-import { gradeAnswer } from "./quiz-grading";
-import type { Consents, Mail, Plan, Progress, PublicUser, QuizSource, QuizSubmission, Subscription, Term, User, BillingRecord, StudyDay, SupportTicket, TicketStatus } from "./types";
+import { gradeAnswer, sessionRef } from "./quiz-grading";
+import type { Consents, Mail, Plan, Progress, PublicUser, QuizSession, QuizSource, QuizSubmission, Subscription, Term, User, BillingRecord, StudyDay, SupportTicket, TicketStatus } from "./types";
 
 type ImportRun = {
   id: string;
@@ -29,9 +29,11 @@ type ImportRun = {
 };
 
 /** One graded Quick Quiz answer (alpha counterpart of the quiz_attempts ledger, migration 010). */
-type QuizAttempt = { userId: string; termId: string; option: string; correct: boolean; source: QuizSource; clientKey: string | null; answeredAt: string };
+type QuizAttempt = { userId: string; termId: string; option: string; correct: boolean; source: QuizSource; clientKey: string | null; answeredAt: string; sessionKey?: string | null };
+/** One quiz session (alpha counterpart of quiz_sessions, migration 012). Completed only when every question has a recorded attempt. */
+type QuizSessionRow = QuizSession & { userId: string };
 
-type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; studyDays?: StudyDay[]; quizAttempts?: QuizAttempt[]; tickets?: SupportTicket[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
+type StoreData = { users: User[]; terms: Term[]; progress: Progress[]; studyDays?: StudyDay[]; quizAttempts?: QuizAttempt[]; quizSessions?: QuizSessionRow[]; tickets?: SupportTicket[]; inbox: Mail[]; importRuns?: ImportRun[]; billingLog?: BillingRecord[] };
 
 function billingHistoryFor(data: StoreData, userId: string) {
   return (data.billingLog ?? []).filter((item) => item.userId === userId).sort((a, b) => b.at.localeCompare(a.at));
@@ -400,6 +402,7 @@ export async function bootstrap(userId: string | null) {
     terms,
     progress,
     studyDays: studyDaysFor(data, user.id),
+    quizSessions: quizSessionsFor(data, user.id),
     tickets: ticketsFor(data, user),
     users: isAdmin ? data.users.map(publicUser) : [],
     inbox: await inboxFor(user.email),
@@ -475,7 +478,13 @@ export async function submitQuiz(userId: string, termId: string, option: string,
     return { ok: true as const, correct, duplicate: true as const, message: term.quiz.explanation, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
   }
   const source: QuizSource = meta.source === "runner" || meta.source === "session" ? meta.source : "term";
-  data.quizAttempts.push({ userId, termId, option: letter, correct, source, clientKey, answeredAt: now });
+  // NEW-01: the first answer of a session creates its row; later answers attach to it.
+  const ref = sessionRef(meta.session);
+  data.quizSessions = data.quizSessions ?? [];
+  if (ref && !data.quizSessions.some((row) => row.userId === userId && row.key === ref.key)) {
+    data.quizSessions.push({ userId, key: ref.key, scope: ref.scope, total: ref.total, answered: 0, correct: 0, startedAt: now, completedAt: null });
+  }
+  data.quizAttempts.push({ userId, termId, option: letter, correct, source, clientKey, answeredAt: now, sessionKey: ref?.key ?? null });
   const wasMastered = current.state === "mastered";
   const next: Progress = {
     ...current,
@@ -493,6 +502,31 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   recordStudy(data, userId, day, { attempts: 1, correct: correct ? 1 : 0 });
   save(data);
   return { ok: true as const, correct, message: term.quiz.explanation, progress: data.progress.filter((item) => item.userId === userId), studyDays: studyDaysFor(data, userId) };
+}
+
+function quizSessionsFor(data: StoreData, userId: string): QuizSession[] {
+  return (data.quizSessions ?? [])
+    .filter((row) => row.userId === userId && row.completedAt)
+    .sort((a, b) => (b.completedAt ?? "").localeCompare(a.completedAt ?? ""))
+    .map(({ userId: _owner, ...row }) => row);
+}
+
+/** Same contract as the production store: completes a session only when the ledger holds an attempt for every declared question. Idempotent. */
+export async function completeQuizSession(userId: string, key: unknown) {
+  const sessionKey = typeof key === "string" && key.trim() ? key.trim().slice(0, 80) : null;
+  if (!sessionKey) return { ok: false as const, message: "Unknown quiz session." };
+  const data = load();
+  const session = (data.quizSessions ?? []).find((row) => row.userId === userId && row.key === sessionKey);
+  if (!session) return { ok: false as const, message: "Unknown quiz session." };
+  if (session.completedAt) return { ok: true as const, duplicate: true as const, quizSessions: quizSessionsFor(data, userId) };
+  const attempts = (data.quizAttempts ?? []).filter((row) => row.userId === userId && row.sessionKey === sessionKey);
+  const distinctTerms = new Set(attempts.map((row) => row.termId)).size;
+  if (distinctTerms < session.total) return { ok: false as const, message: "This quiz is not finished yet.", answered: distinctTerms, total: session.total };
+  session.answered = attempts.length;
+  session.correct = attempts.filter((row) => row.correct).length;
+  session.completedAt = new Date().toISOString();
+  save(data);
+  return { ok: true as const, quizSessions: quizSessionsFor(data, userId) };
 }
 
 export async function startCheckout(userId: string, plan: Plan, _origin: string) {

@@ -7,11 +7,11 @@ import { entitlementFor } from "./entitlement";
 import { cancelPreapproval, createPreapproval, mercadoPagoConfig } from "./mercadopago";
 import { INSIGHTS_RETENTION_DAYS, summarizeInsights, type InsightEvent } from "./insights";
 import { canPublish, publicationBlockers } from "./publication";
-import { gradeAnswer } from "./quiz-grading";
+import { gradeAnswer, sessionRef } from "./quiz-grading";
 import { getSupabaseServerClient, getSupabaseServiceRoleClient } from "./supabase/server";
 import { siteUrl } from "./site";
 import type { Preferences } from "./preferences";
-import type { Consents, InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, QuizSource, QuizSubmission, StudyDay, SupportTicket, TicketStatus, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
+import type { Consents, InContextItem, JurisdictionVariant, Mail, Plan, Progress, PublicUser, Quiz, QuizSession, QuizSource, QuizSubmission, StudyDay, SupportTicket, TicketStatus, Subscription, Term, UseItWithItem, BillingRecord } from "./types";
 
 // Production data layer: Supabase Auth for identity, Postgres + RLS for
 // everything else. Every exported function here has the exact name/shape as
@@ -616,19 +616,21 @@ export async function bootstrap(userId: string | null) {
   // Supabase (terms + signed audio URLs, progress, study days, tickets, users,
   // billing). They are independent, so they now run concurrently; the page
   // waits for the slowest one instead of the sum of all of them.
-  const [terms, progressResult, studyDays, tickets, users, billingHistory] = await Promise.all([
+  const [terms, progressResult, studyDays, tickets, users, billingHistory, quizSessions] = await Promise.all([
     listTerms(isAdmin, isAdmin || canLearn(user).ok),
     progressQuery,
     studyDaysFor(userId),
     listTickets(userId).then((result) => (result.ok ? result.tickets : [])),
     isAdmin ? listUsers() : Promise.resolve([]),
     billingHistoryFor(userId, user),
+    quizSessionsFor(userId),
   ]);
   return {
     session: { user, subscription: user.subscription },
     terms,
     progress: (progressResult.data ?? []).map(rowToProgress),
     studyDays,
+    quizSessions,
     tickets,
     users,
     inbox: [] as Mail[],
@@ -748,11 +750,19 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   const clientKey = typeof meta.clientKey === "string" && meta.clientKey.trim() ? meta.clientKey.trim().slice(0, 80) : null;
   const source: QuizSource = meta.source === "runner" || meta.source === "session" ? meta.source : "term";
 
+  // 0. Quiz session (NEW-01). The first answer of a session creates its row;
+  //    later answers attach to it. A Term-page answer has no session.
+  const sessionId = await ensureQuizSession(userId, sessionRef(meta.session));
+
   // 1. Ledger first. A unique violation on (user, client_key) means this exact
   //    press was already graded: answer again without touching the counters.
-  const ledger = await supabase
+  let ledger = await supabase
     .from("quiz_attempts")
-    .insert({ user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now });
+    .insert({ user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now, session_id: sessionId });
+  if (ledger.error?.code === PG_UNDEFINED_COLUMN) {
+    // Migration 012 not applied yet: keep the answer, drop the session link.
+    ledger = await supabase.from("quiz_attempts").insert({ user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now });
+  }
   if (ledger.error?.code === PG_UNIQUE_VIOLATION) {
     const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
     return { ok: true as const, correct, duplicate: true as const, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays };
@@ -791,6 +801,86 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   await recordStudy(userId, day, { attempts: 1, correct: correct ? 1 : 0 });
   const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
   return { ok: true as const, correct, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays };
+}
+
+/** Find or create the quiz_sessions row for this (user, session key). Returns its id, or null when no session / table not migrated. */
+async function ensureQuizSession(userId: string, ref: ReturnType<typeof sessionRef>): Promise<number | null> {
+  if (!ref) return null;
+  const supabase = await getSupabaseServerClient();
+  const { data: existing, error } = await supabase.from("quiz_sessions").select("id").eq("user_id", userId).eq("client_key", ref.key).maybeSingle();
+  if (error?.code === PG_UNDEFINED_TABLE) return null;
+  if (existing) return Number(existing.id);
+  const created = await supabase
+    .from("quiz_sessions")
+    .insert({ user_id: userId, client_key: ref.key, scope: ref.scope, total_questions: ref.total })
+    .select("id")
+    .maybeSingle();
+  if (created.error?.code === PG_UNIQUE_VIOLATION) {
+    const { data: raced } = await supabase.from("quiz_sessions").select("id").eq("user_id", userId).eq("client_key", ref.key).maybeSingle();
+    return raced ? Number(raced.id) : null;
+  }
+  return created.data ? Number(created.data.id) : null;
+}
+
+type QuizSessionRow = { client_key: string; scope: string; total_questions: number; answered: number; correct: number; started_at: string; completed_at: string | null };
+const rowToQuizSession = (row: QuizSessionRow): QuizSession => ({
+  key: row.client_key,
+  scope: row.scope,
+  total: Number(row.total_questions),
+  answered: Number(row.answered),
+  correct: Number(row.correct),
+  startedAt: row.started_at,
+  completedAt: row.completed_at,
+});
+
+/** The learner's completed quiz sessions, newest first. "Quizzes Completed" is this list's length. */
+async function quizSessionsFor(userId: string): Promise<QuizSession[]> {
+  const supabase = await getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("quiz_sessions")
+    .select("client_key, scope, total_questions, answered, correct, started_at, completed_at")
+    .eq("user_id", userId)
+    .not("completed_at", "is", null)
+    .order("completed_at", { ascending: false })
+    .limit(500);
+  if (error) return [];
+  return (data ?? []).map((row) => rowToQuizSession(row as QuizSessionRow));
+}
+
+/**
+ * Mark a quiz session completed (NEW-01). The server does not trust the
+ * browser's "I finished": it counts the distinct Terms answered in this
+ * session from the quiz_attempts ledger and completes the session only when
+ * every declared question has a recorded attempt. Idempotent.
+ */
+export async function completeQuizSession(userId: string, key: unknown) {
+  const sessionKey = typeof key === "string" && key.trim() ? key.trim().slice(0, 80) : null;
+  if (!sessionKey) return { ok: false as const, message: "Unknown quiz session." };
+  const supabase = await getSupabaseServerClient();
+  const { data: session, error } = await supabase
+    .from("quiz_sessions")
+    .select("id, client_key, scope, total_questions, answered, correct, started_at, completed_at")
+    .eq("user_id", userId)
+    .eq("client_key", sessionKey)
+    .maybeSingle();
+  if (error?.code === PG_UNDEFINED_TABLE) return { ok: false as const, message: "Quiz sessions are not available yet." };
+  if (!session) return { ok: false as const, message: "Unknown quiz session." };
+  if (session.completed_at) return { ok: true as const, duplicate: true as const, quizSessions: await quizSessionsFor(userId) };
+
+  const { data: attempts } = await supabase.from("quiz_attempts").select("term_id, correct").eq("user_id", userId).eq("session_id", session.id);
+  const rows = attempts ?? [];
+  const distinctTerms = new Set(rows.map((row) => String(row.term_id))).size;
+  if (distinctTerms < Number(session.total_questions)) {
+    return { ok: false as const, message: "This quiz is not finished yet.", answered: distinctTerms, total: Number(session.total_questions) };
+  }
+  const update = await supabase
+    .from("quiz_sessions")
+    .update({ answered: rows.length, correct: rows.filter((row) => row.correct).length, completed_at: new Date().toISOString() })
+    .eq("id", session.id)
+    .eq("user_id", userId)
+    .is("completed_at", null);
+  if (update.error) return { ok: false as const, message: "The quiz could not be recorded as completed. Try again." };
+  return { ok: true as const, quizSessions: await quizSessionsFor(userId) };
 }
 
 export async function applyBilling(_userId: string, _event: string, _plan?: Plan) {

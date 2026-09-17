@@ -246,7 +246,11 @@ export function LearnerShell({
   };
   return (
     <main id="main" className={`terms-reference-page learner-shell ${pageClass}${menuOpen ? " drawer-open" : ""}`.trim()}>
+      {/* NEW-06 (Owner decision, 17 Sep 2026): logo at the far left; menu and avatar grouped at the right. */}
       <header className="learner-mobile-bar" ref={mobileBarRef}>
+        <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
+          <BrandMark />
+        </Link>
         <button
           type="button"
           className="learner-menu-toggle"
@@ -257,9 +261,6 @@ export function LearnerShell({
         >
           <Le5Icon name={menuOpen ? "utility/close" : "utility/menu"} className="learner-menu-toggle-icon" />
         </button>
-        <Link className="terms-reference-brand" href="/" title={L("brandHome")} aria-label={L("brandHome")}>
-          <BrandMark />
-        </Link>
         <Link className="learner-mobile-avatar" href="/account" aria-label={L("navAccount")}>
           <Avatar name={session.user.name} src={session.user.avatarUrl} />
         </Link>

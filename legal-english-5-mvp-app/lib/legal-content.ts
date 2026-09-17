@@ -44,10 +44,10 @@ export const LEGAL_VERSION_HISTORY: { version: string; effective: string; note: 
 
 export const SIC_PORTAL_URL = "https://www.sic.gov.co/";
 
-/** Short privacy notice (package annex §4), shown next to the registration consents. */
+/** Short privacy notice (package annex §4). Removed from the registration form on 17 Sep 2026 (NEW-02, Owner decision); kept for the legal record. */
 export const PRIVACY_SHORT_NOTICE: Record<Locale, string> = {
-  es: "Responsable: María del Pilar Cruz, quien opera bajo el nombre comercial MPC LAW STUDIO, NIT 52.148.660-7. Trata los datos para crear y administrar la cuenta, prestar Legal English 5, guardar el progreso, gestionar seguridad, soporte, prueba, suscripción y pagos, y cumplir obligaciones legales. El titular puede conocer, actualizar, rectificar y suprimir sus datos, solicitar prueba de la autorización, conocer su uso y revocar la autorización cuando proceda. Política completa y solicitudes: support@legalenglish5.com. Dirección: Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia. Teléfono: +57 301 237 7281.",
-  en: "Controller: María del Pilar Cruz, conducting business under the trade name MPC LAW STUDIO, Tax ID 52.148.660-7. Data is processed to create and administer the account, provide Legal English 5, save progress, manage security, support, trial, subscription and payments, and meet legal obligations. Data subjects may access, update, correct and delete their data, request proof of authorization, learn how their data is used and withdraw authorization where applicable. Full policy and requests: support@legalenglish5.com. Address: Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia. Telephone: +57 301 237 7281.",
+  es: "Responsable: María del Pilar Cruz, quien opera bajo el nombre comercial MPC LAW STUDIO, NIT 52.148.660-7. Trata los datos para crear y administrar la cuenta, prestar Legal English 5, guardar el progreso, gestionar seguridad, soporte, prueba, suscripción y pagos, y cumplir obligaciones legales. El titular puede conocer, actualizar, rectificar y suprimir sus datos, solicitar prueba de la autorización, conocer su uso y revocar la autorización cuando proceda. Política completa y solicitudes: support@legalenglish.com. Dirección: Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia. Teléfono: +57 301 237 7281.",
+  en: "Controller: María del Pilar Cruz, conducting business under the trade name MPC LAW STUDIO, Tax ID 52.148.660-7. Data is processed to create and administer the account, provide Legal English 5, save progress, manage security, support, trial, subscription and payments, and meet legal obligations. Data subjects may access, update, correct and delete their data, request proof of authorization, learn how their data is used and withdraw authorization where applicable. Full policy and requests: support@legalenglish.com. Address: Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia. Telephone: +57 301 237 7281.",
 };
 
 export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
@@ -90,7 +90,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
                 ],
                 [
                   "Correo electrónico",
-                  "support@legalenglish5.com"
+                  "support@legalenglish.com"
                 ]
               ]
             },
@@ -122,7 +122,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
             },
             {
               "type": "p",
-              "text": "El usuario debe suministrar información exacta, mantenerla actualizada y proteger sus credenciales. No puede compartir la cuenta ni permitir accesos no autorizados. Debe informar de inmediato cualquier sospecha de uso indebido a support@legalenglish5.com. La Prestadora nunca solicitará la contraseña por correo electrónico."
+              "text": "El usuario debe suministrar información exacta, mantenerla actualizada y proteger sus credenciales. No puede compartir la cuenta ni permitir accesos no autorizados. Debe informar de inmediato cualquier sospecha de uso indebido a support@legalenglish.com. La Prestadora nunca solicitará la contraseña por correo electrónico."
             }
           ]
         },
@@ -165,7 +165,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Antes de contratar, el usuario podrá revisar el plan, el precio total, la periodicidad, la renovación automática, el término de la prueba y estos documentos legales. Después de la activación o del pago, Legal English 5 mostrará o enviará una confirmación duradera con el resumen de la transacción. El usuario puede descargar estos Términos desde el sitio web y solicitar copia del comprobante a support@legalenglish5.com."
+              "text": "Antes de contratar, el usuario podrá revisar el plan, el precio total, la periodicidad, la renovación automática, el término de la prueba y estos documentos legales. Después de la activación o del pago, Legal English 5 mostrará o enviará una confirmación duradera con el resumen de la transacción. El usuario puede descargar estos Términos desde el sitio web y solicitar copia del comprobante a support@legalenglish.com."
             }
           ]
         },
@@ -174,7 +174,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "El usuario puede cancelar en cualquier momento desde Cuenta > Facturación o escribiendo a support@legalenglish5.com. La cancelación efectuada antes de terminar la prueba evita el primer cargo. La cancelación posterior evita futuras renovaciones y, salvo que la ley exija otra solución, el acceso continúa hasta finalizar el periodo ya pagado."
+              "text": "El usuario puede cancelar en cualquier momento desde Cuenta > Facturación o escribiendo a support@legalenglish.com. La cancelación efectuada antes de terminar la prueba evita el primer cargo. La cancelación posterior evita futuras renovaciones y, salvo que la ley exija otra solución, el acceso continúa hasta finalizar el periodo ya pagado."
             },
             {
               "type": "p",
@@ -187,7 +187,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Cuando el derecho de retracto previsto en el Estatuto del Consumidor resulte aplicable, el usuario podrá ejercerlo dentro del término legal mediante solicitud inequívoca a support@legalenglish5.com. Al activar la prueba, el usuario solicita expresamente el inicio inmediato del servicio digital; por ello, la excepción legal para servicios cuya prestación haya comenzado con acuerdo del consumidor puede resultar aplicable. Esta disposición no restringe derechos imperativos."
+              "text": "Cuando el derecho de retracto previsto en el Estatuto del Consumidor resulte aplicable, el usuario podrá ejercerlo dentro del término legal mediante solicitud inequívoca a support@legalenglish.com. Al activar la prueba, el usuario solicita expresamente el inicio inmediato del servicio digital; por ello, la excepción legal para servicios cuya prestación haya comenzado con acuerdo del consumidor puede resultar aplicable. Esta disposición no restringe derechos imperativos."
             },
             {
               "type": "p",
@@ -293,7 +293,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Estos Términos se rigen por las leyes de la República de Colombia. El usuario puede presentar una solicitud directa a support@legalenglish5.com y acudir a la Superintendencia de Industria y Comercio o a la autoridad o juez competente. Nada en estos Términos impone una renuncia a la jurisdicción, a acciones colectivas o a mecanismos obligatorios de protección al consumidor."
+              "text": "Estos Términos se rigen por las leyes de la República de Colombia. El usuario puede presentar una solicitud directa a support@legalenglish.com y acudir a la Superintendencia de Industria y Comercio o a la autoridad o juez competente. Nada en estos Términos impone una renuncia a la jurisdicción, a acciones colectivas o a mecanismos obligatorios de protección al consumidor."
             },
             {
               "type": "p",
@@ -306,7 +306,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Las solicitudes de soporte, cancelación, retracto, reversión, datos personales o notificaciones contractuales deben dirigirse a support@legalenglish5.com. Las notificaciones judiciales se reciben en Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia."
+              "text": "Las solicitudes de soporte, cancelación, retracto, reversión, datos personales o notificaciones contractuales deben dirigirse a support@legalenglish.com. Las notificaciones judiciales se reciben en Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia."
             }
           ]
         },
@@ -359,7 +359,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
                 ],
                 [
                   "Email",
-                  "support@legalenglish5.com"
+                  "support@legalenglish.com"
                 ]
               ]
             },
@@ -391,7 +391,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
             },
             {
               "type": "p",
-              "text": "Users must provide accurate information, keep it current, and protect their credentials. Accounts may not be shared or used to enable unauthorized access. Suspected misuse must be reported promptly to support@legalenglish5.com. The Provider will never request a password by email."
+              "text": "Users must provide accurate information, keep it current, and protect their credentials. Accounts may not be shared or used to enable unauthorized access. Suspected misuse must be reported promptly to support@legalenglish.com. The Provider will never request a password by email."
             }
           ]
         },
@@ -434,7 +434,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Before purchase, the user can review the plan, total price, billing cycle, automatic renewal, trial period, and these legal documents. After activation or payment, Legal English 5 will display or send a durable confirmation summarizing the transaction. Users may download these Terms from the website and request a receipt at support@legalenglish5.com."
+              "text": "Before purchase, the user can review the plan, total price, billing cycle, automatic renewal, trial period, and these legal documents. After activation or payment, Legal English 5 will display or send a durable confirmation summarizing the transaction. Users may download these Terms from the website and request a receipt at support@legalenglish.com."
             }
           ]
         },
@@ -443,7 +443,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Users may cancel at any time through Account > Billing or by emailing support@legalenglish5.com. Cancellation before the trial ends prevents the first charge. Later cancellation prevents future renewals and, unless mandatory law requires a different remedy, access continues through the end of the paid period."
+              "text": "Users may cancel at any time through Account > Billing or by emailing support@legalenglish.com. Cancellation before the trial ends prevents the first charge. Later cancellation prevents future renewals and, unless mandatory law requires a different remedy, access continues through the end of the paid period."
             },
             {
               "type": "p",
@@ -456,7 +456,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Where the statutory right of withdrawal under Colombian consumer law applies, the user may exercise it within the legal period by sending an unequivocal request to support@legalenglish5.com. By activating the trial, the user expressly requests immediate performance of the digital service; the statutory exception for services that have begun with the consumer's agreement may therefore apply. This provision does not limit mandatory rights."
+              "text": "Where the statutory right of withdrawal under Colombian consumer law applies, the user may exercise it within the legal period by sending an unequivocal request to support@legalenglish.com. By activating the trial, the user expressly requests immediate performance of the digital service; the statutory exception for services that have begun with the consumer's agreement may therefore apply. This provision does not limit mandatory rights."
             },
             {
               "type": "p",
@@ -562,7 +562,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "These Terms are governed by the laws of the Republic of Colombia. Users may submit a direct request to support@legalenglish5.com and may contact the Colombian Superintendence of Industry and Commerce or any competent authority or court. Nothing in these Terms requires a waiver of jurisdiction, collective actions, or mandatory consumer-protection mechanisms."
+              "text": "These Terms are governed by the laws of the Republic of Colombia. Users may submit a direct request to support@legalenglish.com and may contact the Colombian Superintendence of Industry and Commerce or any competent authority or court. Nothing in these Terms requires a waiver of jurisdiction, collective actions, or mandatory consumer-protection mechanisms."
             },
             {
               "type": "p",
@@ -575,7 +575,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Support, cancellation, withdrawal, payment reversal, personal-data requests, and contractual notices must be sent to support@legalenglish5.com. Judicial notices are received at Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia."
+              "text": "Support, cancellation, withdrawal, payment reversal, personal-data requests, and contractual notices must be sent to support@legalenglish.com. Judicial notices are received at Calle 78 No. 9-58, apartamento 602, Bogotá D.C., Colombia."
             }
           ]
         },
@@ -630,13 +630,13 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
                 ],
                 [
                   "Correo electrónico",
-                  "support@legalenglish5.com"
+                  "support@legalenglish.com"
                 ]
               ]
             },
             {
               "type": "p",
-              "text": "Área responsable de peticiones, consultas y reclamos: Protección de Datos Personales y Soporte al Usuario de MPC LAW STUDIO, disponible en support@legalenglish5.com."
+              "text": "Área responsable de peticiones, consultas y reclamos: Protección de Datos Personales y Soporte al Usuario de MPC LAW STUDIO, disponible en support@legalenglish.com."
             }
           ]
         },
@@ -775,7 +775,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Las solicitudes se envían gratuitamente a support@legalenglish5.com con el asunto \"Datos personales\". Deben incluir nombre, identificación suficiente para verificar la identidad, descripción clara de la solicitud, dirección de respuesta y los documentos pertinentes. Un causahabiente, representante o apoderado debe acreditar su calidad. La Prestadora podrá pedir información razonable para evitar divulgaciones indebidas."
+              "text": "Las solicitudes se envían gratuitamente a support@legalenglish.com con el asunto \"Datos personales\". Deben incluir nombre, identificación suficiente para verificar la identidad, descripción clara de la solicitud, dirección de respuesta y los documentos pertinentes. Un causahabiente, representante o apoderado debe acreditar su calidad. La Prestadora podrá pedir información razonable para evitar divulgaciones indebidas."
             },
             {
               "type": "p",
@@ -828,7 +828,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "El titular puede contactar a la Prestadora en support@legalenglish5.com. Si considera que su solicitud no fue atendida adecuadamente, puede acudir a la Superintendencia de Industria y Comercio después de cumplir el requisito de procedibilidad cuando resulte aplicable."
+              "text": "El titular puede contactar a la Prestadora en support@legalenglish.com. Si considera que su solicitud no fue atendida adecuadamente, puede acudir a la Superintendencia de Industria y Comercio después de cumplir el requisito de procedibilidad cuando resulte aplicable."
             },
             {
               "type": "p",
@@ -885,13 +885,13 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
                 ],
                 [
                   "Email",
-                  "support@legalenglish5.com"
+                  "support@legalenglish.com"
                 ]
               ]
             },
             {
               "type": "p",
-              "text": "Team responsible for petitions, inquiries, and complaints: MPC LAW STUDIO Personal Data Protection and User Support, available at support@legalenglish5.com."
+              "text": "Team responsible for petitions, inquiries, and complaints: MPC LAW STUDIO Personal Data Protection and User Support, available at support@legalenglish.com."
             }
           ]
         },
@@ -1030,7 +1030,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Requests may be submitted free of charge to support@legalenglish5.com with the subject line \"Personal data\". They must include the requester's name, sufficient information to verify identity, a clear description of the request, a response address, and relevant documents. Heirs, representatives, and agents must prove their capacity. The Provider may request reasonable information to prevent improper disclosure."
+              "text": "Requests may be submitted free of charge to support@legalenglish.com with the subject line \"Personal data\". They must include the requester's name, sufficient information to verify identity, a clear description of the request, a response address, and relevant documents. Heirs, representatives, and agents must prove their capacity. The Provider may request reasonable information to prevent improper disclosure."
             },
             {
               "type": "p",
@@ -1083,7 +1083,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Data subjects may contact the Provider at support@legalenglish5.com. Anyone who believes a request was not properly handled may contact the Colombian Superintendence of Industry and Commerce after completing the direct procedure where applicable."
+              "text": "Data subjects may contact the Provider at support@legalenglish.com. Anyone who believes a request was not properly handled may contact the Colombian Superintendence of Industry and Commerce after completing the direct procedure where applicable."
             },
             {
               "type": "p",
@@ -1119,7 +1119,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "MPC LAW STUDIO, operado por María del Pilar Cruz, NIT 52.148.660-7, es responsable de las tecnologías propias del sitio. Las preguntas o solicitudes pueden enviarse a support@legalenglish5.com."
+              "text": "MPC LAW STUDIO, operado por María del Pilar Cruz, NIT 52.148.660-7, es responsable de las tecnologías propias del sitio. Las preguntas o solicitudes pueden enviarse a support@legalenglish.com."
             }
           ]
         },
@@ -1197,7 +1197,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "Esta Política se actualizará si cambian las tecnologías, finalidades o proveedores. La fecha de vigencia se mostrará al inicio. Las preguntas y solicitudes se reciben en support@legalenglish5.com."
+              "text": "Esta Política se actualizará si cambian las tecnologías, finalidades o proveedores. La fecha de vigencia se mostrará al inicio. Las preguntas y solicitudes se reciben en support@legalenglish.com."
             }
           ]
         },
@@ -1235,7 +1235,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "MPC LAW STUDIO, operated by María del Pilar Cruz, NIT 52.148.660-7, controls the website's first-party technologies. Questions and requests may be sent to support@legalenglish5.com."
+              "text": "MPC LAW STUDIO, operated by María del Pilar Cruz, NIT 52.148.660-7, controls the website's first-party technologies. Questions and requests may be sent to support@legalenglish.com."
             }
           ]
         },
@@ -1313,7 +1313,7 @@ export const LEGAL_DOCS: Record<LegalDocKey, Record<Locale, LegalDoc>> = {
           "blocks": [
             {
               "type": "p",
-              "text": "This Policy will be updated if technologies, purposes, or providers change. The effective date will appear at the beginning. Questions and requests are received at support@legalenglish5.com."
+              "text": "This Policy will be updated if technologies, purposes, or providers change. The effective date will appear at the beginning. Questions and requests are received at support@legalenglish.com."
             }
           ]
         },

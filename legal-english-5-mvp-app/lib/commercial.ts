@@ -6,7 +6,7 @@ import type { Locale } from "@/lib/i18n";
  * strings so trial, privacy, audience and contact never drift.
  */
 
-export const SUPPORT_EMAIL = "support@legalenglish5.com";
+export const SUPPORT_EMAIL = "support@legalenglish.com";
 
 export const AUDIENCE: Record<Locale, string> = {
   en: "Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
@@ -40,7 +40,7 @@ export const PRIVACY_PROCESSORS: Record<Locale, string> = {
 
 export const ANNUAL_HOWTO: Record<Locale, string> = {
   en: "Annual plan: COP $540,000 per year, a 50% discount versus twelve monthly payments. After you activate the trial, select annual billing from your account before the trial ends to avoid the monthly charge.",
-  es: "Plan anual: COP $540.000 al año, equivalente a un descuento del 50 % frente a doce pagos mensuales. Después de activar la prueba, selecciona el plan anual desde tu cuenta antes de que finalice la prueba para evitar el cobro mensual.",
+  es: "Plan anual: COP $540.000 al año, equivalente a un descuento del 50 % frente a doce pagos mensuales. Después de activar la prueba, selecciona el plan anual desde tu cuenta antes de que finalice la prueba para evitar el cobro mensual.",
 };
 
 export const QUALITY_LINE: Record<Locale, string> = {

@@ -141,12 +141,12 @@ const COPY = {
 const PATHS: Record<LegalDocKey, string> = { terms: "/terms-of-service", privacy: "/privacy", cookies: "/cookies" };
 
 /**
- * Shared layout for the three approved legal documents: photo banner, heading
+ * Shared layout for the three approved legal documents: optional photo banner, heading
  * with the effective date, sticky "On this page" table of contents, numbered
  * sections with anchor links, print/save control, version history and the SIC
  * link required by the package annex. Texts come verbatim from lib/legal-content.
  */
-export function LegalDocument({ doc, photo, eyebrow }: { doc: LegalDocKey; photo: string; eyebrow: string }) {
+export function LegalDocument({ doc, photo, eyebrow }: { doc: LegalDocKey; photo?: string; eyebrow: string }) {
   const { locale } = useLocale();
   const content = LEGAL_DOCS[doc][locale];
   const copy = COPY[locale];
@@ -174,9 +174,12 @@ export function LegalDocument({ doc, photo, eyebrow }: { doc: LegalDocKey; photo
     <main id="main" className="landing home-reference">
       <LandingHeader />
       <section className="landing-section legal-page">
-        <figure className="legal-banner" aria-hidden="true">
-          <Photo src={photo} size="wide" priority />
-        </figure>
+        {/* NEW-09: Privacy and Cookies open directly on the title; only the Terms of Service keep the banner. */}
+        {photo && (
+          <figure className="legal-banner" aria-hidden="true">
+            <Photo src={photo} size="wide" priority />
+          </figure>
+        )}
         <div className="landing-section-heading">
           <span className="eyebrow">{eyebrow}</span>
           <h1>{content.title}</h1>

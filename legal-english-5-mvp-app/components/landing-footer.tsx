@@ -44,7 +44,7 @@ export function LandingFooter() {
           </div>
           <div className="footer-contact">
             <span>{f.contact}</span>
-            <a href="mailto:support@legalenglish5.com" className="footer-email">support@legalenglish5.com</a>
+            <a href="mailto:support@legalenglish.com" className="footer-email">support@legalenglish.com</a>
             <p>{f.reply}</p>
           </div>
         </nav>

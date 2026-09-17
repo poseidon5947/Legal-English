@@ -271,12 +271,16 @@ export function weeklyActivity(rows: Progress[], now = new Date(), weeks = 6, st
 export type AchievementId = "firstSteps" | "firstMastery" | "quizMaster" | "consistent" | "champion";
 export type Achievement = { id: AchievementId; done: boolean; value: number; target: number };
 
-export function achievementsFor(counts: Counts, streak: Streak, categories: CategoryStat[]): Achievement[] {
+/**
+ * @param quizzesCompleted completed quiz SESSIONS (NEW-01). Quiz Master
+ * ("Complete 10 quizzes") counts finished sessions, not question attempts.
+ */
+export function achievementsFor(counts: Counts, streak: Streak, categories: CategoryStat[], quizzesCompleted: number): Achievement[] {
   const champion = categories.filter((item) => item.total > 0 && item.mastered === item.total).length;
   const list: Achievement[] = [
     { id: "firstMastery", done: counts.mastered >= 1, value: Math.min(counts.mastered, 1), target: 1 },
     { id: "firstSteps", done: counts.studied >= 10, value: Math.min(counts.studied, 10), target: 10 },
-    { id: "quizMaster", done: counts.attempts >= 10, value: Math.min(counts.attempts, 10), target: 10 },
+    { id: "quizMaster", done: quizzesCompleted >= 10, value: Math.min(quizzesCompleted, 10), target: 10 },
     { id: "consistent", done: streak.current >= 7, value: Math.min(streak.current, 7), target: 7 },
     { id: "champion", done: champion >= 1, value: Math.min(champion, 1), target: 1 },
   ];

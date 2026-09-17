@@ -51,7 +51,7 @@ const REASONS: ReadonlyArray<readonly [LearnerKey, LearnerKey, HowIconName, stri
  * number the learner cannot find elsewhere.
  */
 export function HowItWorksWorkspace() {
-  const { terms, progress, progressRows, studyDays, session } = useApp();
+  const { terms, progress, progressRows, studyDays, quizSessions, session } = useApp();
   const { locale } = useLocale();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
 
@@ -167,7 +167,7 @@ export function HowItWorksWorkspace() {
                 </div>
                 <div>
                   <dt>{L("quizzesCompleted")}</dt>
-                  <dd>{counts.attempts}</dd>
+                  <dd>{quizSessions.length}</dd>
                 </div>
                 <div>
                   <dt>{L("quizAccuracy")}</dt>

@@ -308,7 +308,7 @@ const es: LandingCopy = {
     },
     annual: {
       name: "Anual",
-      discount: "50 % de descuento frente a doce pagos mensuales",
+      discount: "50 % de descuento frente a doce pagos mensuales",
       note: "Después de activar la prueba, selecciona la facturación anual desde tu cuenta antes de que finalice para evitar el cobro mensual.",
       cta: "Empieza la prueba y elige facturación anual",
     },
@@ -325,7 +325,7 @@ const es: LandingCopy = {
       ["¿Todos los términos incluyen los mismos componentes?", "No. Cada término publicado incluye su contenido esencial obligatorio. Civil Law Equivalent, Spanish-Speaker Alert y otros componentes condicionales aparecen únicamente cuando son editorialmente relevantes."],
       ["¿Legal English 5 explica diferencias entre sistemas jurídicos?", "Sí, cuando la distinción es relevante para el significado o el uso profesional. Un término puede incluir un Civil Law Equivalent o una diferencia relevante entre el uso estadounidense y británico."],
       ["¿Cómo funciona la prueba gratis?", "Activa una prueba gratis de 7 días con una tarjeta de crédito válida. Si no cancelas antes de que finalice, la suscripción continuará automáticamente en el plan mensual de COP $90.000."],
-      ["¿Cuánto cuesta el plan anual?", "El plan anual cuesta COP $540.000, un 50 % de descuento frente a doce pagos mensuales. Para elegirlo, selecciona la facturación anual desde tu cuenta antes de que termine la prueba."],
+      ["¿Cuánto cuesta el plan anual?", "El plan anual cuesta COP $540.000, un 50 % de descuento frente a doce pagos mensuales. Para elegirlo, selecciona la facturación anual desde tu cuenta antes de que termine la prueba."],
     ],
   },
   cta: {

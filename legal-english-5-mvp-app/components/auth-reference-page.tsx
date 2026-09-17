@@ -9,7 +9,6 @@ import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
 import { DEMO_ACCOUNTS, type Consents } from "@/lib/types";
 import { trackAction } from "@/lib/track";
-import { PRIVACY_SHORT_NOTICE } from "@/lib/legal-content";
 
 const COPY = {
   en: {
@@ -478,8 +477,8 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
                     <small>{c.optional}</small> {c.consentMarketing}
                   </label>
                 </div>
-                {/* Short privacy notice required by the legal package annex §4. */}
-                <p className="auth-privacy-notice">{PRIVACY_SHORT_NOTICE[locale]}</p>
+                {/* NEW-02 (17 Sep 2026, Owner decision): the Controller notice is no longer
+                    shown on the form; the consents link to the full Privacy Policy instead. */}
               </fieldset>
             )}
 

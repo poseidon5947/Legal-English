@@ -78,7 +78,7 @@ function Switch({ on, onChange, label, disabled }: { on: boolean; onChange?: (ne
 }
 
 export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: AccountTab }) {
-  const { session, terms, progress, progressRows, studyDays, entitlement, updateProfile, updatePreferences, changePassword, deactivateAccount, deleteAccount } = useApp();
+  const { session, terms, progress, progressRows, studyDays, quizSessions, entitlement, updateProfile, updatePreferences, changePassword, deactivateAccount, deleteAccount } = useApp();
   const { locale, setLocale, t } = useLocale();
   const router = useRouter();
   const params = useSearchParams();
@@ -590,7 +590,7 @@ export function AccountWorkspace({ tab: defaultTab = "profile" }: { tab?: Accoun
                 </div>
                 <div>
                   <dt>{L("quizzesCompleted")}</dt>
-                  <dd>{counts.attempts}</dd>
+                  <dd>{quizSessions.length}</dd>
                 </div>
                 <div>
                   <dt>{L("quizAccuracy")}</dt>

@@ -8,7 +8,7 @@ import { normalizePreferences, type Preferences } from "@/lib/preferences";
 import { localDay } from "@/lib/study-day";
 import { learnerText } from "@/lib/learner-copy";
 import { quizClientKey } from "@/lib/quiz-grading";
-import type { BillingRecord, Consents, Entitlement, Mail, Plan, Progress, PublicUser, QuizSubmission, SessionPayload, SubscriptionStatus, Term, StudyDay, SupportTicket, TicketStatus } from "@/lib/types";
+import type { BillingRecord, Consents, Entitlement, Mail, Plan, Progress, PublicUser, QuizSession, QuizSubmission, SessionPayload, SubscriptionStatus, Term, StudyDay, SupportTicket, TicketStatus } from "@/lib/types";
 
 export type AudioUploadResult = { file: string; termId?: string; jurisdiction?: "us" | "uk"; status: "stored" | "rejected"; message: string };
 
@@ -36,6 +36,8 @@ type Ctx = {
   progressRows: Progress[];
   /** Dated activity (one row per local calendar day): streaks, weekly chart, answer accuracy. */
   studyDays: StudyDay[];
+  /** Completed quiz sessions (NEW-01). "Quizzes Completed" is this list's length, never the attempt count. */
+  quizSessions: QuizSession[];
   users: PublicUser[];
   inbox: Mail[];
   /** Support reports: the Owner sees every ticket, a learner their own (with status). */
@@ -51,6 +53,8 @@ type Ctx = {
   openTerm: (id: string) => Promise<void>;
   toggleFavourite: (id: string) => Promise<void>;
   submitQuiz: (id: string, option: string, meta?: QuizSubmission) => Promise<Result>;
+  /** Mark a quiz session finished; the server counts it only if every question has a recorded answer. */
+  completeQuizSession: (sessionKey: string) => Promise<Result>;
   applyBilling: (event: BillingEventType, plan?: Plan) => Promise<Result>;
   /** Start a purchase; resolves with the URL to continue at (external = hosted Mercado Pago page). */
   startCheckout: (plan: Plan) => Promise<Result & { url?: string; external?: boolean }>;
@@ -99,6 +103,7 @@ type Bootstrap = {
   terms?: Term[];
   progress?: Progress[];
   studyDays?: StudyDay[];
+  quizSessions?: QuizSession[];
   users?: PublicUser[];
   inbox?: Mail[];
   tickets?: SupportTicket[];
@@ -133,6 +138,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [terms, setTerms] = useState<Term[]>([]);
   const [progressList, setProgressList] = useState<Progress[]>([]);
   const [studyDays, setStudyDays] = useState<StudyDay[]>([]);
+  const [quizSessions, setQuizSessions] = useState<QuizSession[]>([]);
   const [users, setUsers] = useState<PublicUser[]>([]);
   const [inbox, setInbox] = useState<Mail[]>([]);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
@@ -147,6 +153,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setTerms(data.terms || []);
     setProgressList(data.progress || []);
     setStudyDays(data.studyDays || []);
+    setQuizSessions(data.quizSessions || []);
     setUsers(data.users || []);
     setInbox(data.inbox || []);
     setTickets(data.tickets || []);
@@ -194,6 +201,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     progress,
     progressRows,
     studyDays,
+    quizSessions,
     users,
     inbox,
     tickets,
@@ -252,9 +260,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
     },
     async submitQuiz(id, option, meta) {
-      const data = await post("/api/learn", { action: "quiz", termId: id, option, day: localDay(), clientKey: meta?.clientKey ?? quizClientKey(), source: meta?.source ?? "term" });
+      const data = await post("/api/learn", { action: "quiz", termId: id, option, day: localDay(), clientKey: meta?.clientKey ?? quizClientKey(), source: meta?.source ?? "term", session: meta?.session });
       if (data.progress) setProgressList(data.progress);
       if (data.studyDays) setStudyDays(data.studyDays);
+      return data;
+    },
+    async completeQuizSession(sessionKey) {
+      const data = await post("/api/learn", { action: "quizComplete", sessionKey });
+      if (data.quizSessions) setQuizSessions(data.quizSessions);
       return data;
     },
     async applyBilling(event, plan) {

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { useApp } from "@/components/app-provider";
 import { useLocale } from "@/components/locale-provider";
-import { Photo } from "@/components/photo";
 import { Icon } from "@/components/ui-icons";
 
 export default function HelpPage() {
@@ -41,16 +40,16 @@ export default function HelpPage() {
       {message && <p className="notice">{message}</p>}
       {error && <p className="notice">{error}</p>}
       <div className="account-stack">
-        {/* D04/D05: one learner-facing instruction, approved photography only (no illustration). */}
-        <section className="account-card help-hero-card with-photo">
-          <Photo className="help-hero-photo" src="/home-assets/photos/editorial-process.jpg" size="card" priority />
+        {/* D04/D05: one learner-facing instruction. NEW-09 (Owner decision, 17 Sep 2026): no photograph —
+            the introduction leads straight into the support block. */}
+        <section className="account-card help-hero-card">
           <div>
             <span className="eyebrow">{t("helpEyebrow")}</span>
             <h2>{t("helpReportTitle")}</h2>
             <p>
-              {t("helpContactLine").split("support@legalenglish5.com")[0]}
-              <a href="mailto:support@legalenglish5.com">support@legalenglish5.com</a>
-              {t("helpContactLine").split("support@legalenglish5.com")[1]}
+              {t("helpContactLine").split("support@legalenglish.com")[0]}
+              <a href="mailto:support@legalenglish.com">support@legalenglish.com</a>
+              {t("helpContactLine").split("support@legalenglish.com")[1]}
             </p>
             <a className="ghost inline" href="#contact">{t("helpGoToForm")} →</a>
           </div>

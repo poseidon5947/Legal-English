@@ -7,7 +7,7 @@ import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
 import type { Locale } from "@/lib/i18n";
 
-const SUPPORT_EMAIL = "support@legalenglish5.com";
+const SUPPORT_EMAIL = "support@legalenglish.com";
 
 type Copy = {
   eyebrow: string;
@@ -19,6 +19,8 @@ type Copy = {
   contactCta: string;
   reply: string;
   copy: string;
+  mailSubject: string;
+  mailHint: string;
   copied: string;
   copyFailed: string;
   signedInTitle: string;
@@ -31,7 +33,7 @@ const COPY: Record<Locale, Copy> = {
   en: {
     eyebrow: "HELP AND SUPPORT",
     title: "Help with access, billing or your account",
-    lead: "You do not need to sign in to contact us. Start with the answers below or email support@legalenglish5.com.",
+    lead: "You do not need to sign in to contact us. Start with the answers below or email support@legalenglish.com.",
     topics: [
       {
         title: "I forgot my password",
@@ -62,6 +64,8 @@ const COPY: Record<Locale, Copy> = {
     contactCta: "Email support",
     reply: "We typically reply within one business day, Colombia time.",
     copy: "Copy address",
+    mailSubject: "Legal English 5 — support request",
+    mailHint: "If your email app did not open, write to the address below or use Copy address and paste it into your email.",
     copied: "Address copied",
     copyFailed: "Select the address below and copy it",
     signedInTitle: "Already signed in?",
@@ -71,7 +75,7 @@ const COPY: Record<Locale, Copy> = {
   es: {
     eyebrow: "AYUDA Y SOPORTE",
     title: "Ayuda con el acceso, la facturación o tu cuenta",
-    lead: "No necesitas iniciar sesión para contactarnos. Consulta las respuestas siguientes o escribe a support@legalenglish5.com.",
+    lead: "No necesitas iniciar sesión para contactarnos. Consulta las respuestas siguientes o escribe a support@legalenglish.com.",
     topics: [
       {
         title: "Olvidé mi contraseña",
@@ -102,6 +106,8 @@ const COPY: Record<Locale, Copy> = {
     contactCta: "Escribir a soporte",
     reply: "Normalmente respondemos en un día hábil, hora de Colombia.",
     copy: "Copiar dirección",
+    mailSubject: "Legal English 5 — solicitud de soporte",
+    mailHint: "Si tu aplicación de correo no se abrió, escribe a la dirección de abajo o usa Copiar dirección y pégala en tu correo.",
     copied: "Dirección copiada",
     copyFailed: "Selecciona la dirección de abajo y cópiala",
     signedInTitle: "¿Ya iniciaste sesión?",
@@ -114,6 +120,7 @@ export default function PublicHelpPage() {
   const { locale } = useLocale();
   const c = COPY[locale];
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
+  const [mailHint, setMailHint] = useState(false);
   return (
     <main id="main" className="landing home-reference">
       <LandingHeader />
@@ -143,7 +150,20 @@ export default function PublicHelpPage() {
             {/* D15: the button and the visible address both open a new email to support; the
                 address stays visible (and copyable) when no mail application is configured. */}
             <div className="public-help-actions">
-              <a className="primary inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              <a
+                className="primary inline"
+                href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(c.mailSubject)}`}
+                onClick={() => {
+                  // A mailto link is silent when the device has no mail application
+                  // configured. If the page is still in the foreground two seconds
+                  // later, show the address and the copy action as the way forward.
+                  setMailHint(false);
+                  const started = Date.now();
+                  window.setTimeout(() => {
+                    if (document.visibilityState === "visible" && Date.now() - started < 4000) setMailHint(true);
+                  }, 2000);
+                }}
+              >
                 {c.contactCta}
               </a>
               <button
@@ -176,6 +196,11 @@ export default function PublicHelpPage() {
                 {copied === "done" ? c.copied : copied === "failed" ? c.copyFailed : c.copy}
               </button>
             </div>
+            {mailHint && (
+              <p className="public-help-mail-hint" role="status">
+                {c.mailHint}
+              </p>
+            )}
             <p className="muted tiny public-help-address">
               <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> · {c.reply}
             </p>

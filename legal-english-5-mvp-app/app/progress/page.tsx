@@ -118,7 +118,7 @@ function ActivityChart({ weeks, locale }: { weeks: { start: Date; studied: numbe
 }
 
 export default function ProgressPage() {
-  const { terms, progress, progressRows, studyDays, session } = useApp();
+  const { terms, progress, progressRows, studyDays, quizSessions, session } = useApp();
   const { locale } = useLocale();
   const L = (key: LearnerKey, vars?: Record<string, string | number>) => learnerText(locale, key, vars);
   const visible = useMemo(() => studyTerms(terms, session), [terms, session]);
@@ -127,7 +127,8 @@ export default function ProgressPage() {
   const streak = streakFor(progressRows, new Date(), studyDays);
   const weeks = weeklyActivity(progressRows, new Date(), 6, studyDays);
   const activity = recentActivity(visible, progressRows, 6);
-  const achievements = achievementsFor(counts, streak, byCategory);
+  const quizzesCompleted = quizSessions.length;
+  const achievements = achievementsFor(counts, streak, byCategory, quizzesCompleted);
   const rangeLabel = `${weeks[0].start.toLocaleDateString(locale, { month: "short", day: "numeric" })} – ${new Date().toLocaleDateString(locale, { month: "short", day: "numeric" })}`;
 
   return (
@@ -180,7 +181,7 @@ export default function ProgressPage() {
               </span>
               <div>
                 <p>{L("quizzesCompleted")}</p>
-                <strong>{counts.attempts}</strong>
+                <strong>{quizzesCompleted}</strong>
                 <small>{L("quizAccuracy")}: {counts.accuracyPct}%</small>
               </div>
             </article>
@@ -225,11 +226,16 @@ export default function ProgressPage() {
             <div className="progress-category-list">
               {byCategory.map((item) => (
                 <Link className={`${CATEGORY_TONE[item.category]} with-photo`} href={`/terms?category=${encodeURIComponent(item.category)}`} key={item.category}>
+                  {/* NEW-07: photo and icon in separate, aligned slots (the icon used to sit on the photo). */}
                   <span>
                     <Photo src={categoryPhoto(item.category)} size="thumb" />
-                    <Le5Icon name={CATEGORY_ICON[item.category]} className="progress-ref-icon" />
                   </span>
-                  <strong>{categoryLabel(locale, item.category)}</strong>
+                  <strong>
+                    <i className="progress-area-icon" aria-hidden="true">
+                      <Le5Icon name={CATEGORY_ICON[item.category]} className="progress-ref-icon" />
+                    </i>
+                    {categoryLabel(locale, item.category)}
+                  </strong>
                   <div>
                     <i style={{ width: `${item.pct}%` }} />
                   </div>

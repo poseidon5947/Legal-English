@@ -124,7 +124,8 @@ export function LandingHeader() {
             </Link>
           </>
         )}
-        <span className="landing-menu-group" aria-hidden="true">{nav.language}</span>
+        {/* Desktop language control; on phones the header bar's EN / ES is the only one (NEW-03). */}
+        <span className="landing-menu-group landing-menu-lang" aria-hidden="true">{nav.language}</span>
         <button
           type="button"
           className="home-lang"

@@ -52,6 +52,9 @@ export interface Store {
   toggleFavourite(userId: string, termId: string, day?: unknown): Promise<{ ok: true; progress: Progress[]; studyDays: StudyDay[] } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   submitQuiz(userId: string, termId: string, option: string, day?: unknown, meta?: QuizSubmission): Promise<any>;
+  /** NEW-01: complete a quiz session; the server verifies every question has a recorded attempt. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  completeQuizSession(userId: string, key: unknown): Promise<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   applyBilling(userId: string, event: string, plan?: Plan): Promise<any>;
   /**

@@ -18366,7 +18366,8 @@ h3,
     top: 0;
     z-index: 70;
     display: grid;
-    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    /* NEW-06: logo | (space) | menu | avatar */
+    grid-template-columns: minmax(0, 1fr) 44px 44px;
     align-items: center;
     gap: 12px;
     height: 60px;
@@ -18377,7 +18378,7 @@ h3,
   }
 
   .learner-shell .learner-mobile-bar .terms-reference-brand {
-    justify-self: center;
+    justify-self: start;
     grid-template-columns: auto auto;
     gap: 8px;
     margin: 0;
@@ -22292,7 +22293,7 @@ html {
 
 /* Progress: category rows use photo thumbs behind the icon */
 .learner-shell .progress-category-list a.with-photo {
-  grid-template-columns: 48px 125px minmax(0, 1fr) 56px 40px;
+  grid-template-columns: 48px 156px minmax(0, 1fr) 56px 40px;
 }
 
 .learner-shell .progress-category-list a.with-photo > span {
@@ -22311,14 +22312,29 @@ html {
   object-fit: cover;
 }
 
-.learner-shell .progress-category-list a.with-photo > span .progress-ref-icon {
-  position: relative;
-  z-index: 1;
-  width: 16px;
-  height: 16px;
-  padding: 3px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.92);
+/* NEW-07: the Area icon has its own tinted slot before the label; the photo stays uncovered. */
+.learner-shell .progress-category-list a.with-photo > strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.learner-shell .progress-category-list a.with-photo .progress-area-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #f3effe;
+  color: #452b84;
+  font-style: normal;
+}
+.learner-shell .progress-category-list a.green .progress-area-icon { background: #e8f7e9; color: #27742b; }
+.learner-shell .progress-category-list a.purple .progress-area-icon { background: #f0ebfc; color: #5b3fa8; }
+.learner-shell .progress-category-list a.with-photo .progress-area-icon .progress-ref-icon {
+  width: 14px;
+  height: 14px;
 }
 
 /* Term detail: compact photo card at the foot of the rail */
@@ -26683,6 +26699,13 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
   /* Language lives in the bar on mobile; keep the panel's copy as the labelled "Language" row. */
   .home-reference .landing-nav > a { flex: none; }
 }
+/* 320 px, Spanish: "Iniciar sesión" + EN / ES + menu must fit without pushing the toggle off-screen. */
+@media (max-width: 340px) {
+  .home-reference .landing-nav, .home-reference .landing-nav.landing-nav { gap: 8px; padding-left: 12px; padding-right: 12px; }
+  .home-reference .landing-nav .landing-nav-quick { gap: 2px; }
+  .home-reference .landing-nav .landing-nav-quick .landing-quick-signin { padding: 0 6px; font-size: .88rem; }
+  .home-reference .landing-nav .landing-nav-quick .home-lang { padding: 0 4px; font-size: .88rem; }
+}
 
 /* Approved LE5 icon families (Design Freeze Pack v1.0): geometry follows the text colour, accents stay yellow. */
 .le5-icon { display: inline-block; flex: none; vertical-align: middle; }
@@ -26711,6 +26734,20 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
   .home-reference .landing-nav-links a[href="/login"]:not(.primary) .landing-menu-icon,
   .home-reference .landing-nav-links a[href="/login"]:not(.primary) .landing-menu-chevron { display: none; }
   .home-reference .landing-nav-links .home-lang { justify-self: stretch; margin: 0; min-height: 50px; padding: 0 16px; border: 1px solid #ded9e3; border-radius: 8px; justify-content: flex-start; gap: 10px; }
+  /* NEW-03: one language control on phones — the EN / ES in the header bar. The
+     panel's "Language" row is the desktop control and is hidden here. */
+  .home-reference .landing-nav .landing-nav-links .landing-menu-group.landing-menu-lang,
+  .home-reference .landing-nav .landing-nav-links > .home-lang.home-lang { display: none; }
+  /* NEW-04: the open menu is a continuous surface from the header to the bottom
+     of the screen; nothing of the page (photos, legal text, floating controls)
+     shows through on any page, including the legal ones. */
+  /* The header's backdrop-filter makes it the containing block of this fixed panel, so
+     bottom: 0 cannot reach the viewport edge; the height is set explicitly instead. */
+  .home-reference .landing-nav-links { top: 64px; height: calc(100vh - 64px); height: calc(100dvh - 64px); max-height: none; padding-bottom: 32px; border-bottom: 0; box-shadow: none; }
+  .home-reference .landing-nav-links.landing-nav-links { align-content: start; }
+  body:has(.landing-nav.menu-open) .back-to-top,
+  body:has(.landing-nav.menu-open) .cookie-banner,
+  body:has(.landing-nav.menu-open) .cookie-notice { visibility: hidden; }
 }
 
 /* Registration consents (IMP-13): three separate, unchecked controls stacked as a fieldset. */
@@ -26774,6 +26811,19 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 .about-photo-card figcaption { position: static; padding: 14px 18px 16px; background: #fff; color: var(--ink); }
 .about-photo-card figcaption strong { color: var(--brand-purple); }
 .about-showcase .about-photo-card figcaption span { color: var(--muted); }
+/* NEW-05: below the two-column layout the portrait used to stretch to the full
+   screen width (a 4:5 headshot at 354 px wide reads as an over-tight crop). The
+   card becomes horizontal: the approved 4:5 portrait at a fixed 132 px, whole
+   and undistorted, with the caption beside it. */
+@media (max-width: 1120px) {
+  .about-showcase figure.about-photo-card { grid-template-columns: 132px minmax(0, 1fr); align-items: center; justify-self: stretch; max-width: none; }
+  .about-photo-card img { width: 132px; height: 165px; min-height: 0; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; border-radius: 0; }
+  .about-photo-card figcaption { display: grid; gap: 4px; padding: 14px 18px; }
+}
+@media (max-width: 360px) {
+  .about-showcase figure.about-photo-card { grid-template-columns: 112px minmax(0, 1fr); }
+  .about-photo-card img { width: 112px; height: 140px; }
+}
 .about-studio-photo { border-radius: var(--radius-card); box-shadow: none; border: 1px solid var(--border); background: #fff; }
 .about-studio-photo img { height: auto; aspect-ratio: 5 / 3; object-fit: cover; }
 .about-studio-photo figcaption { position: static; padding: 12px 16px; background: #fff; color: var(--muted); }
@@ -27096,7 +27146,11 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 .learner-shell .billing-panel-card .payment-row button:not(:disabled):hover,
 .learner-shell .manage-card > div > button:not(.primary):not(:disabled):hover { border-color: var(--brand-purple-800); background: #f7f6f9; color: var(--brand-purple-800); }
 /* Payment row: icon · text on the first line, the action on its own line underneath (no two-line squeeze). */
-.learner-shell .billing-panel-card .payment-row { grid-template-columns: auto minmax(0, 1fr); }
+.learner-shell .billing-panel-card .payment-row { grid-template-columns: auto minmax(0, 1fr); align-items: start; }
+/* NEW-08: the icon spans both rows, so centring it dragged it down towards the
+   button. Its top edge now lines up with the top of the information block. */
+.learner-shell .billing-panel-card .payment-row > .icon { align-self: start; margin-top: 0; }
+.learner-shell .billing-panel-card .payment-row > div { align-self: start; }
 .learner-shell .billing-panel-card .payment-row > button,
 .learner-shell .billing-panel-card .payment-row > a { grid-column: 2; justify-self: start; }
 @media (max-width: 960px) {
@@ -27105,3 +27159,6 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
   .learner-shell .billing-history-row { grid-template-columns: auto minmax(0, 1fr) auto; }
   .learner-shell .manage-card > div > button { width: 100%; }
 }
+
+/* /help: shown when tapping Email support did not leave the page (no mail app configured). */
+.public-help-mail-hint { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #fff8cc; border: 1px solid #efe27a; color: #4a4b4e; font-size: 0.86rem; line-height: 1.5; }
