@@ -12,7 +12,8 @@ const { acceptDay, bumpStudyDay, localDay } = await import("../lib/study-day.ts"
 const { countsFor, streakFor, weeklyActivity } = await import("../lib/learner-stats.ts");
 const { DEFAULT_PREFERENCES, normalizePreferences } = await import("../lib/preferences.ts");
 
-const T0 = new Date("2026-09-10T10:00:00Z");
+// Trial started yesterday, so it is always inside its 7-day window regardless of when the suite runs.
+const T0 = new Date(Date.now() - 24 * 60 * 60 * 1000);
 const trialing = () => freshTrial(T0);
 const expired = () => ({ ...freshTrial(new Date("2026-01-01T00:00:00Z")), status: "trial_expired" });
 const learner = (subscription, disabledAt = null) => ({ role: "learner", disabledAt, subscription });
