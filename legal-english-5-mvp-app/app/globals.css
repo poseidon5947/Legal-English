@@ -16199,6 +16199,12 @@ nav a.active,
   .account-ref-setting-row a {
     width: 100%;
   }
+
+  /* Change-password form: the show/hide toggle stays beside its input; the
+     input keeps the remaining width. Save may span the column. */
+  .account-ref-setting-row .account-password-input button {
+    width: auto;
+  }
 }
 
 /* Sign in / sign up reference design */
@@ -18221,20 +18227,67 @@ h3,
   margin-top: 2px;
 }
 
+/* Change-password form (Account → Security). One field per row, the input
+   takes the available width and the show/hide toggle stays compact; Save
+   sits under the fields. The old 3-column grid squeezed each input to ~40px
+   next to a wide "Show password" button. */
 .account-ref-inline-form {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 8px;
-  margin-top: 10px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  max-width: 420px;
+  margin-top: 12px;
 }
 
 .account-ref-inline-form input {
-  height: 34px;
-  padding: 0 10px;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
   border: 1px solid #e1dced;
-  border-radius: 5px;
+  border-radius: 8px;
   font: inherit;
-  font-size: 0.7rem;
+  font-size: 0.86rem;
+}
+
+.account-ref-inline-form button.primary.inline {
+  justify-self: start;
+  height: auto;
+  min-height: 40px;
+  padding: 0 18px;
+}
+
+/* The generic setting-row button style (32px, white, small text) must not
+   restyle the toggle inside the password field. */
+.account-ref-setting-row .account-password-input button {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #e7e3f2;
+  border-radius: 8px;
+  background: #f7f7fa;
+  color: #452b84;
+  font-size: 0.72rem;
+}
+
+.account-ref-setting-row .account-password-input input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Below 360px the Spanish toggle ("Mostrar contraseña") would leave the
+   input ~60px wide: drop the toggle under the field instead. */
+@media (max-width: 360px) {
+  .account-ref-setting-row .account-password-input {
+    flex-wrap: wrap;
+  }
+
+  .account-ref-setting-row .account-password-input input {
+    flex: 1 1 100%;
+  }
+
+  .account-ref-setting-row .account-password-input button {
+    margin-left: auto;
+    height: 36px;
+  }
 }
 
 .account-ref-rail-heading span.blocked {
@@ -18256,7 +18309,7 @@ h3,
   }
 
   .account-ref-inline-form {
-    grid-template-columns: 1fr;
+    max-width: none;
   }
 }
 
@@ -26621,11 +26674,11 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 .terms-user-dropdown { position: absolute; z-index: 40; top: calc(100% + 8px); right: 0; display: grid; min-width: 200px; padding: 8px; border: 1px solid #e7e3f2; border-radius: 10px; background: #fff; box-shadow: 0 12px 28px rgba(26, 23, 27, .12); }
 .terms-user-dropdown a, .terms-user-dropdown button { display: flex; align-items: center; min-height: 40px; padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; color: #1a171b; font: inherit; font-size: .84rem; text-align: left; cursor: pointer; }
 .terms-user-dropdown a:hover, .terms-user-dropdown button:hover { background: #f7f7fa; }
-.account-password-field { display: grid; gap: 6px; margin: 0 0 10px; }
+.account-password-field { display: grid; gap: 6px; margin: 0; }
 .account-password-field > span:first-child { color: #1a171b; font-size: .78rem; font-weight: 600; }
 .account-password-input { display: flex; align-items: center; gap: 8px; }
 .account-password-input input { flex: 1; min-width: 0; }
-.account-password-input button { flex: 0 0 auto; min-height: 36px; padding: 0 10px; border: 1px solid #e7e3f2; border-radius: 8px; background: #f7f7fa; color: #452b84; font-size: .72rem; font-weight: 600; cursor: pointer; }
+.account-password-input button { flex: 0 0 auto; min-height: 40px; padding: 0 12px; white-space: nowrap; border: 1px solid #e7e3f2; border-radius: 8px; background: #f7f7fa; color: #452b84; font-size: .72rem; font-weight: 600; cursor: pointer; }
 .account-password-field small { color: #707173; font-size: .74rem; }
 .account-confirm { margin: 12px 0; padding: 16px; border: 1px solid #e7e3f2; border-radius: 10px; background: #f7f7fa; }
 .account-confirm p { margin: 8px 0 12px; color: #707173; font-size: .86rem; line-height: 1.5; }
