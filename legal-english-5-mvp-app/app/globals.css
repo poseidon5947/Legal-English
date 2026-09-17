@@ -26887,6 +26887,21 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 /* D02: single primary action on the Home. */
 .dashboard-primary .dashboard-continue-card { margin: 4px 0 14px; }
 .dashboard-primary .dashboard-continue-card > span { display: grid; gap: 4px; }
+/* The status badge inside the card is also a <span>: keep it a compact inline pill, not a grid cell. */
+.dashboard-continue-card span.terms-status,
+.dashboard-primary .dashboard-continue-card > span > .terms-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  justify-self: start;
+  align-self: start;
+  width: auto;
+  min-height: 22px;
+  margin-top: 6px;
+  padding: 0 9px;
+  line-height: 1;
+}
+.dashboard-continue-card .terms-status .terms-library-icon { flex: 0 0 12px; width: 12px; height: 12px; }
 .dashboard-area-icon.dashboard-session-index { background: #efebf9; color: #452b84; }
 .dashboard-area-icon .le5-icon { width: 20px; height: 20px; }
 /* D05: illustration removed — two columns (photo + text), no residual gap.
