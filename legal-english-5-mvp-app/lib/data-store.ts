@@ -29,7 +29,7 @@ export interface Store {
     consents: Consents
   ): Promise<{ ok: true; user: PublicUser; code?: string; sessionEstablished: boolean } | { ok: false; message: string }>;
   verifyEmail(email: string, code: string): Promise<{ ok: boolean; message?: string }>;
-  requestReset(email: string): Promise<{ ok: true }>;
+  requestReset(email: string): Promise<{ ok: true } | { ok: false; message: string; reason?: string }>;
   resetPassword(email: string, code: string, password: string): Promise<{ ok: boolean; message?: string }>;
   inboxFor(email: string): Promise<Mail[]>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

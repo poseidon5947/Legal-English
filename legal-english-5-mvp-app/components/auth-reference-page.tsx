@@ -246,7 +246,14 @@ export function AuthReferencePage({ initialMode = "login" }: { initialMode?: Ext
     setError("");
     setNotice("");
     if (mode === "forgot") {
-      await forgot(email);
+      // Only a request Supabase accepted moves on to the code form. A refused
+      // one (rate limit, mailer down) is reported so the learner does not wait
+      // for an email that was never generated.
+      const result = await forgot(email);
+      if (!result.ok) {
+        setError(result.message || t("couldNotContinue"));
+        return;
+      }
       setNotice(t("forgotNotice"));
       setMode("reset");
       return;

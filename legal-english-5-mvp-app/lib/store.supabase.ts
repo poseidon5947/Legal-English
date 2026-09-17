@@ -350,9 +350,26 @@ function authCallbackUrl(type: "signup" | "recovery") {
   return `${siteUrl().origin}/auth/confirm?type=${type}`;
 }
 
+/**
+ * Ask Supabase Auth to email a recovery code/link. Supabase itself answers
+ * success for an unknown address (no account enumeration), so the only
+ * failures that reach here are real ones — rate limit, mailer/SMTP error,
+ * network — and they must be shown, not swallowed: on 17 Sep 2026 a learner
+ * requested a reset, no recovery was ever registered on her account, and the
+ * form still said "we sent a code".
+ */
 export async function requestReset(email: string) {
+  const address = String(email ?? "").trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(address)) return { ok: false as const, message: "Enter the email address of your account." };
   const supabase = await getSupabaseServerClient();
-  await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), { redirectTo: authCallbackUrl("recovery") });
+  const { error } = await supabase.auth.resetPasswordForEmail(address, { redirectTo: authCallbackUrl("recovery") });
+  if (error) {
+    console.error("[auth] password recovery request failed", { status: error.status, message: error.message });
+    if (error.status === 429 || /rate limit|too many/i.test(error.message)) {
+      return { ok: false as const, message: "Too many requests. Wait a minute and try again.", reason: "rate_limit" as const };
+    }
+    return { ok: false as const, message: "The reset email could not be sent right now. Try again in a few minutes or write to support.", reason: "mailer" as const };
+  }
   return { ok: true as const };
 }
 
