@@ -27214,4 +27214,9 @@ button.terms-user-pill { padding: 0; border: 0; background: transparent; text-al
 }
 
 /* /help: shown when tapping Email support did not leave the page (no mail app configured). */
-.public-help-mail-hint { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #fff8cc; border: 1px solid #efe27a; color: #4a4b4e; font-size: 0.86rem; line-height: 1.5; }
+/* Fallback hint under "Email support". Lives inside the purple contact block,
+   whose `.public-help-contact p` rule paints paragraphs white — on the pale
+   yellow box that was unreadable (client, 18 Sep 2026). */
+.public-help-contact p.public-help-mail-hint,
+.public-help-mail-hint { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #fff8cc; border: 1px solid #efe27a; color: #1a171b; font-size: 0.86rem; line-height: 1.5; }
+.public-help-contact p.public-help-mail-hint a { color: #452b84; font-weight: 600; }
