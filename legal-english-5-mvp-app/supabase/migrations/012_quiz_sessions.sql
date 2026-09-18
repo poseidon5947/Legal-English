@@ -39,6 +39,13 @@ create index if not exists quiz_sessions_user_completed_idx on public.quiz_sessi
 
 alter table public.quiz_sessions enable row level security;
 
+-- Re-runnable: a partial first run (17 Sep 2026, production) left the table
+-- in place and stopped before the quiz_attempts column, so each statement
+-- below must succeed on a second run too.
+drop policy if exists "users read own quiz sessions" on public.quiz_sessions;
+drop policy if exists "users start own quiz sessions" on public.quiz_sessions;
+drop policy if exists "users complete own quiz sessions" on public.quiz_sessions;
+
 create policy "users read own quiz sessions" on public.quiz_sessions for select to authenticated
 using ((select auth.uid()) = user_id or public.is_admin());
 create policy "users start own quiz sessions" on public.quiz_sessions for insert to authenticated

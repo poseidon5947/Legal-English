@@ -22,10 +22,13 @@ function walk(dir, out = []) {
 }
 const sources = ["app", "components", "lib", "public"].flatMap((dir) => walk(join(ROOT, dir)));
 
-test("NEW-10: the support address is support@legalenglish.com everywhere; the old address is gone from the app", () => {
-  assert.equal(SUPPORT_EMAIL, "support@legalenglish.com");
-  const offenders = sources.filter((file) => readFileSync(file, "utf8").includes("support@legalenglish5.com"));
+test("NEW-10: the support address is support@legalenglish5.com everywhere and never followed by a sentence period in UI copy", () => {
+  assert.equal(SUPPORT_EMAIL, "support@legalenglish5.com");
+  const offenders = sources.filter((file) => /support@legalenglish\.com/.test(readFileSync(file, "utf8")));
   assert.deepEqual(offenders.map((file) => file.replace(ROOT, "")), []);
+  for (const file of ["lib/i18n.ts", "lib/learner-copy.ts", "lib/landing-copy.ts", "lib/commercial.ts", "app/help/page.tsx", "app/account/help/page.tsx", "components/landing-footer.tsx"]) {
+    assert.doesNotMatch(readFileSync(join(ROOT, file), "utf8"), /support@legalenglish5\.com\./, `${file} ends a sentence with the address`);
+  }
 });
 
 test("NEW-02: the registration form no longer renders the Controller notice", () => {
@@ -37,10 +40,10 @@ test("NEW-02: the registration form no longer renders the Controller notice", ()
   assert.ok(form.includes("auth-consent-marketing"));
 });
 
-test("NEW-09: Privacy and Cookies open on the title; Terms of Service keep the approved banner", () => {
+test("NEW-09 (+ client 18 Sep): Privacy, Cookies and Terms of Service open on the title, without a photo", () => {
   assert.ok(!readFileSync(join(ROOT, "app/privacy/page.tsx"), "utf8").includes("photo="));
   assert.ok(!readFileSync(join(ROOT, "app/cookies/page.tsx"), "utf8").includes("photo="));
-  assert.ok(readFileSync(join(ROOT, "app/terms-of-service/page.tsx"), "utf8").includes("photo="));
+  assert.ok(!readFileSync(join(ROOT, "app/terms-of-service/page.tsx"), "utf8").includes("photo="));
   const help = readFileSync(join(ROOT, "app/account/help/page.tsx"), "utf8");
   assert.ok(!help.includes("help-hero-photo"));
 });

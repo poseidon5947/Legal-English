@@ -7,7 +7,7 @@ import { LandingHeader } from "@/components/landing-header";
 import { useLocale } from "@/components/locale-provider";
 import type { Locale } from "@/lib/i18n";
 
-const SUPPORT_EMAIL = "support@legalenglish.com";
+const SUPPORT_EMAIL = "support@legalenglish5.com";
 
 type Copy = {
   eyebrow: string;
@@ -33,7 +33,7 @@ const COPY: Record<Locale, Copy> = {
   en: {
     eyebrow: "HELP AND SUPPORT",
     title: "Help with access, billing or your account",
-    lead: "You do not need to sign in to contact us. Start with the answers below or email support@legalenglish.com.",
+    lead: "You do not need to sign in to contact us. Start with the answers below or email support@legalenglish5.com",
     topics: [
       {
         title: "I forgot my password",
@@ -75,7 +75,7 @@ const COPY: Record<Locale, Copy> = {
   es: {
     eyebrow: "AYUDA Y SOPORTE",
     title: "Ayuda con el acceso, la facturación o tu cuenta",
-    lead: "No necesitas iniciar sesión para contactarnos. Consulta las respuestas siguientes o escribe a support@legalenglish.com.",
+    lead: "No necesitas iniciar sesión para contactarnos. Consulta las respuestas siguientes o escribe a support@legalenglish5.com",
     topics: [
       {
         title: "Olvidé mi contraseña",

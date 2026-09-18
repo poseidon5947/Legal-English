@@ -730,6 +730,16 @@ export async function toggleFavourite(userId: string, termId: string, day?: unkn
 const PG_UNDEFINED_TABLE = "42P01";
 const PG_UNDEFINED_COLUMN = "42703";
 const PG_UNIQUE_VIOLATION = "23505";
+// PostgREST answers for a column/table missing from its schema cache before
+// Postgres is ever reached (insert/update bodies, unknown relations). They
+// mean the same as 42703/42P01 for our "migration not applied yet" fallbacks.
+// 17 Sep 2026: production had not run migration 012 and every quiz answer was
+// refused with "could not be recorded" because only 42703 was recognised.
+const PGRST_UNDEFINED_COLUMN = "PGRST204";
+const PGRST_UNDEFINED_TABLE = "PGRST205";
+type PgError = { code?: string; message?: string } | null | undefined;
+const isUndefinedColumn = (error: PgError) => error?.code === PG_UNDEFINED_COLUMN || error?.code === PGRST_UNDEFINED_COLUMN || /column .* does not exist|could not find the '.*' column/i.test(error?.message ?? "");
+const isUndefinedTable = (error: PgError) => error?.code === PG_UNDEFINED_TABLE || error?.code === PGRST_UNDEFINED_TABLE || /relation .* does not exist|could not find the table/i.test(error?.message ?? "");
 
 /**
  * Grade one Quick Quiz answer. Hardened after the Hito B progress-state
@@ -773,18 +783,21 @@ export async function submitQuiz(userId: string, termId: string, option: string,
 
   // 1. Ledger first. A unique violation on (user, client_key) means this exact
   //    press was already graded: answer again without touching the counters.
-  let ledger = await supabase
-    .from("quiz_attempts")
-    .insert({ user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now, session_id: sessionId });
-  if (ledger.error?.code === PG_UNDEFINED_COLUMN) {
+  //    The session column is only sent when there is a session to link, so a
+  //    Term-page answer never depends on migration 012.
+  const attemptRow: Record<string, unknown> = { user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now };
+  let ledger = await supabase.from("quiz_attempts").insert(sessionId === null ? attemptRow : { ...attemptRow, session_id: sessionId });
+  if (sessionId !== null && isUndefinedColumn(ledger.error)) {
     // Migration 012 not applied yet: keep the answer, drop the session link.
-    ledger = await supabase.from("quiz_attempts").insert({ user_id: userId, term_id: termId, option: letter, correct, source, client_key: clientKey, answered_at: now });
+    console.error("[quiz] quiz_attempts.session_id missing — run migration 012", { code: ledger.error?.code });
+    ledger = await supabase.from("quiz_attempts").insert(attemptRow);
   }
   if (ledger.error?.code === PG_UNIQUE_VIOLATION) {
     const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
     return { ok: true as const, correct, duplicate: true as const, message: term.quiz.explanation, progress: (rows ?? []).map(rowToProgress), studyDays };
   }
-  if (ledger.error && ledger.error.code !== PG_UNDEFINED_TABLE) {
+  if (ledger.error && !isUndefinedTable(ledger.error)) {
+    console.error("[quiz] quiz_attempts insert failed", { code: ledger.error.code, message: ledger.error.message });
     return { ok: false as const, message: "Your answer could not be recorded. Try again." };
   }
   const ledgerAvailable = !ledger.error;
@@ -807,13 +820,16 @@ export async function submitQuiz(userId: string, termId: string, option: string,
   let update = existing
     ? await supabase.from("user_term_progress").update(audited).eq("user_id", userId).eq("term_id", termId)
     : await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, ...audited });
-  if (update.error?.code === PG_UNDEFINED_COLUMN && !ledgerAvailable) {
+  if (isUndefinedColumn(update.error) && !ledgerAvailable) {
     // Migration 010 not applied yet: keep the legacy shape rather than lose the answer.
     update = existing
       ? await supabase.from("user_term_progress").update({ state, attempts, updated_at: now }).eq("user_id", userId).eq("term_id", termId)
       : await supabase.from("user_term_progress").insert({ user_id: userId, term_id: termId, favourite: false, state, attempts, updated_at: now });
   }
-  if (update.error) return { ok: false as const, message: "Your answer could not be saved. Try again." };
+  if (update.error) {
+    console.error("[quiz] user_term_progress write failed", { code: update.error.code, message: update.error.message });
+    return { ok: false as const, message: "Your answer could not be saved. Try again." };
+  }
 
   await recordStudy(userId, day, { attempts: 1, correct: correct ? 1 : 0 });
   const [{ data: rows }, studyDays] = await Promise.all([supabase.from("user_term_progress").select("*").eq("user_id", userId), studyDaysFor(userId)]);
@@ -825,7 +841,7 @@ async function ensureQuizSession(userId: string, ref: ReturnType<typeof sessionR
   if (!ref) return null;
   const supabase = await getSupabaseServerClient();
   const { data: existing, error } = await supabase.from("quiz_sessions").select("id").eq("user_id", userId).eq("client_key", ref.key).maybeSingle();
-  if (error?.code === PG_UNDEFINED_TABLE) return null;
+  if (isUndefinedTable(error)) return null;
   if (existing) return Number(existing.id);
   const created = await supabase
     .from("quiz_sessions")
@@ -880,7 +896,7 @@ export async function completeQuizSession(userId: string, key: unknown) {
     .eq("user_id", userId)
     .eq("client_key", sessionKey)
     .maybeSingle();
-  if (error?.code === PG_UNDEFINED_TABLE) return { ok: false as const, message: "Quiz sessions are not available yet." };
+  if (isUndefinedTable(error)) return { ok: false as const, message: "Quiz sessions are not available yet." };
   if (!session) return { ok: false as const, message: "Unknown quiz session." };
   if (session.completed_at) return { ok: true as const, duplicate: true as const, quizSessions: await quizSessionsFor(userId) };
 

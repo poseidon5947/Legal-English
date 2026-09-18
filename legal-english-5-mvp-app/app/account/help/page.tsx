@@ -47,9 +47,9 @@ export default function HelpPage() {
             <span className="eyebrow">{t("helpEyebrow")}</span>
             <h2>{t("helpReportTitle")}</h2>
             <p>
-              {t("helpContactLine").split("support@legalenglish.com")[0]}
-              <a href="mailto:support@legalenglish.com">support@legalenglish.com</a>
-              {t("helpContactLine").split("support@legalenglish.com")[1]}
+              {t("helpContactLine").split("support@legalenglish5.com")[0]}
+              <a href="mailto:support@legalenglish5.com">support@legalenglish5.com</a>
+              {t("helpContactLine").split("support@legalenglish5.com")[1]}
             </p>
             <a className="ghost inline" href="#contact">{t("helpGoToForm")} →</a>
           </div>

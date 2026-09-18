@@ -6,7 +6,7 @@ import type { Locale } from "@/lib/i18n";
  * strings so trial, privacy, audience and contact never drift.
  */
 
-export const SUPPORT_EMAIL = "support@legalenglish.com";
+export const SUPPORT_EMAIL = "support@legalenglish5.com";
 
 export const AUDIENCE: Record<Locale, string> = {
   en: "Designed for Spanish-speaking lawyers, law students, and other legal professionals.",
