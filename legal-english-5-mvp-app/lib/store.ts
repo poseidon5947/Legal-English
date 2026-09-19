@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { tmpdir } from "os";
 import { join } from "path";
 import { AUDIO_MIME, extensionOf, type AudioJurisdiction } from "./audio-naming";
+import { PUBLIC_TABLES, backupFilename, buildBackupEntries, tableSummary, walkDirectory, type TableDump } from "./backup";
+import { createZip } from "./zip";
 import { applyBillingEvent, freshTrial, normalizeEventType, type BillingEvent } from "./billing-state";
 import { isOwnerEmail } from "./owners";
 import { ALPHA_SESSION_COOKIE, hashPassword, oneTimeCode, readSession, verifyPassword } from "./crypto";
@@ -883,4 +885,56 @@ export async function exportSnapshot(actorId: string) {
       progress: data.progress,
     },
   };
+}
+
+export async function exportFullBackup(actorId: string) {
+  const data = load();
+  if (data.users.find((item) => item.id === actorId)?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const exportedAt = new Date().toISOString();
+  const tables: Record<string, TableDump> = {
+    users: { rows: data.users },
+    terms: { rows: data.terms },
+    quiz_items: { rows: data.terms.filter((term) => term.quiz).map((term) => term.quiz) },
+    user_term_progress: { rows: data.progress },
+    subscriptions: { rows: data.users.map((user) => ({ user_id: user.id, ...user.subscription })) },
+    support_tickets: { rows: data.tickets ?? [] },
+    import_runs: { rows: data.importRuns ?? [] },
+    billing_events: { rows: data.billingLog ?? [] },
+    insights: { rows: loadInsights() },
+    study_days: { rows: data.studyDays ?? [] },
+    quiz_attempts: { rows: data.quizAttempts ?? [] },
+    quiz_sessions: { rows: data.quizSessions ?? [] },
+  };
+  for (const table of PUBLIC_TABLES) {
+    if (!tables[table]) tables[table] = { rows: [] };
+  }
+  const seedAudio = walkDirectory(SEED_AUDIO_DIR, "storage/term-audio");
+  const uploadedAudio = AUDIO_DIR === SEED_AUDIO_DIR ? [] : walkDirectory(AUDIO_DIR, "storage/term-audio");
+  const filesByName = new Map<string, (typeof seedAudio)[number]>();
+  for (const file of [...seedAudio, ...uploadedAudio, ...walkDirectory(AVATAR_DIR, "storage/avatars")]) {
+    filesByName.set(file.name, file);
+  }
+  const files = [...filesByName.values()];
+  if (existsSync(FILE)) files.push({ name: "alpha/alpha-store.json", data: readFileSync(FILE) });
+  if (existsSync(INSIGHTS_FILE)) files.push({ name: "alpha/insights.json", data: readFileSync(INSIGHTS_FILE) });
+  const storageCounts = {
+    "term-audio": { files: files.filter((file) => file.name.startsWith("storage/term-audio/")).length },
+    avatars: { files: files.filter((file) => file.name.startsWith("storage/avatars/")).length },
+  };
+  const zip = createZip(
+    buildBackupEntries({
+      manifest: {
+        app: "legal-english-5",
+        kind: "complete",
+        exportedAt,
+        mode: "alpha",
+        tables: tableSummary(tables),
+        storage: storageCounts,
+        note: "Alpha complete backup: local JSON store, RLS/schema SQL, and audio/avatar files. Produced from the Owner console.",
+      },
+      tables,
+      files,
+    })
+  );
+  return { ok: true as const, filename: backupFilename(new Date(exportedAt)), zip };
 }

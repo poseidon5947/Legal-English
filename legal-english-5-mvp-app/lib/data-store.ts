@@ -85,6 +85,8 @@ export interface Store {
   insightSummary(actorId: string, days?: number): Promise<{ ok: true; summary: InsightSummary } | { ok: false; message: string }>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   exportSnapshot(actorId: string): Promise<any>;
+  /** Owner ZIP: every public table, RLS/schema SQL, and Storage bucket files. */
+  exportFullBackup(actorId: string): Promise<{ ok: true; filename: string; zip: Buffer } | { ok: false; message: string }>;
   resetStore(): Promise<unknown>;
 }
 

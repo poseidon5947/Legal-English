@@ -49,6 +49,7 @@ export default function AdminPage() {
   const [tab, setTab] = useState<"overview" | "terms" | "users" | "support" | "import">("overview");
   const [editing, setEditing] = useState<Term | null>(null);
   const [message, setMessage] = useState("");
+  const [backupBusy, setBackupBusy] = useState(false);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [termQuery, setTermQuery] = useState("");
   const [termCategory, setTermCategory] = useState("All");
@@ -530,9 +531,57 @@ export default function AdminPage() {
             <p>
               {a("backupBody")}
             </p>
-            <a className="primary inline" href="/api/admin/export">
-              {a("exportJson")}
-            </a>
+            <p>
+              <button
+                className="primary"
+                type="button"
+                disabled={backupBusy}
+                onClick={() => {
+                  void (async () => {
+                    setBackupBusy(true);
+                    setMessage("");
+                    try {
+                      const response = await fetch("/api/admin/backup");
+                      const type = response.headers.get("content-type") || "";
+                      if (type.includes("application/json")) {
+                        const payload = (await response.json()) as { ok?: boolean; url?: string; message?: string };
+                        if (payload.url) {
+                          window.location.href = payload.url;
+                          setMessage(a("backupReady"));
+                          return;
+                        }
+                        setMessage(payload.message || a("backupFailed"));
+                        return;
+                      }
+                      if (!response.ok) {
+                        setMessage(a("backupFailed"));
+                        return;
+                      }
+                      const blob = await response.blob();
+                      const match = /filename="([^"]+)"/.exec(response.headers.get("content-disposition") || "");
+                      const href = URL.createObjectURL(blob);
+                      const link = document.createElement("a");
+                      link.href = href;
+                      link.download = match?.[1] || "legal-english-5-backup.zip";
+                      link.click();
+                      URL.revokeObjectURL(href);
+                      setMessage(a("backupReady"));
+                    } catch {
+                      setMessage(a("backupFailed"));
+                    } finally {
+                      setBackupBusy(false);
+                    }
+                  })();
+                }}
+              >
+                {backupBusy ? a("backupWorking") : a("exportFull")}
+              </button>
+            </p>
+            <p>
+              <a className="text-button" href="/api/admin/export">
+                {a("exportJson")}
+              </a>
+            </p>
             <p className="muted tiny">
               {a("backupNote")}
             </p>

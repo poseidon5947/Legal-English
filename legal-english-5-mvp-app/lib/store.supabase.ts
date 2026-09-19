@@ -1,4 +1,14 @@
+import {
+  BACKUP_ARCHIVE_BUCKET,
+  CONTENT_BUCKETS,
+  PUBLIC_TABLES,
+  backupFilename,
+  buildBackupEntries,
+  tableSummary,
+  type TableDump,
+} from "./backup";
 import { applyBillingEvent, freshTrial } from "./billing-state";
+import { createZip } from "./zip";
 import { isOwnerEmail } from "./owners";
 import { canLearn, canStudyTerm, lockTerm } from "./access";
 import { normalizePreferences } from "./preferences";
@@ -1190,10 +1200,9 @@ export async function metrics() {
 }
 
 /**
- * Panel export (RFP §4/§6: "respaldo, exportación... demostrados"). Covers
- * everything the Propuesta committed to — terms, quizzes, users, progress,
- * entitlement state. Does not include Storage binaries (audio files): those
- * are covered separately by Supabase's own daily backup, not this export.
+ * Light JSON export (terms, quizzes, users, progress, entitlement). The
+ * complete archive — every table, RLS SQL, and Storage files — is
+ * exportFullBackup, served from /api/admin/backup.
  */
 export async function exportSnapshot(actorId: string) {
   const actor = await getUser(actorId);
@@ -1210,7 +1219,7 @@ export async function exportSnapshot(actorId: string) {
     ok: true as const,
     snapshot: {
       exportedAt: new Date().toISOString(),
-      note: "Audio files in Supabase Storage are not included here — they're covered by Supabase's own daily backup, not this export.",
+      note: "Light JSON export. The complete archive (every table, RLS SQL, and Storage files) is Download complete backup.",
       terms: terms ?? [],
       quizItems: quizItems ?? [],
       users: users ?? [],
@@ -1218,6 +1227,181 @@ export async function exportSnapshot(actorId: string) {
       progress: progress ?? [],
     },
   };
+}
+
+const TABLE_PAGE = 1000;
+const STORAGE_LIST_PAGE = 100;
+const STORAGE_DOWNLOAD_CONCURRENCY = 6;
+
+async function dumpPublicTable(table: string): Promise<TableDump> {
+  const admin = getSupabaseServiceRoleClient();
+  const rows: unknown[] = [];
+  for (let from = 0; ; from += TABLE_PAGE) {
+    const { data, error } = await admin.from(table).select("*").range(from, from + TABLE_PAGE - 1);
+    if (error) return { rows, error: error.message };
+    rows.push(...(data ?? []));
+    if (!data || data.length < TABLE_PAGE) break;
+  }
+  return { rows };
+}
+
+function sanitizeAuthUser(user: {
+  id: string;
+  email?: string;
+  phone?: string;
+  created_at?: string;
+  email_confirmed_at?: string;
+  last_sign_in_at?: string;
+  banned_until?: string;
+  role?: string;
+  app_metadata?: Record<string, unknown>;
+  user_metadata?: Record<string, unknown>;
+}) {
+  return {
+    id: user.id,
+    email: user.email ?? null,
+    phone: user.phone ?? null,
+    created_at: user.created_at ?? null,
+    email_confirmed_at: user.email_confirmed_at ?? null,
+    last_sign_in_at: user.last_sign_in_at ?? null,
+    banned_until: user.banned_until ?? null,
+    role: user.role ?? null,
+    app_metadata: user.app_metadata ?? {},
+    user_metadata: user.user_metadata ?? {},
+  };
+}
+
+async function dumpAuthUsers() {
+  const admin = getSupabaseServiceRoleClient();
+  const users: ReturnType<typeof sanitizeAuthUser>[] = [];
+  for (let page = 1; ; page += 1) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 200 });
+    if (error) return { users, error: error.message };
+    const batch = data.users ?? [];
+    users.push(...batch.map((user) => sanitizeAuthUser(user)));
+    if (batch.length < 200) break;
+  }
+  return { users };
+}
+
+async function listBucketPaths(bucket: string): Promise<{ paths: string[]; error?: string }> {
+  const admin = getSupabaseServiceRoleClient();
+  const paths: string[] = [];
+  const walk = async (prefix: string) => {
+    for (let offset = 0; ; offset += STORAGE_LIST_PAGE) {
+      const { data, error } = await admin.storage.from(bucket).list(prefix, {
+        limit: STORAGE_LIST_PAGE,
+        offset,
+        sortBy: { column: "name", order: "asc" },
+      });
+      if (error) throw new Error(error.message);
+      if (!data?.length) break;
+      for (const item of data) {
+        const path = prefix ? `${prefix}/${item.name}` : item.name;
+        const isFolder = item.id == null || item.metadata == null;
+        if (isFolder) await walk(path);
+        else paths.push(path);
+      }
+      if (data.length < STORAGE_LIST_PAGE) break;
+    }
+  };
+  try {
+    await walk("");
+    return { paths };
+  } catch (error) {
+    return { paths, error: error instanceof Error ? error.message : "Could not list storage." };
+  }
+}
+
+async function downloadBucketFiles(bucket: string, paths: string[]) {
+  const admin = getSupabaseServiceRoleClient();
+  const files: { name: string; data: Buffer }[] = [];
+  let index = 0;
+  const workers = Array.from({ length: Math.min(STORAGE_DOWNLOAD_CONCURRENCY, Math.max(paths.length, 1)) }, async () => {
+    while (index < paths.length) {
+      const current = index;
+      index += 1;
+      const path = paths[current];
+      const { data, error } = await admin.storage.from(bucket).download(path);
+      if (error || !data) continue;
+      files.push({ name: `storage/${bucket}/${path}`, data: Buffer.from(await data.arrayBuffer()) });
+    }
+  });
+  await Promise.all(workers);
+  return files;
+}
+
+/**
+ * Complete Owner backup: every public table (service role, so RLS does not
+ * hide rows), the shipped schema/RLS SQL, Auth metadata, and every object
+ * in term-audio and avatars. The Owner downloads this from the console.
+ */
+export async function exportFullBackup(actorId: string) {
+  const actor = await getUser(actorId);
+  if (actor?.role !== "admin") return { ok: false as const, message: "Owner access required." };
+  const exportedAt = new Date().toISOString();
+  const admin = getSupabaseServiceRoleClient();
+  const tables: Record<string, TableDump> = {};
+  for (const table of PUBLIC_TABLES) {
+    tables[table] = await dumpPublicTable(table);
+  }
+  const auth = await dumpAuthUsers();
+  const { data: bucketRows, error: bucketError } = await admin.storage.listBuckets();
+  const buckets = (bucketRows ?? []).map((bucket) => ({
+    id: bucket.id,
+    name: bucket.name,
+    public: bucket.public,
+    file_size_limit: bucket.file_size_limit ?? null,
+    allowed_mime_types: bucket.allowed_mime_types ?? null,
+  }));
+  const files: { name: string; data: Buffer }[] = [];
+  const storage: Record<string, { files: number; error?: string }> = {};
+  for (const bucket of CONTENT_BUCKETS) {
+    const listed = await listBucketPaths(bucket);
+    const downloaded = listed.paths.length ? await downloadBucketFiles(bucket, listed.paths) : [];
+    files.push(...downloaded);
+    storage[bucket] = { files: downloaded.length, error: listed.error };
+  }
+  if (bucketError) storage.buckets = { files: buckets.length, error: bucketError.message };
+  const zip = createZip(
+    buildBackupEntries({
+      manifest: {
+        app: "legal-english-5",
+        kind: "complete",
+        exportedAt,
+        mode: "production",
+        tables: tableSummary(tables),
+        storage,
+        authUsers: auth.users.length,
+        note: "Complete production backup from the Owner console. Includes every public table, shipped RLS/schema SQL, Auth metadata, and Storage files. You do not open the Supabase dashboard.",
+      },
+      tables,
+      authUsers: auth,
+      buckets,
+      files,
+    })
+  );
+  return { ok: true as const, filename: backupFilename(new Date(exportedAt)), zip };
+}
+
+export async function storeBackupArchive(zip: Buffer, filename: string) {
+  const admin = getSupabaseServiceRoleClient();
+  const { data: buckets } = await admin.storage.listBuckets();
+  if (!buckets?.some((bucket) => bucket.name === BACKUP_ARCHIVE_BUCKET)) {
+    const { error } = await admin.storage.createBucket(BACKUP_ARCHIVE_BUCKET, {
+      public: false,
+      fileSizeLimit: 52_428_800,
+    });
+    if (error && !/already exists/i.test(error.message)) throw new Error(error.message);
+  }
+  const { error: uploadError } = await admin.storage.from(BACKUP_ARCHIVE_BUCKET).upload(filename, zip, {
+    contentType: "application/zip",
+    upsert: true,
+  });
+  if (uploadError) throw new Error(uploadError.message);
+  const { data, error } = await admin.storage.from(BACKUP_ARCHIVE_BUCKET).createSignedUrl(filename, 60 * 60);
+  if (error || !data?.signedUrl) throw new Error(error?.message || "Could not sign the backup download.");
+  return data.signedUrl;
 }
 
 export async function resetStore() {
